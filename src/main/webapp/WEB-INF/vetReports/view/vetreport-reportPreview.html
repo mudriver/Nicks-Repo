@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head data-th-fragment="header">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title data-th-text="#{vetreport.report.page.title}">Title</title>
+<!-- Core CSS - Include with every page -->
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/sb-admin-2.css"
+	data-th-href="@{/resources/css/sb-admin-2.css}" />
+
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<script type="text/javascript"
+	src="../../resources/js/jquery-2.1.1.min.js"
+	data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+<script type="text/javascript"
+	src="../../resources/js/vetreportreport.js"
+	data-th-src="@{/resources/js/vetreportreport.js}"></script>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+
+</head>
+<body>
+
+	<!-- /#wrapper -->
+
+
+
+
+	<div class="container-fluid">
+		<div data-th-replace="vetreportsTopBar :: top-nav"></div>
+		<div class="jumbotron">
+			
+			<h3 class="page-header" data-th-text="#{vetreport.report.head.title}">Edit
+				HunterCert</h3>
+
+			<div id="pdf1" style="width:500px; height:375px;"></div>
+		</div>
+		<!-- END JUMBOTRON TAG -->
+	</div>
+
+	<!-- END CONTAINER TAG -->
+
+
+	<script type="text/javascript"
+		src="../../resources/js/bootstrap.min.js"
+		data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+	<script type="text/javascript"
+		src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+	<script src="../../resources/js/select2.js" type="text/javascript"
+		data-th-src="@{/resources/js/select2.js}"></script>
+	<!-- SB Admin Scripts - Include with every page -->
+
+
+
+
+</body>
+</html>
+

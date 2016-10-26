@@ -1,0 +1,8 @@
+<dl>
+<dt data-ng-if="ctrl.name.length > 0">Name:</dt><dd data-ng-if="ctrl.name.length > 0">{{ctrl.name}}</dd>
+<dt data-ng-if="ctrl.phone.length > 0">Home Phone:</dt><dd data-ng-if="ctrl.phone.length > 0">{{ctrl.phone}}</dd>
+<dt data-ng-if="ctrl.mobile.length > 0">Mobile:</dt><dd data-ng-if="ctrl.mobile.length > 0">{{ctrl.mobile}}</dd>
+<dt data-ng-if="ctrl.fax.length > 0">Fax:</dt><dd data-ng-if="ctrl.fax.length > 0">{{ctrl.fax}}</dd>
+<dt data-ng-if="ctrl.email.length > 0">Email:</dt><dd data-ng-if="ctrl.email.length > 0"><a href="{{'mailto:' + ctrl.email}}">{{ctrl.email}}</a></dd>
+<dt data-ng-if="ctrl.extra.length > 0">{{ctrl.directive.extraTitle}}</dt><dd data-ng-if="ctrl.extra.length > 0">{{ctrl.extra}}</dd>
+</dl>

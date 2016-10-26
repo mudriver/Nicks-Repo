@@ -1,0 +1,44 @@
+<div>
+<h2>{{jsonTableCtrl.config.title}}</h2>
+<div class="table responsive">
+<table data-ng-show="jsonTableCtrl.data.length > 0" class="table table-striped table-bordered table-hover">
+	
+	<thead>
+		<tr><td colspan="100%" >
+			
+			<div data-ng-if="jsonTableCtrl.config.savedSearchConfig" class="pull-left"><div><button data-ng-click="jsonTableCtrl.saveSearch()" class="btn btn-primary" ><span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Save Search</button><button data-ng-click="jsonTableCtrl.clearSearch()" class="btn btn-danger" ><span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Clear Search</button><input data-ng-model="jsonTableCtrl.saveAs" class="form-control" type="text" placeholder="Enter name to save as:">
+			
+			<label>Select a saved search</label><select class="form-control" data-ng-change="jsonTableCtrl.loadSearch()" id="searchName" data-ng-options="item.savedSearchName for item in jsonTableCtrl.config.savedSearchConfig.savedSearches track by item.savedSearchName" class="form-control" data-ng-model="jsonTableCtrl.searchName">
+			<option value="" selected disabled>Please select</option>
+</select></div></div>
+<div data-ng-if="jsonTableCtrl.offline" class="text-center text-capitalize text-danger">Your are currently offline data last updated: {{jsonTableCtrl.cacheUpdated}}</div>
+<div data-ng-if="jsonTableCtrl.hasLastSearch" class="text-center text-capitalize text-danger">Your results are filtered using your last search (Select All from Saved Search Menu to clear)</div>
+			<div class="form-group pull-right"><label for="showNo">Show:</label>
+			<select data-ng-change="jsonTableCtrl.refresh()" id="showNo" data-ng-options="item for item in jsonTableCtrl.config.pageSizeOptions" class="form-control" data-ng-model="jsonTableCtrl.config.savedSearch.maxToShow">
+</select></div>
+		</td></tr>
+		<tr data-json-table-headers data-config="jsonTableCtrl.config" data-refresh="jsonTableCtrl.refresh()" data-search="jsonTableCtrl.config.savedSearch">
+		</tr>
+		<tr data-json-table-searches data-refresh="jsonTableCtrl.refresh()" data-data="jsonTableCtrl.config.savedSearch" data-config="jsonTableCtrl.config" >
+		</tr>
+	</thead>
+	<tfoot>
+    <tr>
+    <td colspan="100%"><div><div data-ng-if="jsonTableCtrl.config.savedSearch.currentRecordStart != 0"  data-ng-click="jsonTableCtrl.showPrev()" class="pull-left"><button class="btn btn-primary" ><span class="glyphicon glyphicon-backward"></span>&nbsp;&nbsp;Previous</button></div>
+    <div data-ng-if="jsonTableCtrl.config.savedSearch.currentRecordStart+jsonTableCtrl.config.savedSearch.maxToShow < jsonTableCtrl.max"  class="pull-right"><button data-ng-click="jsonTableCtrl.showNext()" class="btn btn-primary" ><span class="glyphicon glyphicon-forward"></span>&nbsp;&nbsp;Next</button></div></div>
+    <div class="form-group text-center"><label>Showing:{{(jsonTableCtrl.max != 0 ? jsonTableCtrl.config.savedSearch.currentRecordStart+1 : 0) + " - " + ((jsonTableCtrl.config.savedSearch.currentRecordStart+jsonTableCtrl.config.savedSearch.maxToShow <=  jsonTableCtrl.max? jsonTableCtrl.config.savedSearch.currentRecordStart+jsonTableCtrl.config.savedSearch.maxToShow : jsonTableCtrl.max )) + " of " + jsonTableCtrl.max}}</label></div></td>
+    </tr>
+  </tfoot>
+	
+	<tbody>
+		
+		<tr data-ng-repeat="row in jsonTableCtrl.data">
+			<td data-ng-repeat="column in jsonTableCtrl.config.columns">
+        <span data-dynamic-element="column.directive.directiveType" data-refresh="jsonTableCtrl.refresh()" data-data="row" data-directive="column.directive" ></span>
+    	</td>
+    	</tr>
+	</tbody>
+</table>
+<div data-ng-show="jsonTableCtrl.data.length == 0 && jsonTableCtrl.config.noDataTemplateUrl" data-ng-include="jsonTableCtrl.config.noDataTemplateUrl"><div>
+</div>
+</div>

@@ -1,0 +1,276 @@
+html{
+    /* This image will be displayed fullscreen */
+    background:url(../img/background.jpg); repeat center center;
+
+    /* Ensure the html element always takes up the full height of the browser window */
+    min-height:100%;
+
+    /* The Magic */
+    background-size:cover;
+}
+h1, h2, h3, h5, h6 {
+        text-align: center;
+        margin-bottom:20px;
+        color: white;
+    }
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #e5ecff;
+}
+
+.toggle-btn{
+    background: #669999;
+    color: #ffffff;
+}
+.toggle-btn:hover { 
+  border-color: #527a7a; 
+  background-color: #476b6b;
+   
+}
+.toggle-btn-on{
+    background: #ffa31a;
+    color: #ffffff;
+}
+.toggle-btn-on:hover { 
+  border-color: #995c00; 
+  background-color: #cc7a00; 
+}
+
+hr {
+    height: 1px;
+    background-color:#707070;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+small {
+	color: white;
+}
+h4 small{
+	color: white;
+}
+
+.col-xs-4 > .control-label,.col-xs-2 > .control-label{
+	color: white;
+}
+
+.vertical-container {
+
+  height: 100%;
+}
+.vertical-align{
+
+  display: flex;
+    align-items: center;
+
+}
+
+.divider-vertical {
+    height: 100px;                   // any height
+    border-left: 1px solid gray;     // right or left is the same
+    float: left;                     // so BS grid doesn't break
+    opacity: 0.5;                    // optional
+    margin: 0 15px;                  // optional
+}
+
+.iconpadding {
+   padding: 40 !important;
+   margin: 40 !important;
+}
+
+.dateerror {
+	color: red;
+	font-family: Verdana;
+	font-size: 8pt;
+}
+
+.transparent {
+	background-color : transparent;
+}
+.jumbotron {
+
+	background-color : transparent;
+
+}
+.container-fluid {
+
+background-color : transparent;
+	
+}
+body{
+	background-color : transparent;
+}
+
+.jumbotron col-xs-3 label{
+	color : white;
+}
+.white{
+   color:white;
+}
+.grey{
+   background-color:gray!important;
+}
+.semi-transparent-message-box-error{
+	background:#FD2B2B;
+    -moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+border-radius: 10px; /* future proofing */
+-khtml-border-radius: 10px;
+}
+.semi-transparent{
+  background:rgba(255,255,255,0.2);
+    -moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+border-radius: 10px; /* future proofing */
+-khtml-border-radius: 10px;
+
+}
+.semitransparent{
+  background:rgba(255,255,255,0.2);
+    -moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+border-radius: 10px; /* future proofing */
+-khtml-border-radius: 10px;
+
+}
+#confirmSection{
+	width:95%;
+	margin: 0 auto;
+}
+
+
+#messageBox { width: 150px; height: 150px; background: #FFF; border: red dotted 5px; text-align: center; position: fixed; margin-left: -75px; margin-top: -75px; left: 50%; top: 50%; z-index: 20; display: none; } - See more at: http://hungred.com/how-to/tutorial-simple-screen-grey-effect-jquery/#sthash.ShHxZaXY.dpuf
+
+
+
+.removetopmargin{
+	margin-top:-30px;
+}
+.text-danger{
+	color:#CC0000;
+}
+.hide_me {
+  display: none!important;
+}
+.box ul{
+	  display: table;
+    margin: 0 auto;
+	 
+}
+.box ul li{
+	margin-bottom: 10px;
+	padding-top:4px;
+	padding-left:7px;
+	text-align: left;
+}
+.box ul li i{
+	padding-bottom: 5px;
+	text-align: right;
+}
+.form-control:focus {
+  border-color: #FFFF70;
+  box-shadow: inset 0 1px 1px rgba(240, 240, 50, 0.075), 0 0 8px rgba(240, 240, 50, 0.6);
+  background-color: #EBEBBC;
+}
+
+
+.select2-container.select2-container-active .select2-choice{
+  border-color: #FFFF70;
+  box-shadow: inset 0 1px 1px rgba(240, 240, 50, 0.075), 0 0 8px rgba(240, 240, 50, 0.6);
+  background-color: #EBEBBC;
+}
+.overlay-transparent {
+    border: 2px solid #333300;
+    position:absolute;
+    text-align: center;
+    top:5%;
+    width:0;
+    width:50%;
+    height:100%;
+    padding:10px;
+    color: black;
+    
+    background-color:rgba(242, 242, 167,0.5);
+    display:none;
+    -moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+border-radius: 10px; /* future proofing */
+-khtml-border-radius: 10px;
+}
+
+.overlay-solid {
+    border: 2px solid #333300;
+    position:absolute;
+    text-align: center;
+    top:5%;
+    width:0;
+    width:70%;
+    height:250%;
+    padding:10px;
+    color: black;
+    background-color:rgba(242, 242, 167,1.0);
+    display:none;
+    -moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+border-radius: 10px; /* future proofing */
+-khtml-border-radius: 10px;
+}
+.card:hover .overlay-transparent {
+    display:block;
+}
+.new-employees:hover .overlay-solid {
+    display:block;
+}
+.no-gutter [class*="-5"] {
+	padding-left:0;
+    padding-right:0;
+}
+.black .btn-group .active 
+{ background-color: red ; color: white; }
+.black .container .btn-group  
+{ background-color: red ; color: black; }
+
+.ui-datepicker{ z-index: 9999 !important;}
+.date-form { margin: 10px; }
+label.control-label span { cursor: pointer; }
+.row-group{
+	display:inline-block;
+	!important;
+}
+.ui-datepicker-trigger{
+	display:none;
+}
+#error-text {
+  z-index: 20 !important;
+  color: #FFFFFF;
+}
+
+input[placeholder] { width: 100% !important; }
+.hide_me {
+  display: none!important;
+}
+#example_filter label{
+	color : 9F9D9D!important;
+}
+p {
+	font-size: 14px!important;
+}
+h4{
+	color : 9F9D9D!important;
+}
+
+
+@media (max-width: 1024px) {
+::-webkit-input-placeholder { font-size: 12px;}
+::-moz-placeholder { font-size: 12px; } /* firefox 19+ */
+:-ms-input-placeholder { font-size: 12px; } /* ie */
+input:-moz-placeholder { font-size: 12px; }
+}
+@media (max-width: 1024px) {
+    .overlay-transparent {
+    font-size: 10px;
+    
+    }
+}
+

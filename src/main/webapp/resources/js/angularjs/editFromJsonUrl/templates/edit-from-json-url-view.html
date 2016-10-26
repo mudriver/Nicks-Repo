@@ -1,0 +1,23 @@
+<div>
+	<form name="jsonForm" >
+		<div data-ng-repeat="field in jsonEditCtrl.config.formFields" class=" row form-group">
+			<div class="col-xs-3 text-right">
+				<label class="control-label white" data-ng-bind="field.fieldLabel"></label>
+			</div>
+			<div class="col-xs-6">
+				<span data-dynamic-element="field.directive.directiveType" data-data="jsonEditCtrl.config.data" data-directive="field.directive"></span>
+			</div>
+			<div class="col-xs-3 help-block with-errors"></div>
+			
+		</div>
+		<div class="col-xs-3 text-right">
+				<label class="control-label white" data-ng-bind="field.fieldLabel"></label>
+			</div>
+			<div class="col-xs-6 text-center">
+				<button class="btn btn-primary" type="submit" data-ng-click="jsonEditCtrl.saveData(jsonForm)">Save</button>
+				<button class="btn btn-default" type="button" data-ng-click="jsonEditCtrl.cancel()">Cancel</button>
+			</div>
+			<div class="col-xs-3 help-block with-errors"></div>
+		
+	</form>
+</div>

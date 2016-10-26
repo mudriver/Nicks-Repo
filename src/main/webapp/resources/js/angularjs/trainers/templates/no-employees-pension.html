@@ -1,0 +1,21 @@
+<div class="table responsive">
+<table class="table table-striped table-bordered table-hover">
+	
+	<thead>
+		<tr><th>No Employees For This Trainer</th><th>Approve</th></tr>
+	</thead>
+	
+	
+	<tbody>
+		
+		<tr><td>Click approve if you are sure this Trainer has no employees</td><td><span data-ng-controller="approveButtonController">
+		<button data-ng-show="modelValue"  data-ng-click="approve()" class="btn btn-success">
+	<span  class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;Approved
+</button>
+<button data-ng-show="!modelValue"  data-ng-click="approve()" class="btn btn-danger">
+	<span  class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;Approve
+</button>
+		</span></td></tr>
+	</tbody>
+</table>
+</div>

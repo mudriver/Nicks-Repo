@@ -1,0 +1,9 @@
+<data-ng-form name="innerForm">
+<span>
+<textarea class="form-control textarea" rows="8" data-ng-change="ctrl.dataChange()" data-ng-model="ctrl.data[ctrl.directive.key]">
+</textarea><button class="btn btn-danger btn-block" data-ng-click="ctrl.saveComment()" data-ng-show="ctrl.change">Save&nbsp;&nbsp;<span class="glyphicon glyphicon-floppy-disk"></span></button>
+</span>
+<span>
+<button data-ng-if="ctrl.directive.toggleButtonUrl != null" data-ng-class="'btn btn-block ' + ctrl.classType" data-ng-click="ctrl.toggleChange()" >{{ctrl.directive.toggleButtonTitle}}&nbsp;&nbsp;<span data-ng-class="'glyphicon' + ctrl.glyphicon"></span></button>
+</span>
+</data-ng-form>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" manifest="/inspectionsManifest">
+
+<head data-th-fragment="header">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title data-th-text="#{employees.edit.page.title}">Title</title>
+
+<!-- Core CSS - Include with every page -->
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/sb-admin-2.css"
+	data-th-href="@{/resources/css/sb-admin-2.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link type="text/css" rel="stylesheet"
+	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+<link rel="stylesheet" type="text/css"
+	data-th-href="@{/resources/js/angularjs/plugins/uploader/css/blueimp-gallery.min.css}"/>
+<link rel="stylesheet" type="text/css"
+	data-th-href="@{/resources/js/angularjs/plugins/uploader/css/jquery.fileupload.css}"/>
+<link rel="stylesheet" type="text/css"
+	data-th-href="@{/resources/js/angularjs/plugins/uploader/css/jquery.fileupload-ui.css}"/>
+		
+<script type="text/javascript"
+	src="../../resources/js/jquery-2.1.1.min.js"
+	data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../../resources/js/validator.min.js"
+	data-th-src="@{/resources/js/validator.min.js}"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js">
+</script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28//angular-route.min.js"></script>
+ <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-sanitize.js"></script>
+<script type="text/javascript" src="../../resources/js/plugins/token-interceptor.js"
+	data-th-src="@{/resources/js/plugins/token-interceptor.js}"></script>
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+<style>
+		.black_overlay{
+
+			position: absolute;
+			top: 0%;
+			left: 0%;
+			width: 100%;
+			height: 100%;
+			background-size: cover;
+			background-color: black;
+			z-index:1001;
+			-moz-opacity: 0.8;
+			opacity:.80;
+			filter: alpha(opacity=80);
+		}
+		.white_content {
+
+			position: absolute;
+			top: 15%;
+			left: 25%;
+			width: 50%;
+			height: 70%;
+			padding: 16px;
+			border: 16px solid orange;
+			background-color: white;
+			z-index:1002;
+			overflow: auto;
+		}
+	</style>
+</head>
+<body data-ng-app="inspectionsApp" >
+	
+	<loading></loading>
+
+	<div class="container-fluid">
+		<!-- /#wrapper -->
+
+		<div data-th-replace="inspectionsTopBar :: top-nav"></div>
+
+		
+		<div class="jumbotron">
+
+			<div class="col-lg-12">
+		<!-- 	<div data-ng-controller="DemoCtrl">
+	<ui-select multiple="multiple" style="width: auto;" theme="bootstrap" ng-disabled="disabled" data-ng-model="selection"><ui-select-match placeholder="Select colors..."  allow-clear="true" >{{$item.value}}</ui-select-match><ui-select-choices repeat="item in items" refresh="refreshItems($select.search)" refresh-delay="0"><div data-ng-bind-html="item.value | highlight: $select.search"></div></ui-select-choices></ui-select>
+ </div>-->
+			<ng-view></ng-view>
+
+			</div> 
+			<!-- /.col-lg-12 -->
+
+		</div>
+		<!-- page wrapper -->
+	</div>
+	<!-- /#wrapper -->
+	<script type="text/javascript"
+		src="../../resources/js/bootstrap.min.js"
+		data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+
+	<!-- INCLUDE ANGULAR JS FILES IN ORDER -->
+		<script
+		data-th-src="@{/resources/js/angularjs/plugins/uploader/js/load-image.all.min.js}"></script>
+	<script
+		data-th-src="@{/resources/js/angularjs/plugins/uploader/js/jquery.blueimp-gallery.min.js}"></script>
+	<script data-th-src="@{/resources/js/angularjs/plugins/uploader/js/jquery.iframe-transport.js}"></script>
+	<script data-th-src="@{/resources/js/angularjs/plugins/uploader/js/jquery.fileupload.js}"></script>
+	<!-- The File Upload processing plugin -->
+	<script data-th-src="@{/resources/js/angularjs/plugins/uploader/js/jquery.fileupload-process.js}"></script>
+	<!-- The File Upload image preview & resize plugin -->
+	<script data-th-src="@{/resources/js/angularjs/plugins/uploader/js/jquery.fileupload-image.js}"></script>
+	<!-- The File Upload audio preview plugin -->
+	<script data-th-src="@{/resources/js/angularjs/plugins/uploader/js/jquery.fileupload-audio.js}"></script>
+	<!-- The File Upload video preview plugin -->
+	<script data-th-src="@{/resources/js/angularjs/plugins/uploader/js/jquery.fileupload-video.js}"></script>
+	<!-- The File Upload validation plugin -->
+	<script data-th-src="@{/resources/js/angularjs/plugins/uploader/js/jquery.fileupload-validate.js}"></script>
+	<!-- The File Upload Angular JS module -->
+	<script data-th-src="@{/resources/js/angularjs/plugins/uploader/js/jquery.fileupload-angular.js}"></script>	
+
+<script type="text/javascript" data-th-src="@{/resources/js/angularjs/local-storage/angular-local-storage.js}"></script>
+<script type="text/javascript" data-th-src="@{/resources/js/angularjs/select2/select.js}"></script>
+<script type="text/javascript" data-th-src="@{/resources/js/angularjs/subElementDirectives/sub-element-app.js}"></script>
+<script type="text/javascript" data-th-src="@{/resources/js/angularjs/subElementDirectives/sub-element-filter.js}"></script>
+<script type="text/javascript" data-th-src="@{/resources/js/angularjs/subElementDirectives/sub-element-services.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/subElementDirectives/sub-element-controllers.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/subElementDirectives/sub-element-directives.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/loadingModule/loading.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/loadingModule/loading-service.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/loadingModule/loading-directive.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/tableFromJsonUrlModule/table-from-json-url.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/tableFromJsonUrlModule/table-from-json-filter.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/tableFromJsonUrlModule/table-from-json-url-service.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/tableFromJsonUrlModule/table-from-json-url-controller.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/tableFromJsonUrlModule/table-from-json-directive.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/editFromJsonUrl/edit-from-json-url.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/editFromJsonUrl/edit-from-json-url-service.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/editFromJsonUrl/edit-from-json-url-controller.js}"></script>
+	<script type="text/javascript" data-th-src="@{/resources/js/angularjs/editFromJsonUrl/edit-from-json-url-directive.js}"></script>
+<script type="text/javascript" data-th-src="@{/resources/js/angularjs/inspections/inspections-app.js}"></script>
+<script type="text/javascript" data-th-src="@{/resources/js/angularjs/inspections/inspections-controllers.js}"></script>
+</body>
+</html>

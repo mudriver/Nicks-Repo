@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+ 
+<head data-th-fragment="header">
+ <meta charset="utf-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title data-th-text="#{turfclub.home.page.title}">Title</title>
+  
+<!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link type="text/css" rel="stylesheet"
+	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+ 
+
+     
+    <style>
+        .no-border-on-me>thead>tr>th,
+        .no-border-on-me>tbody>tr>th,
+        .no-border-on-me>tfoot>tr>th,
+        .no-border-on-me>thead>tr>td,
+        .no-border-on-me>tbody>tr>td,
+        .no-border-on-me>tfoot>tr>td
+        {
+            border-top-style: none;
+            border-bottom-style: none;
+        }
+    </style>
+     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+ <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+ <!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+</head>
+<body>
+ <div class="container-fluid" >                <!-- /#wrapper -->
+ 
+    <div data-th-replace="mainmenu :: top-nav"></div>
+
+    
+ 
+  <div class="jumbotron">
+        
+        
+        
+        
+
+<div data-th-if="${INSPECTIONS} != null" class="col-lg-3">
+		<a href="#" data-th-href="@{/inspections/home}">     
+      <span class="thumbnail text-center text-info">
+          
+         <img src="../../../resources/img/inspections.jpg"
+        data-th-src="@{/resources/img/inspections.jpg}" alt="inspections" height="200" width="200"></img>Inspections</span>
+      </a>
+      </div>
+<div data-th-if="${TRAINERS} != null" class="col-lg-3">
+		<a href="#" data-th-href="@{/trainers/home}">     
+      <span class="thumbnail text-center text-info">
+          
+         <img 
+        data-th-src="@{/resources/img/trainers.jpg}" alt="trainers" height="200" width="200"></img>Trainers</span>
+      </a>
+      </div>
+      <div data-th-if="${STABLESTAFF} != null" class="col-lg-3">
+		<a href="#" data-th-href="@{/trainers/home#/pensionTrainerlist}">     
+      <span class="thumbnail text-center text-info">
+          
+         <img 
+        data-th-src="@{/resources/img/pension.jpg}" alt="pension" height="200" width="200"></img>Pension</span>
+      </a>
+      </div>        
+    
+      <div data-th-if="${VET_REPORTS} != null" class="thumbnail">
+          <a href="#" data-th-href="@{/vetReports/}">
+         <img src="../../../resources/img/vetreports.jpg"
+        data-th-src="@{/resources/img/vetreports.jpg}" alt="Vet Reports" height="200" width="200"></img>
+      	</a>
+      </div>
+      <div data-th-if="${VET_REPORTS} != null" class="caption">
+         <h3><a href="#" data-th-href="@{/vetReports/}">Vet Reports</a></h3>
+      </div>
+       <div data-th-if="${ACCOUNTS} != null" class="thumbnail">
+          <a href="#" data-th-href="@{/accountsReports/generate}">
+         <img src="../../../resources/img/accounts.jpg"
+        data-th-src="@{/resources/img/accounts.jpg}" alt="Accounts Reports" height="200" width="200"></img>
+      	</a>
+      </div>
+      <div data-th-if="${ACCOUNTS} != null" class="caption">
+         <h3><a href="#" data-th-href="@{/accountsReports/generate}">Accounts Reports</a></h3>
+      </div>
+
+
+
+  <!-- /.col-lg-12 -->   
+           
+    </div>      <!-- page wrapper -->
+</div>              <!-- /#wrapper -->
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
+        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+         
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
+        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+ 
+    <!-- Core Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
+        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+         
+    <!-- SB Admin Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+        </body>
+</html>

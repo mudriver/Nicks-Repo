@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+ 
+<head data-th-fragment="header">
+ <meta charset="utf-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title data-th-text="#{vetreport.list.page.title}">Title</title>
+  
+<!-- Core CSS - Include with every page -->
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/sb-admin-2.css"
+	data-th-href="@{/resources/css/sb-admin-2.css}" />
+
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+<script type="text/javascript"
+	src="../../resources/js/jquery-2.1.1.min.js"
+	data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+<script type="text/javascript"
+	src="../../resources/js/vetreportlist.js"
+	data-th-src="@{/resources/js/vetreportlist.js}"></script>
+     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+ <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+ <!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+</head>
+<body>
+ <div class="container-fluid">                <!-- /#wrapper -->
+ 
+    <div data-th-replace="vetreportsTopBar :: top-nav"></div>
+
+    
+ 
+  <div class="jumbotron">
+        
+            <div class="col-lg-12">
+ <input type="hidden" class="form-control"
+					data-th-value="${type}" id='type'></input>
+    <h3 class="page-header" data-th-text="#{vetreport.list.table.title} + ${typeTitle}">Configured Strategies</h3>
+    <div class="table responsive">
+    <table id="reportTable" class="table table-striped table-bordered table-hover">
+     <thead>
+      <tr>
+       <th class="col-sm-3"><a id="horseLabel" data-th-text="#{vetreport.list.horse.label}" href="#"></a></th>
+       <th class="col-sm-3" ><a id="trainerLabel" data-th-text="#{vetreport.list.trainer.label}" href="#"></a></th>
+       <th class="col-sm-1" ><a id="dateLabel" data-th-text="#{vetreport.list.date.label}" href="#"></a></th>
+       <th class="col-sm-4" data-th-text="#{vetreport.list.content.label}">Huntercert Content</th>
+        <th class="col-sm-1" data-th-text="#{vetreport.list.type.label}">Huntercert Content</th>
+       <th class="col-sm-1" data-th-text="#{vetreport.list.actions.label}">Action</th>
+      </tr>
+      <tr>
+							<th><input class="form-control" type="text"
+								id="horseSearch" placeholder="Search Horse:" /></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
+     </thead>
+     <tbody>
+     </tbody>
+    </table>
+    </div>
+     
+   
+ 
+     
+     
+      </div>  <!-- /.col-lg-12 -->   
+           
+    </div>      <!-- page wrapper -->
+</div>              <!-- /#wrapper -->
+ 	<script type="text/javascript"
+		src="../../resources/js/bootstrap.min.js"
+		data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+	<script type="text/javascript"
+		src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+	<script src="../../resources/js/select2.js" type="text/javascript"
+		data-th-src="@{/resources/js/select2.js}"></script>
+         
+    <!-- SB Admin Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+        </body>
+</html>

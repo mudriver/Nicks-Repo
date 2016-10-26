@@ -1,0 +1,5 @@
+<data-ng-form name="innerForm"><input data-ng-required="ctrl.directive.required" placeholder="{{ctrl.directive.placeHolder}}" name="input"  class="form-control" data-ng-model="ctrl.modelValue" type="text" ></input>
+<span style="color:red" data-ng-show="(innerForm.$dirty) && innerForm.$invalid">
+  <span data-ng-show="innerForm.input.$error.required">{{ctrl.directive.requiredMessage}}</span>
+  </span>
+</data-ng-form>

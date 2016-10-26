@@ -1,0 +1,12 @@
+<data-ng-form name="innerForm"><span class="input-group"><span data-ng-if="ctrl.preLabel"
+	class="input-group-addon">{{ctrl.searchConfig.directive.preLabel}}</span><input type="text"
+	name="date" class="form-control" data-datepicker-localdate data-datepicker-popup="dd/MM/yyyy"
+	data-ng-model="ctrl.modelValue" data-is-open="ctrl.opened"
+	data-datepicker-options="ctrl.dateOptions" data-close-text="Close" required></input>
+	<span
+	class="input-group-btn"><button class="btn btn-default"
+			data-ng-click="ctrl.open($event)">
+			<i class="glyphicon glyphicon-calendar"></i>
+		</button></span></span><span style="color:red" data-ng-show="innerForm.$dirty && innerForm.$invalid">
+  <span data-ng-show="innerForm.$error.required">{{ctrl.directive.requiredMessage}}</span>
+  </span></data-ng-form>

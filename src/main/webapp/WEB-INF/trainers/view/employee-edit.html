@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head data-th-fragment="header">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title data-th-text="#{employees.edit.page.title}">Title</title>
+
+<!-- Core CSS - Include with every page -->
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/sb-admin-2.css"
+	data-th-href="@{/resources/css/sb-admin-2.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+<script type="text/javascript"
+	src="../../resources/js/jquery-2.1.1.min.js"
+	data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+<script type="text/javascript" src="../../resources/js/validator.min.js"
+	data-th-src="@{/resources/js/validator.min.js}"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js">
+</script>
+<script type="text/javascript" src="../../resources/js/employee-edit.js"
+	data-th-src="@{/resources/js/employee-edit.js}"></script>
+<script type="text/javascript" src="../../resources/js/plugins/token-interceptor.js"
+	data-th-src="@{/resources/js/plugins/token-interceptor.js}"></script>
+<link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.7.1/loading-bar.min.css' type='text/css' media='all' />
+ <script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.7.1/loading-bar.min.js'></script> 
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+
+</head>
+<body>
+	<div id="pension-detail-modal" class="modal fade">
+		<div class="modal-dialog modal-lg" data-keyboard="false"
+			data-backdrop="static">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="pension-detail-title">EmployeeName Pension Details With
+						Trainer : TrainerName</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row text-center form-group"><div class="col-xs-4"><label class="control-label">Employee PPS Number:</label></div><div class="col-xs-8"><input class="form-control" type="text"/></div></div>
+						<div class="row ">
+						<div class="col-xs-4"><label class="control-label">Enter Earnings With  For Year Ending:</label></div><div class="col-xs-8">
+					<table id="earnings-table">
+						<tbody>	
+							<tr><th class="col-xs-2 text-right">Year Ending</th><th class="col-xs-10 text-center">Taxable Earnings</th></tr>
+						</tbody>
+					</table>
+					</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<div class='text-center'>
+						<button id="pension-detail-save" type="button"
+							class="btn btn-default" data-dismiss="modal">Save</button>
+						<button id="pension-detail-cancel" type="button"
+							class="btn btn-default" data-dismiss="modal">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="pensionWarningOK" class="modal fade">
+		<div class="modal-dialog modal-lg" data-keyboard="false"
+			data-backdrop="static">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body text-center">
+					<p>
+						<small class="text-danger">An employee must have taxable
+							Pay to be considered for inclusion in the pension scheme and/or
+							life assurance scheme.<br /> Proof of taxable Pay (P35) must be
+							attached or submitted to the Turf Club.
+						</small>
+
+
+					</p>
+					<h2 class="text-danger">No taxable Pay!</h2>
+				</div>
+				<div class="modal-footer">
+					<div class='text-center'>
+						<button id="pension-warning-ok" type="button"
+							class="btn btn-default" data-dismiss="modal">Ok</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="pensionDateWarning" class="modal fade">
+		<div class="modal-dialog modal-lg" data-keyboard="false"
+			data-backdrop="static">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body text-center">
+					<p>This employee started work with you in 2015</p>
+					<p>
+						<small class="text-danger">An employee cannot have taxable
+							Pay in 2014 if they did not work with you in that year! </small>
+
+
+					</p>
+					<h2 class="text-danger">Are you sure this is the correct start
+						date?</h2>
+				</div>
+				<div class="modal-footer">
+					<div class='text-center'>
+						<button id="pension-date-warning-yes" type="button"
+							class="btn btn-default" data-dismiss="modal">Yes This Is
+							Correct</button>
+						<button id="pension-date-warning-no" type="button"
+							class="btn btn-default" data-dismiss="modal">No I Want
+							to Change the Start Date</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="noSaveWarning" class="modal fade">
+		<div class="modal-dialog modal-lg" data-keyboard="false"
+			data-backdrop="static">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body text-center">
+					<p>
+						<small class="text-danger">A new employee that has no
+							taxable Pay will not be saved as they are not required on this
+							return. </small>
+
+
+					</p>
+					<h2 class="text-danger">The information for this employee will
+						not be saved</h2>
+				</div>
+				<div class="modal-footer">
+					<div class='text-center'>
+						<button id="nosave" type="button" class="btn btn-default"
+							data-dismiss="modal">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /#wrapper -->
+
+	<div class="container-fluid" >
+		<div data-th-replace="trainersEmployeesTopBar :: top-nav"></div>
+		<div class="jumbotron" >
+			
+			<div data-ng-app="myApp">
+    <div data-ng-controller="TableCtrl">
+        <div class="input-group">
+            <input class="form-control" data-ng-model="searchText" placeholder="Search" type="search" data-ng-change="search()" /> <span class="input-group-addon">
+      <span class="glyphicon glyphicon-search"></span>
+</span>
+        </div>
+        <table class="table  table-hover data-table myTable">
+            <thead>
+            <tr data-ng-repeat="(key, value) in data">
+  <td> {{key}} </td> <td> {{ value }} </td>
+</tr>
+               <!--  <tr>
+                    <th class="EmpId"> <a href="#" data-ng-click="sort('EmpId',$event)" >EmpId  
+                         <span class="{{Header[0]}}"></span>
+                         </a>
+
+                    </th>
+                    <th class="name"> <a data-ng-click="sort('name')" href="#"> Name 
+                         <span class="{{Header[1]}}"></span></a> 
+                    </th>
+                    <th class="Email"> <a data-ng-click="sort('Email')" href="#"> Email 
+                     <span class="{{Header[2]}}"></span></a> 
+                    </th>
+                </tr>-->
+            </thead>
+            <tbody>
+               <!--   <tr data-ng-repeat="item in ItemsByPage[currentPage] | orderBy:columnToOrder:reverse">
+                    <td>{{item.EmpId}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.Email}}</td>
+                </tr>-->
+            </tbody>
+        </table>
+        <ul class="pagination pagination-sm">
+            <li data-ng-class="{active:0}"><a href="#" data-ng-click="firstPage()">First</a>
+
+            </li>
+            <li data-ng-repeat="n in range(ItemsByPage.length)"> <a href="#" data-ng-click="setPage()" data-ng-bind="n+1">1</a>
+
+            </li>
+            <li><a href="#" data-ng-click="lastPage()">Last</a>
+
+            </li>
+            <li><a href="#" data-ng-click="loadData()">Load</a>
+
+            </li>
+        </ul>
+        <div class="row">
+            <div class="col-xs-3">
+                <input type="text" data-ng-model="newEmpId" class="form-control" placeholder="EmpId"/>
+            </div>
+            <div class="col-xs-3">
+                <input type="text" data-ng-model="newName" class="form-control" placeholder="Name"/>
+            </div>
+            <div class="col-xs-4">
+                <input type="email" data-ng-model="newEmail" class="form-control" placeholder="Email"/>
+            </div>
+            <div class="col-xs-1">
+                <button data-ng-click="add()" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-plus"></span>
+
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Ends Controller -->
+</div>
+
+
+			<h3 id="updateHeader" data-th-if="${update}" class="col-sm-12"
+				data-th-text="#{employees.update.head.title} + ' ' + ${employee.employeesFirstname} + ' ' + ${employee.employeesSurname}">Edit
+				HunterCert</h3>
+			<h3 id="newHeader"
+				data-th-if="${employee.employeesFirstname} == null"
+				class="col-sm-12" data-th-text="'New Employee'"></h3>
+			<h3 id="editHeader" data-th-if="${edit}" class="col-sm-12"
+				data-th-text="#{employees.edit.head.title} + ' ' + ${employee.employeesFirstname} + ' ' + ${employee.employeesSurname}">Edit
+				HunterCert</h3>
+
+
+
+			<form id="employeeEditForm" class="form-horizontal" action="#"
+				data-th-action="@{/trainersEmployeesOnline/save(saveMessage='You have successfullly updated employee: ' + ${employee.employeesFirstname} + ' ' + ${employee.employeesSurname})}"
+				method="post">
+
+
+
+				
+				<input data-th-field="${employee.employeesHasTaxableEarnings}"
+					type='hidden' id='has-taxable'></input> <input
+					data-th-field="${employee.employeesIsNew}" type='hidden'
+					id='is-new'></input>
+
+				<div class="row last-year-no-edit">
+
+
+					<div id="title-section" class="col-xs-6">
+						<div class="form-group">
+							<div class="col-xs-4 text-right">
+								<label class="control-label " for="title"
+									data-th-text="#{employees.edit.title.label}"></label>
+							</div>
+							<div class="col-xs-8">
+								<input class="form-control"
+									data-title="title" data-th-field="${employee.employeesTitle}" type='text'
+									id='title'></input> <input type="hidden" id="titles"
+									data-th-value="  ${titlesEnum}"></input> <span
+									class="help-block with-errors"></span>
+							</div>
+
+
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
+							<div class="col-xs-4 text-right">
+								<label class="control-label" for="sex"
+									data-th-text="#{employees.edit.sex.label}"></label>
+							</div>
+							<div class="col-xs-8">
+								<select data-th-field="${employee.employeesSex}" id='sex'
+									class="form-control" data-error="Please Select"
+									required='required'>
+									<option value=''></option>
+									<option data-th-each="sex : ${sexEnum}" data-th-value="${sex}"
+										data-th-text="${sex}">Please Select</option>
+								</select> <span class="help-block with-errors"></span>
+							</div>
+
+
+						</div>
+					</div>
+
+
+
+					<!--  
+						<div class="form-group">
+								<label class="control-label" for="sex"
+									data-th-text="#{stableStaff.edit.sex.label}"></label>
+						
+						
+							<select data-th-field="${employee.employeesSex}" id='sex'
+								class="form-control" data-error="Please Select"
+								required='required'>
+								<option value=''></option>
+								<option data-th-each="sex : ${sexEnum}" data-th-value="${sex}"
+									data-th-text="${sex}">Please Select</option>
+							</select>
+<span class="help-block with-errors"></span>
+						</div>
+				
+-->
+
+
+					<div class="col-xs-2"></div>
+				</div>
+				<!-- 
+				<div class="row form-group">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="sex"
+							data-th-text="#{employees.edit.sex.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<select data-th-field="${employee.employeesSex}" id='sex'
+							class="form-control" data-error="Please Select"
+							required='required'>
+							<option value=''></option>
+							<option data-th-each="sex : ${sexEnum}" data-th-value="${sex}"
+								data-th-text="${sex}">Please Select</option>
+						</select>
+
+					</div>
+					<div class="col-xs-2 help-block with-errors"></div>
+				</div>
+ -->
+				<div class=" row form-group last-year-no-edit">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="firstName"
+							data-th-text="#{employees.edit.firstName.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input placeholder='You must enter first name'
+							class="form-control"
+							data-th-field="${employee.employeesFirstname}" id='firstName'
+							data-error="You must enter first name" required='required'
+							maxlength="200"></input>
+					</div>
+					<div class="col-xs-2 help-block with-errors"></div>
+				</div>
+
+				<div class=" row form-group last-year-no-edit">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="surName"
+							data-th-text="#{employees.edit.surName.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input class="form-control" placeholder='You must enter a surname'
+							data-th-field="${employee.employeesSurname}" id='surName'
+							data-error="You must enter a surname" required='required'
+							maxlength="200"></input>
+					</div>
+					<div class="col-xs-2 help-block with-errors"></div>
+				</div>
+
+				<div class=" row form-group last-year-no-edit">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="dateOfBirth"
+							data-th-text="#{employees.edit.dob.label}"></label>
+					</div>
+					<div class="col-xs-8">
+
+						<div class="input-group">
+							<span id="date-of-birth-button" class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar"></span>
+							</span> <input data-dateofbirth="dateofbirth" class="form-control"
+								placeholder='You must enter a date of birth in format:(dd/mm/yyyy)'
+								data-th-field="${employee.employeesDateOfBirth}"
+								id='dateOfBirth' pattern="\d{1,2}/\d{1,2}/\d{4}"
+								data-error="You must enter a date of birth in format:(dd/mm/yyyy)"
+								required='required' maxlength="10"></input>
+
+						</div>
+
+
+
+						<!--  <label for="dateOfBirth" class=" input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span>
+
+                </label>
+						<input data-dateofbirth="dateofbirth" class="form-control date-picker"
+							placeholder='Date of birth (dd/mm/yyyy)'
+							data-th-field="${employee.employeesDateOfBirth}" id='dateOfBirth'
+							pattern="\d{1,2}/\d{1,2}/\d{4}"
+							data-error="Date of birth needed dd/MM/yyyy" required='required' maxlength="10"></input>
+    
+-->
+
+
+					</div>
+					<div class="col-xs-2 help-block with-errors"></div>
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<!--  <div id="previously-held-card-section"
+					class=" row form-group new-only">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="held-card"
+							data-th-text="#{employees.edit.previousCard.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input class="form-control" type="hidden" id="held-card"
+							data-th-field="${employee.employeesPossiblePreviouslyAdded}"></input>
+						<div class="btn-group btn-group-justified"
+							id="previously-held-card">
+							<div class="btn-group ">
+								<button type="button" id="held-card-yes" class="btn btn-default">Yes
+								</button>
+							</div>
+							<div class="btn-group">
+								<button id="held-card-no" type="button" class="btn btn-default">No
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="help-block with-errors col-xs-2"></div>
+
+				</div>-->
+
+
+
+
+
+				<div id="taxable-section" class=" row form-group">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="taxable" id="taxable-label"
+							data-th-text="#{employees.edit.hasearnings.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input class="form-control" type="hidden" id="taxable-focus"></input>
+						<div class="btn-group btn-group-justified" id="taxable">
+							<div class="btn-group ">
+								<input data-taxable="taxable" type="button" id="yes-pension"
+									class="btn btn-default" value="Yes" />
+
+							</div>
+							<div class="btn-group">
+								<input data-taxable="taxable" type="button" id="no-pension"
+									class="btn btn-default" value="No" />
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-2 help-block with-errors"></div>
+
+				</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<div class=" row form-group pension address last-year-remove">
+
+					<h5 class="white">Employee's Permanent Contact Details</h5>
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="address1"
+							data-th-text="#{employees.edit.address1.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input class="form-control"
+							placeholder='Enter address line 1 (Leave blank if not required)'
+							data-th-field="${employee.employeesAddress1}" id='address1'
+							maxlength="200"></input>
+					</div>
+					<div class="col-xs-2 help-block with-errors"></div>
+				</div>
+				<div class=" row form-group pension address last-year-remove">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="address2"
+							data-th-text="#{employees.edit.address2.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input class="form-control"
+							placeholder='Enter address line 2 (Leave blank if not required)'
+							data-th-field="${employee.employeesAddress2}" id='address2'
+							maxlength="200"></input>
+					</div>
+					<div class="col-xs-2 help-block with-errors"></div>
+				</div>
+				<div class=" row form-group pension address last-year-remove">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="address3"
+							data-th-text="#{employees.edit.address3.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input class="form-control"
+							placeholder='You must enter a city or town'
+							data-error="You must enter a city or town" required='required'
+							data-th-field="${employee.employeesAddress3}" id='address3'
+							maxlength="200"></input>
+					</div>
+					<div class="col-xs-2 help-block with-errors"></div>
+				</div>
+				<div id="address4-section"
+					class=" row form-group pension address last-year-remove">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="address4"
+							data-th-text="#{employees.edit.address4.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input class="form-control"
+							data-th-field="${employee.employeesAddress4}" type='text'
+							data-county="county" id='address4'></input> <input type="hidden"
+							id="counties" data-th-value="  ${countiesEnum}"></input>
+					</div>
+					<div class="col-xs-2 help-block with-errors"></div>
+				</div>
+
+				<div class=" row form-group pension address last-year-remove">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="postCode"
+							data-th-text="#{employees.edit.postcode.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input class="form-control"
+							placeholder='Post Code (if applicable)'
+							data-th-field="${employee.employeesPostCode}" id='postCode'
+							maxlength="20"></input>
+					</div>
+					<div class="col-xs-2"></div>
+				</div>
+
+				<div id="address5-section"
+					class=" row form-group pension last-year-remove">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="address5"
+							data-th-text="#{employees.edit.address5.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input class="form-control"
+							data-th-field="${employee.employeesAddress5}" type='text'
+							data-country="country" id='address5'></input> <input
+							type="hidden" id="countries" data-th-value="${countriesEnum}"></input>
+					</div>
+					<div class="col-xs-2 help-block with-errors"></div>
+				</div>
+
+
+				<div class=" row form-group pension last-year-remove">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="nationality"
+							data-th-text="#{employees.edit.nationality.label}"></label>
+					</div>
+					<div class="col-xs-8">
+
+						<select required='required'
+							data-error="Please select or type a nationality"
+							data-th-field="${employee.employeesNationality}" id='nationality'
+							class="form-control">
+							<option value=''></option>
+							<option data-th-each="national : ${nationalityEnum}"
+								data-th-value="${national}" data-th-text="${national}">Please
+								Select</option>
+						</select>
+					</div>
+					<div class="help-block with-errors col-xs-2"></div>
+				</div>
+
+
+				<div class=" row form-group pension last-year-remove">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="phoneNo"
+							data-th-text="#{employees.edit.phone.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input class="form-control"
+							placeholder='Please enter a landline no. (Digits only min. 7)'
+							data-th-field="${employee.employeesPhoneNo}" id='phoneNo'
+							type="number" data-minlength="7" maxlength="20"
+							data-match-error="Phone Number Digits Only"></input>
+					</div>
+					<div class="col-xs-2 help-block with-errors"></div>
+				</div>
+
+
+				<div class=" row form-group pension last-year-remove">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="mobileNo"
+							data-th-text="#{employees.edit.mobile.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input class="form-control"
+							placeholder='Please enter a mobile phone no. (Digits only min. 7)'
+							data-th-field="${employee.employeesMobileNo}" id='mobileNo'
+							type="number" data-minlength="7" maxlength="20"
+							data-emailorphone="phone"></input>
+					</div>
+					<div class="col-xs-2 help-block with-errors"></div>
+				</div>
+
+				<div class=" row form-group pension last-year-remove">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="email"
+							data-th-text="#{employees.edit.email.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input placeholder='Please enter an email address'
+							class="form-control" data-th-field="${employee.employeesEmail}"
+							id='email' data-emailorphone="email" maxlength="200" type="email"></input>
+					</div>
+					<div class="help-block with-errors col-xs-2"></div>
+				</div>
+
+
+				<div class=" row form-group pension last-year-remove">
+					<div class="col-xs-2 text-right">
+						<label class="control-label" for="maritalStatus"
+							data-th-text="#{employees.edit.marital.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<select data-th-field="${employee.employeesMaritalStatus}"
+							id='marital' class="form-control"
+							data-error="You must select a civil status" required='required'>
+							<option value=''></option>
+							<option data-th-each="maritalstatus : ${maritalEnum}"
+								data-th-value="${maritalstatus}" data-th-text="${maritalstatus}"></option>
+						</select>
+					</div>
+					<div class="help-block with-errors col-xs-2"></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-2 text-right">
+						<label class="control-label"
+							data-th-text="#{employees.edit.history.label}"></label>
+					</div>
+					<div data-ng-app="employee-edit-app" data-ng-controller="employment-history-controller"   class="col-xs-8 table-responsive">
+
+						<input type="text" id="employee-id"  data-th-field="${employee.employeesEmployeeId}" ></input>
+						
+						<table class="table table-condensed table-bordered table-hover">
+							<caption class="white">Employment History</caption>
+							<thead>
+								<tr>
+									<th class="col-xs-2 white">Trainer</th>
+									<th class="col-xs-2 white">Date From</th>
+									<th class="col-xs-2 white">Date To</th>
+									<th class="col-xs-2 white">Pension Detail</th>
+									<th class="col-xs-2 white">Card Type</th>
+								</tr>
+							</thead>
+
+							<tbody>
+							<tr data-ng-repeat="history in histories =(variables.histories)">
+							<td>{{ history.ehDateFrom | date: 'dd/MM/yyyy'}}</td>
+    <td>{{ history.ehDateTo | date: 'dd/MM/yyyy'}}</td>
+    <td></td>
+    <td></td>
+    <td></td>
+							</tr>
+							</tbody>
+
+							<!-- <tbody>
+								<tr data-th-each="history, historyStat : ${employeeHistories}">
+									<td><input class="form-control trainerSelect" type="text"
+										data-th-value="${employeeHistories[__${historyStat.index}__].teTrainers.trainerId}"
+										data-th-name="'historyTrainerId[' + ${historyStat.index} + ']'"
+										data-th-attr="data-trainer-name=${employeeHistories[__${historyStat.index}__].teTrainers.getTrainerSurname()} + ' ' + ${employeeHistories[__${historyStat.index}__].teTrainers.getTrainerFirstName()}" /></td>
+									<td><input type="hidden"
+										data-th-value="${employeeHistories[__${historyStat.index}__].ehEmploymentId}"
+										data-th-name="'employeeHistories[' + ${historyStat.index} + ']'" /><input
+										class="form-control datepicker" type="text"
+										data-th-value="${employeeHistories[__${historyStat.index}__].ehDateFrom}"
+										data-th-name="'historyDateFrom[' + ${historyStat.index} + ']'" /></td>
+									<td><div class="input-group">
+											<span class="input-group-addon date-button"> <span
+												class="glyphicon glyphicon-calendar"></span>
+											</span><input class="datepicker form-control" type="text"
+												data-th-value="${employeeHistories[__${historyStat.index}__].ehDateTo}"
+												data-th-name="'historyDateTo[' + ${historyStat.index} + ']'" />
+										</div></td>
+									<td><a class='btn btn-primary form-control pension-button'
+										data-th-attr="data-date-to=${employeeHistories[__${historyStat.index}__].ehDateTo},data-date-from=${employeeHistories[__${historyStat.index}__].ehDateFrom},data-trainer-id=${employeeHistories[__${historyStat.index}__].teTrainers.trainerId},data-employee-id=${employeeHistories[__${historyStat.index}__].teEmployees.employeesEmployeeId}">Pension
+											Details</a></td>
+									<td><a data-ng-click="showDetail($event)" class='btn btn-success form-control card-button'
+										data-th-attr="data-history-id=${employeeHistories[__${historyStat.index}__].ehEmploymentId}">Card Details</a></td>
+								</tr>
+							</tbody> -->
+						</table>
+						
+					</div>
+					<div class="help-block with-errors col-xs-2"></div>
+				</div>
+				<div class=" row form-group pension last-year-edit">
+					<div class="col-xs-2 text-right">
+						<label for="comments" class="control-label"
+							data-th-text="#{employees.edit.comments.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<textarea id='comments'
+							data-th-field="${employee.employeesComments}"
+							class="form-control"
+							placeholder="You may wish to add relevant comments regarding this employee if not leave blank"
+							rows="4"></textarea>
+
+
+					</div>
+					<div class="help-block with-errors col-xs-2"></div>
+				</div>
+				<!--  
+				<div class=" row form-group pension">
+					<div class="col-xs-2 text-right">
+						<label for="reportTypeSel"
+							data-th-text="#{employees.edit.spouse.label}"></label>
+					</div>
+					<div class="col-xs-8">
+						<input class="form-control"
+							data-th-field="${employee.employeesSpouseName}" id='spouse'></input>
+
+					</div>
+					<div class="help-block with-errors col-xs-2"></div>
+				</div>
+				-->
+
+
+
+
+
+
+
+
+
+
+
+
+				<!-- Buttons  -->
+				<div id="submit-buttons" class="row form-group buttons">
+					<div class="col-xs-2 text-right"></div>
+					<div class="col-xs-8 text-center">
+
+						<div class="row">
+							<h4 id="detail-complete">
+								<small>All required details complete. No further detail
+									required as this person does not have taxable Pay</small>
+							</h4>
+						</div>
+						<div class="btn-group">
+
+							<button id="submitButton" type="button" class="btn btn-primary"
+								data-th-text="#{employees.edit.save.button}">Submit</button>
+							<a href="#" data-th-href="@{/trainersEmployeesOnline/}">
+								<button type="button" id="cancel-button"
+									class="btn btn-default active"
+									data-th-text="#{employees.edit.cancel.button}">Cancel</button>
+							</a>
+						</div>
+					</div>
+					<div class="col-xs-2"></div>
+
+
+
+				</div>
+			</form>
+
+
+
+
+
+		</div>
+
+
+
+
+
+	</div>
+
+	<!-- END JUMBOTRON TAG -->
+
+
+	<!-- END CONTAINER TAG -->
+
+
+	<script type="text/javascript"
+		src="../../resources/js/bootstrap.min.js"
+		data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+	<script type="text/javascript"
+		src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+	<script src="../../resources/js/select2.js" type="text/javascript"
+		data-th-src="@{/resources/js/select2.js}"></script>
+	<!-- INCLUDE ANGULAR JS FILES IN ORDER -->
+<script type="text/javascript" src="../../resources/js/angularjs/trainers-employees/employee-edit-app.js"
+	data-th-src="@{/resources/js/angularjs/trainers-employees/employee-edit-app.js}"></script>
+<script type="text/javascript" src="../../resources/js/angularjs/trainers-employees/employee-history/employee-history-controller.js"
+	data-th-src="@{/resources/js/angularjs/trainers-employees/employee-history/employee-history-controller.js}"></script>
+<script type="text/javascript" src="../../resources/js/angularjs/trainers-employees/employee-history/table.js"
+	data-th-src="@{/resources/js/angularjs/trainers-employees/employee-history/table.js}"></script>
+
+
+
+
+</body>
+</html>

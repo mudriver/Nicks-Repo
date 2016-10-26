@@ -1,0 +1,72 @@
+CACHE MANIFEST
+#version 1.2 10-12-2015
+CACHE:
+#images
+#internal HTML documents
+/turfclubPrograms/inspections
+/turfclubPrograms/resources/js/angularjs/loadingModule/loading-view.html
+/turfclubPrograms/resources/js/angularjs/inspections/templates/inspections-list.html
+/turfclubPrograms/resources/js/angularjs/tableFromJsonUrlModule/templates/json-table-view.html
+/turfclubPrograms/resources/js/angularjs/tableFromJsonUrlModule/templates/json-table-headers-view.html 
+/turfclubPrograms/resources/js/angularjs/tableFromJsonUrlModule/templates/json-table-searches-view.html
+/turfclubPrograms/resources/js/angularjs/subElementDirectives/templates/display/sortby-header.html 
+/turfclubPrograms/resources/js/angularjs/subElementDirectives/templates/input/sub-element-multi-select2-view.html
+/turfclubPrograms/resources/js/angularjs/subElementDirectives/templates/display/span-view.html
+/turfclubPrograms/resources/js/angularjs/subElementDirectives/templates/display/date-display-view.html
+/turfclubPrograms/resources/js/angularjs/subElementDirectives/templates/display/button-view.html
+#style sheets
+http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css
+/turfclubPrograms/resources/css/bootstrap.css
+/turfclubPrograms/resources/css/overrides.css
+/turfclubPrograms/resources/css/sb-admin-2.css
+/turfclubPrograms/resources/css/select2.css
+/turfclubPrograms/resources/font-awesome-4.1.0/css/font-awesome.css
+/turfclubPrograms/resources/js/angularjs/select2/select.css
+#style sheet images
+/turfclubPrograms/resources/css/select2-spinner.gif
+/turfclubPrograms/resources/css/select2.png
+/turfclubPrograms/resources/img/background.jpg
+/turfclubPrograms/resources/img/loading.gif
+http://www.turfclub.ie:8080/favicon.ico
+#fonts
+/turfclubPrograms/resources/font-awesome-4.1.0/fonts/fontawesome-webfont.woff?v=4.1.0 
+/turfclubPrograms/resources/font-awesome-4.1.0/fonts/fontawesome-webfont.eot
+/turfclubPrograms/resources/font-awesome-4.1.0/fonts/fontawesome-webfont.svg
+/turfclubPrograms/resources/font-awesome-4.1.0/fonts/fontawesome-webfont.ttf
+/turfclubPrograms/resources/font-awesome-4.1.0/fonts/fontawesome-webfont.woff
+/turfclubPrograms/resources/font-awesome-4.1.0/fonts/FontAwesome.otf
+/turfclubPrograms/resources/fonts/glyphicons-halflings-regular.ttf
+/turfclubPrograms/resources/fonts/glyphicons-halflings-regular.woff
+#javascript files
+/turfclubPrograms/resources/js/jquery-2.1.1.min.js
+http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js
+/turfclubPrograms/resources/js/validator.min.js
+http://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js
+https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28//angular-route.min.js
+http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js
+http://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-sanitize.js
+/turfclubPrograms/resources/js/plugins/token-interceptor.js
+/turfclubPrograms/resources/js/bootstrap.min.js
+/turfclubPrograms/resources/js/angularjs/local-storage/angular-local-storage.js
+/turfclubPrograms/resources/js/angularjs/select2/select.js
+/turfclubPrograms/resources/js/angularjs/subElementDirectives/sub-element-app.js
+/turfclubPrograms/resources/js/angularjs/subElementDirectives/sub-element-filter.js
+/turfclubPrograms/resources/js/angularjs/subElementDirectives/sub-element-services.js
+/turfclubPrograms/resources/js/angularjs/subElementDirectives/sub-element-controllers.js
+/turfclubPrograms/resources/js/angularjs/subElementDirectives/sub-element-directives.js
+/turfclubPrograms/resources/js/angularjs/loadingModule/loading.js
+/turfclubPrograms/resources/js/angularjs/loadingModule/loading-service.js
+/turfclubPrograms/resources/js/angularjs/loadingModule/loading-directive.js
+/turfclubPrograms/resources/js/angularjs/tableFromJsonUrlModule/table-from-json-url.js
+/turfclubPrograms/resources/js/angularjs/tableFromJsonUrlModule/table-from-json-filter.js
+/turfclubPrograms/resources/js/angularjs/tableFromJsonUrlModule/table-from-json-url-service.js
+/turfclubPrograms/resources/js/angularjs/tableFromJsonUrlModule/table-from-json-url-controller.js
+/turfclubPrograms/resources/js/angularjs/tableFromJsonUrlModule/table-from-json-directive.js
+/turfclubPrograms/resources/js/angularjs/editFromJsonUrl/edit-from-json-url.js
+/turfclubPrograms/resources/js/angularjs/editFromJsonUrl/edit-from-json-url-service.js
+/turfclubPrograms/resources/js/angularjs/editFromJsonUrl/edit-from-json-url-controller.js
+/turfclubPrograms/resources/js/angularjs/editFromJsonUrl/edit-from-json-url-directive.js
+/turfclubPrograms/resources/js/angularjs/inspections/inspections-app.js
+/turfclubPrograms/resources/js/angularjs/inspections/inspections-controllers.js
+NETWORK:
+*

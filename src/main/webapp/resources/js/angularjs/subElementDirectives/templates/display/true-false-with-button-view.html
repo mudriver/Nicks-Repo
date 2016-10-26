@@ -1,0 +1,9 @@
+<span>
+<button data-ng-disabled="!ctrl.data[ctrl.directive.enabledDisabledKey]" data-ng-click="ctrl.event()" data-ng-class="ctrl.data[ctrl.directive.enabledDisabledKey] == true ? ctrl.directive.buttonClass : ctrl.directive.buttonDisabledClass">
+	<span data-ng-class="ctrl.directive.buttonGlyphiconClass"></span>&nbsp;&nbsp;{{ctrl.directive.text}}
+</button>
+<br/>
+<span class="container vertical-container"><span class="row vertical-align"><img data-ng-if="!ctrl.data[ctrl.directive.trueFalseKey]" class="center-block" src='../resources/img/redx.png' height='40' width='44'></img><img data-ng-if="ctrl.data[ctrl.directive.trueFalseKey]" class="center-block" src='../resources/img/greentick.png' height='40' width='44'></img></span></span>
+
+
+</span>

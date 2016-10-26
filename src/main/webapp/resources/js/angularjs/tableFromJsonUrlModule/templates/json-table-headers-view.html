@@ -1,0 +1,1 @@
+<tr><th   data-ng-repeat="column in config.columns" style='width:{{column.columnWidth === "auto" ? "auto" : column.columnWidth + "%"}}' ><span data-ng-if="column.sortable" data-refresh="refresh()" data-search="search" data-column="column" data-sortbyheader></span><span data-ng-if="!column.sortable">{{column.title}}</span></th></tr>

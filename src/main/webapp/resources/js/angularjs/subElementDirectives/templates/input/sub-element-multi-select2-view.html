@@ -1,0 +1,12 @@
+<data-ng-form name="innerForm" data-ng-model="ctrl.selection"><span ><span
+	data-ng-hide="ctrl.hide">Enter more than 3 characters</span><span><ui-select
+	data-ng-model="ctrl.selection" require-multiple="{{ctrl.selectDirective.required}}"
+		  multiple style="width: auto;" theme="bootstrap"> <ui-select-match
+			allow-clear="true" placeholder="{{ctrl.selectDirective.placeHolder}}">{{$item.value}}</ui-select-match>
+		<ui-select-choices
+			repeat="itm in ctrl.items | multiFilter: {search:$select.search, selected:ctrl.selection}"
+			refresh="ctrl.refreshItems($select.search)" refresh-delay="0">
+		<span ng-bind-html="itm.value | highlight: $select.search"></span></ui-select-choices></ui-select></span></span><span style="color:red" data-ng-show="innerForm.$dirty && innerForm.$invalid">
+  <span data-ng-show="innerForm.$error.required">{{ctrl.directive.requiredMessage}}</span>
+  </span></data-ng-form>
+

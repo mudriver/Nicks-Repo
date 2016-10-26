@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+ 
+<head data-th-fragment="header">
+ <meta charset="utf-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title data-th-text="#{vetreport.list.page.title}">Title</title>
+  
+<!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.css"
+        data-th-href="@{/resources/css/bootstrap.css}" />
+         
+    <link type="text/css" rel="stylesheet" href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+        data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+ 
+    <!-- SB Admin CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet" href="../../resources/css/sb-admin-2.css"
+        data-th-href="@{/resources/css/sb-admin-2.css}" />
+        
+    <link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+     
+    <style>
+        .no-border-on-me>thead>tr>th,
+        .no-border-on-me>tbody>tr>th,
+        .no-border-on-me>tfoot>tr>th,
+        .no-border-on-me>thead>tr>td,
+        .no-border-on-me>tbody>tr>td,
+        .no-border-on-me>tfoot>tr>td
+        {
+            border-top-style: none;
+            border-bottom-style: none;
+        }
+    </style>
+     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+ <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+ <!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+</head>
+<body>
+
+	<!-- /#wrapper -->
+
+
+
+<div data-th-replace="accountsTopBar :: top-nav"></div>
+	
+
+		<div class="jumbotron">
+			<h3 class="col-sm-12"
+				data-th-text="#{accounts.reports.head.title}">Accounts Reports</h3>
+
+<form id="accountsReportsForm" novalidate="novalidate"
+				class="form-horizontal" action="#"
+				data-th-action="@{/accountsReports/generate}"
+				method="post">
+				<p class="text-success" data-th-if="${message} != null" data-th-text="${message}"></p>
+	<input type="hidden"  class="form-control" id="print" name="print" data-th-value="yes" ></input>
+			
+				<div 
+					class=" row form-group">
+					<div class="col-xs-3 text-right">
+						<label 
+							data-th-text="#{accounts.reports.email.label}"></label>
+					</div>
+					<div class="col-xs-6">
+						<input name="email" type="text"
+							class="form-control" ></input> 
+					</div>
+					<div class="col-xs-3"></div>
+
+				<!-- Buttons  -->
+				<div class="row form-group">
+					<div class="col-xs-3 text-right"></div>
+					<div class="col-xs-6 text-center">
+
+
+						<button id="formSubmit" type="submit" class="btn btn-primary"
+							data-th-text="#{accounts.reports.generate.button}">Generate</button>
+
+						<a href="#" data-th-href="@{/accountsReports/generate/}">
+							<button type="button" class="btn btn-default active"
+								data-th-text="#{accounts.reports.cancel.button}">Cancel</button>
+						</a>
+					</div>
+					<div class="col-xs-3"></div>
+
+
+
+				</div>
+
+
+
+</div>
+
+			</form>
+
+
+
+
+
+</div>
+
+
+
+
+		<!-- END JUMBOTRON TAG -->
+
+
+	<!-- END CONTAINER TAG -->
+
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
+        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+         
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
+        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+ 
+    <!-- Core Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
+        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+         
+    <!-- SB Admin Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+        </body>
+</html>

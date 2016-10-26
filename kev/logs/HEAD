@@ -1,0 +1,33 @@
+0000000000000000000000000000000000000000 e1f19491519cbf157047ae9c900d31488dff8684 Chris Kane <chris.kane@turfclub.ie> 1421747424 +0000	commit (initial): Original Commit Of VetReports Project
+e1f19491519cbf157047ae9c900d31488dff8684 810cea24043ae539aed7d1136554d52da270306f Chris Kane <chris.kane@turfclub.ie> 1422446139 +0000	commit: Modifications that do not work for security
+810cea24043ae539aed7d1136554d52da270306f ee659c9e5ced79f3cdeea2345463f0953dfce486 Chris Kane <chris.kane@turfclub.ie> 1422457850 +0000	commit: properties
+ee659c9e5ced79f3cdeea2345463f0953dfce486 e1f19491519cbf157047ae9c900d31488dff8684 Chris Kane <chris.kane@turfclub.ie> 1422457876 +0000	checkout: moving from master to e1f1949
+e1f19491519cbf157047ae9c900d31488dff8684 83fa485d354211cb161a44ab38a0fa05c097deb8 Chris Kane <chris.kane@turfclub.ie> 1422458524 +0000	revert: Revert "Original Commit Of VetReports Project"
+83fa485d354211cb161a44ab38a0fa05c097deb8 ee7a23604449a30d3379899e86f55d81a1327fe0 Chris Kane <chris.kane@turfclub.ie> 1422458583 +0000	revert: Revert "Revert "Original Commit Of VetReports Project""
+ee7a23604449a30d3379899e86f55d81a1327fe0 1fcb9225b3bd7561cb641b59fb9ff0295e456047 Chris Kane <chris.kane@turfclub.ie> 1424278880 +0000	commit: Changed to Turf Club Programs - Added Inspections Program
+1fcb9225b3bd7561cb641b59fb9ff0295e456047 ee7a23604449a30d3379899e86f55d81a1327fe0 Chris Kane <chris.kane@turfclub.ie> 1424279145 +0000	checkout: moving from 1fcb9225b3bd7561cb641b59fb9ff0295e456047 to ee7a236
+ee7a23604449a30d3379899e86f55d81a1327fe0 1fcb9225b3bd7561cb641b59fb9ff0295e456047 Chris Kane <chris.kane@turfclub.ie> 1424336809 +0000	checkout: moving from ee7a23604449a30d3379899e86f55d81a1327fe0 to 1fcb92
+1fcb9225b3bd7561cb641b59fb9ff0295e456047 1b4b481b98ff7ab461a13c1bf52844034fdf71ac Chris Kane <chris.kane@turfclub.ie> 1424359411 +0000	commit: Accounts Reports Module added
+1b4b481b98ff7ab461a13c1bf52844034fdf71ac ae99ab346b8bebefd2b655eb0cfac0f838f32200 Chris Kane <chris.kane@turfclub.ie> 1424364433 +0000	commit: Working Copy of Turf Club Programs Before Vet Reports Mods
+ae99ab346b8bebefd2b655eb0cfac0f838f32200 5887802f0e6467ef8e77f05a99b49a78e2de34fb Chris Kane <chris.kane@turfclub.ie> 1425469156 +0000	commit: Vetreport Program Modifications 4-03-2015
+5887802f0e6467ef8e77f05a99b49a78e2de34fb 9fc582181f0fe385c8227777dbbce040fde0f7e4 Chris Kane <chris.kane@turfclub.ie> 1426095837 +0000	commit: Before Hols
+9fc582181f0fe385c8227777dbbce040fde0f7e4 9fc582181f0fe385c8227777dbbce040fde0f7e4 Chris Kane <chris.kane@turfclub.ie> 1439810159 +0100	checkout: moving from 9fc582181f0fe385c8227777dbbce040fde0f7e4 to april-july-updates
+9fc582181f0fe385c8227777dbbce040fde0f7e4 422110f6f544d91e225b5d226d8a28d4f5488ebe Chris Kane <chris.kane@turfclub.ie> 1439810330 +0100	commit: Update for All Apr-July Work
+422110f6f544d91e225b5d226d8a28d4f5488ebe ee659c9e5ced79f3cdeea2345463f0953dfce486 Chris Kane <chris.kane@turfclub.ie> 1439810672 +0100	checkout: moving from april-july-updates to master
+ee659c9e5ced79f3cdeea2345463f0953dfce486 cc5c0aa2b1c7ce5dc6733f1b9aabc01e59b6d285 Chris Kane <chris.kane@turfclub.ie> 1439811179 +0100	commit: All Commited
+cc5c0aa2b1c7ce5dc6733f1b9aabc01e59b6d285 5d34946a1edcf619f39b7adf28aab42ea6d28d27 Chris Kane <chris.kane@turfclub.ie> 1439811489 +0100	commit (merge): Merge branch 'april-july-updates'
+5d34946a1edcf619f39b7adf28aab42ea6d28d27 422110f6f544d91e225b5d226d8a28d4f5488ebe Chris Kane <chris.kane@turfclub.ie> 1439811668 +0100	checkout: moving from master to april-july-updates
+422110f6f544d91e225b5d226d8a28d4f5488ebe c8d74d45ca68b98c0b3d4a67712319ee7c99db0c Chris Kane <chris.kane@turfclub.ie> 1439811712 +0100	merge master: Merge made by the 'ours' strategy.
+c8d74d45ca68b98c0b3d4a67712319ee7c99db0c 5d34946a1edcf619f39b7adf28aab42ea6d28d27 Chris Kane <chris.kane@turfclub.ie> 1439811727 +0100	checkout: moving from april-july-updates to master
+5d34946a1edcf619f39b7adf28aab42ea6d28d27 c8d74d45ca68b98c0b3d4a67712319ee7c99db0c Chris Kane <chris.kane@turfclub.ie> 1439811803 +0100	merge april-july-updates: Fast-forward
+c8d74d45ca68b98c0b3d4a67712319ee7c99db0c 8f66ee6f6ad92f3fda56c805659f343dd245e267 Chris Kane <chris.kane@turfclub.ie> 1439824427 +0100	commit: Restructure of Packages and Directories To Module / Controller.View etc Structure
+8f66ee6f6ad92f3fda56c805659f343dd245e267 d1c1e71846a5cd4c0beb5b14925c58ec21824a5a Chris Kane <chris.kane@turfclub.ie> 1439827241 +0100	commit: Work end 2015-08-17
+d1c1e71846a5cd4c0beb5b14925c58ec21824a5a 9ec36a6901f320d33185521223d2702a0bc9f06b Chris Kane <chris.kane@turfclub.ie> 1440509796 +0100	commit: JSON table directive added - revision 1 no search functionality
+9ec36a6901f320d33185521223d2702a0bc9f06b ee26ffbaf4d574d362d4efc137edad0fc3597485 Chris Kane <chris.kane@turfclub.ie> 1441191260 +0100	commit: Renamed Json Table Directives and Classes - Not Working
+ee26ffbaf4d574d362d4efc137edad0fc3597485 9ec36a6901f320d33185521223d2702a0bc9f06b Chris Kane <chris.kane@turfclub.ie> 1441191392 +0100	checkout: moving from master to 9ec36
+9ec36a6901f320d33185521223d2702a0bc9f06b ee26ffbaf4d574d362d4efc137edad0fc3597485 Chris Kane <chris.kane@turfclub.ie> 1441191920 +0100	checkout: moving from 9ec36a6901f320d33185521223d2702a0bc9f06b to master
+ee26ffbaf4d574d362d4efc137edad0fc3597485 60e775edf4622001a45f7bfa316f71210b67bc74 Chris Kane <chris.kane@turfclub.ie> 1441293347 +0100	commit: JSON table restructure part 1
+60e775edf4622001a45f7bfa316f71210b67bc74 9ec36a6901f320d33185521223d2702a0bc9f06b Chris Kane <chris.kane@turfclub.ie> 1441293375 +0100	checkout: moving from master to 9ec36
+9ec36a6901f320d33185521223d2702a0bc9f06b 60e775edf4622001a45f7bfa316f71210b67bc74 Chris Kane <chris.kane@turfclub.ie> 1441293462 +0100	checkout: moving from 9ec36a6901f320d33185521223d2702a0bc9f06b to master
+60e775edf4622001a45f7bfa316f71210b67bc74 b5749354e302f719604a9f516aa19dcfeb4bce17 Chris Kane <chris.kane@turfclub.ie> 1441970862 +0100	commit: Commit before annual leave sept 15 mid work on form directives
+b5749354e302f719604a9f516aa19dcfeb4bce17 87d269f096edd62bb2291cead041d9294816b99a Chris Kane <chris.kane@turfclub.ie> 1444132305 +0100	commit: Inspections Rev1 JSONTable and JSONEdit directives complete

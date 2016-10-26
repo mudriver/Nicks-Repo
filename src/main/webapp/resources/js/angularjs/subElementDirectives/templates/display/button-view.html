@@ -1,0 +1,11 @@
+<span>
+<button data-ng-if="ctrl.directive.functionType!='ONOFF'" data-ng-disabled="!ctrl.data[ctrl.directive.enabledDisabledKey]" data-ng-click="ctrl.event()" data-ng-class="ctrl.data[ctrl.directive.enabledDisabledKey] == true ? ctrl.directive.buttonClass : ctrl.directive.buttonDisabledClass">
+	<span  data-ng-class="ctrl.directive.buttonGlyphiconClass"></span>&nbsp;&nbsp;{{ctrl.directive.text}}
+</button>
+<button data-ng-if="ctrl.directive.functionType=='ONOFF' && ctrl.modelValue" data-ng-disabled="!ctrl.data[ctrl.directive.enabledDisabledKey]" data-ng-click="ctrl.event()" data-ng-class="ctrl.data[ctrl.directive.enabledDisabledKey] == true ? ctrl.directive.buttonClass : ctrl.directive.buttonDisabledClass">
+	<span  data-ng-class="ctrl.directive.buttonGlyphiconClass"></span>&nbsp;&nbsp;{{ctrl.directive.text}}
+</button>
+<button data-ng-if="ctrl.directive.functionType=='ONOFF' && !ctrl.modelValue" data-ng-disabled="!ctrl.data[ctrl.directive.enabledDisabledKey]" data-ng-click="ctrl.event()" data-ng-class="ctrl.directive.buttonOffClass">
+	<span  data-ng-class="ctrl.directive.buttonOffGlyphiconClass"></span>&nbsp;&nbsp;{{ctrl.directive.offText}}
+</button>
+</span>

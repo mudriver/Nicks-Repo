@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head data-th-fragment="header">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title data-th-text="#{vetreport.edit.page.title}">Title</title>
+<!-- Core CSS - Include with every page -->
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/sb-admin-2.css"
+	data-th-href="@{/resources/css/sb-admin-2.css}" />
+
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+<script type="text/javascript"
+	src="../../resources/js/jquery-2.1.1.min.js"
+	data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+<script type="text/javascript" src="../../resources/js/vetreportedit.js"
+	data-th-src="@{/resources/js/vetreportedit.js}"></script>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+
+</head>
+<body>
+
+	<!-- /#wrapper -->
+
+
+
+
+	<div class="container-fluid">
+		<div data-th-replace="vetreportsTopBar :: top-nav"></div>
+		<div class="jumbotron">
+			<h3 class="col-sm-12"
+				data-th-text="${title} + ' ' + #{vetreport.edit.head.title}">Edit
+				HunterCert</h3>
+
+
+
+			<form id="vetReportForm" novalidate="novalidate"
+				class="form-horizontal" action="#"
+				data-th-action="@{/vetReports/edit}" data-th-object="${vetReport}"
+				method="post">
+				<!--  HIDDEN VALUES TO STORE THE NON RUN, PRE RACE, RANDOM, TRACK ID -->
+				<input type="hidden" class="form-control"
+					data-th-field="*{reportId}" id='reportId'></input> <input
+					type="hidden" class="form-control"
+					data-th-field="*{reportRandomId.randomId}" id='reportRandomId'></input> <input
+					type="hidden" class="form-control"
+					data-th-field="*{reportNonRunnerId.nonrunId}" id="reportNonRunnerId"></input>
+
+
+				<!--  REPORT TYPE SELECTOR -->
+				<div class=" row form-group">
+					<div class="col-xs-3 text-right">
+						<label for="reportTypeSel"
+							data-th-text="#{vetreport.edit.reporttype.label}">SELECT
+							A REPORT TYPE</label>
+					</div>
+					<div class="col-xs-6">
+						<select data-th-field="*{reportType}" class="form-control"
+							id="reportTypeSel">
+							<option value="0"
+								data-th-text="#{vetreport.edit.reporttype.pleaseSelect}">Non
+								run</option>
+							<option value="NonRunner"
+								data-th-text="#{vetreport.edit.reporttype.nonrun}">Non
+								run</option>
+							<option value="PreRace"
+								data-th-text="#{vetreport.edit.reporttype.prerace}">Pre
+								Race</option>
+							<option value="RandomStableInspection"
+								data-th-text="#{vetreport.edit.reporttype.random}">Random</option>
+							<option value="Track"
+								data-th-text="#{vetreport.edit.reporttype.track}">Track</option>
+						</select>
+					</div>
+					<div class="col-xs-3">
+						<span class="text-danger" id="reportTypeError"
+							data-th-text="#{vetreport.edit.reporttype.error}">Error</span>
+					</div>
+				</div>
+
+
+				<!--  SELECT A DATE -->
+					   
+               
+					<div id="dateSection" class="row form-group">
+						<div class="col-xs-3 text-right">
+							<label for="date"
+								data-th-text="#{vetreport.edit.date.label}">SELECT
+								A Date</label>
+						</div>
+						<div class="col-xs-6">
+							<input type="text" data-th-field="*{htmlDate}"
+								 id="date"
+								class="datepicker form-control"></input>
+						</div>
+						<div class="col-xs-3">
+							<span class="text-danger" id="dateerror"
+								data-th-text="#{vetreport.edit.date.error}">Error</span>
+						</div>
+
+
+					</div>
+
+			
+
+
+				<!-- Racecard Selection  NOT SHOWN WHEN Random Stable Inspection SELECTED   -->				
+				<div id="raceCardOnly">
+					 <!--  Hidden values for the meeting and rowId selectors when a report is being edited -->
+					 <input
+						type="hidden" id="meeting"
+						data-th-value="*{reportRacecardId.meeting}"
+						></input> <input
+						type="hidden" id="horse"
+						data-th-value="*{reportRacecardId.rowId}"
+						></input> 
+					
+					
+					
+
+					<!--  SELECT A Meeting -->
+					<div class="row form-group">
+						<div class="col-xs-3 text-right">
+							<label for="meetingName"
+								data-th-text="#{vetreport.edit.meeting.label}">SELECT A
+								Meeting</label>
+						</div>
+						<div class="col-xs-6">
+
+							<select id="meetingName" class="form-control"
+								data-th-field="*{reportRacecardId.meeting}">
+							</select>
+
+						</div>
+						<div  class="col-xs-3">
+							<span class="text-danger" id="meetingerror"
+								data-th-text="#{vetreport.edit.meeting.error}"></span>
+						</div>
+					</div>
+
+					<!--  SELECT A Horse -->
+					<div class="row form-group">
+						<div class="col-xs-3 text-right">
+							<label for="horseName"
+								data-th-text="#{vetreport.edit.horse.label}">SELECT A
+								REPORT TYPE</label>
+						</div>
+						<div class="col-xs-6">
+							<select id="horseName" class="form-control" data-th-field="*{reportRacecardId.rowId}">
+							</select>
+
+
+						</div>
+						<div class="col-xs-3">
+							<span class="text-danger" id="horseerror"
+								data-th-text="#{vetreport.edit.horse.error}">Error</span>
+						</div>
+					</div>
+					<!--  Show Race card Detail -->
+					<div id="loadRaceCardDetail" class="row form-group">
+						<div class="col-xs-3 text-right">
+							<label data-th-text="#{vetreport.edit.trainer.label}">Trainer</label>
+						</div>
+						<div class="col-xs-6">
+							<div class="row">
+								<div class="col-xs-4">
+									<input type="text" class="form-control" readonly="readonly"
+										id="trainerName"></input>
+								</div>
+								<div class="col-xs-2">
+									<label data-th-text="#{vetreport.edit.raceNo.label}">Race
+										No</label>
+								</div>
+								<div class="col-xs-2">
+									<input type="text" class="form-control" readonly="readonly"
+										id="raceNo"></input>
+								</div>
+								<div class="col-xs-2">
+									<label data-th-text="#{vetreport.edit.horseNo.label}">Race
+										No</label>
+								</div>
+								<div class="col-xs-2">
+									<input type="text" class="form-control" readonly="readonly"
+										id="horseNum"></input>
+								</div>
+
+							</div>
+
+
+						</div>
+						<div class="col-xs-3"></div>
+					</div>
+
+
+				</div>
+				<!--END Racecard Selection -->
+
+
+			    <!-- RANDOM Selection  ONly SHOWN WHEN Random Stable Inspection SELECTED   -->				
+				<div id="randomOnly">
+					 <!--  Hidden values for the meeting and rowId selectors when a report is being edited -->
+					 <input
+						type="hidden" id="randomhorse"
+						data-th-value="*{reportRandomId.randomHorseId}"
+						></input> 
+					<input
+						type="hidden" id="randomtrainer"
+						data-th-value="*{reportRandomId.randomTrainerId}"
+						></input>
+					
+					
+
+					
+
+					<!--  SELECT A Horse -->
+					<div class="row form-group">
+						<div class="col-xs-3 text-right">
+							<label for="randomHorseName"
+								data-th-text="#{vetreport.edit.horse.label}">SELECT A
+								REPORT TYPE</label>
+						</div>
+						<div class="col-xs-6">
+							<input class="form-control" type='hidden'
+								data-th-field="*{reportRandomId.randomNotRanYetTempId}" id="randomHorseName"
+								name="randomHorseName"></input>
+							
+						</div>
+						<div class="col-xs-3">
+							<span class="text-danger" id="randomHorseerror"
+								data-th-text="#{vetreport.edit.randomHorse.error}">Error</span>
+						</div>
+					</div>
+					<!--  SELECT A Trainer -->
+					<div class="row form-group">
+						<div class="col-xs-3 text-right">
+							<label for="randomTrainerName"
+								data-th-text="#{vetreport.edit.trainer.label}">SELECT A
+								REPORT TYPE</label>
+						</div>
+						<div class="col-xs-6">
+							<input class="form-control" type='hidden'
+								data-th-field="*{reportRandomId.randomTrainerId.trainerId}" id="randomTrainerName"
+								name="randomTrainerName"></input>
+							
+						</div>
+						<div class="col-xs-3">
+							<span class="text-danger" id="randomTrainererror"
+								data-th-text="#{vetreport.edit.randomTrainer.error}">Error</span>
+						</div>
+					
+					</div>
+
+
+				</div>
+				<!--END Racecard Selection -->
+
+
+
+				<!-- REPORT CONTENT  -->
+				<div class="row form-group">
+					<div class="col-xs-3 text-right">
+						<label  data-th-text="#{vetreport.edit.report.label}">SELECT
+							A REPORT TYPE</label>
+					</div>
+					<div class="col-xs-6">
+						<textarea data-th-field="*{reportContent}" class="form-control"
+							id="reportContent" rows="5" ></textarea>
+					</div>
+					<div class="col-xs-3"><span class="text-danger" id="reportContenterror"
+								data-th-text="#{vetreport.edit.report.error}"></span></div>
+
+				</div>
+
+				<!-- Non Runner Information  ONLY SHOWN WHEN NON RUNNER REPORT SELECTED   -->
+				<div id="nonRunnerInfo">
+					<div id="nonRunnerSection" class="row form-group">
+						<div class="col-xs-3 text-right">
+							<label data-th-text="#{vetreport.edit.nonRunnerFine.label}">SELECT
+								A REPORT TYPE</label>
+						</div>
+						<div class="col-xs-1">
+
+							<input type="checkbox" id="nonRunnerFine"
+								th:field="*{reportNonRunnerId.nonrunFine}" />
+
+						</div>
+						<div class="col-xs-1 text-right">
+							<label data-th-text="#{vetreport.edit.nonRunnerLate.label}">SELECT
+								A REPORT TYPE</label>
+						</div>
+						<div class="col-xs-1">
+
+							<input type="checkbox" id="nonRunnerLate"
+								th:field="*{reportNonRunnerId.nonrunLate}" />
+
+						</div>
+						<div class="col-xs-1 text-right">
+							<label data-th-text="#{vetreport.edit.nonRunnerRefund.label}">SELECT
+								A REPORT TYPE</label>
+						</div>
+						<div class="col-xs-1">
+
+							<input type="checkbox" id="nonRunnerRefund"
+								th:field="*{reportNonRunnerId.nonrunRefunded}" />
+
+						</div>
+						<div class="col-xs-4"></div>
+
+					</div>
+
+
+				</div>
+				<!--END Non Runner Information -->
+
+
+
+
+
+				<!-- Vet  -->
+				<div id="vet" class="row form-group">
+					<div class="col-xs-3 text-right">
+						<label for="selectvet" data-th-text="#{vetreport.edit.vet.label}">SELECT
+							A REPORT TYPE</label>
+					</div>
+					<div class="col-xs-6">
+
+						<select multiple="multiple" name="selectedVets" id="selectvet"
+							class="form-control">
+							<option data-th-each="vet : ${allVets}"
+								data-th-value="${vet.vetId}" data-th-selected="${vet.selected}"
+								data-th-text="${vet.vetName}">Vets</option>
+
+						</select>
+
+					</div>
+					<div class="col-xs-3">
+						<span class="text-danger" id="veterror"
+							data-th-text="#{vetreport.edit.vet.error}">Error</span>
+					</div>
+
+				</div>
+
+				<!-- Misc  -->
+				<div class="row form-group">
+					<div class="col-xs-3 text-right">
+						<label for="misc" data-th-text="#{vetreport.edit.misc.label}">SELECT
+							A REPORT TYPE</label>
+					</div>
+					<div class="col-xs-6">
+						<input data-th-field="*{reportMisc}" class="form-control"
+							id="misc"></input>
+					</div>
+					<div class="col-xs-3"></div>
+
+
+
+				</div>
+
+
+				<!-- Buttons  -->
+				<div class="row form-group">
+					<div class="col-xs-3 text-right"></div>
+					<div class="col-xs-6 text-center">
+
+
+						<button id="saveButton" type="button" class="btn btn-primary"
+							data-th-text="#{vetreport.edit.save.button}">SAVE</button>
+
+						<a href="#" data-th-href="@{/vetReports/}">
+							<button type="button" class="btn btn-default active"
+								data-th-text="#{vetreport.edit.cancel.button}">Cancel</button>
+						</a>
+					</div>
+					<div class="col-xs-3"></div>
+
+
+
+				</div>
+
+
+
+
+			</form>
+
+
+
+
+
+
+
+		</div>
+		<!-- END JUMBOTRON TAG -->
+	</div>
+
+	<!-- END CONTAINER TAG -->
+
+
+	<script type="text/javascript"
+		src="../../resources/js/bootstrap.min.js"
+		data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+	<script type="text/javascript"
+		src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+	<script src="../../resources/js/select2.js" type="text/javascript"
+		data-th-src="@{/resources/js/select2.js}"></script>
+	<!-- SB Admin Scripts - Include with every page -->
+
+
+
+
+</body>
+</html>

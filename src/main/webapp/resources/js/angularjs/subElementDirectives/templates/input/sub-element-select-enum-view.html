@@ -1,0 +1,10 @@
+<data-ng-form name="innerForm"><span>
+<ui-select  style="width:100%!important;"
+             theme="bootstrap"
+            data-ng-required="ctrl.directive.required" data-ng-change="ctrl.changed()" data-ng-model="ctrl.selection" >
+    <ui-select-match allow-clear="true" placeholder="{{ctrl.directive.placeHolder}}"><div data-ng-if="$select.selected !== undefined && $select.selected !== null"><img data-ng-src="{{$select.selected.url}}" alt="Smiley face" height="16" width="16"><span> </span><span data-ng-bind-html="$select.selected.text"></span></div></ui-select-match>
+    <ui-select-choices repeat="itm in ctrl.items">
+      <div data-ng-if="itm.url !== undefined && itm.url !== null" ><img data-ng-src="{{itm.url}}" height="16" width="16"><span> </span><span data-ng-bind-html="itm.text | highlight: $select.search"></span></div>
+   </ui-select-choices></ui-select></span>
+</data-ng-form>
+

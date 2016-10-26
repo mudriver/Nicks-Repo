@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head data-th-fragment="header">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title data-th-text="#{vetreport.list.page.title}">Title</title>
+
+<!-- Core CSS - Include with every page -->
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/sb-admin-2.css"
+	data-th-href="@{/resources/css/sb-admin-2.css}" />
+
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link rel="stylesheet" type="text/css"
+	data-th-href="@{//cdn.datatables.net/1.10.0/css/jquery.dataTables.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+<script type="text/javascript"
+	src="../../resources/js/jquery-2.1.1.min.js"
+	data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+
+<script type="text/javascript"
+	data-th-src="@{//cdn.datatables.net/1.10.0/js/jquery.dataTables.js}"></script>
+	
+<script type="text/javascript"
+	data-th-src="@{//cdn.datatables.net/responsive/1.0.6/css/dataTables.responsive.css}"></script>
+<script type="text/javascript" src="../../resources/js/trainers-list.js"
+	data-th-src="@{/resources/js/trainers-employees-list.js}"></script>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+</head>
+<body>
+
+<div id="please-wait" class="modal fade">
+			<div class="modal-dialog modal-lg" data-keyboard="false"
+				data-backdrop="static" tabindex="-1" role="dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title"></h4>
+					</div>
+					<div class="modal-body text-center">
+						<h2 class="text-info">Please wait while your report loads.....</h2>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	<div class="container-fluid">
+		<!-- /#wrapper -->
+
+		<div data-th-replace="trainersEmployeesTopBar :: top-nav"></div>
+
+		<input id="type" type="hidden" data-th-value="${type}"></input>
+		<input type='hidden' id='trainerId' data-th-value='${trainerId}'></input>
+
+		<div class="jumbotron">
+	
+			
+			
+			<div  class="row  text-center">
+			<button id="pdf-show" type="button" class="btn btn-primary onoff"
+									data-th-text="#{employees.list.pdfShow.button}">OK</button>
+			<button id="pdf-close" type="button" class="btn btn-primary onoff" data-th-text="#{employees.list.pdfClose.button}"
+									>Close</button>
+			<div id="pdf-section" class="col-xs-12 text-center">
+
+     
+  
+									 
+     
+	<!-- <div id="pdf-preview"><iframe id="pdf-outer" src=""><object id="pdf" standby="please wait for pdf to load" type="application/pdf" data="#" width="100%" height="100%"></object></iframe></div>-->
+		 <div id="pdf-preview"><object id="pdf" standby="please wait for pdf to load" type="application/pdf" data="#" width="100%" height="100%"></object></div>
+			
+			</div>
+			</div>
+			
+			
+		
+			<div class="row text-center">
+			<div class="col-lg-12">
+				<h3 id="header"
+					data-th-text="#{employees.list.table.title}"></h3>
+				
+				<div class="table responsive">
+					<table class="table table-striped table-bordered table-hover">
+						<tr>
+							<td>
+								<table id="example" class="display" cellspacing="0" width="100%">
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th>Address</th>
+											<th>PPS No.</th>
+											<th>Earnings</th>
+											<th>Edit</th>
+											<th>Verify</th>
+											<th>Extra</th>
+										</tr>
+									</thead>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+			</div>
+			</div>
+			<!-- /.col-lg-12 -->
+			
+		</div>
+		<!-- page wrapper -->
+	</div>
+
+
+	<!-- /#wrapper -->
+	<script type="text/javascript"
+		src="../../resources/js/bootstrap.min.js"
+		data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+	<script type="text/javascript"
+		src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+	<script src="../../resources/js/select2.js" type="text/javascript"
+		data-th-src="@{/resources/js/select2.js}"></script>
+
+
+</body>
+</html>
