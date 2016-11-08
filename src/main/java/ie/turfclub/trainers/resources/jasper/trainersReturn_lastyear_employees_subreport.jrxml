@@ -157,7 +157,7 @@ SELECT `employees_employee_id`,`employees_title` , `employees_surname` , `employ
 					<font isBold="true"/>
 					<paragraph leftIndent="3"/>
 				</textElement>
-				<text><![CDATA[2014 Taxable Pay In Your Employment]]></text>
+				<text><![CDATA[$P{previousYear}+" Taxable Pay In Your Employment"]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="110" y="147" width="159" height="20" uuid="9c66ec87-311e-48c7-b394-1a7df9ccb68c"/>

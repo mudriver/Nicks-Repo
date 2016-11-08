@@ -487,7 +487,7 @@ public class TeEmployees implements java.io.Serializable {
 		}
 		
 		
-		if(this.employeesLastUpdated.after(yearStart) || this.employeesLastUpdated.equals(yearStart)){
+		if(this.employeesLastUpdated != null && (this.employeesLastUpdated.after(yearStart) || this.employeesLastUpdated.equals(yearStart))) {
 			this.updated = true;
 			return true;
 		}

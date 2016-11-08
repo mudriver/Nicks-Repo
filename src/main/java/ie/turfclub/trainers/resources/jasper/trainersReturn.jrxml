@@ -94,7 +94,7 @@
 				<textElement textAlignment="Center">
 					<font size="14"/>
 				</textElement>
-				<text><![CDATA[People who left your Employment in 2014 or Thereafter]]></text>
+				<text><![CDATA["People who left your Employment in " + $P{previousYear} + "or Thereafter"]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="30" width="553" height="1" uuid="3554cb80-3488-4dbc-a168-d1c72bb1711f">
@@ -129,7 +129,7 @@
 		<band height="62">
 			<staticText>
 				<reportElement x="1" y="0" width="552" height="51" uuid="0b6d1ad4-b992-4db0-bc6e-4856cb2b23e8"/>
-				<text><![CDATA[* Please note PPS Numbers entered will only appear on this form for employees who have 2014 earnings. For persons employed in 2015 only PPS number will be available to the Turf Club for verification purposes, however it is not linked to this form. ]]></text>
+				<text><![CDATA["* Please note PPS Numbers entered will only appear on this form for employees who have " + $P{previousYear} + "earnings. For persons employed in "+ $P{currYear} +" only PPS number will be available to the Turf Club for verification purposes, however it is not linked to this form. "]]></text>
 			</staticText>
 		</band>
 	</detail>

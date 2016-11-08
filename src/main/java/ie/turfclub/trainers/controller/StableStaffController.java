@@ -695,12 +695,16 @@ public class StableStaffController {
 					newHistory.setTeEmployees(originalEmployee);
 					// System.out.println();
 					// System.out.println("save NEW History");
+					//Set Employee Last Updated
+					newHistory.setEmployeeLastUpdated(new Date());
 					stableStaffService.saveNewHistory(newHistory);
 				} else {
 					newHistory.setTeTrainers(trainer);
 					newHistory.setTeEmployees(originalEmployee);
 					// System.out.println();
 					// System.out.println("save NEW History");
+					//Set Employee Last Updated
+					newHistory.setEmployeeLastUpdated(new Date());
 					stableStaffService.saveHistory(newHistory);
 				}
 
@@ -732,6 +736,8 @@ public class StableStaffController {
 
 				newHistory.setTeTrainers(trainer);
 				newHistory.setTeEmployees(savedEmployee);
+				//Set Employee Last Updated
+				newHistory.setEmployeeLastUpdated(new Date());
 				stableStaffService.saveNewHistory(newHistory);
 			}
 
@@ -817,6 +823,8 @@ public class StableStaffController {
 			parameterMap.put("earningsDateFrom", now.get(Calendar.YEAR) + "-01-01");
 			parameterMap.put("earningsDateTo", now.get(Calendar.YEAR) + "-12-31");
 			parameterMap.put("REPORT_CONNECTION", conn);
+			parameterMap.put("previousYear", Calendar.getInstance().get(Calendar.YEAR)-1);
+			parameterMap.put("currYear", Calendar.getInstance().get(Calendar.YEAR));
 			logger.info("rendering the pdf view");
 			downloadService.download("/jasper/trainersReturn.jasper",
 					parameterMap, null, conn, token, response);

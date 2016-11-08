@@ -67,6 +67,8 @@ public class TeEmployentHistory implements java.io.Serializable {
 	private String ehPpsNumber;
 	@Expose
 	private boolean ehVerified;
+	@Expose
+	private Date employeeLastUpdated;
 
 	public TeEmployentHistory() {
 	}
@@ -146,6 +148,16 @@ public class TeEmployentHistory implements java.io.Serializable {
 
 	public void setEhDateTo(Date ehDateTo) {
 		this.ehDateTo = ehDateTo;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "employee_last_updated", length = 10)
+	public Date getEmployeeLastUpdated() {
+		return employeeLastUpdated;
+	}
+
+	public void setEmployeeLastUpdated(Date employeeLastUpdated) {
+		this.employeeLastUpdated = employeeLastUpdated;
 	}
 
 	@Column(name = "eh_hours_worked")

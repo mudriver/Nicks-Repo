@@ -352,6 +352,9 @@ public class EmployeeHistoryUtils {
 			// if the employee is not over 65 years old then check to see if
 			// he/she is a current employee
 
+			//get employeeLastUpdated date and set into "employee" object
+			employee.setEmployeesLastUpdated(continuoushistory.getEmployeeLastUpdated());
+			
 			if (employee.getEmployeesDateOfBirth().after(earliestDateOfBirth)) {
 
 				// if the current employment does not have an end date
