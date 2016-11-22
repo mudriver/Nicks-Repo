@@ -3,9 +3,11 @@ package ie.turfclub.trainers.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -34,6 +36,7 @@ import org.hibernate.annotations.FilterJoinTable;
 import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.ParamDef;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
@@ -101,6 +104,7 @@ public class TeEmployees implements java.io.Serializable {
 	private Set<TeEmployentHistory> teEmployentHistories = new HashSet(0);
 	private Set<TeChances> teChanceses = new HashSet(0);
 	private Set<TePension> tePensions = new HashSet(0);
+	private List<TePension> pensions = new ArrayList<TePension>();
 	@Expose
 	private boolean canEdit = true;
 	@Expose
@@ -113,6 +117,18 @@ public class TeEmployees implements java.io.Serializable {
 	private boolean employeeWorkedWithTrainerInTaxYear = false;
 	@Expose
 	private boolean updated = false;
+	@Expose
+	private Double employeeNumHourWorked;
+	@Expose
+	private Double employeeLastYearPaid;
+	@Expose
+	private String employeeCategoryOfEmployment;
+	@Expose
+	private String employeeOldEmployeeCardNumber;
+	@Expose
+	private String employeeExistingAIRCardHolder;
+	@Expose
+	private Date employeeRequestDate;
 	
 
 	public TeEmployees() {
@@ -401,8 +417,17 @@ public class TeEmployees implements java.io.Serializable {
 		this.teChanceses = teChanceses;
 	}
 
+	@Transient
+	public List<TePension> getPensions() {
+		return pensions;
+	}
+
+	public void setPensions(List<TePension> pensions) {
+		this.pensions = pensions;
+	}
+
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teEmployees")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teEmployees", cascade=CascadeType.ALL)
 	public Set<TePension> getTePensions() {
 		return this.tePensions;
 	}
@@ -412,7 +437,7 @@ public class TeEmployees implements java.io.Serializable {
 	}
 
 	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "teEmployees", cascade=CascadeType.DETACH)
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "teEmployees", cascade=CascadeType.ALL)
 	public TeCards getTeCard() {
 		return teCard;
 	}
@@ -442,7 +467,63 @@ public class TeEmployees implements java.io.Serializable {
 	public void setEmployeesHasTaxableEarnings(Boolean employeesHasTaxableEarnings) {
 		this.employeesHasTaxableEarnings = employeesHasTaxableEarnings;
 	}
+	
+	@Column(name = "employees_num_hour_worked")
+	public Double getEmployeeNumHourWorked() {
+		return employeeNumHourWorked;
+	}
 
+	public void setEmployeeNumHourWorked(Double employeeNumHourWorked) {
+		this.employeeNumHourWorked = employeeNumHourWorked;
+	}
+
+	@Column(name = "employees_last_year_paid")
+	public Double getEmployeeLastYearPaid() {
+		return employeeLastYearPaid;
+	}
+
+	public void setEmployeeLastYearPaid(Double employeeLastYearPaid) {
+		this.employeeLastYearPaid = employeeLastYearPaid;
+	}
+
+	@Column(name = "employees_category_of_employment")
+	public String getEmployeeCategoryOfEmployment() {
+		return employeeCategoryOfEmployment;
+	}
+
+	public void setEmployeeCategoryOfEmployment(String employeeCategoryOfEmployment) {
+		this.employeeCategoryOfEmployment = employeeCategoryOfEmployment;
+	}
+
+	@Column(name = "employees_old_employee_card_number")
+	public String getEmployeeOldEmployeeCardNumber() {
+		return employeeOldEmployeeCardNumber;
+	}
+
+	public void setEmployeeOldEmployeeCardNumber(
+			String employeeOldEmployeeCardNumber) {
+		this.employeeOldEmployeeCardNumber = employeeOldEmployeeCardNumber;
+	}
+
+	@Column(name = "employees_existing_air_card_holder")
+	public String getEmployeeExistingAIRCardHolder() {
+		return employeeExistingAIRCardHolder;
+	}
+
+	public void setEmployeeExistingAIRCardHolder(
+			String employeeExistingAIRCardHolder) {
+		this.employeeExistingAIRCardHolder = employeeExistingAIRCardHolder;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "employees_request_date")
+	public Date getEmployeeRequestDate() {
+		return employeeRequestDate;
+	}
+
+	public void setEmployeeRequestDate(Date employeeRequestDate) {
+		this.employeeRequestDate = employeeRequestDate;
+	}
 
 	@Column(name = "employee_verified")
 	public boolean isEmployeeVerified() {

@@ -6,7 +6,7 @@
  <meta charset="utf-8" />
  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
  <meta name="viewport" content="width=device-width, initial-scale=1" />
- <title data-th-text="#{turfclub.home.page.title}">Title</title>
+ <title data-th-text="#{manage.employee.staff.page.title}">Title</title>
   
 <!-- Core CSS - Include with every page -->
     <link type="text/css" rel="stylesheet"
@@ -51,73 +51,31 @@
  <div class="container-fluid" >                <!-- /#wrapper -->
  
     <div data-th-replace="mainmenu :: top-nav"></div>
-
     
- 
-  <div class="jumbotron">
-        
-        
-        
-        
-
-<div data-th-if="${INSPECTIONS} != null" class="col-lg-3">
-		<a href="#" data-th-href="@{/inspections/home}">     
-      <span class="thumbnail text-center text-info">
-          
-         <img src="../../../resources/img/inspections.jpg"
-        data-th-src="@{/resources/img/inspections.jpg}" alt="inspections" height="200" width="200"></img>Inspections</span>
-      </a>
-      </div>
-<div data-th-if="${TRAINERS} != null" class="col-lg-3">
-		<a href="#" data-th-href="@{/trainers/home}">     
-      <span class="thumbnail text-center text-info">
-          
-         <img 
-        data-th-src="@{/resources/img/trainers.jpg}" alt="trainers" height="200" width="200"></img>Trainers</span>
-      </a>
-      </div>
-      <div data-th-if="${STABLESTAFF} != null" class="col-lg-3">
-		<a href="#" data-th-href="@{/trainers/home#/pensionTrainerlist}">     
-      <span class="thumbnail text-center text-info">
-          
-         <img 
-        data-th-src="@{/resources/img/pension.jpg}" alt="pension" height="200" width="200"></img>Pension</span>
-      </a>
-      </div>        
-      
-      <div data-th-if="${STABLESTAFF} != null" class="col-lg-3">
-		<a href="#" data-th-href="@{/employees/manageStaff}">     
-      <span class="thumbnail text-center text-info">
-          
-         <img 
-        data-th-src="@{/resources/img/manage-employee-staff.jpg}" alt="pension" height="200" width="200"></img>Manage Employees Staff</span>
-      </a>
-      </div>        
+    <h3 data-th-text="#{manage.employee.staff}">Manage Employee Staff</h3>
     
-      <div data-th-if="${VET_REPORTS} != null" class="thumbnail">
-          <a href="#" data-th-href="@{/vetReports/}">
-         <img src="../../../resources/img/vetreports.jpg"
-        data-th-src="@{/resources/img/vetreports.jpg}" alt="Vet Reports" height="200" width="200"></img>
-      	</a>
-      </div>
-      <div data-th-if="${VET_REPORTS} != null" class="caption">
-         <h3><a href="#" data-th-href="@{/vetReports/}">Vet Reports</a></h3>
-      </div>
-       <div data-th-if="${ACCOUNTS} != null" class="thumbnail">
-          <a href="#" data-th-href="@{/accountsReports/generate}">
-         <img src="../../../resources/img/accounts.jpg"
-        data-th-src="@{/resources/img/accounts.jpg}" alt="Accounts Reports" height="200" width="200"></img>
-      	</a>
-      </div>
-      <div data-th-if="${ACCOUNTS} != null" class="caption">
-         <h3><a href="#" data-th-href="@{/accountsReports/generate}">Accounts Reports</a></h3>
-      </div>
-
-
-
-  <!-- /.col-lg-12 -->   
-           
-    </div>      <!-- page wrapper -->
+    <div class="home-parent">
+    	<div class="home-links-parent">
+    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.employee.printouts}">Employee Printouts</span></a>
+    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.stableyard.list}">StableYard List</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.list.of.employees}">List of Employees</span></a>
+    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-database" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.stable.bonus.scheme}">Stable Bonus Scheme</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a href="#/empAdd" data-th-href="@{/employees/add}" class="home-links col-sm-6"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.add.new.employee}">Add new Employee</span></a>
+    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.list.trainers.employees}">List Trainer's Employees</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.for.employee}">Search For Employee</span></a>
+    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.full.time.part.time.stats}">Full Time / Part Time Stats</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.by.number}">Search By Number</span></a>
+    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-arrows" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.create.air.file.transfer}">Create AIR File Transfer</span></a>
+    	</div>
+    </div>
 </div>              <!-- /#wrapper -->
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"

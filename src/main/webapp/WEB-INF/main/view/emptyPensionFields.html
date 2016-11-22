@@ -1,0 +1,33 @@
+<div class="form-group col-sm-1">
+	<label for="card" data-th-text="#{employee.pension.card}">Card :</label>
+	<select data-th-field="*{pensions[0].pensionCardType}" class="form-control">
+		<option value=""></option>
+		<option data-th-value="#{employee.a}" value="A" data-th-text="#{employee.a}">A</option>
+		<option data-th-value="#{employee.b}" value="B" data-th-text="#{employee.b}">B</option>
+	</select>
+</div>
+<div class="form-group col-sm-2">
+	<label for="card" data-th-text="#{employee.pension.type}">Pension :</label>
+	<select data-th-field="*{pensions[0].pensionType}" class="form-control">
+		<option value=""></option>
+		<option data-th-value="#{employee.pension.f}" value="F" data-th-text="#{employee.pension.f}">F</option>
+		<option data-th-value="#{employee.pension.p}" value="P" data-th-text="#{employee.pension.p}">P</option>
+		<option data-th-value="#{employee.pension.n}" value="N" data-th-text="#{employee.pension.n}">N</option>
+	</select>
+</div>		
+<div class="form-group col-sm-2">
+	<label for="card" data-th-text="#{employee.pension.trainer}">Trainer</label>
+	<input data-th-field="*{pensions[0].pensionTrainerName}" class="form-control" />
+	<input type="hidden" data-th-field="*{pensions[0].pensionTrainer.trainerId}" />
+</div>		
+<div class="form-group col-sm-2">
+	<label for="requestDate" data-th-text="#{employee.pension.hri.ac.num}">HRI A/C Num :</label>
+	<input data-th-field="*{pensions[0].pensionHRIAccNum}" class="form-control" />
+</div>
+<div class="form-group col-sm-3">
+	<label for="requestDate" data-th-text="#{employee.pension.from.date}">From Date :</label>
+	<input data-th-field="*{pensions[0].pensionDateRange}" class="form-control" />
+</div>
+<div class="form-group col-sm-1">
+	<a href="javascript:void(0);" id="addPensionRecord" alt="Add Pension Record" title="Add Pension Record"><i class="fa fa-plus fa-3x"></i></a>
+</div>

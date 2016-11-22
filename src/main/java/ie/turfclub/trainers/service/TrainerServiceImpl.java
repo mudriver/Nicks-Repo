@@ -1,10 +1,5 @@
 package ie.turfclub.trainers.service;
 
-import ie.turfclub.inspections.model.InspectionSavedSearch;
-import ie.turfclub.inspections.model.InspectionsCategories;
-import ie.turfclub.inspections.model.InspectionsPersonSearch;
-import ie.turfclub.inspections.model.InspectionsStatus;
-import ie.turfclub.inspections.model.InspectionsTrainers;
 import ie.turfclub.trainers.model.TeAuthorisedReps;
 import ie.turfclub.trainers.model.TeEmployeeTrainerVerified;
 import ie.turfclub.trainers.model.TeEmployees;
@@ -18,13 +13,8 @@ import ie.turfclub.trainers.model.savedSearches.TeEmployeesPensionSavedSearch;
 import ie.turfclub.trainers.model.savedSearches.TeEmployeesSavedSearch;
 import ie.turfclub.trainers.model.savedSearches.TeEnumSavedSearch;
 import ie.turfclub.trainers.model.savedSearches.TeOrderByFields;
-import ie.turfclub.trainers.model.savedSearches.TeSavedSearches;
-import ie.turfclub.trainers.model.savedSearches.TeTrainerCompleteBooleanSavedSearch;
-import ie.turfclub.trainers.model.savedSearches.TeTrainerDocumentsAttachedBooleanSavedSearch;
-import ie.turfclub.trainers.model.savedSearches.TeTrainerVerifiedEnumSavedSearch;
 import ie.turfclub.trainers.model.savedSearches.TeTrainersPensionSavedSearch;
 import ie.turfclub.trainers.model.savedSearches.TeTrainersSavedSearch;
-import ie.turfclub.vetReports.model.VetreportReports.trainerComparator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,10 +31,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.annotation.Resource;
-import javax.persistence.TemporalType;
 
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -783,7 +771,7 @@ public class TrainerServiceImpl implements TrainersService {
 
 					//System.out.println(history.getEhDateFrom());
 						if (history.getEhEarnings() != null) {
-							employ.setEmployeesEarnings("€"
+							employ.setEmployeesEarnings("ï¿½"
 									+ String.valueOf(history.getEhEarnings()) );
 							if(employ.getEmployeesEarnings() .endsWith(".0")){
 								employ.setEmployeesEarnings(employ.getEmployeesEarnings().replaceAll("\\.0", "\\.00"));
@@ -798,7 +786,7 @@ public class TrainerServiceImpl implements TrainersService {
 							
 						} else {
 							if(employ.getEmployeesEarnings() == null){
-								employ.setEmployeesEarnings("€" + "0.00");
+								employ.setEmployeesEarnings("ï¿½" + "0.00");
 							}
 							
 							if(history.getEhPpsNumber() != null && employ.getEmployeesPps() == null){
@@ -1125,4 +1113,20 @@ public class TrainerServiceImpl implements TrainersService {
 		
 	}
 
+	@Override
+	public List<HashMap<String, Object>> getAllTrainers() {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeTrainers.class);
+		List<TeTrainers> records = criteria.list();
+		List<HashMap<String, Object>> results = new ArrayList<HashMap<String,Object>>();
+		if(records != null) {
+			for (TeTrainers trainer : records) {
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				map.put("name", trainer.getTrainerFullName());
+				map.put("id", trainer.getTrainerId());
+				results.add(map);
+			}
+		}
+		return results;
+	}
 }

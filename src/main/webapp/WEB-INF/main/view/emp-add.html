@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+ 
+<head data-th-fragment="header">
+ <meta charset="utf-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title data-th-text="#{add.employee}">Title</title>
+  
+<!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link type="text/css" rel="stylesheet"
+	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/js/angularjs/boot-datepicker/css/bootstrap-datepicker.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/daterangepicker.css}" />
+ 
+
+     
+    <style>
+        .no-border-on-me>thead>tr>th,
+        .no-border-on-me>tbody>tr>th,
+        .no-border-on-me>tfoot>tr>th,
+        .no-border-on-me>thead>tr>td,
+        .no-border-on-me>tbody>tr>td,
+        .no-border-on-me>tfoot>tr>td
+        {
+            border-top-style: none;
+            border-bottom-style: none;
+        }
+        .form-group label { color: white; }
+        .form-horizontal .form-group { margin-right: 0px; margin-left: 0px;}
+        .add-delete-icon { margin-top: 12px;}
+    </style>
+     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+ <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+ <!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+</head>
+<body>
+ <div class="container-fluid" >                <!-- /#wrapper -->
+ 
+    <div data-th-replace="mainmenu :: top-nav"></div>
+    
+    <h3 data-th-text="#{add.employee}">Add Employee</h3>
+    
+    <div class="form-container">
+	    <form id="addEmployeeForm" class="form-horizontal" action="#"
+			data-th-action="@{/employees/save}" method="post" data-th-object="${emp}">
+			
+			<div class="form-group col-sm-3">
+				<label for="cardType" data-th-text="#{employee.card.type}">Card Type :</label>
+	  			<select data-th-field="*{teCard.cardsCardType}" class="form-control">
+	  				<option value=""></option>
+	  				<option data-th-value="#{employee.a}" value="A" data-th-text="#{employee.a}">A</option>
+	  				<option data-th-value="#{employee.b}" value="B" data-th-text="#{employee.b}">B</option>
+	  			</select>
+			</div>		
+			<div class="form-group col-sm-3">
+				<label for="number" data-th-text="#{employee.number}">Number :</label>
+	  			<input data-th-field="*{teCard.cardsCardNumber}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="cardIssueDate" data-th-text="#{employee.first.card.issue.date}">1st Card Issue Date :</label>
+	  			<input data-th-field="*{teCard.cardsIssueDate}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="sex" data-th-text="#{employee.sex}">Sex :</label>
+	  			<input data-th-field="*{employeesSex}" class="form-control" />
+			</div>		
+			<div class="form-group col-sm-4">
+				<label for="title" data-th-text="#{employee.title}">Title :</label>
+	  			<select data-th-field="*{employeesTitle}" class="form-control">
+	  				<option value=""></option>
+	  				<option data-th-value="#{employee.mr}" value="mr" data-th-text="#{employee.mr}">Mr.</option>
+	  				<option data-th-value="#{employee.mrs}" value="mrs" data-th-text="#{employee.mrs}">Mrs.</option>
+	  				<option data-th-value="#{employee.ms}" value="ms" data-th-text="#{employee.ms}">Ms.</option>
+	  			</select>
+			</div>
+			<div class="form-group col-sm-4">
+				<label for="surname" data-th-text="#{employee.surname}">Surname :</label>
+	  			<input data-th-field="*{employeesSurname}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-4">
+				<label for="firstname" data-th-text="#{employee.firstname}">Firstname :</label>
+	  			<input data-th-field="*{employeesFirstname}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-4">
+				<label for="dateOfBirth" data-th-text="#{employee.date.of.birth}">Date of Birth :</label>
+	  			<input data-th-field="*{employeesDateOfBirth}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-4">
+				<label><span  data-th-text="#{employee.marital.status}">Marital Status</span><input type="checkbox" value="true" data-th-field="*{employeesMaritalStatus}" class="form-control" /></label>
+			</div>
+			<div class="form-group col-sm-4">
+				<label for="spouseName" data-th-text="#{employee.spouse.name}">Spouse's Name :</label>
+	  			<input data-th-field="*{employeesSpouseName}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-6">
+				<label for="address1" data-th-text="#{employee.address1}">Address 1 :</label>
+	  			<input data-th-field="*{employeesAddress1}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-6">
+				<label for="address2" data-th-text="#{employee.address2}">Address 2 :</label>
+	  			<input data-th-field="*{employeesAddress2}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="city" data-th-text="#{employee.city}">City / Town :</label>
+	  			<input data-th-field="*{employeesAddress3}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="county" data-th-text="#{employee.county}">County :</label>
+	  			<select data-th-field="*{employeesAddress4}" class="form-control">
+	  				<option value=""></option>
+	  				<option data-th-value="#{employee.county.antrim}" value="Antrim" data-th-text="#{employee.county.antrim}">Antrim</option>
+	  				<option data-th-value="#{employee.county.armagh}" value="Armagh" data-th-text="#{employee.county.armagh}">Armagh</option>
+	  				<option data-th-value="#{employee.county.carlow}" value="Carlow" data-th-text="#{employee.county.carlow}">Carlow</option>
+	  				<option data-th-value="#{employee.county.cavan}" value="Cavan" data-th-text="#{employee.county.cavan}">Cavan</option>
+	  				<option data-th-value="#{employee.county.clare}" value="Clare" data-th-text="#{employee.county.clare}">Clare</option>
+	  				<option data-th-value="#{employee.county.cork}" value="Cork" data-th-text="#{employee.county.cork}">Cork</option>
+	  				<option data-th-value="#{employee.county.derry}" value="Derry" data-th-text="#{employee.county.derry}">Derry</option>
+	  				<option data-th-value="#{employee.county.donegal}" value="Donegal" data-th-text="#{employee.county.donegal}">Donegal</option>
+	  				<option data-th-value="#{employee.county.down}" value="Down" data-th-text="#{employee.county.down}">Down</option>
+	  				<option data-th-value="#{employee.county.dublin}" value="Dublin" data-th-text="#{employee.county.dublin}">Dublin</option>
+	  				<option data-th-value="#{employee.county.dublin.1}" value="Dublin 1" data-th-text="#{employee.county.dublin.1}">Dublin 1</option>
+	  				<option data-th-value="#{employee.county.dublin.10}" value="Dublin 10" data-th-text="#{employee.county.dublin.10}">Dublin 10</option>
+	  				<option data-th-value="#{employee.county.dublin.11}" value="Dublin 11" data-th-text="#{employee.county.dublin.11}">Dublin 11</option>
+	  				<option data-th-value="#{employee.county.dublin.12}" value="Dublin 12" data-th-text="#{employee.county.dublin.12}">Dublin 12</option>
+	  				<option data-th-value="#{employee.county.dublin.13}" value="Dublin 13" data-th-text="#{employee.county.dublin.13}">Dublin 13</option>
+	  				<option data-th-value="#{employee.county.dublin.14}" value="Dublin 14" data-th-text="#{employee.county.dublin.14}">Dublin 14</option>
+	  				<option data-th-value="#{employee.county.dublin.15}" value="Dublin 15" data-th-text="#{employee.county.dublin.15}">Dublin 15</option>
+	  				<option data-th-value="#{employee.county.dublin.16}" value="Dublin 16" data-th-text="#{employee.county.dublin.16}">Dublin 16</option>
+	  				<option data-th-value="#{employee.county.dublin.17}" value="Dublin 17" data-th-text="#{employee.county.dublin.17}">Dublin 17</option>
+	  				<option data-th-value="#{employee.county.dublin.18}" value="Dublin 18" data-th-text="#{employee.county.dublin.18}">Dublin 18</option>
+	  				<option data-th-value="#{employee.county.dublin.2}" value="Dublin 2" data-th-text="#{employee.county.dublin.2}">Dublin 2</option>
+	  				<option data-th-value="#{employee.county.dublin.20}" value="Dublin 20" data-th-text="#{employee.county.dublin.20}">Dublin 20</option>
+	  				<option data-th-value="#{employee.county.dublin.22}" value="Dublin 22" data-th-text="#{employee.county.dublin.22}">Dublin 22</option>
+	  				<option data-th-value="#{employee.county.dublin.24}" value="Dublin 24" data-th-text="#{employee.county.dublin.24}">Dublin 24</option>
+	  				<option data-th-value="#{employee.county.dublin.3}" value="Dublin 3" data-th-text="#{employee.county.dublin.3}">Dublin 3</option>
+	  				<option data-th-value="#{employee.county.dublin.4}" value="Dublin 4" data-th-text="#{employee.county.dublin.4}">Dublin 4</option>
+	  				<option data-th-value="#{employee.county.dublin.5}" value="Dublin 5" data-th-text="#{employee.county.dublin.5}">Dublin 5</option>
+	  				<option data-th-value="#{employee.county.dublin.6}" value="Dublin 6" data-th-text="#{employee.county.dublin.6}">Dublin 6</option>
+	  				<option data-th-value="#{employee.county.dublin.6w}" value="Dublin 6W" data-th-text="#{employee.county.dublin.6w}">Dublin 6W</option>
+	  				<option data-th-value="#{employee.county.dublin.7}" value="Dublin 7" data-th-text="#{employee.county.dublin.7}">Dublin 7</option>
+	  				<option data-th-value="#{employee.county.dublin.8}" value="Dublin 8" data-th-text="#{employee.county.dublin.8}">Dublin 8</option>
+	  				<option data-th-value="#{employee.county.dublin.9}" value="Dublin 9" data-th-text="#{employee.county.dublin.9}">Dublin 9</option>
+	  				<option data-th-value="#{employee.county.fermanagh}" value="Fermanagh" data-th-text="#{employee.county.fermanagh}">Fermanagh</option>
+	  				<option data-th-value="#{employee.county.galway}" value="Galway" data-th-text="#{employee.county.galway}">Galway</option>
+	  				<option data-th-value="#{employee.county.kerry}" value="Kerry" data-th-text="#{employee.county.kerry}">Kerry</option>
+	  				<option data-th-value="#{employee.county.kildare}" value="Kildare" data-th-text="#{employee.county.kildare}">Kildare</option>
+	  				<option data-th-value="#{employee.county.kikenny}" value="Kikenny" data-th-text="#{employee.county.kikenny}">Kikenny</option>
+	  				<option data-th-value="#{employee.county.laois}" value="Laois" data-th-text="#{employee.county.laois}">Laois</option>
+	  				<option data-th-value="#{employee.county.leitrim}" value="Leitrim" data-th-text="#{employee.county.leitrim}">Leitrim</option>
+	  				<option data-th-value="#{employee.county.limerick}" value="Limerick" data-th-text="#{employee.county.limerick}">Limerick</option>
+	  				<option data-th-value="#{employee.county.longford}" value="Longford" data-th-text="#{employee.county.longford}">Longford</option>
+	  				<option data-th-value="#{employee.county.louth}" value="Louth" data-th-text="#{employee.county.louth}">Louth</option>
+	  				<option data-th-value="#{employee.county.mayo}" value="Mayo" data-th-text="#{employee.county.mayo}">Mayo</option>
+	  				<option data-th-value="#{employee.county.meath}" value="Meath" data-th-text="#{employee.county.meath}">Meath</option>
+	  				<option data-th-value="#{employee.county.monaghan}" value="Monaghan" data-th-text="#{employee.county.monaghan}">Monaghan</option>
+	  				<option data-th-value="#{employee.county.offaly}" value="Offaly" data-th-text="#{employee.county.offaly}">Offaly</option>
+	  				<option data-th-value="#{employee.county.roscommon}" value="Roscommon" data-th-text="#{employee.county.roscommon}">Roscommon</option>
+	  				<option data-th-value="#{employee.county.sligo}" value="Sligo" data-th-text="#{employee.county.sligo}">Sligo</option>
+	  				<option data-th-value="#{employee.county.tipperary}" value="Tipperary" data-th-text="#{employee.county.tipperary}">Tipperary</option>
+	  				<option data-th-value="#{employee.county.tyrone}" value="Tyrone" data-th-text="#{employee.county.tyrone}">Tyrone</option>
+	  				<option data-th-value="#{employee.county.waterford}" value="Waterford" data-th-text="#{employee.county.waterford}">Waterford</option>
+	  				<option data-th-value="#{employee.county.westmeath}" value="Westmeath" data-th-text="#{employee.county.westmeath}">Westmeath</option>
+	  				<option data-th-value="#{employee.county.wexford}" value="Wexford" data-th-text="#{employee.county.wexford}">Wexford</option>
+	  				<option data-th-value="#{employee.county.wicklow}" value="Wicklow" data-th-text="#{employee.county.wicklow}">Wicklow</option>
+	  			</select>
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="postcode" data-th-text="#{employee.postcode}">Post Code :</label>
+	  			<input data-th-field="*{employeesPostCode}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="country" data-th-text="#{employee.country}">Country :</label>
+	  			<select data-th-field="*{employeesAddress5}" class="form-control">
+	  				<option value=""></option>
+	  				<option data-th-value="#{employee.country.ireland}" value="Ireland" data-th-text="#{employee.country.ireland}">Ireland</option>
+	  				<option data-th-value="#{employee.country.northern.ireland}" value="Northern Ireland" data-th-text="#{employee.country.northern.ireland}">Northern Ireland</option>
+	  				<option data-th-value="#{employee.country.england}" value="England" data-th-text="#{employee.country.england}">England</option>
+	  			</select>
+			</div>
+			<div class="form-group col-sm-4">
+				<label for="numHourWorked" data-th-text="#{employee.num.hours.worked}">Num Hours Worked :</label>
+	  			<input data-th-field="*{employeeNumHourWorked}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-4">
+				<label for="lastYearPaid" data-th-text="#{employee.last.year.paid}">Last Year Paid :</label>
+	  			<input data-th-field="*{employeeLastYearPaid}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-4">
+				<label for="categoryOfEmployment" data-th-text="#{employee.category.of.employment}">Category of Employment :</label>
+	  			<select data-th-field="*{employeeCategoryOfEmployment}" class="form-control">
+	  				<option value=""></option>
+	  				<option data-th-value="#{employee.category.assistant.trainer}" value="Assistant Trainer" data-th-text="#{employee.category.assistant.trainer}">Assistant Trainer</option>
+	  				<option data-th-value="#{employee.category.blacksmith.farrier}" value="Blacksmith / Farrier" data-th-text="#{employee.category.blacksmith.farrier}">Blacksmith / Farrier</option>
+	  				<option data-th-value="#{employee.category.general.maintenance}" value="General Maintenance" data-th-text="#{employee.category.general.maintenance}">General Maintenance</option>
+	  				<option data-th-value="#{employee.category.groom}" value="Groom" data-th-text="#{employee.category.groom}">Groom</option>
+	  				<option data-th-value="#{employee.category.head.lad.girl}" value="Head Lad / Girl" data-th-text="#{employee.category.head.lad.girl}">Head Lad / Girl</option>
+	  				<option data-th-value="#{employee.category.horse.box.driver}" value="Horse Box Driver" data-th-text="#{employee.category.horse.box.driver}">Horse Box Driver</option>
+	  				<option data-th-value="#{employee.category.manager}" value="Manager" data-th-text="#{employee.category.manager}">Manager</option>
+	  				<option data-th-value="#{employee.category.office.administrator}" value="Office Administrator" data-th-text="#{employee.category.office.administrator}">Office Administrator</option>
+	  				<option data-th-value="#{employee.category.race.day.help}" value="Race Day Help" data-th-text="#{employee.category.race.day.help}">Race Day Help</option>
+	  				<option data-th-value="#{employee.category.rider}" value="Rider" data-th-text="#{employee.category.rider}">Rider</option>
+	  				<option data-th-value="#{employee.category.security}" value="Security" data-th-text="#{employee.category.security}">Security</option>
+	  				<option data-th-value="#{employee.category.travelling.head.lad.girl}" value="Travelling Head Lad / Girl" data-th-text="#{employee.category.travelling.head.lad.girl}">Travelling Head Lad / Girl</option>
+	  				<option data-th-value="#{employee.category.yard.person}" value="Yard Person" data-th-text="#{employee.category.yard.person}">Yard Person</option>
+	  			</select>
+			</div>
+			<div class="form-group col-sm-12">
+				<label for="comments" data-th-text="#{employee.comments}">Comments :</label>
+	  			<textarea data-th-field="*{employeesComments}" class="form-control" cols="10" rows="3"></textarea>
+			</div>
+			<div class="form-group col-sm-4">
+				<label for="oldEmployeeCardNumber" data-th-text="#{employee.old.employee.card.number}">Old Employee Card Number :</label>
+	  			<input data-th-field="*{employeeOldEmployeeCardNumber}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-4">
+				<label for="existingAirCardHolder" data-th-text="#{employee.existing.air.card.holder}">Existing AIR Card Holder :</label>
+	  			<select data-th-field="*{employeeExistingAIRCardHolder}" class="form-control">
+	  				<option value=""></option>
+	  				<option data-th-value="#{employee.existing.card.holder.yes}" value="Yes" data-th-text="#{employee.existing.card.holder.yes}">Yes</option>
+	  				<option data-th-value="#{employee.existing.card.holder.no}" value="No" data-th-text="#{employee.existing.card.holder.no}">No</option>
+	  			</select>
+			</div>
+			<div class="form-group col-sm-4">
+				<label for="existingHriAccountNumber" data-th-text="#{employee.existing.hri.account.number}">Existing HRI Account Number :</label>
+	  			<input data-th-field="*{employeesHriAccountNo}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-4">
+				<label for="requestDate" data-th-text="#{employee.request.date}">Request Date :</label>
+	  			<input data-th-field="*{employeeRequestDate}" class="form-control" />
+			</div>
+			<div class="form-group col-sm-8">
+				<label><span data-th-text="#{employee.tick.if.new}">Tick If New</span><input type="checkbox" data-th-field="*{employeesIsNew}" value="true" class="form-control" /></label>
+			</div>
+			<div class="pension-form col-sm-12">
+				<div class="form-group col-sm-1">
+					<label for="card" data-th-text="#{employee.pension.card}">Card :</label>
+		  			<select data-th-field="*{pensions[0].pensionCardType}" class="form-control">
+		  				<option value=""></option>
+		  				<option data-th-value="#{employee.a}" value="A" data-th-text="#{employee.a}">A</option>
+		  				<option data-th-value="#{employee.b}" value="B" data-th-text="#{employee.b}">B</option>
+		  			</select>
+				</div>
+				<div class="form-group col-sm-2">
+					<label for="card" data-th-text="#{employee.pension.type}">Pension :</label>
+		  			<select data-th-field="*{pensions[0].pensionType}" class="form-control">
+		  				<option value=""></option>
+		  				<option data-th-value="#{employee.pension.f}" value="F" data-th-text="#{employee.pension.f}">F</option>
+		  				<option data-th-value="#{employee.pension.p}" value="P" data-th-text="#{employee.pension.p}">P</option>
+		  				<option data-th-value="#{employee.pension.n}" value="N" data-th-text="#{employee.pension.n}">N</option>
+		  			</select>
+				</div>		
+				<div class="form-group col-sm-2">
+					<label for="card" data-th-text="#{employee.pension.trainer}">Trainer</label>
+		  			<input data-th-field="*{pensions[0].pensionTrainerName}" class="form-control" />
+		  			<input type="hidden" data-th-field="*{pensions[0].pensionTrainer.trainerId}" />
+				</div>		
+				<div class="form-group col-sm-2">
+					<label for="requestDate" data-th-text="#{employee.pension.hri.ac.num}">HRI A/C Num :</label>
+		  			<input data-th-field="*{pensions[0].pensionHRIAccNum}" class="form-control" />
+				</div>
+				<div class="form-group col-sm-3">
+					<label for="requestDate" data-th-text="#{employee.pension.date.range}">Date Range :</label>
+		  			<input data-th-field="*{pensions[0].pensionDateRange}" class="form-control" />
+				</div>
+				<div class="form-group col-sm-2 add-delete-icon">
+					<a href="javascript:void(0);" id="addPensionRecord" alt="Add Pension Record" title="Add Pension Record"><i class="fa fa-plus fa-3x"></i></a>
+				</div>
+			</div>
+			<div class="form-group col-sm-12 text-center">
+				<input type="submit" class="btn btn-success" th:value="#{employee.save.record}" value="Save Record" />
+				<input type="button" class="btn btn-danger" th:value="#{employee.exit}" value="Exit" />
+			</div>
+		</form>
+	</div>
+    
+</div>              <!-- /#wrapper -->
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
+        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+         
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
+        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+ 
+    <!-- Core Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
+        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+         
+    <!-- SB Admin Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+    
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/angularjs/moment/moment.js}"></script>
+            
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/angularjs/daterangepicker/daterangepicker.js}"></script>
+    
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/angularjs/boot-datepicker/js/bootstrap-datepicker.js}"></script>
+    
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/angularjs/typeahead/typeahead.js}"></script>
+        
+    <script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/	
+    	var trainers = [[${trainers}]];
+    	var noOfPensionRecord = 1;
+    	var card = [[#{employee.pension.card}]];
+    	var cardA = [[#{employee.a}]];
+    	var cardB = [[#{employee.b}]];
+    	var pension = [[#{employee.pension.type}]];
+    	var pensionF = [[#{employee.pension.f}]];
+    	var pensionP = [[#{employee.pension.p}]];
+    	var pensionN = [[#{employee.pension.n}]];
+    	var trainer = [[#{employee.pension.trainer}]];
+    	var hriAccNum = [[#{employee.pension.hri.ac.num}]];
+    	var dateRange = [[#{employee.pension.date.range}]];
+    	
+    	$(function() {
+    		
+    		// setup date pickers
+    		$("#teCard\\.cardsIssueDate").datepicker({
+    			changeMonth : true,
+    			changeYear : true,
+    			format: 'dd/mm/yyyy'
+    		}).on('changeDate', function(ev){
+    		    $(this).datepicker('hide');
+    		});
+    		
+    		// setup date pickers
+    		$("#employeesDateOfBirth").datepicker({
+    			changeMonth : true,
+    			changeYear : true,
+    			endDate : '+0d',
+    			format: 'dd/mm/yyyy'
+    		}).on('changeDate', function(ev){
+    		    $(this).datepicker('hide');
+    		});
+    		
+    		// setup date pickers
+    		$("#employeeRequestDate").datepicker({
+    			changeMonth : true,
+    			changeYear : true,
+    			format: 'dd/mm/yyyy'
+    		}).on('changeDate', function(ev){
+    		    $(this).datepicker('hide');
+    		});
+    		
+    		// setup date pickers
+    		/* $("#pensions0\\.pensionDateJoinedScheme").datepicker({
+    			changeMonth : true,
+    			changeYear : true,
+    			format: 'dd/mm/yyyy'
+    		}).on('changeDate', function(ev){
+    		    $(this).datepicker('hide');
+    		});
+    		
+    		// setup date pickers
+    		$("#pensions0\\.pensionDateLeftScheme").datepicker({
+    			changeMonth : true,
+    			changeYear : true,
+    			format: 'dd/mm/yyyy'
+    		}).on('changeDate', function(ev){
+    		    $(this).datepicker('hide');
+    		}); */
+    		
+    		$('#pensions0\\.pensionDateRange').daterangepicker({
+   				locale: {
+   		            format: 'DD/MM/YYYY'
+   		        },
+   		     	autoApply: true
+    		});
+    		
+    		$('#pensions0\\.pensionTrainerName').typeahead({
+    		    source: trainers
+    		}).on('change', function (event, data) {
+    		    $('#pensions0\\.pensionTrainer\\.trainerId').val($(this).next().find('li.active').data('value'));
+    		});
+    		
+    		$('#addPensionRecord').click(function() {
+    			$('.pension-form').after('<div class="add-pension-form col-sm-12">'+
+    					'<div class="form-group col-sm-1">'+
+    					'<label for="card" data-th-text="'+card+'">'+card+' :</label>'+
+    						'<select id="pensions'+noOfPensionRecord+'.pensionCardType" name="pensions['+noOfPensionRecord+'].pensionCardType" class="form-control">'+
+    							'<option value=""></option>'+
+    							'<option value="'+cardA+'">'+cardA+'</option>'+
+    							'<option value="'+cardB+'">'+cardB+'</option>'+
+    						'</select>'+
+    				'</div>'+
+    				'<div class="form-group col-sm-2">'+
+    					'<label for="card" >'+pension+' :</label>'+
+    						'<select id="pensions'+noOfPensionRecord+'.pensionType" name="pensions['+noOfPensionRecord+'].pensionType" class="form-control">'+
+    							'<option value=""></option>'+
+    							'<option value="'+pensionF+'" >'+pensionF+'</option>'+
+    							'<option value="'+pensionP+'" >'+pensionP+'</option>'+
+    							'<option value="'+pensionN+'" >'+pensionN+'</option>'+
+    						'</select>'+
+    				'</div>		'+
+    				'<div class="form-group col-sm-2">'+
+    					'<label for="card" >'+trainer+'</label>'+
+    						'<input id="pensions'+noOfPensionRecord+'.pensionTrainerName" name="pensions['+noOfPensionRecord+'].pensionTrainerName" class="form-control" />'+
+    						'<input type="hidden" id="pensions'+noOfPensionRecord+'.pensionTrainer.trainerId" name="pensions['+noOfPensionRecord+'].pensionTrainer.trainerId" />'+
+    				'</div>		'+
+    				'<div class="form-group col-sm-2">'+
+    					'<label for="requestDate" >'+hriAccNum+' :</label>'+
+    						'<input id="pensions'+noOfPensionRecord+'.pensionHRIAccNum" name="pensions['+noOfPensionRecord+'].pensionHRIAccNum" class="form-control" />'+
+    				'</div>'+
+    				'<div class="form-group col-sm-3">'+
+    					'<label for="requestDate" >'+dateRange+' :</label>'+
+    						'<input id="pensions'+noOfPensionRecord+'.pensionDateRange" name="pensions['+noOfPensionRecord+'].pensionDateRange" class="form-control" />'+
+    				'</div>'+
+    				'<div class="form-group col-sm-2 add-delete-icon">'+
+    					'<a href="javascript:void(0);" id="deletePensionRecord" alt="Delete Pension Record" title="Delete Pension Record"><i class="fa fa-trash-o fa-3x"></i></a>'+
+    				'</div>'+
+    			'</div>');
+    			
+    			$('#pensions'+noOfPensionRecord+'\\.pensionTrainerName').typeahead({
+        		    source: trainers
+        		}).on('change', function (event, data) {
+        			var index = noOfPensionRecord-1;
+        		    $('#pensions'+index+'\\.pensionTrainer\\.trainerId').val($(this).next().find('li.active').data('value'));
+        		});
+    			
+    			$('#pensions'+noOfPensionRecord+'\\.pensionDateRange').daterangepicker({
+       				locale: {
+       		            format: 'DD/MM/YYYY'
+       		        },
+       		     	autoApply: true
+        		});
+    			
+    			++noOfPensionRecord;
+    		});
+    		
+    		$(document).on('click', '#deletePensionRecord', function() {
+    			$(this).parents('.add-pension-form:first').remove();
+    		});
+    	});
+    	/*]]>*/
+    </script>    
+       	
+	</body>
+</html>
