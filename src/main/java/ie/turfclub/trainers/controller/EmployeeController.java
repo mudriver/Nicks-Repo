@@ -6,6 +6,7 @@ import ie.turfclub.trainers.model.TeEmployees;
 import ie.turfclub.trainers.model.TePension;
 import ie.turfclub.trainers.model.TeTrainers;
 import ie.turfclub.trainers.service.EmployeeService;
+import ie.turfclub.trainers.service.StableStaffService;
 import ie.turfclub.trainers.service.TrainersService;
 
 import java.sql.SQLException;
@@ -36,6 +37,9 @@ public class EmployeeController {
 	@Autowired
 	private PersonService personService;
 
+	@Autowired
+	private StableStaffService stableStaffService;
+	
 	@RequestMapping(value="/manageStaff", method=RequestMethod.GET)
 	public String getManageStaffPage(HttpServletRequest request) {
 		
@@ -48,6 +52,17 @@ public class EmployeeController {
 		model.addAttribute("emp", new TeEmployees());
 		
 		model.addAttribute("trainers", trainersService.getAllTrainers());
+		model.addAttribute("sexEnum", employeeService.getSexEnum());
+		model.addAttribute("maritalEnum",
+				employeeService.getMaritalStatusEnum());
+		model.addAttribute("employmentCatEnum",
+				employeeService.getEmploymentCategoryEnum());
+		model.addAttribute("titlesEnum", employeeService.getTitlesEnum());
+		model.addAttribute("countiesEnum", employeeService.getCountiesEnum());
+		model.addAttribute("countriesEnum",
+				employeeService.getCountriesEnum());
+		model.addAttribute("cardTypeEnum", employeeService.getAllCardType());
+		model.addAttribute("pensionEnum", employeeService.getPension());
 		return "emp-add";
 	}
 	
@@ -83,8 +98,8 @@ public class EmployeeController {
 		emp.setTePensions(new HashSet<TePension>(emp.getPensions()));
 		employeeService.saveOrUpdate(emp);
 		
-		Person person = createPerson(emp);
-		personService.addPerson(person);
+		//Person person = createPerson(emp);
+		//personService.addPerson(person);
 		model.addAttribute("emp", new TeEmployees());
 		
 		return "emp-add";

@@ -15,13 +15,16 @@
 <link type="text/css" rel="stylesheet"
 	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
 	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/sb-admin-2.css"
+	data-th-href="@{/resources/css/sb-admin-2.css}" />
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
 <link type="text/css" rel="stylesheet"
 	href="../../resources/css/select2.css"
 	data-th-href="@{/resources/css/select2.css}" />
-<link type="text/css" rel="stylesheet"
-	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
+<!-- <link type="text/css" rel="stylesheet"
+	data-th-href="@{/resources/js/angularjs/select2/select.css}" /> -->
 <link type="text/css" rel="stylesheet"
 	href="../../resources/css/overrides.css"
 	data-th-href="@{/resources/css/overrides.css}" />
@@ -67,34 +70,38 @@
 	    <form id="addEmployeeForm" class="form-horizontal" action="#"
 			data-th-action="@{/employees/save}" method="post" data-th-object="${emp}">
 			
-			<div class="form-group col-sm-3">
+			<div class="form-group col-sm-4">
 				<label for="cardType" data-th-text="#{employee.card.type}">Card Type :</label>
-	  			<select data-th-field="*{teCard.cardsCardType}" class="form-control">
+	  			<!-- <select data-th-field="*{teCard.cardsCardType}" class="form-control">
 	  				<option value=""></option>
 	  				<option data-th-value="#{employee.a}" value="A" data-th-text="#{employee.a}">A</option>
 	  				<option data-th-value="#{employee.b}" value="B" data-th-text="#{employee.b}">B</option>
-	  			</select>
+	  			</select> -->
+	  			<input class="form-control"
+					data-th-field="*{teCard.cardsCardType}" type='text'></input> 
+					<input type="hidden" id="cardTypeEnum" data-th-value="  ${cardTypeEnum}"></input>
 			</div>		
-			<div class="form-group col-sm-3">
+			<div class="form-group col-sm-4">
 				<label for="number" data-th-text="#{employee.number}">Number :</label>
 	  			<input data-th-field="*{teCard.cardsCardNumber}" class="form-control" />
 			</div>
-			<div class="form-group col-sm-3">
+			<div class="form-group col-sm-4">
 				<label for="cardIssueDate" data-th-text="#{employee.first.card.issue.date}">1st Card Issue Date :</label>
 	  			<input data-th-field="*{teCard.cardsIssueDate}" class="form-control" />
 			</div>
-			<div class="form-group col-sm-3">
+			<div class="form-group col-sm-4">
 				<label for="sex" data-th-text="#{employee.sex}">Sex :</label>
-	  			<input data-th-field="*{employeesSex}" class="form-control" />
+	  			<!-- <input data-th-field="*{employeesSex}" class="form-control" /> -->
+	  			<input class="form-control"
+					data-th-field="*{employeesSex}" type='text'></input> 
+					<input type="hidden" id="sexEnum" data-th-value="  ${sexEnum}"></input>
 			</div>		
 			<div class="form-group col-sm-4">
 				<label for="title" data-th-text="#{employee.title}">Title :</label>
-	  			<select data-th-field="*{employeesTitle}" class="form-control">
-	  				<option value=""></option>
-	  				<option data-th-value="#{employee.mr}" value="mr" data-th-text="#{employee.mr}">Mr.</option>
-	  				<option data-th-value="#{employee.mrs}" value="mrs" data-th-text="#{employee.mrs}">Mrs.</option>
-	  				<option data-th-value="#{employee.ms}" value="ms" data-th-text="#{employee.ms}">Ms.</option>
-	  			</select>
+	  			<input class="form-control"
+					data-title="title" data-th-field="*{employeesTitle}" type='text'
+					></input> <input type="hidden" id="titles"
+					data-th-value="  ${titlesEnum}"></input>
 			</div>
 			<div class="form-group col-sm-4">
 				<label for="surname" data-th-text="#{employee.surname}">Surname :</label>
@@ -109,27 +116,31 @@
 	  			<input data-th-field="*{employeesDateOfBirth}" class="form-control" />
 			</div>
 			<div class="form-group col-sm-4">
-				<label><span  data-th-text="#{employee.marital.status}">Marital Status</span><input type="checkbox" value="true" data-th-field="*{employeesMaritalStatus}" class="form-control" /></label>
+				<label><span  data-th-text="#{employee.marital.status}">Marital Status</span></label>
+				<!-- <input type="checkbox" value="true" data-th-field="*{employeesMaritalStatus}" class="form-control" /></label> -->
+				<input class="form-control"
+					data-th-field="*{employeesMaritalStatus}" type='text'></input> 
+					<input type="hidden" id="maritalEnum" data-th-value="  ${maritalEnum}"></input>
 			</div>
 			<div class="form-group col-sm-4">
 				<label for="spouseName" data-th-text="#{employee.spouse.name}">Spouse's Name :</label>
 	  			<input data-th-field="*{employeesSpouseName}" class="form-control" />
 			</div>
-			<div class="form-group col-sm-6">
+			<div class="form-group col-sm-4">
 				<label for="address1" data-th-text="#{employee.address1}">Address 1 :</label>
 	  			<input data-th-field="*{employeesAddress1}" class="form-control" />
 			</div>
-			<div class="form-group col-sm-6">
+			<div class="form-group col-sm-4">
 				<label for="address2" data-th-text="#{employee.address2}">Address 2 :</label>
 	  			<input data-th-field="*{employeesAddress2}" class="form-control" />
 			</div>
-			<div class="form-group col-sm-3">
+			<div class="form-group col-sm-4">
 				<label for="city" data-th-text="#{employee.city}">City / Town :</label>
 	  			<input data-th-field="*{employeesAddress3}" class="form-control" />
 			</div>
-			<div class="form-group col-sm-3">
+			<div class="form-group col-sm-4">
 				<label for="county" data-th-text="#{employee.county}">County :</label>
-	  			<select data-th-field="*{employeesAddress4}" class="form-control">
+	  			<!-- <select data-th-field="*{employeesAddress4}" class="form-control">
 	  				<option value=""></option>
 	  				<option data-th-value="#{employee.county.antrim}" value="Antrim" data-th-text="#{employee.county.antrim}">Antrim</option>
 	  				<option data-th-value="#{employee.county.armagh}" value="Armagh" data-th-text="#{employee.county.armagh}">Armagh</option>
@@ -185,20 +196,26 @@
 	  				<option data-th-value="#{employee.county.westmeath}" value="Westmeath" data-th-text="#{employee.county.westmeath}">Westmeath</option>
 	  				<option data-th-value="#{employee.county.wexford}" value="Wexford" data-th-text="#{employee.county.wexford}">Wexford</option>
 	  				<option data-th-value="#{employee.county.wicklow}" value="Wicklow" data-th-text="#{employee.county.wicklow}">Wicklow</option>
-	  			</select>
+	  			</select> -->
+	  			<input class="form-control"
+					data-th-field="*{employeesAddress4}" type='text'></input> 
+					<input type="hidden" id="countiesEnum" data-th-value="  ${countiesEnum}"></input>
 			</div>
-			<div class="form-group col-sm-3">
+			<div class="form-group col-sm-4">
 				<label for="postcode" data-th-text="#{employee.postcode}">Post Code :</label>
 	  			<input data-th-field="*{employeesPostCode}" class="form-control" />
 			</div>
-			<div class="form-group col-sm-3">
+			<div class="form-group col-sm-4">
 				<label for="country" data-th-text="#{employee.country}">Country :</label>
-	  			<select data-th-field="*{employeesAddress5}" class="form-control">
+	  			<!-- <select data-th-field="*{employeesAddress5}" class="form-control">
 	  				<option value=""></option>
 	  				<option data-th-value="#{employee.country.ireland}" value="Ireland" data-th-text="#{employee.country.ireland}">Ireland</option>
 	  				<option data-th-value="#{employee.country.northern.ireland}" value="Northern Ireland" data-th-text="#{employee.country.northern.ireland}">Northern Ireland</option>
 	  				<option data-th-value="#{employee.country.england}" value="England" data-th-text="#{employee.country.england}">England</option>
-	  			</select>
+	  			</select> -->
+	  			<input class="form-control"
+					data-th-field="*{employeesAddress5}" type='text'></input> 
+					<input type="hidden" id="countriesEnum" data-th-value="  ${countriesEnum}"></input>
 			</div>
 			<div class="form-group col-sm-4">
 				<label for="numHourWorked" data-th-text="#{employee.num.hours.worked}">Num Hours Worked :</label>
@@ -208,9 +225,13 @@
 				<label for="lastYearPaid" data-th-text="#{employee.last.year.paid}">Last Year Paid :</label>
 	  			<input data-th-field="*{employeeLastYearPaid}" class="form-control" />
 			</div>
+			<div class="form-group col-sm-12">
+				<label for="comments" data-th-text="#{employee.comments}">Comments :</label>
+	  			<textarea data-th-field="*{employeesComments}" class="form-control" cols="10" rows="3"></textarea>
+			</div>
 			<div class="form-group col-sm-4">
 				<label for="categoryOfEmployment" data-th-text="#{employee.category.of.employment}">Category of Employment :</label>
-	  			<select data-th-field="*{employeeCategoryOfEmployment}" class="form-control">
+	  			<!-- <select data-th-field="*{employeeCategoryOfEmployment}" class="form-control">
 	  				<option value=""></option>
 	  				<option data-th-value="#{employee.category.assistant.trainer}" value="Assistant Trainer" data-th-text="#{employee.category.assistant.trainer}">Assistant Trainer</option>
 	  				<option data-th-value="#{employee.category.blacksmith.farrier}" value="Blacksmith / Farrier" data-th-text="#{employee.category.blacksmith.farrier}">Blacksmith / Farrier</option>
@@ -225,11 +246,10 @@
 	  				<option data-th-value="#{employee.category.security}" value="Security" data-th-text="#{employee.category.security}">Security</option>
 	  				<option data-th-value="#{employee.category.travelling.head.lad.girl}" value="Travelling Head Lad / Girl" data-th-text="#{employee.category.travelling.head.lad.girl}">Travelling Head Lad / Girl</option>
 	  				<option data-th-value="#{employee.category.yard.person}" value="Yard Person" data-th-text="#{employee.category.yard.person}">Yard Person</option>
-	  			</select>
-			</div>
-			<div class="form-group col-sm-12">
-				<label for="comments" data-th-text="#{employee.comments}">Comments :</label>
-	  			<textarea data-th-field="*{employeesComments}" class="form-control" cols="10" rows="3"></textarea>
+	  			</select> -->
+	  			<input class="form-control"
+					data-th-field="*{employeeCategoryOfEmployment}" type='text'></input> 
+					<input type="hidden" id="employmentCatEnum" data-th-value="  ${employmentCatEnum}"></input>
 			</div>
 			<div class="form-group col-sm-4">
 				<label for="oldEmployeeCardNumber" data-th-text="#{employee.old.employee.card.number}">Old Employee Card Number :</label>
@@ -251,7 +271,7 @@
 				<label for="requestDate" data-th-text="#{employee.request.date}">Request Date :</label>
 	  			<input data-th-field="*{employeeRequestDate}" class="form-control" />
 			</div>
-			<div class="form-group col-sm-8">
+			<div class="form-group col-sm-4">
 				<label><span data-th-text="#{employee.tick.if.new}">Tick If New</span><input type="checkbox" data-th-field="*{employeesIsNew}" value="true" class="form-control" /></label>
 			</div>
 			<div class="pension-form col-sm-12">
@@ -301,6 +321,8 @@
     <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
         data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
          
+    <script type="text/javascript" src="../../resources/js/validator.min.js"
+		data-th-src="@{/resources/js/validator.min.js}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
         data-th-src="@{/resources/js/bootstrap.min.js}"></script>
@@ -313,6 +335,8 @@
     <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
         data-th-src="@{/resources/js/sb-admin-2.js}"></script>
     
+    <script src="../../resources/js/select2.js" type="text/javascript"
+		data-th-src="@{/resources/js/select2.js}"></script>
     <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
         data-th-src="@{/resources/js/angularjs/moment/moment.js}"></script>
             
@@ -324,6 +348,10 @@
     
     <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
         data-th-src="@{/resources/js/angularjs/typeahead/typeahead.js}"></script>
+        
+    <script type="text/javascript"
+		src="../../resources/js/employee/add.js"
+		data-th-src="@{/resources/js/employee/add.js}"></script>
         
     <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/	
