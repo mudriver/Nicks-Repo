@@ -22,4 +22,6 @@ public interface EmployeeService {
 
 	String getCountriesEnum();
 
+	String getNationalityEnum();
+
 }

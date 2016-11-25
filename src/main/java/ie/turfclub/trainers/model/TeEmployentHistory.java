@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
@@ -69,6 +70,7 @@ public class TeEmployentHistory implements java.io.Serializable {
 	private boolean ehVerified;
 	@Expose
 	private Date employeeLastUpdated;
+	private String trainerName;
 
 	public TeEmployentHistory() {
 	}
@@ -227,7 +229,14 @@ public class TeEmployentHistory implements java.io.Serializable {
 		this.ehVerified = ehVerified;
 	}
 
+	@Transient
+	public String getTrainerName() {
+		return trainerName;
+	}
 
+	public void setTrainerName(String trainerName) {
+		this.trainerName = trainerName;
+	}
 
 	public static class TeEmploymentHistoryComparatorTrainerId implements Comparator<TeEmployentHistory>{
 		

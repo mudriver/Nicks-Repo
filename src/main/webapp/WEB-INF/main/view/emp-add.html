@@ -4,6 +4,8 @@
  
 <head data-th-fragment="header">
  <meta charset="utf-8" />
+ <meta http-equiv="pragma" content="no-cache" />
+ <meta http-equiv="expires" content="-1" />
  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
  <meta name="viewport" content="width=device-width, initial-scale=1" />
  <title data-th-text="#{add.employee}">Title</title>
@@ -50,7 +52,17 @@
         }
         .form-group label { color: white; }
         .form-horizontal .form-group { margin-right: 0px; margin-left: 0px;}
-        .add-delete-icon { margin-top: 12px;}
+        .add-delete-icon { margin-top: 12px !important; }
+        .left-form { float: left;}
+        .right-form { float: right;}
+        input, select { width: 100% !important;}
+        .form-group { margin-top: 2px; margin-bottom: 2px !important;}
+        .emp-button { width: 20% !important;}
+        #employeesComments { resize: none;}
+        input[type="radio"], input[type="checkbox"] {margin: 0;}
+        .datepicker-orient-top { z-index: 9999 !important;}
+        .has-error .form-control { border: 1px solid red !important;}
+        .section-card { background-color: #666E94; padding: 12px; border-radius: 15px; border: 5px solid rgb(14, 23, 60);}
     </style>
      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -67,254 +79,415 @@
     <h3 data-th-text="#{add.employee}">Add Employee</h3>
     
     <div class="form-container">
-	    <form id="addEmployeeForm" class="form-horizontal" action="#"
+    	<div class="alert alert-success" id="successMsg" th:if="${success != null and success != ''}">
+    		<span th:text="${success}"></span>
+    	</div>
+	    <form id="employeeEditForm" class="form-inline" action="#"
 			data-th-action="@{/employees/save}" method="post" data-th-object="${emp}">
+
+			<input type='hidden' data-th-field="*{employeesEmployeeId}"></input>
+			<div class="left-form col-sm-6 section-card">
+				<div class="form-group col-sm-12">
+					<label for="title" class="col-sm-4" data-th-text="#{employee.title}">Title :</label>
+					<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-title="title" 
+			  				data-th-field="*{employeesTitle}" type='text' required="required"></input> 
+			  			<input type="hidden" id="titles" data-th-value="  ${titlesEnum}"></input>
+					</div>		
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="sex" class="col-sm-4" data-th-text="#{employee.sex}">Sex :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{employeesSex}" 
+			  				type='text' required="required"></input> 
+						<input type="hidden" id="sexEnum" data-th-value="  ${sexEnum}"></input>
+					</div>
+				</div>		
+				<div class="form-group col-sm-12">
+					<label for="firstname" class="col-sm-4" data-th-text="#{employee.firstname}">Firstname :</label>
+					<div class="col-sm-8">
+		  				<input data-th-field="*{employeesFirstname}" class="form-control input-sm" 
+		  					required="required" placeholder='You must enter first name'/>
+		  			</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="surname" class="col-sm-4" data-th-text="#{employee.surname}">Surname :</label>
+					<div class="col-sm-8">
+		  				<input data-th-field="*{employeesSurname}" class="form-control input-sm" 
+		  					required="required" placeholder='You must enter a surname'/>
+		  			</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="dateofbirth" class="col-sm-4" data-th-text="#{employee.date.of.birth}">Date of Birth :</label>
+					<div class="col-sm-8">
+		  				<input data-dateofbirth="dateofbirth" data-th-field="*{employeesDateOfBirth}" 
+		  					class="form-control input-sm" required="required" 
+		  					placeholder='You must enter a date of birth in format:(dd/mm/yyyy)'/>
+		  			</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="address1" class="col-sm-4" data-th-text="#{employee.address1}">Address 1 :</label>
+					<div class="col-sm-8">
+		  				<input data-th-field="*{employeesAddress1}" class="form-control input-sm" 
+		  					placeholder='Enter address line 1 (Leave blank if not required)'/>
+		  			</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="address2" class="col-sm-4" data-th-text="#{employee.address2}">Address 2 :</label>
+					<div class="col-sm-8">
+		  				<input data-th-field="*{employeesAddress2}" class="form-control input-sm"
+		  					placeholder='Enter address line 2 (Leave blank if not required)' />
+		  			</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="city" class="col-sm-4" data-th-text="#{employee.city}">City / Town :</label>
+					<div class="col-sm-8">
+		  				<input data-th-field="*{employeesAddress3}" class="form-control input-sm" 
+		  					required="required" placeholder='You must enter a city or town'/>
+		  			</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="county" class="col-sm-4" data-th-text="#{employee.county}">County :</label>
+					<div class="col-sm-8">
+			  			<input data-county="county" class="form-control input-sm" data-th-field="*{employeesAddress4}" 
+			  				type='text' required="required"></input> 
+						<input type="hidden" id="countiesEnum" data-th-value="  ${countiesEnum}"></input>
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="postcode" class="col-sm-4" data-th-text="#{employee.postcode}">Post Code :</label>
+					<div class="col-sm-8">
+		  				<input data-th-field="*{employeesPostCode}" class="form-control input-sm" 
+		  					required="required" placeholder='Post Code (if applicable)'/>
+		  			</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="country" class="col-sm-4" data-th-text="#{employee.country}">Country :</label>
+					<div class="col-sm-8">
+			  			<input data-country="country" class="form-control input-sm" data-th-field="*{employeesAddress5}" 
+			  				type='text' required="required"></input> 
+						<input type="hidden" id="countriesEnum" data-th-value="  ${countriesEnum}"></input>
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="nationality" class="col-sm-4" data-th-text="#{employee.nationality}">Nationality :</label>
+					<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{employeesNationality}" 
+			  				type='text' required="required"></input> 
+						<input type="hidden" id="nationalityEnum" data-th-value="  ${nationalityEnum}"></input>
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="phoneNo" class="col-sm-4" data-th-text="#{employee.phone.no}">Phone No :</label>
+					<div class="col-sm-8">
+			  			<input data-minlength="7" data-th-field="*{employeesPhoneNo}" 
+			  				class="form-control input-sm" placeholder='Please enter a landline no. (Digits only min. 7)'/>
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="mobileNo" class="col-sm-4" data-th-text="#{employee.mobile.no}">Mobile No :</label>
+					<div class="col-sm-8">
+			  			<input data-minlength="7" data-emailorphone="emailorphone" required="required"
+			  				data-th-field="*{employeesMobileNo}" class="form-control input-sm" 
+			  				placeholder='Please enter a mobile phone no. (Digits only min. 7)' />
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="email" class="col-sm-4" data-th-text="#{employee.email}">Email :</label>
+					<div class="col-sm-8">
+			  			<input type="email" data-emailorphone="email" data-th-field="*{employeesEmail}" 
+			  				class="form-control input-sm" required="required" 
+			  				placeholder='Please enter an email address' />
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label class="col-sm-4"><span  data-th-text="#{employee.marital.status}">Marital Status</span></label>
+					<div class="col-sm-8">
+						<input class="form-control input-sm" data-th-field="*{employeesMaritalStatus}" 
+							type='text' required="required"></input> 
+						<input type="hidden" id="maritalEnum" data-th-value="  ${maritalEnum}"></input>
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="spouseName" class="col-sm-4" data-th-text="#{employee.spouse.name}">Spouse's Name :</label>
+					<div class="col-sm-8">
+		  				<input data-th-field="*{employeesSpouseName}" class="form-control input-sm"/>
+		  			</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="ppsNumber" class="col-sm-4" data-th-text="#{employee.pps.number}">PPS Number :</label>
+					<div class="col-sm-8">
+		  				<input data-th-field="*{employeesPpsNumber}" class="form-control input-sm" 
+		  					pattern="([0-9]{7}[a-zA-Z]{1,2}|[a-zA-Z]{2}[0-9]{6}[a-zA-Z]{1})" 
+		  					data-error="You must enter a PPS no. in the correct format (7 digits &#38; 1 or 2 letters) or a National Insurance no. (2 digits &#38; 6 letters &#38; 1 number)"
+		  					placeholder='You must enter a PPS no. or National Insurance no. in the correct format'
+		  					required="required"/>
+		  			</div>
+				</div>
+			</div>
 			
-			<div class="form-group col-sm-4">
-				<label for="cardType" data-th-text="#{employee.card.type}">Card Type :</label>
-	  			<!-- <select data-th-field="*{teCard.cardsCardType}" class="form-control">
-	  				<option value=""></option>
-	  				<option data-th-value="#{employee.a}" value="A" data-th-text="#{employee.a}">A</option>
-	  				<option data-th-value="#{employee.b}" value="B" data-th-text="#{employee.b}">B</option>
-	  			</select> -->
-	  			<input class="form-control"
-					data-th-field="*{teCard.cardsCardType}" type='text'></input> 
-					<input type="hidden" id="cardTypeEnum" data-th-value="  ${cardTypeEnum}"></input>
-			</div>		
-			<div class="form-group col-sm-4">
-				<label for="number" data-th-text="#{employee.number}">Number :</label>
-	  			<input data-th-field="*{teCard.cardsCardNumber}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="cardIssueDate" data-th-text="#{employee.first.card.issue.date}">1st Card Issue Date :</label>
-	  			<input data-th-field="*{teCard.cardsIssueDate}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="sex" data-th-text="#{employee.sex}">Sex :</label>
-	  			<!-- <input data-th-field="*{employeesSex}" class="form-control" /> -->
-	  			<input class="form-control"
-					data-th-field="*{employeesSex}" type='text'></input> 
-					<input type="hidden" id="sexEnum" data-th-value="  ${sexEnum}"></input>
-			</div>		
-			<div class="form-group col-sm-4">
-				<label for="title" data-th-text="#{employee.title}">Title :</label>
-	  			<input class="form-control"
-					data-title="title" data-th-field="*{employeesTitle}" type='text'
-					></input> <input type="hidden" id="titles"
-					data-th-value="  ${titlesEnum}"></input>
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="surname" data-th-text="#{employee.surname}">Surname :</label>
-	  			<input data-th-field="*{employeesSurname}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="firstname" data-th-text="#{employee.firstname}">Firstname :</label>
-	  			<input data-th-field="*{employeesFirstname}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="dateOfBirth" data-th-text="#{employee.date.of.birth}">Date of Birth :</label>
-	  			<input data-th-field="*{employeesDateOfBirth}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label><span  data-th-text="#{employee.marital.status}">Marital Status</span></label>
-				<!-- <input type="checkbox" value="true" data-th-field="*{employeesMaritalStatus}" class="form-control" /></label> -->
-				<input class="form-control"
-					data-th-field="*{employeesMaritalStatus}" type='text'></input> 
-					<input type="hidden" id="maritalEnum" data-th-value="  ${maritalEnum}"></input>
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="spouseName" data-th-text="#{employee.spouse.name}">Spouse's Name :</label>
-	  			<input data-th-field="*{employeesSpouseName}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="address1" data-th-text="#{employee.address1}">Address 1 :</label>
-	  			<input data-th-field="*{employeesAddress1}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="address2" data-th-text="#{employee.address2}">Address 2 :</label>
-	  			<input data-th-field="*{employeesAddress2}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="city" data-th-text="#{employee.city}">City / Town :</label>
-	  			<input data-th-field="*{employeesAddress3}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="county" data-th-text="#{employee.county}">County :</label>
-	  			<!-- <select data-th-field="*{employeesAddress4}" class="form-control">
-	  				<option value=""></option>
-	  				<option data-th-value="#{employee.county.antrim}" value="Antrim" data-th-text="#{employee.county.antrim}">Antrim</option>
-	  				<option data-th-value="#{employee.county.armagh}" value="Armagh" data-th-text="#{employee.county.armagh}">Armagh</option>
-	  				<option data-th-value="#{employee.county.carlow}" value="Carlow" data-th-text="#{employee.county.carlow}">Carlow</option>
-	  				<option data-th-value="#{employee.county.cavan}" value="Cavan" data-th-text="#{employee.county.cavan}">Cavan</option>
-	  				<option data-th-value="#{employee.county.clare}" value="Clare" data-th-text="#{employee.county.clare}">Clare</option>
-	  				<option data-th-value="#{employee.county.cork}" value="Cork" data-th-text="#{employee.county.cork}">Cork</option>
-	  				<option data-th-value="#{employee.county.derry}" value="Derry" data-th-text="#{employee.county.derry}">Derry</option>
-	  				<option data-th-value="#{employee.county.donegal}" value="Donegal" data-th-text="#{employee.county.donegal}">Donegal</option>
-	  				<option data-th-value="#{employee.county.down}" value="Down" data-th-text="#{employee.county.down}">Down</option>
-	  				<option data-th-value="#{employee.county.dublin}" value="Dublin" data-th-text="#{employee.county.dublin}">Dublin</option>
-	  				<option data-th-value="#{employee.county.dublin.1}" value="Dublin 1" data-th-text="#{employee.county.dublin.1}">Dublin 1</option>
-	  				<option data-th-value="#{employee.county.dublin.10}" value="Dublin 10" data-th-text="#{employee.county.dublin.10}">Dublin 10</option>
-	  				<option data-th-value="#{employee.county.dublin.11}" value="Dublin 11" data-th-text="#{employee.county.dublin.11}">Dublin 11</option>
-	  				<option data-th-value="#{employee.county.dublin.12}" value="Dublin 12" data-th-text="#{employee.county.dublin.12}">Dublin 12</option>
-	  				<option data-th-value="#{employee.county.dublin.13}" value="Dublin 13" data-th-text="#{employee.county.dublin.13}">Dublin 13</option>
-	  				<option data-th-value="#{employee.county.dublin.14}" value="Dublin 14" data-th-text="#{employee.county.dublin.14}">Dublin 14</option>
-	  				<option data-th-value="#{employee.county.dublin.15}" value="Dublin 15" data-th-text="#{employee.county.dublin.15}">Dublin 15</option>
-	  				<option data-th-value="#{employee.county.dublin.16}" value="Dublin 16" data-th-text="#{employee.county.dublin.16}">Dublin 16</option>
-	  				<option data-th-value="#{employee.county.dublin.17}" value="Dublin 17" data-th-text="#{employee.county.dublin.17}">Dublin 17</option>
-	  				<option data-th-value="#{employee.county.dublin.18}" value="Dublin 18" data-th-text="#{employee.county.dublin.18}">Dublin 18</option>
-	  				<option data-th-value="#{employee.county.dublin.2}" value="Dublin 2" data-th-text="#{employee.county.dublin.2}">Dublin 2</option>
-	  				<option data-th-value="#{employee.county.dublin.20}" value="Dublin 20" data-th-text="#{employee.county.dublin.20}">Dublin 20</option>
-	  				<option data-th-value="#{employee.county.dublin.22}" value="Dublin 22" data-th-text="#{employee.county.dublin.22}">Dublin 22</option>
-	  				<option data-th-value="#{employee.county.dublin.24}" value="Dublin 24" data-th-text="#{employee.county.dublin.24}">Dublin 24</option>
-	  				<option data-th-value="#{employee.county.dublin.3}" value="Dublin 3" data-th-text="#{employee.county.dublin.3}">Dublin 3</option>
-	  				<option data-th-value="#{employee.county.dublin.4}" value="Dublin 4" data-th-text="#{employee.county.dublin.4}">Dublin 4</option>
-	  				<option data-th-value="#{employee.county.dublin.5}" value="Dublin 5" data-th-text="#{employee.county.dublin.5}">Dublin 5</option>
-	  				<option data-th-value="#{employee.county.dublin.6}" value="Dublin 6" data-th-text="#{employee.county.dublin.6}">Dublin 6</option>
-	  				<option data-th-value="#{employee.county.dublin.6w}" value="Dublin 6W" data-th-text="#{employee.county.dublin.6w}">Dublin 6W</option>
-	  				<option data-th-value="#{employee.county.dublin.7}" value="Dublin 7" data-th-text="#{employee.county.dublin.7}">Dublin 7</option>
-	  				<option data-th-value="#{employee.county.dublin.8}" value="Dublin 8" data-th-text="#{employee.county.dublin.8}">Dublin 8</option>
-	  				<option data-th-value="#{employee.county.dublin.9}" value="Dublin 9" data-th-text="#{employee.county.dublin.9}">Dublin 9</option>
-	  				<option data-th-value="#{employee.county.fermanagh}" value="Fermanagh" data-th-text="#{employee.county.fermanagh}">Fermanagh</option>
-	  				<option data-th-value="#{employee.county.galway}" value="Galway" data-th-text="#{employee.county.galway}">Galway</option>
-	  				<option data-th-value="#{employee.county.kerry}" value="Kerry" data-th-text="#{employee.county.kerry}">Kerry</option>
-	  				<option data-th-value="#{employee.county.kildare}" value="Kildare" data-th-text="#{employee.county.kildare}">Kildare</option>
-	  				<option data-th-value="#{employee.county.kikenny}" value="Kikenny" data-th-text="#{employee.county.kikenny}">Kikenny</option>
-	  				<option data-th-value="#{employee.county.laois}" value="Laois" data-th-text="#{employee.county.laois}">Laois</option>
-	  				<option data-th-value="#{employee.county.leitrim}" value="Leitrim" data-th-text="#{employee.county.leitrim}">Leitrim</option>
-	  				<option data-th-value="#{employee.county.limerick}" value="Limerick" data-th-text="#{employee.county.limerick}">Limerick</option>
-	  				<option data-th-value="#{employee.county.longford}" value="Longford" data-th-text="#{employee.county.longford}">Longford</option>
-	  				<option data-th-value="#{employee.county.louth}" value="Louth" data-th-text="#{employee.county.louth}">Louth</option>
-	  				<option data-th-value="#{employee.county.mayo}" value="Mayo" data-th-text="#{employee.county.mayo}">Mayo</option>
-	  				<option data-th-value="#{employee.county.meath}" value="Meath" data-th-text="#{employee.county.meath}">Meath</option>
-	  				<option data-th-value="#{employee.county.monaghan}" value="Monaghan" data-th-text="#{employee.county.monaghan}">Monaghan</option>
-	  				<option data-th-value="#{employee.county.offaly}" value="Offaly" data-th-text="#{employee.county.offaly}">Offaly</option>
-	  				<option data-th-value="#{employee.county.roscommon}" value="Roscommon" data-th-text="#{employee.county.roscommon}">Roscommon</option>
-	  				<option data-th-value="#{employee.county.sligo}" value="Sligo" data-th-text="#{employee.county.sligo}">Sligo</option>
-	  				<option data-th-value="#{employee.county.tipperary}" value="Tipperary" data-th-text="#{employee.county.tipperary}">Tipperary</option>
-	  				<option data-th-value="#{employee.county.tyrone}" value="Tyrone" data-th-text="#{employee.county.tyrone}">Tyrone</option>
-	  				<option data-th-value="#{employee.county.waterford}" value="Waterford" data-th-text="#{employee.county.waterford}">Waterford</option>
-	  				<option data-th-value="#{employee.county.westmeath}" value="Westmeath" data-th-text="#{employee.county.westmeath}">Westmeath</option>
-	  				<option data-th-value="#{employee.county.wexford}" value="Wexford" data-th-text="#{employee.county.wexford}">Wexford</option>
-	  				<option data-th-value="#{employee.county.wicklow}" value="Wicklow" data-th-text="#{employee.county.wicklow}">Wicklow</option>
-	  			</select> -->
-	  			<input class="form-control"
-					data-th-field="*{employeesAddress4}" type='text'></input> 
-					<input type="hidden" id="countiesEnum" data-th-value="  ${countiesEnum}"></input>
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="postcode" data-th-text="#{employee.postcode}">Post Code :</label>
-	  			<input data-th-field="*{employeesPostCode}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="country" data-th-text="#{employee.country}">Country :</label>
-	  			<!-- <select data-th-field="*{employeesAddress5}" class="form-control">
-	  				<option value=""></option>
-	  				<option data-th-value="#{employee.country.ireland}" value="Ireland" data-th-text="#{employee.country.ireland}">Ireland</option>
-	  				<option data-th-value="#{employee.country.northern.ireland}" value="Northern Ireland" data-th-text="#{employee.country.northern.ireland}">Northern Ireland</option>
-	  				<option data-th-value="#{employee.country.england}" value="England" data-th-text="#{employee.country.england}">England</option>
-	  			</select> -->
-	  			<input class="form-control"
-					data-th-field="*{employeesAddress5}" type='text'></input> 
-					<input type="hidden" id="countriesEnum" data-th-value="  ${countriesEnum}"></input>
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="numHourWorked" data-th-text="#{employee.num.hours.worked}">Num Hours Worked :</label>
-	  			<input data-th-field="*{employeeNumHourWorked}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="lastYearPaid" data-th-text="#{employee.last.year.paid}">Last Year Paid :</label>
-	  			<input data-th-field="*{employeeLastYearPaid}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-12">
-				<label for="comments" data-th-text="#{employee.comments}">Comments :</label>
-	  			<textarea data-th-field="*{employeesComments}" class="form-control" cols="10" rows="3"></textarea>
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="categoryOfEmployment" data-th-text="#{employee.category.of.employment}">Category of Employment :</label>
-	  			<!-- <select data-th-field="*{employeeCategoryOfEmployment}" class="form-control">
-	  				<option value=""></option>
-	  				<option data-th-value="#{employee.category.assistant.trainer}" value="Assistant Trainer" data-th-text="#{employee.category.assistant.trainer}">Assistant Trainer</option>
-	  				<option data-th-value="#{employee.category.blacksmith.farrier}" value="Blacksmith / Farrier" data-th-text="#{employee.category.blacksmith.farrier}">Blacksmith / Farrier</option>
-	  				<option data-th-value="#{employee.category.general.maintenance}" value="General Maintenance" data-th-text="#{employee.category.general.maintenance}">General Maintenance</option>
-	  				<option data-th-value="#{employee.category.groom}" value="Groom" data-th-text="#{employee.category.groom}">Groom</option>
-	  				<option data-th-value="#{employee.category.head.lad.girl}" value="Head Lad / Girl" data-th-text="#{employee.category.head.lad.girl}">Head Lad / Girl</option>
-	  				<option data-th-value="#{employee.category.horse.box.driver}" value="Horse Box Driver" data-th-text="#{employee.category.horse.box.driver}">Horse Box Driver</option>
-	  				<option data-th-value="#{employee.category.manager}" value="Manager" data-th-text="#{employee.category.manager}">Manager</option>
-	  				<option data-th-value="#{employee.category.office.administrator}" value="Office Administrator" data-th-text="#{employee.category.office.administrator}">Office Administrator</option>
-	  				<option data-th-value="#{employee.category.race.day.help}" value="Race Day Help" data-th-text="#{employee.category.race.day.help}">Race Day Help</option>
-	  				<option data-th-value="#{employee.category.rider}" value="Rider" data-th-text="#{employee.category.rider}">Rider</option>
-	  				<option data-th-value="#{employee.category.security}" value="Security" data-th-text="#{employee.category.security}">Security</option>
-	  				<option data-th-value="#{employee.category.travelling.head.lad.girl}" value="Travelling Head Lad / Girl" data-th-text="#{employee.category.travelling.head.lad.girl}">Travelling Head Lad / Girl</option>
-	  				<option data-th-value="#{employee.category.yard.person}" value="Yard Person" data-th-text="#{employee.category.yard.person}">Yard Person</option>
-	  			</select> -->
-	  			<input class="form-control"
-					data-th-field="*{employeeCategoryOfEmployment}" type='text'></input> 
-					<input type="hidden" id="employmentCatEnum" data-th-value="  ${employmentCatEnum}"></input>
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="oldEmployeeCardNumber" data-th-text="#{employee.old.employee.card.number}">Old Employee Card Number :</label>
-	  			<input data-th-field="*{employeeOldEmployeeCardNumber}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="existingAirCardHolder" data-th-text="#{employee.existing.air.card.holder}">Existing AIR Card Holder :</label>
-	  			<select data-th-field="*{employeeExistingAIRCardHolder}" class="form-control">
-	  				<option value=""></option>
-	  				<option data-th-value="#{employee.existing.card.holder.yes}" value="Yes" data-th-text="#{employee.existing.card.holder.yes}">Yes</option>
-	  				<option data-th-value="#{employee.existing.card.holder.no}" value="No" data-th-text="#{employee.existing.card.holder.no}">No</option>
-	  			</select>
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="existingHriAccountNumber" data-th-text="#{employee.existing.hri.account.number}">Existing HRI Account Number :</label>
-	  			<input data-th-field="*{employeesHriAccountNo}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label for="requestDate" data-th-text="#{employee.request.date}">Request Date :</label>
-	  			<input data-th-field="*{employeeRequestDate}" class="form-control" />
-			</div>
-			<div class="form-group col-sm-4">
-				<label><span data-th-text="#{employee.tick.if.new}">Tick If New</span><input type="checkbox" data-th-field="*{employeesIsNew}" value="true" class="form-control" /></label>
-			</div>
-			<div class="pension-form col-sm-12">
-				<div class="form-group col-sm-1">
-					<label for="card" data-th-text="#{employee.pension.card}">Card :</label>
-		  			<select data-th-field="*{pensions[0].pensionCardType}" class="form-control">
-		  				<option value=""></option>
-		  				<option data-th-value="#{employee.a}" value="A" data-th-text="#{employee.a}">A</option>
-		  				<option data-th-value="#{employee.b}" value="B" data-th-text="#{employee.b}">B</option>
-		  			</select>
+			
+				
+				<div class="section-card right-form col-sm-6">
+					<div class="form-group col-sm-12">
+						<label class="col-sm-5" data-th-text="#{employee.taxable.pay}">Taxable Pay</label>
+						<div class="col-sm-7">
+							<input type="checkbox" data-th-field="*{employeesHasTaxableEarnings}" value="true" class="form-control input-sm" />
+						</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="categoryOfEmployment" class="col-sm-5" data-th-text="#{employee.category.of.employment}">Category of Employment :</label>
+						<div class="col-sm-7">
+				  			<input class="form-control input-sm" data-th-field="*{histories[0].ehEmploymentCategory}" 
+				  				required="required" type='text' data-error="You must select an employment category"></input> 
+							<input type="hidden" id="employmentCatEnum" data-th-value="  ${employmentCatEnum}"></input>
+						</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="card" class="col-sm-5" data-th-text="#{employee.pension.trainer}">Trainer</label>
+						<div class="col-sm-7">
+				  			<input data-th-field="*{histories[0].trainerName}" class="form-control input-sm" required="required" />
+				  			<input type="hidden" data-th-field="*{histories[0].teTrainers.trainerId}" />
+			  			</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="ppsNumber" class="col-sm-5" data-th-text="#{employee.start.date}">Start Date</label>
+						<div class="col-sm-7">
+			  				<input data-th-field="*{histories[0].ehDateFrom}" class="form-control input-sm"
+			  					required="required" />
+			  			</div>
+					</div>
+					<div style="display: none;" class="form-group col-sm-12">
+						<label for="ppsNumber" class="col-sm-5" data-th-text="#{employee.end.date}">End Date</label>
+						<div class="col-sm-7">
+			  				<input data-th-field="*{histories[0].ehDateTo}" class="form-control input-sm" />
+			  			</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="comments" class="col-sm-5" data-th-text="#{employee.comments}">Comments :</label>
+						<div class="col-sm-7">
+			  				<textarea data-th-field="*{employeesComments}" class="form-control" cols="34" rows="3"></textarea>
+			  			</div>
+					</div>
 				</div>
-				<div class="form-group col-sm-2">
-					<label for="card" data-th-text="#{employee.pension.type}">Pension :</label>
-		  			<select data-th-field="*{pensions[0].pensionType}" class="form-control">
-		  				<option value=""></option>
-		  				<option data-th-value="#{employee.pension.f}" value="F" data-th-text="#{employee.pension.f}">F</option>
-		  				<option data-th-value="#{employee.pension.p}" value="P" data-th-text="#{employee.pension.p}">P</option>
-		  				<option data-th-value="#{employee.pension.n}" value="N" data-th-text="#{employee.pension.n}">N</option>
-		  			</select>
-				</div>		
-				<div class="form-group col-sm-2">
-					<label for="card" data-th-text="#{employee.pension.trainer}">Trainer</label>
-		  			<input data-th-field="*{pensions[0].pensionTrainerName}" class="form-control" />
-		  			<input type="hidden" data-th-field="*{pensions[0].pensionTrainer.trainerId}" />
-				</div>		
-				<div class="form-group col-sm-2">
-					<label for="requestDate" data-th-text="#{employee.pension.hri.ac.num}">HRI A/C Num :</label>
-		  			<input data-th-field="*{pensions[0].pensionHRIAccNum}" class="form-control" />
+				
+				<div class="section-card right-form col-sm-6">
+					<div class="form-group col-sm-12">
+						<label class="col-sm-5" for="cardType" data-th-text="#{employee.card.type}">Card Type :</label>
+						<div class="col-sm-7">
+				  			<input class="form-control input-sm" data-th-field="*{teCard.cardsCardType}" 
+				  				required="required" type='text'></input> 
+							<input type="hidden" id="cardTypeEnum" data-th-value="  ${cardTypeEnum}"></input>
+						</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label class="col-sm-5" for="number" data-th-text="#{employee.card.number}">Card Number :</label>
+						<div class="col-sm-7">
+			  				<input data-th-field="*{teCard.cardsCardNumber}" class="form-control input-sm" 
+			  					required="required" placeholder='Please enter card number'/>
+			  			</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="cardIssueDate" class="col-sm-5" data-th-text="#{employee.issue.date}">Issue Date :</label>
+						<div class="col-sm-7">
+			  				<input data-th-field="*{teCard.cardsIssueDate}" class="form-control input-sm" 
+			  					required="required" placeholder='Please select issue date' />
+			  			</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="oldEmployeeCardNumber" class="col-sm-5" data-th-text="#{employee.old.employee.card.number}">Old Employee Card Number :</label>
+						<div class="col-sm-7">
+			  				<input data-th-field="*{employeeOldEmployeeCardNumber}" class="form-control input-sm"/>
+			  			</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="existingAirCardHolder" class="col-sm-5" data-th-text="#{employee.existing.air.card.holder}">Existing AIR Card Holder :</label>
+						<div class="col-sm-7">
+				  			<select data-th-field="*{employeeExistingAIRCardHolder}" class="form-control input-sm">
+				  				<option value=""></option>
+				  				<option data-th-value="#{employee.existing.card.holder.yes}" value="Yes" data-th-text="#{employee.existing.card.holder.yes}">Yes</option>
+				  				<option data-th-value="#{employee.existing.card.holder.no}" value="No" data-th-text="#{employee.existing.card.holder.no}">No</option>
+				  			</select>
+				  		</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="existingHriAccountNumber" class="col-sm-5" data-th-text="#{employee.existing.hri.account.number}">Existing HRI Account Number :</label>
+						<div class="col-sm-7">
+			  				<input data-th-field="*{employeesHriAccountNo}" class="form-control input-sm" 
+			  					placeholder="HRI Account No. if applicable" pattern="\w{5}"/>
+			  			</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="lastYearPaid" class="col-sm-5" data-th-text="#{employee.last.year.paid}">Last Year Paid :</label>
+						<div class="col-sm-7">
+			  				<input data-th-field="*{employeeLastYearPaid}" class="form-control input-sm" 
+			  					required="required"/>
+			  			</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="categoryOfEmployment" class="col-sm-5" data-th-text="#{employee.category.of.employment}">Category of Employment :</label>
+						<div class="col-sm-7">
+				  			<input class="form-control input-sm" data-th-field="*{employeeCategoryOfEmployment}" 
+				  				type='text' required="required"></input> 
+							<input type="hidden" id="employmentCatEnum" data-th-value="  ${employmentCatEnum}"></input>
+						</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="requestDate" class="col-sm-5" data-th-text="#{employee.request.date}">Request Date :</label>
+						<div class="col-sm-7">
+			  				<input data-th-field="*{employeeRequestDate}" class="form-control input-sm" 
+			  					required="required"/>
+			  			</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label class="col-sm-5" data-th-text="#{employee.tick.if.new}">Tick If New</label>
+						<div class="col-sm-7">
+							<input type="checkbox" data-th-field="*{employeesIsNew}" value="true" 
+								class="form-control input-sm" />
+						</div>
+					</div>
 				</div>
-				<div class="form-group col-sm-3">
-					<label for="requestDate" data-th-text="#{employee.pension.date.range}">Date Range :</label>
-		  			<input data-th-field="*{pensions[0].pensionDateRange}" class="form-control" />
-				</div>
-				<div class="form-group col-sm-2 add-delete-icon">
-					<a href="javascript:void(0);" id="addPensionRecord" alt="Add Pension Record" title="Add Pension Record"><i class="fa fa-plus fa-3x"></i></a>
+			<div class="section-card col-sm-12">
+				<div class="pension-form col-sm-12">
+					<div class="form-group col-sm-1">
+						<label for="card" data-th-text="#{employee.pension.card}">Card :</label>
+			  			<select data-th-field="*{pensions[0].pensionCardType}" class="form-control input-sm" required="required">
+			  				<option value=""></option>
+			  				<option data-th-value="#{employee.a}" value="A" data-th-text="#{employee.a}">A</option>
+			  				<option data-th-value="#{employee.b}" value="B" data-th-text="#{employee.b}">B</option>
+			  			</select>
+					</div>
+					<div class="form-group col-sm-2">
+						<label for="card" data-th-text="#{employee.pension.type}">Pension :</label>
+			  			<select data-th-field="*{pensions[0].pensionType}" class="form-control input-sm" required="required">
+			  				<option value=""></option>
+			  				<option data-th-value="#{employee.pension.f}" value="F" data-th-text="#{employee.pension.f}">F</option>
+			  				<option data-th-value="#{employee.pension.p}" value="P" data-th-text="#{employee.pension.p}">P</option>
+			  				<option data-th-value="#{employee.pension.n}" value="N" data-th-text="#{employee.pension.n}">N</option>
+			  			</select>
+					</div>		
+					<div class="form-group col-sm-2">
+						<label for="card" data-th-text="#{employee.pension.trainer}">Trainer</label>
+			  			<input placeholder="You must enter trainer name" data-th-field="*{pensions[0].pensionTrainerName}" class="form-control input-sm" required="required"/>
+			  			<input type="hidden" data-th-field="*{pensions[0].pensionTrainer.trainerId}" />
+					</div>		
+					<div class="form-group col-sm-2">
+						<label for="requestDate" data-th-text="#{employee.pension.hri.ac.num}">HRI A/C Num :</label>
+			  			<input placeholder="You must enter HRI A/c Num" data-th-field="*{pensions[0].pensionHRIAccNum}" class="form-control input-sm" required="required"/>
+					</div>
+					<!-- <div class="form-group col-sm-3">
+						<label for="requestDate" data-th-text="#{employee.pension.date.range}">Date Range :</label>
+			  			<input data-th-field="*{pensions[0].pensionDateRange}" class="form-control" />
+					</div> -->
+					<div class="form-group col-sm-2">
+						<label for="requestDate" data-th-text="#{employee.pension.from.date}">From Date :</label>
+			  			<input placeholder="You must select from date" data-th-field="*{pensions[0].pensionDateJoinedScheme}" class="form-control input-sm" required="required"/>
+					</div>
+					<div class="form-group col-sm-2">
+						<label for="requestDate" data-th-text="#{employee.pension.to.date}">To Date :</label>
+			  			<input data-th-field="*{pensions[0].pensionDateLeftScheme}" class="form-control input-sm" />
+					</div>
+					<div class="form-group col-sm-1 add-delete-icon">
+						<a href="javascript:void(0);" id="addPensionRecord" alt="Add Pension Record" title="Add Pension Record"><i class="fa fa-plus fa-3x"></i></a>
+					</div>
 				</div>
 			</div>
 			<div class="form-group col-sm-12 text-center">
-				<input type="submit" class="btn btn-success" th:value="#{employee.save.record}" value="Save Record" />
-				<input type="button" class="btn btn-danger" th:value="#{employee.exit}" value="Exit" />
+				<button type="button" id="submitButton" class="btn btn-success" th:value="#{employee.save.record}" >Save Record</button>
+				<button type="button" class="btn btn-danger" th:value="#{employee.exit}" >Exit</button>
 			</div>
 		</form>
 	</div>
+    
+    <div id="pensionWarningOK" class="modal fade">
+		<div class="modal-dialog modal-lg" data-keyboard="false"
+			data-backdrop="static">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body text-center">
+					<p>
+						<small class="text-danger">An employee must have taxable
+							Pay to be considered for inclusion in the pension scheme
+							and/or life assurance scheme.<br /> Proof of taxable
+							Pay (P35) must
+							be attached or submitted to the Turf Club.
+						</small>
+
+
+					</p>
+					<h2 class="text-danger">No
+						taxable Pay!</h2>
+				</div>
+				<div class="modal-footer">
+					<div class='text-center'>
+						<button id="pension-warning-ok" type="button"
+							class="btn btn-default" data-dismiss="modal">Ok</button>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="pensionDateWarning" class="modal fade">
+		<div class="modal-dialog modal-lg" data-keyboard="false"
+			data-backdrop="static">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body text-center">
+					<p>The Turf Club records show that this person started work with you in 2015</p>
+					<p>
+						<small class="text-danger">An employee cannot have
+							taxable
+							Pay in 2014 if they did not work with you in that year. If our records 
+							are incorrect please contact Tricia Cullen by email
+							(tricia.cullen@turfclub.ie) or on 045 445600 with the employee name(s)
+							whose employment dates are incorrect and the correct details. 
+							Otherwise please change the earnings to €0.00 if the person has no earning for 2014</small>
+
+
+					</p>
+				</div>
+				<div class="modal-footer">
+					<div class='text-center'>
+						<button id="pension-date-warning-yes" type="button"
+							class="btn btn-default" data-dismiss="modal">Ok</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="noSaveWarning" class="modal fade">
+		<div class="modal-dialog modal-lg" data-keyboard="false"
+			data-backdrop="static">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body text-center">
+					<p>
+						<small class="text-danger">A new employee that has no
+							taxable Pay will not be saved as they are not required on
+							this return. </small>
+
+
+					</p>
+					<h2 class="text-danger">The information for this employee will not be saved</h2>
+				</div>
+				<div class="modal-footer">
+					<div class='text-center'>
+						<button id="nosave" type="button"
+							class="btn btn-default" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /#wrapper -->
     
 </div>              <!-- /#wrapper -->
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -367,7 +540,8 @@
     	var trainer = [[#{employee.pension.trainer}]];
     	var hriAccNum = [[#{employee.pension.hri.ac.num}]];
     	var dateRange = [[#{employee.pension.date.range}]];
-    	
+    	var fromDate = [[#{employee.pension.from.date}]];
+    	var endDate = [[#{employee.pension.to.date}]];
     	$(function() {
     		
     		// setup date pickers
@@ -384,6 +558,38 @@
     			changeMonth : true,
     			changeYear : true,
     			endDate : '+0d',
+    			format: 'dd/mm/yyyy'
+    		}).on('changeDate', function(ev){
+    		    $(this).datepicker('hide');
+    		});
+    		
+    		$("#histories0\\.ehDateFrom").datepicker({
+    			changeMonth : true,
+    			changeYear : true,
+    			format: 'dd/mm/yyyy'
+    		}).on('changeDate', function(ev){
+    		    $(this).datepicker('hide');
+    		});
+    		
+    		$("#histories0\\.ehDateTo").datepicker({
+    			changeMonth : true,
+    			changeYear : true,
+    			format: 'dd/mm/yyyy'
+    		}).on('changeDate', function(ev){
+    		    $(this).datepicker('hide');
+    		});
+    		
+    		$("#pensions0\\.pensionDateJoinedScheme").datepicker({
+    			changeMonth : true,
+    			changeYear : true,
+    			format: 'dd/mm/yyyy'
+    		}).on('changeDate', function(ev){
+    		    $(this).datepicker('hide');
+    		});
+    		
+    		$("#pensions0\\.pensionDateLeftScheme").datepicker({
+    			changeMonth : true,
+    			changeYear : true,
     			format: 'dd/mm/yyyy'
     		}).on('changeDate', function(ev){
     		    $(this).datepicker('hide');
@@ -429,19 +635,25 @@
     		    $('#pensions0\\.pensionTrainer\\.trainerId').val($(this).next().find('li.active').data('value'));
     		});
     		
+    		$('#histories0\\.trainerName').typeahead({
+    		    source: trainers
+    		}).on('change', function (event, data) {
+    		    $('#histories0\\.teTrainers\\.trainerId').val($(this).next().find('li.active').data('value'));
+    		});
+    		
     		$('#addPensionRecord').click(function() {
     			$('.pension-form').after('<div class="add-pension-form col-sm-12">'+
     					'<div class="form-group col-sm-1">'+
-    					'<label for="card" data-th-text="'+card+'">'+card+' :</label>'+
-    						'<select id="pensions'+noOfPensionRecord+'.pensionCardType" name="pensions['+noOfPensionRecord+'].pensionCardType" class="form-control">'+
+    					'<label for="card" data-th-text="'+card+'">'+card+'</label>'+
+    						'<select id="pensions'+noOfPensionRecord+'.pensionCardType" name="pensions['+noOfPensionRecord+'].pensionCardType" class="form-control input-sm" required="required">'+
     							'<option value=""></option>'+
     							'<option value="'+cardA+'">'+cardA+'</option>'+
     							'<option value="'+cardB+'">'+cardB+'</option>'+
     						'</select>'+
     				'</div>'+
     				'<div class="form-group col-sm-2">'+
-    					'<label for="card" >'+pension+' :</label>'+
-    						'<select id="pensions'+noOfPensionRecord+'.pensionType" name="pensions['+noOfPensionRecord+'].pensionType" class="form-control">'+
+    					'<label for="card" >'+pension+'</label>'+
+    						'<select id="pensions'+noOfPensionRecord+'.pensionType" name="pensions['+noOfPensionRecord+'].pensionType" class="form-control input-sm" required="required">'+
     							'<option value=""></option>'+
     							'<option value="'+pensionF+'" >'+pensionF+'</option>'+
     							'<option value="'+pensionP+'" >'+pensionP+'</option>'+
@@ -450,18 +662,22 @@
     				'</div>		'+
     				'<div class="form-group col-sm-2">'+
     					'<label for="card" >'+trainer+'</label>'+
-    						'<input id="pensions'+noOfPensionRecord+'.pensionTrainerName" name="pensions['+noOfPensionRecord+'].pensionTrainerName" class="form-control" />'+
+    						'<input placeholder="You must enter trainer name" id="pensions'+noOfPensionRecord+'.pensionTrainerName" name="pensions['+noOfPensionRecord+'].pensionTrainerName" class="form-control input-sm" required="required"/>'+
     						'<input type="hidden" id="pensions'+noOfPensionRecord+'.pensionTrainer.trainerId" name="pensions['+noOfPensionRecord+'].pensionTrainer.trainerId" />'+
     				'</div>		'+
     				'<div class="form-group col-sm-2">'+
-    					'<label for="requestDate" >'+hriAccNum+' :</label>'+
-    						'<input id="pensions'+noOfPensionRecord+'.pensionHRIAccNum" name="pensions['+noOfPensionRecord+'].pensionHRIAccNum" class="form-control" />'+
+    					'<label for="requestDate" >'+hriAccNum+'</label>'+
+    						'<input  placeholder="You must enter HRI A/c Num" id="pensions'+noOfPensionRecord+'.pensionHRIAccNum" name="pensions['+noOfPensionRecord+'].pensionHRIAccNum" class="form-control input-sm" required="required"/>'+
     				'</div>'+
-    				'<div class="form-group col-sm-3">'+
-    					'<label for="requestDate" >'+dateRange+' :</label>'+
-    						'<input id="pensions'+noOfPensionRecord+'.pensionDateRange" name="pensions['+noOfPensionRecord+'].pensionDateRange" class="form-control" />'+
-    				'</div>'+
-    				'<div class="form-group col-sm-2 add-delete-icon">'+
+    				'<div class="form-group col-sm-2">'+
+						'<label for="requestDate" data-th-text="#{employee.pension.from.date}">'+fromDate+'</label>'+
+			  			'<input placeholder="You must select from date" name="pensions['+noOfPensionRecord+'].pensionDateJoinedScheme" id="pensions'+noOfPensionRecord+'.pensionDateJoinedScheme" class="form-control input-sm" required="required"/>'+
+					'</div>'+
+					'<div class="form-group col-sm-2">'+
+						'<label for="requestDate" data-th-text="#{employee.pension.to.date}">'+endDate+'</label>'+
+			  			'<input name="pensions['+noOfPensionRecord+'].pensionDateLeftScheme" id="pensions'+noOfPensionRecord+'.pensionDateLeftScheme" class="form-control input-sm" />'+
+					'</div>'+
+    				'<div class="form-group col-sm-1 add-delete-icon">'+
     					'<a href="javascript:void(0);" id="deletePensionRecord" alt="Delete Pension Record" title="Delete Pension Record"><i class="fa fa-trash-o fa-3x"></i></a>'+
     				'</div>'+
     			'</div>');
@@ -478,6 +694,22 @@
        		            format: 'DD/MM/YYYY'
        		        },
        		     	autoApply: true
+        		});
+    			
+    			$("#pensions"+noOfPensionRecord+"\\.pensionDateJoinedScheme").datepicker({
+        			changeMonth : true,
+        			changeYear : true,
+        			format: 'dd/mm/yyyy'
+        		}).on('changeDate', function(ev){
+        		    $(this).datepicker('hide');
+        		});
+        		
+        		$("#pensions"+noOfPensionRecord+"\\.pensionDateLeftScheme").datepicker({
+        			changeMonth : true,
+        			changeYear : true,
+        			format: 'dd/mm/yyyy'
+        		}).on('changeDate', function(ev){
+        		    $(this).datepicker('hide');
         		});
     			
     			++noOfPensionRecord;

@@ -130,4 +130,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		return stableStaffService.getCountriesEnum();
 	}
+	
+	@Override
+	public String getNationalityEnum() {
+		
+		nationalityEnum = stableStaffService.getNationalityEnum();
+		return getEnumCommonResponse(nationalityEnum);
+	}
 }

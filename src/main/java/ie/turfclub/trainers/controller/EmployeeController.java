@@ -3,6 +3,7 @@ package ie.turfclub.trainers.controller;
 import ie.turfclub.person.model.Person;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.trainers.model.TeEmployees;
+import ie.turfclub.trainers.model.TeEmployentHistory;
 import ie.turfclub.trainers.model.TePension;
 import ie.turfclub.trainers.model.TeTrainers;
 import ie.turfclub.trainers.service.EmployeeService;
@@ -15,10 +16,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +42,9 @@ public class EmployeeController {
 
 	@Autowired
 	private StableStaffService stableStaffService;
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	@RequestMapping(value="/manageStaff", method=RequestMethod.GET)
 	public String getManageStaffPage(HttpServletRequest request) {
@@ -63,6 +69,7 @@ public class EmployeeController {
 				employeeService.getCountriesEnum());
 		model.addAttribute("cardTypeEnum", employeeService.getAllCardType());
 		model.addAttribute("pensionEnum", employeeService.getPension());
+		model.addAttribute("nationalityEnum", employeeService.getNationalityEnum());
 		return "emp-add";
 	}
 	
@@ -74,34 +81,39 @@ public class EmployeeController {
 		emp.getTeCard().setCardsCardStatus("Applied");
 		emp.getTeCard().setTeEmployees(emp);
 		
-		for (TePension pension : emp.getPensions()) {
-			
-			if(pension != null && pension.getPensionCardType() != null && pension.getPensionType() != null &&
-					pension.getPensionDateRange() != null) {
-				pension.setTeEmployees(emp);
-				
-				String dateRange = pension.getPensionDateRange();
-				String dates[] = dateRange.split(" - ");
-				DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-				
-				Date fromDate = formatter.parse(dates[0]);
-				Date toDate = formatter.parse(dates[1]);
-				pension.setPensionDateJoinedScheme(fromDate);
-				pension.setPensionDateLeftScheme(toDate);
-				
-				if(pension.getPensionTrainer().getTrainerId() != null) {
-					TeTrainers trainer = trainersService.getTrainer(pension.getPensionTrainer().getTrainerId());
-					pension.setPensionTrainer(trainer);
+		if(emp.getHistories() != null && emp.getHistories().size() > 0) {
+			for (TeEmployentHistory history : emp.getHistories()) {
+				history.setTeEmployees(emp);
+				if(history.getTeTrainers().getTrainerId() != null) {
+					TeTrainers trainer = trainersService.getTrainer(history.getTeTrainers().getTrainerId());
+					history.setTeTrainers(trainer);
 				}
 			}
+			emp.setTeEmployentHistories(new HashSet<TeEmployentHistory>(emp.getHistories()));
 		}
-		emp.setTePensions(new HashSet<TePension>(emp.getPensions()));
+		
+		if(emp.getPensions() != null && emp.getPensions().size() > 0) {
+			for (TePension pension : emp.getPensions()) {
+				
+				if(pension != null && pension.getPensionCardType() != null && pension.getPensionType() != null &&
+						pension.getPensionDateJoinedScheme() != null) {
+					pension.setTeEmployees(emp);
+					
+					if(pension.getPensionTrainer().getTrainerId() != null) {
+						TeTrainers trainer = trainersService.getTrainer(pension.getPensionTrainer().getTrainerId());
+						pension.setPensionTrainer(trainer);
+					}
+				}
+			}
+			emp.setTePensions(new HashSet<TePension>(emp.getPensions()));
+		}
+		
 		employeeService.saveOrUpdate(emp);
 		
 		//Person person = createPerson(emp);
 		//personService.addPerson(person);
 		model.addAttribute("emp", new TeEmployees());
-		
+		model.addAttribute("success", messageSource.getMessage("success.added.employee", new String[] {}, Locale.US));
 		return "emp-add";
 	}
 

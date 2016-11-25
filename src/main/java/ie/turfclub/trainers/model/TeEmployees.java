@@ -105,6 +105,8 @@ public class TeEmployees implements java.io.Serializable {
 	private Set<TeChances> teChanceses = new HashSet(0);
 	private Set<TePension> tePensions = new HashSet(0);
 	private List<TePension> pensions = new ArrayList<TePension>();
+	private List<TeEmployentHistory> histories = new ArrayList<TeEmployentHistory>();
+	
 	@Expose
 	private boolean canEdit = true;
 	@Expose
@@ -398,7 +400,7 @@ public class TeEmployees implements java.io.Serializable {
 	}
 	
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teEmployees", cascade = CascadeType.PERSIST)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teEmployees", cascade = CascadeType.ALL)
 	public Set<TeEmployentHistory> getTeEmployentHistories() {
 		return this.teEmployentHistories;
 	}
@@ -602,6 +604,15 @@ public class TeEmployees implements java.io.Serializable {
 	public void setEmployeeWorkedWithTrainerInTaxYear(
 			boolean employeeWorkedWithTrainerInTaxYear) {
 		this.employeeWorkedWithTrainerInTaxYear = employeeWorkedWithTrainerInTaxYear;
+	}
+
+	@Transient
+	public List<TeEmployentHistory> getHistories() {
+		return histories;
+	}
+
+	public void setHistories(List<TeEmployentHistory> histories) {
+		this.histories = histories;
 	}
 	
 	
