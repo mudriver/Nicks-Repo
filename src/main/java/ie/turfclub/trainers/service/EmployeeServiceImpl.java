@@ -1,9 +1,9 @@
 package ie.turfclub.trainers.service;
 
+import ie.turfclub.trainers.model.TeCards;
 import ie.turfclub.trainers.model.TeEmployees;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +11,10 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -136,5 +138,41 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		nationalityEnum = stableStaffService.getNationalityEnum();
 		return getEnumCommonResponse(nationalityEnum);
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> getAllCards() {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeCards.class);
+		List<TeCards> cards = criteria.list();
+		List<HashMap<String, Object>> records = new ArrayList<HashMap<String,Object>>();
+		if(cards != null && cards.size() > 0) {
+			for (TeCards teCards : cards) {
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				map.put("name", teCards.getCardsCardNumber());
+				map.put("id", teCards.getCardsCardId());
+				records.add(map);
+			}
+		}
+		return records;
+	}
+	
+	@Override
+	public TeEmployees getEmployeeByCardId(Integer cardId) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeCards.class);
+		criteria.add(Restrictions.eq("cardsCardId", cardId));
+		List<TeCards> cards = criteria.list();
+		TeEmployees employee = null;
+		if(cards != null && cards.size() > 0) {
+			if(cards.get(0).getTeEmployees().getEmployeesEmployeeId() != null) {
+				String sql = "From TeEmployees where employeesEmployeeId = "+cards.get(0).getTeEmployees().getEmployeesEmployeeId();
+				List<TeEmployees> employees = getCurrentSession().createQuery(sql).list();
+				if(employees != null && employees.size() > 0) {
+					return employees.get(0);
+				}
+			}
+		}
+		return employee;
 	}
 }

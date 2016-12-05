@@ -93,6 +93,15 @@
         data-th-src="@{/resources/img/manage-employee-staff.jpg}" alt="pension" height="200" width="200"></img>Manage Employees Staff</span>
       </a>
       </div>        
+      
+      <!-- <div data-th-if="${STABLESTAFF} != null" class="col-lg-3">
+		<a href="#" data-th-href="@{/expenses/get}">     
+      <span class="thumbnail text-center text-info">
+          
+         <img 
+        data-th-src="@{/resources/img/expenses.png}" alt="pension" height="200" width="200"></img>Expenses Manager</span>
+      </a>
+      </div>-->        
     
       <div data-th-if="${VET_REPORTS} != null" class="thumbnail">
           <a href="#" data-th-href="@{/vetReports/}">
@@ -112,9 +121,7 @@
       <div data-th-if="${ACCOUNTS} != null" class="caption">
          <h3><a href="#" data-th-href="@{/accountsReports/generate}">Accounts Reports</a></h3>
       </div>
-
-
-
+	
   <!-- /.col-lg-12 -->   
            
     </div>      <!-- page wrapper -->

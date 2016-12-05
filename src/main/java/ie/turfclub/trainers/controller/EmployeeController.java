@@ -15,15 +15,19 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -47,9 +51,20 @@ public class EmployeeController {
 	private MessageSource messageSource;
 	
 	@RequestMapping(value="/manageStaff", method=RequestMethod.GET)
-	public String getManageStaffPage(HttpServletRequest request) {
+	public String getManageStaffPage(HttpServletRequest request, ModelMap model) {
 		
+		List<HashMap<String, Object>> cards = employeeService.getAllCards();
+		model.addAttribute("cards", cards);
 		return "manage-employee-staff";
+	}
+	
+	@RequestMapping(value="/getByCardId/{cardId}", method=RequestMethod.GET)
+	public String getEmployeeByCardId(@PathVariable("cardId") Integer cardId, 
+			HttpServletRequest request, ModelMap model) {
+		
+		TeEmployees employee = employeeService.getEmployeeByCardId(cardId);
+		model.addAttribute("emp", employee);
+		return "employee-detail";
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
@@ -154,4 +169,5 @@ public class EmployeeController {
 		person.setNumHourWorked(emp.getEmployeeNumHourWorked());
 		return person;
 	}
+	
 }

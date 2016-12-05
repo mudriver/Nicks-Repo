@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	http 
     	.authorizeRequests()
                 .antMatchers("/resources/**").permitAll()
-                .antMatchers("/home/**").access("hasAnyRole('INSPECTIONS_CEO','INSPECTIONS_LICENCING','INSPECTIONS_ADMIN','VET_USER','VET_ADMIN','ACCOUNTS','TRAINERS_USER','TRAINERS_ADMIN','STABLESTAFF','STABLESTAFF_PENSION')")
+                .antMatchers("/home/**","/expenses/**").access("hasAnyRole('INSPECTIONS_CEO','INSPECTIONS_LICENCING','INSPECTIONS_ADMIN','VET_USER','VET_ADMIN','ACCOUNTS','TRAINERS_USER','TRAINERS_ADMIN','STABLESTAFF','STABLESTAFF_PENSION')")
                 .antMatchers("/vetReports/**").access("hasAnyRole('VET_USER','VET_ADMIN')")
                 .antMatchers("/inspections/**").access("hasAnyRole('INSPECTIONS_ADMIN','INSPECTIONS_LICENCING','INSPECTIONS_CEO')")
                 .antMatchers("/accountsReports/**").access("hasAnyRole('ACCOUNTS')")

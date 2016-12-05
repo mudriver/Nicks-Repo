@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+ 
+<head data-th-fragment="header">
+ <meta charset="utf-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title data-th-text="#{expenses.manager.title}">Expenses Manager</title>
+  
+<!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link type="text/css" rel="stylesheet"
+	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+	
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/datatables/jquery.datatables.min.css"
+	data-th-href="@{/resources/css/datatables/jquery.dataTables.min.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/datatables/buttons.datatable.min.css"
+	data-th-href="@{/resources/css/datatables/buttons.dataTables.min.css}" />
+ 
+
+     
+    <style>
+        .no-border-on-me>thead>tr>th,
+        .no-border-on-me>tbody>tr>th,
+        .no-border-on-me>tfoot>tr>th,
+        .no-border-on-me>thead>tr>td,
+        .no-border-on-me>tbody>tr>td,
+        .no-border-on-me>tfoot>tr>td
+        {
+            border-top-style: none;
+            border-bottom-style: none;
+        }
+        .section-card { background-color: #666E94;}
+        th { text-align: center; color: white; vertical-align: inherit !important;}
+        .width-40 { width: 38% !important;}
+        .width-60 { width: 58% !important;}
+        .form-group { width: 100% !important;}
+        form input { margin-bottom:  5px; }
+        .errorMsg { color: red;}
+        label { color: white; }
+        .pull-right { text-align: right;}
+    </style>
+</head>
+<body>
+ <div class="container-fluid" >                <!-- /#wrapper -->
+
+	<div data-th-replace="mainmenu :: top-nav"></div>
+    
+    <h3 data-th-text="#{expenses.manager.title}">Expenses Manager</h3>
+    
+    <div class="col-sm-12 pull-right">
+    	<label class="col-sm-2 text-left" th:if="${month != ''}" th:text="${month}"></label>
+    	<label class="col-sm-2" th:if="${month == ''}"></label>
+    	<label class="col-sm-4">&nbsp;</label>
+		<label class="col-sm-1" for="card">Month :</label>
+		<select id="month" name="month" class="input-sm col-sm-1">
+			<option value=""></option>
+			<option value="01">January</option>
+			<option value="02">February</option>
+			<option value="03">March</option>
+			<option value="04">April</option>
+			<option value="05">May</option>
+			<option value="06">June</option>
+			<option value="07">July</option>
+			<option value="08">August</option>
+			<option value="09">September</option>
+			<option value="10">October</option>
+			<option value="11">November</option>
+			<option value="12">December</option>
+		</select>
+		<label class="col-sm-1" for="card">Year :</label>
+		<select id="year" name="year" class="input-sm col-sm-1">
+			<option value=""></option>
+			<option value="2016">2016</option>
+		</select>
+		<input type="button" class="btn btn-default col-sm-1 input-sm searchBtn" th:onclick="'searchRecord();'" value="Search" />
+		<div class="col-sm-1"><label th:text="#{export}"></label><a href="javascript:void(0);" id="exportExcel"><i class="fa fa-file-excel-o fa-4x"></i></div>
+    </div>
+    <div class="form-container">
+    
+    	<table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
+        	<thead>
+        		<tr>
+        			<th th:text="#{expenses.manager.id}">Id</th>
+	        		<th th:text="#{expenses.manager.date}">Date</th>
+	        		<th th:text="#{expenses.manager.day}">Day</th>
+	        		<th th:text="#{expenses.manager.evening}">Evening</th>
+	        		<th th:text="#{expenses.manager.venue}">Venue</th>
+	        		<th th:text="#{expenses.manager.dutycode}">DutyCode</th>
+	        		<th th:text="#{expenses.manager.duty.description}">Duty Description</th>
+	        		<th th:text="#{expenses.manager.cost.centre}">Cost Centre</th>
+	        		<th th:text="#{expenses.manager.duty.type}">Duty Type</th>
+	        		<th th:text="#{expenses.manager.no.of.races}">No of Races</th>
+	        		<th th:text="#{expenses.manager.subsistance.type.expected}">Subsistance Type Expected</th>
+	        		<th th:text="#{expenses.manager.subsistance.type.change}">Subsistance Type Change</th>
+	        		<th th:text="#{expenses.manager.subsistance.reason.for.change}">Subsistance Reason For Change</th>
+	        		<th th:text="#{expenses.manager.expected.mileage}">Expected Mileage</th>
+	        		<th th:text="#{expenses.manager.additional.mileage}">Additional Mileage</th>
+	        		<th th:text="#{expenses.manager.mileage.reason.for.change}">Mileage Reason For Change</th>
+	        		<th th:text="#{expenses.manager.action}">Action</th>
+	        	</tr>
+        	</thead>
+        	<tbody>
+        		<tr th:each="record,iterStat : ${data}">
+        			<td th:text="${record.get('id')}"></td>
+        			<td th:text="${record.get('date')}"></td>
+        			<td th:text="${record.get('day')}"></td>
+        			<td th:text="${record.get('evening')}"></td>
+        			<td th:text="${record.get('venue')}"></td>
+        			<td th:text="${record.get('dutyCode')}"></td>
+        			<td th:text="${record.get('dutyDescription')}"></td>
+        			<td th:text="${record.get('costCentre')}"></td>
+        			<td th:text="${record.get('dutyType')}"></td>
+        			<td th:text="${record.get('noOfRaces')}"></td>
+        			<td th:text="${record.get('subsistanceTypeExpected')}"></td>
+        			<td th:text="${record.get('subsistanceTypeChange')}"></td>
+        			<td th:text="${record.get('subsistanceReasonForChange')}"></td>
+        			<td th:text="${record.get('expectedMileage')}"></td>
+        			<td th:text="${record.get('additionalMileage')}"></td>
+        			<td th:text="${record.get('mileageReasonForChange')}"></td>
+        			<td></td>
+        		</tr>
+        	</tbody>
+        </table>
+    </div> 
+    
+    
+	<!-- Modal -->
+	<div id="myModal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      	<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+	        	<h4 class="modal-title">Edit Record</h4>
+	      	</div>
+	      
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <span id="errorMsg"></span>
+                <form class="form-inline" id="editForm" role="form">
+               		<div class="form-group">
+						<label class="width-40" for="card" data-th-text="#{expenses.manager.subsistance.type.change}">Subsistane Type Change :</label>
+			  			<select id="subsistanceChange" name="subsistanceChange" class="form-control input-sm width-60">
+			  				<option value=""></option>
+			  				<option value="Meal">Meal</option>
+			  				<option value="Lunch">Lunch</option>
+			  				<option value="Overnight">Overnight</option>
+			  			</select>
+					</div>		
+					<br/>
+					<div class="form-group">
+						<label for="" class="width-40" data-th-text="#{expenses.manager.subsistance.reason.for.change}">Subsistance Reason For Change :</label>
+			  				<input type="text" id="subsistanceReason" name="subsistanceReason" class="form-control input-sm width-60"/>
+					</div>
+					<br/>
+					<div class="form-group">
+						<label for="" class="width-40" data-th-text="#{expenses.manager.additional.mileage}">Additional Mileage :</label>
+			  				<input type="text" id="additionalMileage" name="additionalMileage" class="form-control input-sm width-60" />
+					</div>
+					<br/>
+					<div class="form-group">
+						<label for="" class="width-40" data-th-text="#{expenses.manager.mileage.reason.for.change}">Mileage Reason For Change :</label>
+			  				<input type="text" id="mileageReason" name="mileageReason" class="form-control input-sm width-60" />
+					</div>
+                </form>
+            </div>
+	      	<div class="modal-footer">
+	        	<button type="button" th:onclick="'handleEditForm();'" class="btn btn-default">Edit</button>
+	        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      	</div>
+	    </div>
+	  </div>
+	</div>
+ 
+</div>              <!-- /#wrapper -->
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
+        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+         
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
+        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+ 
+    <!-- Core Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
+        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+         
+    <!-- SB Admin Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+    
+    <script type="text/javascript" src="../../resources/js/datatable/jquery.datatable.min.js"
+        data-th-src="@{/resources/js/datatable/jquery.dataTables.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/datatable/datatable.buttons.min.js"
+        data-th-src="@{/resources/js/datatable/dataTables.buttons.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/datatable/buttons.colVis.min.js"
+        data-th-src="@{/resources/js/datatable/buttons.colVis.min.js}"></script>
+            
+    <script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/	
+    	var subsistanceReasonMessage = [[#{error.insert.subsistance.reason}]];
+    	var mileageReasonMessage = [[#{error.insert.mileage.reason}]];
+    	var monthVal = [[${monthVal}]];
+    	var yearVal = [[${yearVal}]];
+   	/*]]>*/
+       </script>    
+          	
+    <script type="text/javascript" src="../../resources/js/expenses/manager.js"
+        data-th-src="@{/resources/js/expenses/manager.js}"></script>
+        </body>
+</html>
