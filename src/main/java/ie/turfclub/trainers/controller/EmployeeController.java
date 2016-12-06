@@ -1,5 +1,6 @@
 package ie.turfclub.trainers.controller;
 
+import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.person.model.Person;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.trainers.model.TeEmployees;
@@ -14,6 +15,8 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,6 +33,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "/employees")
@@ -58,12 +62,39 @@ public class EmployeeController {
 		return "manage-employee-staff";
 	}
 	
+	@RequestMapping(value="/searchByName", method=RequestMethod.GET)
+	public String getSearchByName(HttpServletRequest request, ModelMap model) {
+		
+		/*List<SearchByNameEmployeeBean> records = employeeService.searchByNameEmployees();
+		model.addAttribute("records", records);*/
+		return "search-by-name-employees";
+	}
+	
+	@RequestMapping(value="/findByName/{search}", method=RequestMethod.GET)
+	@ResponseBody
+	public Object getFindByName(@PathVariable(value="search") String search, HttpServletRequest request, ModelMap model) {
+		
+		List<SearchByNameEmployeeBean> records = employeeService.findByName(search);
+		return records;
+	}
+	
 	@RequestMapping(value="/getByCardId/{cardId}", method=RequestMethod.GET)
 	public String getEmployeeByCardId(@PathVariable("cardId") Integer cardId, 
 			HttpServletRequest request, ModelMap model) {
 		
 		TeEmployees employee = employeeService.getEmployeeByCardId(cardId);
 		model.addAttribute("emp", employee);
+		model.addAttribute("backUrl", "/turfclubPrograms/employees/manageStaff");
+		return "employee-detail";
+	}
+	
+	@RequestMapping(value="/detail/{id}", method=RequestMethod.GET)
+	public String getEmployeeById(@PathVariable("id") Integer id, 
+			HttpServletRequest request, ModelMap model) {
+		
+		TeEmployees employee = employeeService.getEmployeeById(id);
+		model.addAttribute("emp", employee);
+		model.addAttribute("backUrl", "/turfclubPrograms/employees/searchByName");
 		return "employee-detail";
 	}
 	

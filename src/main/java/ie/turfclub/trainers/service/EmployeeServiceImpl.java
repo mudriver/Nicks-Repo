@@ -1,5 +1,6 @@
 package ie.turfclub.trainers.service;
 
+import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.trainers.model.TeCards;
 import ie.turfclub.trainers.model.TeEmployees;
 
@@ -14,6 +15,7 @@ import javax.transaction.Transactional;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -174,5 +176,48 @@ public class EmployeeServiceImpl implements EmployeeService {
 			}
 		}
 		return employee;
+	}
+	
+	@Override
+	public List<SearchByNameEmployeeBean> searchByNameEmployees() {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
+		List<TeEmployees> employees = criteria.list();
+		return convertEmployeesToBean(employees);
+	}
+
+	private List<SearchByNameEmployeeBean> convertEmployeesToBean(
+			List<TeEmployees> employees) {
+		
+		List<SearchByNameEmployeeBean> records = new ArrayList<SearchByNameEmployeeBean>();
+		for (TeEmployees teEmployees : employees) {
+			SearchByNameEmployeeBean bean = new SearchByNameEmployeeBean();
+			bean.setId(teEmployees.getEmployeesEmployeeId());
+			if(teEmployees.getTeCard() != null) {
+				bean.setCardType(teEmployees.getTeCard().getCardsCardType());
+				bean.setCardNumber(teEmployees.getTeCard().getCardsCardNumber());
+			}
+			bean.setFullName(teEmployees.getEmployeesFullName());
+			records.add(bean);
+		}
+		return records;
+	}
+	
+	@Override
+	public List<SearchByNameEmployeeBean> findByName(String search) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
+		criteria.add(Restrictions.ilike("employeesFullName", search, MatchMode.ANYWHERE));
+		List<TeEmployees> employees = criteria.list();
+		return convertEmployeesToBean(employees);
+	}
+	
+	@Override
+	public TeEmployees getEmployeeById(Integer id) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
+		criteria.add(Restrictions.eq("employeesEmployeeId", id));
+		List<TeEmployees> employees = criteria.list();
+		return (employees != null && employees.size() > 0) ? employees.get(0) : null;
 	}
 }

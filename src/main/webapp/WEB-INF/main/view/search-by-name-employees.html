@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+ 
+<head data-th-fragment="header">
+ <meta charset="utf-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title data-th-text="#{search.by.name}">Search By Name</title>
+  
+<!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link type="text/css" rel="stylesheet"
+	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+	
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/datatables/jquery.datatables.min.css"
+	data-th-href="@{/resources/css/datatables/jquery.dataTables.min.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/datatables/buttons.datatable.min.css"
+	data-th-href="@{/resources/css/datatables/buttons.dataTables.min.css}" />
+ 
+
+     
+    <style>
+        .no-border-on-me>thead>tr>th,
+        .no-border-on-me>tbody>tr>th,
+        .no-border-on-me>tfoot>tr>th,
+        .no-border-on-me>thead>tr>td,
+        .no-border-on-me>tbody>tr>td,
+        .no-border-on-me>tfoot>tr>td
+        {
+            border-top-style: none;
+            border-bottom-style: none;
+        }
+        .section-card { background-color: #666E94;}
+        th { text-align: center; color: white; vertical-align: inherit !important;}
+        .width-40 { width: 38% !important;}
+        .width-60 { width: 58% !important;}
+        .width-30 { width: 30% !important;}
+        .width-10 { width: 10% !important;}
+        .form-group { width: 100% !important;}
+        form input { margin-bottom:  5px; }
+        .errorMsg { color: red;}
+        input[type="search"] { color: black !important;}
+        label { color: white; }
+        .pull-right { text-align: right;}
+        #searchDiv { margin-bottom: 10px;}
+        .text-align-center { text-align: center;}
+    </style>
+</head>
+<body>
+ <div class="container-fluid" >                <!-- /#wrapper -->
+
+	<div data-th-replace="mainmenu :: top-nav"></div>
+    
+    <h3 data-th-text="#{search.by.name}">Search By Name</h3>
+
+    <div class="form-container">
+    	<div class="form-inline" id="searchDiv">
+	    	<div class="form-group">
+	    		<label>Search By Name : </label>
+	    		<input type="text" class="form-control input-sm col-sm-6" id="searchTxt" placeholder="Please enter min 3 characters" />
+	    	</div>
+    	</div>
+    	<table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
+        	<thead>
+        		<tr>
+        			<th th:text="#{employee.card.number}" class="width-30">Card Number</th>
+	        		<th th:text="#{employee.card.type}" class="width-30">Card Type</th>
+	        		<th th:text="#{employee.name}" class="width-30">Name</th>
+	        		<th th:text="#{expenses.manager.action}" class="width-10">Action</th>
+	        	</tr>
+        	</thead>
+        	<tbody>
+        		<!-- <tr th:each="record,iterStat : ${records}">
+        			<td th:text="${record.cardNumber}"></td>
+        			<td th:text="${record.cardType}"></td>
+        			<td th:text="${record.fullName}"></td>
+        			<td><button class="btn btn-default">View</button></td>
+        		</tr> -->
+        	</tbody>
+        </table>
+    </div> 
+
+</div>              <!-- /#wrapper -->
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
+        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+         
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
+        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+ 
+    <!-- Core Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
+        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+         
+    <!-- SB Admin Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+    
+    <script type="text/javascript" src="../../resources/js/datatable/jquery.datatable.min.js"
+        data-th-src="@{/resources/js/datatable/jquery.dataTables.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/datatable/datatable.buttons.min.js"
+        data-th-src="@{/resources/js/datatable/dataTables.buttons.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/datatable/buttons.colVis.min.js"
+        data-th-src="@{/resources/js/datatable/buttons.colVis.min.js}"></script>
+            
+    <script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/	
+               
+	    var table = $('#example').DataTable( {
+	        dom: 'Bfrtip',
+	        "searching": false,
+	        "paging": false,
+	        buttons: []
+	    } );
+   	
+   	
+   		$(function() {
+   			
+   			$('#searchTxt').on('keyup', function() {
+   				
+   				$('#example').find('tbody').children().remove();
+   				var search = $(this).val();
+   				if(search.length >= 3) {
+					$.ajax({
+						url: '/turfclubPrograms/employees/findByName/'+search,
+						type: 'GET',
+						success: function(data) {
+							if(data != null && data.length > 0) {
+								for(var i=0; i < data.length; i++) {
+									var record = data[i];
+									$('#example').find('tbody').append('<tr>'+
+										'<td>'+record.cardNumber+'</td>'+
+										'<td>'+record.cardType+'</td>'+
+										'<td>'+record.fullName+'</td>'+
+										'<td><button class="btn btn-default" onclick="goToDetailPage('+record.id+')">View</button></td>'+
+										'</tr>');
+								}
+							} else {
+								$('#example').find('tbody').append('<tr class="text-align-center">'+
+										'<td colspan="4">No data available in table</td>'+
+										'</tr>');
+							}
+							//table.ajax.reload();
+							//table.draw();
+						}
+					})
+   				}
+   			});
+   		})
+   		
+   		function goToDetailPage(id) {
+   			
+   			window.location.replace('/turfclubPrograms/employees/detail/'+id);
+   		}
+   		
+   		/*]]>*/
+       </script>    
+          	
+        </body>
+</html>

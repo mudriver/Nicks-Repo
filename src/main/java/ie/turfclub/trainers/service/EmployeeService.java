@@ -3,6 +3,7 @@ package ie.turfclub.trainers.service;
 import java.util.HashMap;
 import java.util.List;
 
+import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.trainers.model.TeEmployees;
 
 public interface EmployeeService {
@@ -30,5 +31,11 @@ public interface EmployeeService {
 	List<HashMap<String, Object>> getAllCards();
 
 	TeEmployees getEmployeeByCardId(Integer cardId);
+
+	List<SearchByNameEmployeeBean> searchByNameEmployees();
+
+	List<SearchByNameEmployeeBean> findByName(String search);
+
+	TeEmployees getEmployeeById(Integer id);
 
 }
