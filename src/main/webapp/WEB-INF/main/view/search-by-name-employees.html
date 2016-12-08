@@ -52,7 +52,8 @@
         .width-60 { width: 58% !important;}
         .width-30 { width: 30% !important;}
         .width-10 { width: 10% !important;}
-        .form-group { width: 100% !important;}
+        .margin-bottom-10 { margin-bottom: 10px;}
+        /* .form-group { width: 100% !important;} */
         form input { margin-bottom:  5px; }
         .errorMsg { color: red;}
         input[type="search"] { color: black !important;}
@@ -69,13 +70,24 @@
     
     <h3 data-th-text="#{search.by.name}">Search By Name</h3>
 
-    <div class="form-container">
-    	<div class="form-inline" id="searchDiv">
-	    	<div class="form-group">
-	    		<label>Search By Name : </label>
-	    		<input type="text" class="form-control input-sm col-sm-6" id="searchTxt" placeholder="Please enter min 3 characters" />
-	    	</div>
+    <div class="">
+    	<div class="alert alert-success" id="successMsg" th:if="${success != null and success != ''}">
+    		<span th:text="${success}"></span>
     	</div>
+    	<form class="form-horizontal" id="searchDiv">
+	    	<div class="form-group margin-bottom-10 col-sm-6">
+	    		<label class="col-sm-4">Employee Name : </label>
+	    		<div class="col-sm-8">
+	    			<input type="text" class="form-control input-sm " id="searchTxt" placeholder="Please enter min 3 characters" />
+	    		</div>
+	    	</div>
+	    	<div class="form-group margin-bottom-10 col-sm-6">
+	    		<label class="col-sm-4">Employee Number : </label>
+	    		<div class="col-sm-8">
+	    			<input type="text" class="form-control input-sm " id="searchNumberTxt" placeholder="Please enter min 3 characters" />
+	    		</div>
+	    	</div>
+    	</form>
     	<table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
         	<thead>
         		<tr>
@@ -135,6 +147,10 @@
    	
    		$(function() {
    			
+   			setTimeout(function() {
+   				$('#successMsg').hide();
+   			}, 5000);
+   			
    			$('#searchTxt').on('keyup', function() {
    				
    				$('#example').find('tbody').children().remove();
@@ -144,28 +160,59 @@
 						url: '/turfclubPrograms/employees/findByName/'+search,
 						type: 'GET',
 						success: function(data) {
-							if(data != null && data.length > 0) {
-								for(var i=0; i < data.length; i++) {
-									var record = data[i];
-									$('#example').find('tbody').append('<tr>'+
-										'<td>'+record.cardNumber+'</td>'+
-										'<td>'+record.cardType+'</td>'+
-										'<td>'+record.fullName+'</td>'+
-										'<td><button class="btn btn-default" onclick="goToDetailPage('+record.id+')">View</button></td>'+
-										'</tr>');
-								}
-							} else {
-								$('#example').find('tbody').append('<tr class="text-align-center">'+
-										'<td colspan="4">No data available in table</td>'+
-										'</tr>');
-							}
+							handleDataTable(data);
 							//table.ajax.reload();
 							//table.draw();
 						}
 					})
+   				} else {
+   					$('#example').find('tbody').append('<tr class="text-align-center">'+
+   							'<td colspan="4">No data available in table</td>'+
+   							'</tr>');
+   				}
+   			});
+   			
+			$('#searchNumberTxt').on('keyup', function() {
+   				
+   				$('#example').find('tbody').children().remove();
+   				var search = $(this).val();
+   				if(search.length >= 3) {
+					$.ajax({
+						url: '/turfclubPrograms/employees/findByNumber/'+search,
+						type: 'GET',
+						success: function(data) {
+							handleDataTable(data);
+							//table.ajax.reload();
+							//table.draw();
+						}
+					})
+   				} else {
+   					$('#example').find('tbody').append('<tr class="text-align-center">'+
+   							'<td colspan="4">No data available in table</td>'+
+   							'</tr>');
    				}
    			});
    		})
+   		
+   		//handle data table
+   		function handleDataTable(data) {
+   			
+   			if(data != null && data.length > 0) {
+				for(var i=0; i < data.length; i++) {
+					var record = data[i];
+					$('#example').find('tbody').append('<tr>'+
+						'<td>'+record.cardNumber+'</td>'+
+						'<td>'+record.cardType+'</td>'+
+						'<td>'+record.fullName+'</td>'+
+						'<td><button class="btn btn-default" onclick="goToDetailPage('+record.id+')">View</button></td>'+
+						'</tr>');
+				}
+			} else {
+				$('#example').find('tbody').append('<tr class="text-align-center">'+
+						'<td colspan="4">No data available in table</td>'+
+						'</tr>');
+			}
+   		}
    		
    		function goToDetailPage(id) {
    			

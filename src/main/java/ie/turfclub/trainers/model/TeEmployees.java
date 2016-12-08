@@ -131,6 +131,8 @@ public class TeEmployees implements java.io.Serializable {
 	private String employeeExistingAIRCardHolder;
 	@Expose
 	private Date employeeRequestDate;
+	@Expose
+	private int age;
 	
 
 	public TeEmployees() {
@@ -613,6 +615,15 @@ public class TeEmployees implements java.io.Serializable {
 
 	public void setHistories(List<TeEmployentHistory> histories) {
 		this.histories = histories;
+	}
+
+	@Transient
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
 	}
 	
 	

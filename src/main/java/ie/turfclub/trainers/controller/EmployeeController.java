@@ -11,6 +11,7 @@ import ie.turfclub.trainers.service.EmployeeService;
 import ie.turfclub.trainers.service.StableStaffService;
 import ie.turfclub.trainers.service.TrainersService;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -78,6 +79,32 @@ public class EmployeeController {
 		return records;
 	}
 	
+	@RequestMapping(value="/findByNumber/{search}", method=RequestMethod.GET)
+	@ResponseBody
+	public Object getFindByNumber(@PathVariable(value="search") String search, HttpServletRequest request, ModelMap model) {
+		
+		List<SearchByNameEmployeeBean> records = employeeService.findByNumber(search);
+		return records;
+	}
+	
+	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
+	public String deleteRecordById(@PathVariable(value="id") Integer id, HttpServletRequest request, ModelMap model) throws IllegalAccessException, InvocationTargetException {
+		
+		employeeService.deleteRecordById(id);
+		model.addAttribute("success", messageSource.getMessage("success.deleted.employee", new String[] {}, Locale.US));
+		return "search-by-name-employees";
+	}
+	
+	@RequestMapping(value="/preview/{id}", method=RequestMethod.GET)
+	public String previewRecordById(@PathVariable(value="id") Integer id, HttpServletRequest request, ModelMap model) throws IllegalAccessException, InvocationTargetException {
+		
+		TeEmployees employee = employeeService.getEmployeeById(id);
+		model.addAttribute("emp", employee);
+		model.addAttribute("backUrl", "/turfclubPrograms/employees/detail/"+id);
+		
+		return "employee-preview";
+	}
+	
 	@RequestMapping(value="/getByCardId/{cardId}", method=RequestMethod.GET)
 	public String getEmployeeByCardId(@PathVariable("cardId") Integer cardId, 
 			HttpServletRequest request, ModelMap model) {
@@ -90,12 +117,27 @@ public class EmployeeController {
 	
 	@RequestMapping(value="/detail/{id}", method=RequestMethod.GET)
 	public String getEmployeeById(@PathVariable("id") Integer id, 
-			HttpServletRequest request, ModelMap model) {
+			HttpServletRequest request, ModelMap model) throws IllegalAccessException, InvocationTargetException {
 		
 		TeEmployees employee = employeeService.getEmployeeById(id);
 		model.addAttribute("emp", employee);
 		model.addAttribute("backUrl", "/turfclubPrograms/employees/searchByName");
-		return "employee-detail";
+		
+		model.addAttribute("trainers", trainersService.getAllTrainers());
+		model.addAttribute("sexEnum", employeeService.getSexEnum());
+		model.addAttribute("maritalEnum",
+				employeeService.getMaritalStatusEnum());
+		model.addAttribute("employmentCatEnum",
+				employeeService.getEmploymentCategoryEnum());
+		model.addAttribute("titlesEnum", employeeService.getTitlesEnum());
+		model.addAttribute("countiesEnum", employeeService.getCountiesEnum());
+		model.addAttribute("countriesEnum",
+				employeeService.getCountriesEnum());
+		model.addAttribute("cardTypeEnum", employeeService.getAllCardType());
+		model.addAttribute("pensionEnum", employeeService.getPension());
+		model.addAttribute("nationalityEnum", employeeService.getNationalityEnum());
+		
+		return "employee-edit";
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
@@ -200,5 +242,4 @@ public class EmployeeController {
 		person.setNumHourWorked(emp.getEmployeeNumHourWorked());
 		return person;
 	}
-	
 }

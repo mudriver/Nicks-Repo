@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head data-th-fragment="header">
+<meta charset="utf-8" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="expires" content="-1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title th:text="#{employee.details}">Employee Preview</title>
+
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/sb-admin-2.css"
+	data-th-href="@{/resources/css/sb-admin-2.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<style>
+	.labelVal { font-weight: normal !important;}
+	/* .section-card { padding-left: 200px; padding-right: 200px;} */
+	.line-height-0 { line-height: 2;}
+	@media print {
+	  body * {
+	    visibility: visible;
+	  }
+	  .hidden-to-print {
+	    visibility: hidden;
+	    display: none !important;
+	  }
+	}
+</style>
+</head>
+<body>
+	<h3 th:text="#{employee.details}" class="text-center">Employee Details</h3>
+	<br/>
+	<div class="section-card">
+		<div class="col-sm-5 line-height-0 hidden-to-print">
+			<a href="javascript:void(0);" id="backButton" class="col-sm-12"><i class="fa fa-arrow-left"></i>Back</a>
+		</div>
+		<div class="col-sm-7 line-height-0 hidden-to-print">
+			<a href="javascript:void(0);" id="printButton" class="col-sm-12"><i class="fa fa-print"></i>Print</a>
+		</div>
+		<div class="col-sm-5 line-height-0">
+			<label class="col-sm-6" th:text="#{employee.card.number}">Card Number</label>
+			<label class="col-sm-6 labelVal" th:text="${emp.teCard.cardsCardType +' '+emp.teCard.cardsCardNumber}"></label>
+		</div>
+		<div class="col-sm-7 line-height-0">
+			<label class="col-sm-6" th:text="#{employee.issue.date}">Issue Date</label>
+			<label class="col-sm-5 labelVal" th:if="${emp.teCard.cardsIssueDate != null}" th:text="${#dates.format(emp.teCard.cardsIssueDate, 'dd/MM/yyyy')}"></label>
+		</div>
+		<div class="col-sm-5 line-height-0">
+			<label class="col-sm-6" th:text="#{employee.surname}">Surname</label>
+			<label class="col-sm-6 labelVal" th:text="${emp.employeesSurname}"></label>
+		</div>
+		<div class="col-sm-7 line-height-0">
+			<label class="col-sm-6" th:text="#{employee.firstname}">Firstname</label>
+			<label class="col-sm-6 labelVal" th:text="${emp.employeesFirstname}"></label>
+		</div>
+		<div class="col-sm-5 line-height-0">
+			<label class="col-sm-6" th:text="#{employee.date.of.birth}">DOB</label>
+			<label class="col-sm-6 labelVal" th:if="${emp.employeesDateOfBirth != null}" th:text="${#dates.format(emp.employeesDateOfBirth, 'dd/MM/yyyy')}"></label>
+		</div>
+		<div class="col-sm-7 line-height-0">
+			<label class="col-sm-6" th:text="#{employee.age}">Age</label>
+			<label class="col-sm-6 labelVal" th:text="${emp.age}"></label>
+		</div>
+		<div class="col-sm-5 line-height-0">
+			<label class="col-sm-6" th:text="#{employee.marital.status}">Marital Status</label>
+			<label class="col-sm-6 labelVal" th:text="${emp.employeesMaritalStatus}"></label>
+		</div>
+		<div class="col-sm-7 line-height-0">
+			<label class="col-sm-6" th:text="#{employee.spouse.name}">Spouse's Name</label>
+			<label class="col-sm-6 labelVal" th:text="${emp.employeesSpouseName}"></label>
+		</div>
+		<div class="col-sm-5 line-height-0">
+			<label class="col-sm-6" th:text="#{employee.hours.worked}">Hours worked</label>
+			<label class="col-sm-6 labelVal" th:text="${emp.employeeNumHourWorked}"></label>
+		</div>
+		<div class="col-sm-7 line-height-0">
+			<label class="col-sm-6" th:text="#{employee.category.of.employment}">Category Of Employment</label>
+			<label class="col-sm-6 labelVal" th:text="${emp.employeeCategoryOfEmployment}"></label>
+		</div>
+		<div class="col-sm-12 line-height-0">
+			<label class="col-sm-2" th:text="#{employee.address}">Category Of Employment</label>
+			<label class="col-sm-10 labelVal" th:text="${emp.employeesAddress1 +' '+emp.employeesAddress2 +' '+ emp.employeesAddress3 +' '+ emp.employeesAddress4 +' '+ emp.employeesAddress5}"></label>
+		</div>
+		
+		<div class="col-sm-12">&nbsp;</div>
+		<div class="col-sm-2">&nbsp;</div>
+		<div class="col-sm-10">
+			<label th:text="#{employee.employment.record}"></label>
+		</div>
+		
+		<div class="col-sm-12">
+			<div class="col-sm-2"><label th:text="#{employee.card.type}"></label></div>
+			<div class="col-sm-2"><label th:text="#{employee.pension.type}"></label></div>
+			<div class="col-sm-2"><label th:text="#{employee.pension.trainer}"></label></div>
+			<div class="col-sm-2"><label th:text="#{employee.pension.hri.ac.num}"></label></div>
+			<div class="col-sm-2"><label th:text="#{employee.pension.from.date}"></label></div>
+			<div class="col-sm-2"><label th:text="#{employee.pension.to.date}"></label></div>
+		</div>
+		<div class="edit-pension-form col-sm-12" th:if="${not #lists.isEmpty(emp.pensions)}" th:each="str,iterStat : ${emp.pensions}">
+			<div class="col-sm-2"><label th:text="${emp.pensions[__${iterStat.index}__].pensionCardType}"></label></div>
+			<div class="col-sm-2"><label th:text="${emp.pensions[__${iterStat.index}__].pensionType}"></label></div>
+			<div class="col-sm-2"><label th:text="${emp.pensions[__${iterStat.index}__].pensionTrainerName}"></label></div>
+			<div class="col-sm-2"><label th:text="${emp.pensions[__${iterStat.index}__].pensionHRIAccNum}"></label></div>
+			<div class="col-sm-2"><label th:if="${emp.pensions[__${iterStat.index}__].pensionDateJoinedScheme != null}" th:text="${#dates.format(emp.pensions[__${iterStat.index}__].pensionDateJoinedScheme, 'dd/MM/yyyy')}"></label></div>
+			<div class="col-sm-2"><label th:if="${emp.pensions[__${iterStat.index}__].pensionDateLeftScheme != null}" th:text="${#dates.format(emp.pensions[__${iterStat.index}__].pensionDateLeftScheme, 'dd/MM/yyyy')}"></label></div>
+		</div>
+	</div>
+	<script type="text/javascript"
+		src="../../resources/js/jquery-2.1.1.min.js"
+		data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+	<script type="text/javascript"
+		src="../../resources/js/bootstrap.min.js"
+		data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+
+	<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/	
+            
+        var backUrl = [[${backUrl}]];
+    	$(function() {
+    		
+    		$('#printButton').click(function() {
+    			
+    			window.print();
+    		});
+    		
+    		$('#backButton').click(function() {
+    			window.location.replace(backUrl);
+    		});
+    	});         
+   	/*]]>*/
+    </script>    
+</body>
+</html>

@@ -1,5 +1,6 @@
 package ie.turfclub.trainers.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,6 +37,10 @@ public interface EmployeeService {
 
 	List<SearchByNameEmployeeBean> findByName(String search);
 
-	TeEmployees getEmployeeById(Integer id);
+	TeEmployees getEmployeeById(Integer id) throws IllegalAccessException, InvocationTargetException;
+
+	List<SearchByNameEmployeeBean> findByNumber(String search);
+
+	void deleteRecordById(Integer id) throws IllegalAccessException, InvocationTargetException;
 
 }

@@ -1,9 +1,13 @@
 package ie.turfclub.trainers.service;
 
 import ie.turfclub.common.bean.SearchByNameEmployeeBean;
+import ie.turfclub.common.service.NullAwareBeanUtilsBean;
 import ie.turfclub.trainers.model.TeCards;
 import ie.turfclub.trainers.model.TeEmployees;
+import ie.turfclub.trainers.model.TeEmployentHistory;
+import ie.turfclub.trainers.model.TePension;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,11 +16,14 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -213,11 +220,61 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
-	public TeEmployees getEmployeeById(Integer id) {
+	public TeEmployees getEmployeeById(Integer id) throws IllegalAccessException, InvocationTargetException {
 		
 		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
 		criteria.add(Restrictions.eq("employeesEmployeeId", id));
 		List<TeEmployees> employees = criteria.list();
-		return (employees != null && employees.size() > 0) ? employees.get(0) : null;
+		TeEmployees emp =  (employees != null && employees.size() > 0) ? employees.get(0) : null;
+		
+		if(emp.getTeEmployentHistories() != null && !emp.getTeEmployentHistories().isEmpty()) {
+			List<TeEmployentHistory> histories = new ArrayList<TeEmployentHistory>();
+			List<TeEmployentHistory> currHistories = new ArrayList<TeEmployentHistory>();
+			currHistories.addAll(emp.getTeEmployentHistories());
+			for (TeEmployentHistory teEmployentHistory : currHistories) {
+				TeEmployentHistory history = new TeEmployentHistory();
+				BeanUtilsBean notNull=new NullAwareBeanUtilsBean();
+				notNull.copyProperties(history, teEmployentHistory);
+				history.setTrainerName(history.getTeTrainers().getTrainerFullName());
+				histories.add(history);
+			}
+			emp.setHistories(histories);
+		}
+		
+		if(emp.getTePensions() != null && !emp.getTePensions().isEmpty()) {
+			List<TePension> pensions = new ArrayList<TePension>();
+			List<TePension> currPensions = new ArrayList<TePension>();
+			currPensions.addAll(emp.getTePensions());
+			for (TePension tePension : currPensions) {
+				TePension pension = new TePension();
+				BeanUtilsBean notNull=new NullAwareBeanUtilsBean();
+				notNull.copyProperties(pension, tePension);
+				pension.setPensionTrainerName(pension.getPensionTrainer().getTrainerFullName());
+				pensions.add(pension);
+			}
+			emp.setPensions(pensions);
+		}
+		LocalDate ld = LocalDate.fromDateFields(emp.getEmployeesDateOfBirth());
+
+		Period p = Period.fieldDifference(ld, LocalDate.now());
+		emp.setAge(p.getYears());
+ 		return emp;
+	}
+	
+	@Override
+	public List<SearchByNameEmployeeBean> findByNumber(String search) {
+		
+		String sql = "select e from TeEmployees e, TeCards c where c.cardsCardId = e.teCard.cardsCardId"
+				+ " and lower(c.cardsCardNumber) like lower('%"+search+"%')";
+		
+		List<TeEmployees> employees = getCurrentSession().createQuery(sql).list();
+		return convertEmployeesToBean(employees);
+	}
+	
+	@Override
+	public void deleteRecordById(Integer id) throws IllegalAccessException, InvocationTargetException {
+	
+		TeEmployees emp = getEmployeeById(id);
+		getCurrentSession().delete(emp);
 	}
 }
