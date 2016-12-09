@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -44,10 +45,14 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.google.gson.Gson;
 
 @PropertySource("classpath:ie/turfclub/trainers/resources/config/config.properties")
 @Service
@@ -58,6 +63,10 @@ public class TrainerServiceImpl implements TrainersService {
 	private SessionFactory sessionFactory;
 	@Resource
 	private Environment env;
+	@Autowired
+	private MessageSource messageSource;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	private String PROPERTY_TAX_YEAR;
 	private Date minDateFrom;
 	private Date maxDateFrom;
@@ -1128,5 +1137,45 @@ public class TrainerServiceImpl implements TrainersService {
 			}
 		}
 		return results;
+	}
+	
+	@Override
+	public Object getVerifiedStatus() {
+		
+		Gson gson = new Gson();
+		List<Map<String,Object>> statuses = new ArrayList<Map<String,Object>>();
+		VerifiedStatus verifiedStatuses = new TeTrainers().getTrainerVerifiedStatus();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", verifiedStatuses.NOTVERIFIED);
+		map.put("text", verifiedStatuses.NOTVERIFIED);
+		statuses.add(map);
+		
+		map = new HashMap<String, Object>();
+		map.put("id", verifiedStatuses.PENDING);
+		map.put("text", verifiedStatuses.PENDING);
+		statuses.add(map);
+		
+		map = new HashMap<String, Object>();
+		map.put("id", verifiedStatuses.RESET);
+		map.put("text", verifiedStatuses.RESET);
+		statuses.add(map);
+		
+		map = new HashMap<String, Object>();
+		map.put("id", verifiedStatuses.VERIFIED);
+		map.put("text", verifiedStatuses.VERIFIED);
+		statuses.add(map);
+		
+		String json = gson.toJson(statuses);
+		return json;
+	}
+	
+	@Override
+	public String saveOrUpdate(TeTrainers trainer) {
+		
+		trainer.setTrainerDateRequested(new Date());
+		trainer.setPwd(passwordEncoder.encode("test"));
+		getCurrentSession().saveOrUpdate(trainer);
+		
+		return null;
 	}
 }

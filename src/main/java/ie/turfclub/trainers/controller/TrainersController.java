@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -30,34 +31,13 @@ import ie.turfclub.trainers.model.TeTrainersJsonObject;
 import ie.turfclub.trainers.pojos.Employee;
 import ie.turfclub.trainers.pojos.EmployeeHistoryRequest;
 import ie.turfclub.trainers.service.StableStaffService;
+import ie.turfclub.trainers.service.TrainersService;
 import ie.turfclub.utilities.EmployeeHistoryUtils;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -83,43 +63,46 @@ public class TrainersController {
 	StableStaffService stableStaffService;
 	@Autowired
 	private DownloadService downloadService;
-	
+
 	@Autowired
 	private TokenService tokenService;
+	
+	@Autowired
+	private MessageSource messageSource;
+	
+	@Autowired
+	private TrainersService trainersService;
 
-	
-	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String trainers(Model model, Authentication authentication) {
-
-		
 
 		Object principal = authentication.getPrincipal();
 		User user = (User) principal;
 		String role = "";
 		for (GrantedAuthority roles : user.getAuthorities()) {
-			
+
 			if (roles.getAuthority().equals("STABLESTAFF_PENSION")) {
 				model.addAttribute("USERMENUTYPE", "STABLESTAFF_PENSION");
 			}
 		}
-		
-		
+
 		return "trainers";
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String getAddTrainerPage(Model model, Authentication authentication) {
 
+		model.addAttribute("trainer", new TeTrainers());
+		model.addAttribute("verifiedStatusEnum", trainersService.getVerifiedStatus());
+		return "trainer-add";
+	}
 	
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public String handleTrainerPage(TeTrainers trainer, Model model) {
 
-
+		trainersService.saveOrUpdate(trainer);
+		model.addAttribute("trainer", new TeTrainers());
+		model.addAttribute("success", messageSource.getMessage("success.added.trainer", new String[] {}, Locale.US));
+		return "trainer-add";
+	}
 }

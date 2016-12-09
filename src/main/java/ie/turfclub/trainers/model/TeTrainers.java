@@ -77,9 +77,10 @@ public class TeTrainers implements java.io.Serializable {
 	private boolean canEdit = false;
 	private boolean hasDocuments = false;
 	private boolean canUpload = false;
+	private String pwd;
 	
 	
-	public enum VerifiedStatus{
+	public static enum VerifiedStatus{
 		NOTVERIFIED,PENDING,VERIFIED,RESET
 	}
 	
@@ -524,6 +525,15 @@ public class TeTrainers implements java.io.Serializable {
 
 	public void setCanUpload(boolean canUpload) {
 		this.canUpload = canUpload;
+	}
+
+	@Column(name="trainer_pwd")
+	public String getPwd() {
+		return pwd;
+	}
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
 	}
 
 	

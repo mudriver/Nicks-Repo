@@ -52,5 +52,7 @@ public interface TrainersService {
 	public TeTrainers updateTrainerVerifiedStatus(TeTrainers trainerWithVerifiedStatus);
 	public TeEmployees updateEmployeeHistoryVerifiedStatus(TeEmployees employee, Integer trainerId);
 	public List<HashMap<String, Object>> getAllTrainers();
+	public Object getVerifiedStatus();
+	public String saveOrUpdate(TeTrainers trainer);
 	
 }
