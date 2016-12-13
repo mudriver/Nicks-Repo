@@ -71,18 +71,20 @@ public class EmployeeController {
 		return "search-by-name-employees";
 	}
 	
-	@RequestMapping(value="/findByName/{search}", method=RequestMethod.GET)
+	@RequestMapping(value="/findByName", method=RequestMethod.GET)
 	@ResponseBody
-	public Object getFindByName(@PathVariable(value="search") String search, HttpServletRequest request, ModelMap model) {
+	public Object getFindByName(HttpServletRequest request, ModelMap model) {
 		
+		String search = request.getParameter("q");
 		List<SearchByNameEmployeeBean> records = employeeService.findByName(search);
 		return records;
 	}
 	
-	@RequestMapping(value="/findByNumber/{search}", method=RequestMethod.GET)
+	@RequestMapping(value="/findByNumber", method=RequestMethod.GET)
 	@ResponseBody
-	public Object getFindByNumber(@PathVariable(value="search") String search, HttpServletRequest request, ModelMap model) {
+	public Object getFindByNumber( HttpServletRequest request, ModelMap model) {
 		
+		String search = request.getParameter("q");
 		List<SearchByNameEmployeeBean> records = employeeService.findByNumber(search);
 		return records;
 	}

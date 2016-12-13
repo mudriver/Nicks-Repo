@@ -17,6 +17,10 @@
 	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+	
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/jquery-ui-1.10.3.custom.css"
+	data-th-href="@{/resources/css/jquery-ui-1.10.3.custom.css}" />
 <link type="text/css" rel="stylesheet"
 	href="../../resources/css/select2.css"
 	data-th-href="@{/resources/css/select2.css}" />
@@ -61,6 +65,14 @@
         .pull-right { text-align: right;}
         #searchDiv { margin-bottom: 10px;}
         .text-align-center { text-align: center;}
+        .ui-autocomplete {
+            max-height: 200px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+            /* add padding to account for vertical scrollbar */
+            padding-right: 20px;
+        }
     </style>
 </head>
 <body>
@@ -88,7 +100,7 @@
 	    		</div>
 	    	</div>
     	</form>
-    	<table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
+    	<!-- <table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
         	<thead>
         		<tr>
         			<th th:text="#{employee.card.number}" class="width-30">Card Number</th>
@@ -98,20 +110,23 @@
 	        	</tr>
         	</thead>
         	<tbody>
-        		<!-- <tr th:each="record,iterStat : ${records}">
+        		<tr th:each="record,iterStat : ${records}">
         			<td th:text="${record.cardNumber}"></td>
         			<td th:text="${record.cardType}"></td>
         			<td th:text="${record.fullName}"></td>
         			<td><button class="btn btn-default">View</button></td>
-        		</tr> -->
+        		</tr>
         	</tbody>
-        </table>
+        </table> -->
     </div> 
 
 </div>              <!-- /#wrapper -->
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
         data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/jquery-ui-1.10.3.custom.min.js"
+        data-th-src="@{/resources/js/jquery-ui-1.10.3.custom.min.js}"></script>
          
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
@@ -125,24 +140,24 @@
     <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
         data-th-src="@{/resources/js/sb-admin-2.js}"></script>
     
-    <script type="text/javascript" src="../../resources/js/datatable/jquery.datatable.min.js"
+    <!-- <script type="text/javascript" src="../../resources/js/datatable/jquery.datatable.min.js"
         data-th-src="@{/resources/js/datatable/jquery.dataTables.min.js}"></script>
         
     <script type="text/javascript" src="../../resources/js/datatable/datatable.buttons.min.js"
         data-th-src="@{/resources/js/datatable/dataTables.buttons.min.js}"></script>
         
     <script type="text/javascript" src="../../resources/js/datatable/buttons.colVis.min.js"
-        data-th-src="@{/resources/js/datatable/buttons.colVis.min.js}"></script>
+        data-th-src="@{/resources/js/datatable/buttons.colVis.min.js}"></script> -->
             
     <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/	
                
-	    var table = $('#example').DataTable( {
+	    /* var table = $('#example').DataTable( {
 	        dom: 'Bfrtip',
 	        "searching": false,
 	        "paging": false,
 	        buttons: []
-	    } );
+	    } ); */
    	
    	
    		$(function() {
@@ -151,7 +166,7 @@
    				$('#successMsg').hide();
    			}, 5000);
    			
-   			$('#searchTxt').on('keyup', function() {
+   			/* $('#searchTxt').on('keyup', function() {
    				
    				$('#example').find('tbody').children().remove();
    				var search = $(this).val();
@@ -170,9 +185,9 @@
    							'<td colspan="4">No data available in table</td>'+
    							'</tr>');
    				}
-   			});
+   			}); */
    			
-			$('#searchNumberTxt').on('keyup', function() {
+			/* $('#searchNumberTxt').on('keyup', function() {
    				
    				$('#example').find('tbody').children().remove();
    				var search = $(this).val();
@@ -191,11 +206,62 @@
    							'<td colspan="4">No data available in table</td>'+
    							'</tr>');
    				}
-   			});
+   			}); */
+			
+   			$('#searchTxt').autocomplete({
+				source: function(request, response) {
+					//Autocomplete
+					$.getJSON('/turfclubPrograms/employees/findByName',{q:request.term}, function(data) {
+						
+						if(data.length > 0) {
+							response( $.map(data, function( item ) {
+					              return {			            	  
+					                label: item.cardNumber + " - "+ item.fullName,
+					                value: item.fullName,
+					                id: item.id
+					              }
+							}));
+						} else {
+							response([{ label: 'No results found.', id: -1}]);
+						}
+					});
+				},
+				minLength: 3,
+				select: function( event, ui ) {			
+					
+					goToDetailPage(ui.item.id);
+				}
+			});
+   			
+			$('#searchNumberTxt').autocomplete({
+				source: function(request, response) {
+					//Autocomplete
+					$.getJSON('/turfclubPrograms/employees/findByNumber',{q:request.term}, function(data) {
+						
+						if(data.length > 0) {
+							response( $.map(data, function( item ) {
+					              return {			            	  
+					                label: item.cardNumber + " - "+ item.fullName,
+					                value: item.cardNumber,
+					                id: item.id
+					              }
+							}));
+						} else {
+							response([{ label: 'No results found.', id: -1}]);
+						}
+					});
+				},
+				minLength: 3,
+				select: function( event, ui ) {			
+					
+					goToDetailPage(ui.item.id);
+				}
+			});
+
    		})
    		
    		//handle data table
-   		function handleDataTable(data) {
+   		/* function handleDataTable(data) {
    			
    			if(data != null && data.length > 0) {
 				for(var i=0; i < data.length; i++) {
@@ -212,7 +278,7 @@
 						'<td colspan="4">No data available in table</td>'+
 						'</tr>');
 			}
-   		}
+   		} */
    		
    		function goToDetailPage(id) {
    			
