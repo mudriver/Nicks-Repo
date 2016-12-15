@@ -89,6 +89,23 @@ public class EmployeeController {
 		return records;
 	}
 	
+	@RequestMapping(value="/partFullTimeStat", method=RequestMethod.GET)
+	public String getPartFullTimeStat( HttpServletRequest request, ModelMap model) {
+		
+		String search = request.getParameter("q");
+		List<SearchByNameEmployeeBean> records = employeeService.findByNumber(search);
+		return "part-full-time-stat";
+	}
+	
+	@RequestMapping(value="/partFullTimeResult", method=RequestMethod.GET)
+	@ResponseBody
+	public Object getPartFullTimeResult( HttpServletRequest request, ModelMap model) {
+		
+		String hours = request.getParameter("hours");
+		HashMap<String, Object> records = employeeService.getPartFullTimeRecords(hours);
+		return records;
+	}
+	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
 	public String deleteRecordById(@PathVariable(value="id") Integer id, HttpServletRequest request, ModelMap model) throws IllegalAccessException, InvocationTargetException {
 		

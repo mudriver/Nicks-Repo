@@ -9,6 +9,7 @@ import ie.turfclub.trainers.model.TePension;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -276,5 +279,33 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 		TeEmployees emp = getEmployeeById(id);
 		getCurrentSession().delete(emp);
+	}
+	
+	@Override
+	public HashMap<String, Object> getPartFullTimeRecords(String hours) {
+		
+		HashMap<String, Object> records = new HashMap<String, Object>();
+		
+		Criteria partTimeCriteria = getCurrentSession().createCriteria(TeEmployentHistory.class);
+		Date startDate = new DateTime().dayOfYear().withMinimumValue().toDate();
+		Date endDate = new DateTime().dayOfYear().withMaximumValue().toDate();
+		partTimeCriteria.setProjection(Projections.rowCount());
+		partTimeCriteria.add(
+				Restrictions.or(
+						Restrictions.between("ehDateFrom", startDate, endDate), 
+						Restrictions.between("ehDateTo", startDate, endDate)));
+		partTimeCriteria.add(Restrictions.lt("employeeNumHourWorked", Integer.parseInt(hours)));
+		Long partTimeCount = (Long) partTimeCriteria.uniqueResult();
+		Criteria fullTimeCriteria = getCurrentSession().createCriteria(TeEmployentHistory.class);
+		fullTimeCriteria.setProjection(Projections.rowCount());
+		fullTimeCriteria.add(
+				Restrictions.or(
+						Restrictions.between("ehDateFrom", startDate, endDate), 
+						Restrictions.between("ehDateTo", startDate, endDate)));
+		fullTimeCriteria.add(Restrictions.ge("employeeNumHourWorked", Integer.parseInt(hours)));
+		Long fullTimeCount = (Long) fullTimeCriteria.uniqueResult();
+		records.put("partTime", partTimeCount);
+		records.put("fullTime", fullTimeCount);
+		return records;
 	}
 }

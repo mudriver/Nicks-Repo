@@ -43,4 +43,6 @@ public interface EmployeeService {
 
 	void deleteRecordById(Integer id) throws IllegalAccessException, InvocationTargetException;
 
+	HashMap<String, Object> getPartFullTimeRecords(String hours);
+
 }

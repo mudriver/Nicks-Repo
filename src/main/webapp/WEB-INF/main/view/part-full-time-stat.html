@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head data-th-fragment="header">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title data-th-text="#{link.full.time.part.time.stats}">Title</title>
+
+<!-- Core CSS - Include with every page -->
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link type="text/css" rel="stylesheet"
+	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+
+
+
+<style>
+label { color: white;}
+form { 
+	left: 25%;
+    position: fixed;
+    width: 100%;
+   }
+</style>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+</head>
+<body>
+	<div class="container-fluid">
+		<!-- /#wrapper -->
+
+		<div data-th-replace="mainmenu :: top-nav"></div>
+
+		<h3 data-th-text="#{link.full.time.part.time.stats}">Full Time /
+			Part Time Stats</h3>
+
+		<form action="javascript:void(0);" class="form-inline col-sm-12">
+			<div class="col-sm-2">
+				<label data-th-text="#{enter.num.hours.for.ft}">Enter Num
+					Hours For FT</label>
+			</div>
+			<div class="col-sm-2">
+				<input type="text" class="form-control" id="numOfHours" onkeypress="return isNumber(event)" />
+			</div>
+			<div class="col-sm-1">
+				<input type="button" class="btn btn-default" value="Search" id="searchBtn" />
+			</div>
+		</form>
+		<br/>
+		<br/>
+		<div class="col-sm-12" id="resultDiv" style="display: none;">
+			<h3>Results</h3>
+			<div class="col-sm-4"></div>
+			<div class="col-sm-4">
+				<div class="col-sm-3"><label>FT : </label></div>
+				<div class="col-sm-3"><label id="ftcount"></label></div>
+				<div class="col-sm-3"><label>PT : </label></div>
+				<div class="col-sm-3"><label id="ptcount"></label></div>
+			</div>
+			<div class="col-sm-4"></div>
+		</div>		
+	</div>
+	<!-- /#wrapper -->
+
+
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script type="text/javascript"
+		src="../../resources/js/jquery-2.1.1.min.js"
+		data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script type="text/javascript"
+		src="../../resources/js/bootstrap.min.js"
+		data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+
+	<!-- Core Scripts - Include with every page -->
+	<script type="text/javascript"
+		src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
+		data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+
+	<!-- SB Admin Scripts - Include with every page -->
+	<script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+		data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+
+	<script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+		data-th-src="@{/resources/js/angularjs/typeahead/typeahead.js}"></script>
+
+	<script type="text/javascript" th:inline="javascript">
+    	/*<![CDATA[*/
+    	
+    	$(function() {
+    		
+    		$('#searchBtn').click(function() {
+    			
+    			var val = $('#numOfHours').val();
+    			if(val.trim() != '') {
+    				$.ajax({
+    					url: '/turfclubPrograms/employees/partFullTimeResult',
+    					type: 'GET',
+    					data: { hours: val},
+    					success: function(data) {
+    						
+    						if(data != null) {
+    							$('#ftcount').html(data.fullTime);
+    							$('#ptcount').html(data.partTime);
+    							$('#resultDiv').show();
+    						}
+    					}
+    				})
+    			} else
+    				$('#resultDiv').hide();
+    		});
+    	});
+    	
+    	function isNumber(evt) {
+    	    evt = (evt) ? evt : window.event;
+    	    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    	    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    	        return false;
+    	    }
+    	    return true;
+    	}
+    	/*]]>*/
+    </script>
+</body>
+
+
+</html>
