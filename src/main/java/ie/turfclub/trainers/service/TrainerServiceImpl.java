@@ -1,5 +1,8 @@
 package ie.turfclub.trainers.service;
 
+import ie.turfclub.common.enums.RoleEnum;
+import ie.turfclub.person.model.Person;
+import ie.turfclub.person.service.PersonService;
 import ie.turfclub.trainers.model.TeAuthorisedReps;
 import ie.turfclub.trainers.model.TeEmployeeTrainerVerified;
 import ie.turfclub.trainers.model.TeEmployees;
@@ -16,6 +19,7 @@ import ie.turfclub.trainers.model.savedSearches.TeOrderByFields;
 import ie.turfclub.trainers.model.savedSearches.TeTrainersPensionSavedSearch;
 import ie.turfclub.trainers.model.savedSearches.TeTrainersSavedSearch;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,6 +71,10 @@ public class TrainerServiceImpl implements TrainersService {
 	private MessageSource messageSource;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private PersonService personService;
+	
 	private String PROPERTY_TAX_YEAR;
 	private Date minDateFrom;
 	private Date maxDateFrom;
@@ -1170,12 +1178,35 @@ public class TrainerServiceImpl implements TrainersService {
 	}
 	
 	@Override
-	public String saveOrUpdate(TeTrainers trainer) {
+	public String saveOrUpdate(TeTrainers trainer) throws SQLException {
 		
 		trainer.setTrainerDateRequested(new Date());
 		trainer.setPwd(passwordEncoder.encode("test"));
 		getCurrentSession().saveOrUpdate(trainer);
+		Person person = createPerson(trainer);
+		personService.addPerson(person);
 		
 		return null;
+	}
+
+	private Person createPerson(TeTrainers trainer) {
+		
+		Person person = new Person();
+		person.setRefId(trainer.getTrainerId());
+		person.setSurname(trainer.getTrainerSurname());
+		person.setFirstname(trainer.getTrainerFirstName());
+		person.setDateOfBirth(trainer.getTrainerDateOfBirth());
+		person.setRequestDate(trainer.getTrainerDateRequested());
+		person.setDateEntered(trainer.getTrainerTimeEntered());
+		person.setAddress1(trainer.getTrainerAddress1());
+		person.setAddress2(trainer.getTrainerAddress2());
+		person.setAddress3(trainer.getTrainerAddress3());
+		person.setPhoneNo(trainer.getTrainerHomePhone());
+		person.setMobileNo(trainer.getTrainerMobilePhone());
+		person.setEmail(trainer.getTrainerEmail());
+		person.setComments(trainer.getTrainerNotes());
+		person.setRoleId(RoleEnum.TRAINER.getId());
+		
+		return person;
 	}
 }

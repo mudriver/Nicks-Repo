@@ -16,6 +16,7 @@ import ie.turfclub.trainers.model.savedSearches.TeSavedSearches;
 import ie.turfclub.trainers.model.savedSearches.TeTrainersPensionSavedSearch;
 import ie.turfclub.trainers.model.savedSearches.TeTrainersSavedSearch;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +54,6 @@ public interface TrainersService {
 	public TeEmployees updateEmployeeHistoryVerifiedStatus(TeEmployees employee, Integer trainerId);
 	public List<HashMap<String, Object>> getAllTrainers();
 	public Object getVerifiedStatus();
-	public String saveOrUpdate(TeTrainers trainer);
+	public String saveOrUpdate(TeTrainers trainer) throws SQLException;
 	
 }

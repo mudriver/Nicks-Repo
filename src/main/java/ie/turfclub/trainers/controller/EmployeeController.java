@@ -1,6 +1,7 @@
 package ie.turfclub.trainers.controller;
 
 import ie.turfclub.common.bean.SearchByNameEmployeeBean;
+import ie.turfclub.common.enums.RoleEnum;
 import ie.turfclub.person.model.Person;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.trainers.model.TeEmployees;
@@ -217,8 +218,8 @@ public class EmployeeController {
 		
 		employeeService.saveOrUpdate(emp);
 		
-		//Person person = createPerson(emp);
-		//personService.addPerson(person);
+		Person person = createPerson(emp);
+		personService.addPerson(person);
 		model.addAttribute("emp", new TeEmployees());
 		model.addAttribute("success", messageSource.getMessage("success.added.employee", new String[] {}, Locale.US));
 		return "emp-add";
@@ -228,37 +229,39 @@ public class EmployeeController {
 	private Person createPerson(TeEmployees emp) {
 		
 		Person person = new Person();
-		person.setPpsNumber(emp.getEmployeesPpsNumber());
-		person.setTitle(emp.getEmployeesTitle());
+		person.setRefId(emp.getEmployeesEmployeeId());
 		person.setSurname(emp.getEmployeesSurname());
 		person.setFirstname(emp.getEmployeesFirstname());
 		person.setDateOfBirth(emp.getEmployeesDateOfBirth());
-		person.setNationality(emp.getEmployeesNationality());
-		person.setSex(emp.getEmployeesSex());
-		person.setMaritalStatus(emp.getEmployeesMaritalStatus());
-		person.setSpouseName(emp.getEmployeesSpouseName());
+		person.setRequestDate(emp.getEmployeeRequestDate());
+		person.setDateEntered(emp.getEmployeesDateEntered());
 		person.setAddress1(emp.getEmployeesAddress1());
 		person.setAddress2(emp.getEmployeesAddress2());
 		person.setAddress3(emp.getEmployeesAddress3());
-		person.setAddress4(emp.getEmployeesAddress4());
-		person.setAddress5(emp.getEmployeesAddress5());
-		person.setPostCode(emp.getEmployeesPostCode());
 		person.setPhoneNo(emp.getEmployeesPhoneNo());
 		person.setMobileNo(emp.getEmployeesMobileNo());
 		person.setEmail(emp.getEmployeesEmail());
 		person.setComments(emp.getEmployeesComments());
+		person.setRoleId(RoleEnum.EMPLOYEE.getId());
+		/*person.setAddress4(emp.getEmployeesAddress4());
+		person.setAddress5(emp.getEmployeesAddress5());
+		person.setPostCode(emp.getEmployeesPostCode());
+		person.setNationality(emp.getEmployeesNationality());
+		person.setSex(emp.getEmployeesSex());
+		person.setMaritalStatus(emp.getEmployeesMaritalStatus());
+		person.setSpouseName(emp.getEmployeesSpouseName());
 		person.setHriAccountNo(emp.getEmployeesHriAccountNo());
 		person.setLastUpdated(emp.getEmployeesLastUpdated());
-		person.setDateEntered(emp.getEmployeesDateEntered());
 		person.setNew(emp.getEmployeesIsNew());
 		person.setHasTaxableEarnings(emp.getEmployeesHasTaxableEarnings() != null ? emp.getEmployeesHasTaxableEarnings() : false);
 		person.setEmployeeVerified(emp.isEmployeeVerified());
-		person.setRequestDate(emp.getEmployeeRequestDate());
+		person.setPpsNumber(emp.getEmployeesPpsNumber());
+		person.setTitle(emp.getEmployeesTitle());
 		person.setExistingAIRCardHolder(emp.getEmployeeExistingAIRCardHolder());
 		person.setOldEmployeeCardNumber(emp.getEmployeeOldEmployeeCardNumber());
 		person.setCategoryOfEmployment(emp.getEmployeeCategoryOfEmployment());
 		person.setLastYearPaid(emp.getEmployeeLastYearPaid());
-		person.setNumHourWorked(emp.getEmployeeNumHourWorked());
+		person.setNumHourWorked(emp.getEmployeeNumHourWorked());*/
 		return person;
 	}
 }

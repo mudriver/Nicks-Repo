@@ -98,7 +98,7 @@ public class TrainersController {
 	}
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String handleTrainerPage(TeTrainers trainer, Model model) {
+	public String handleTrainerPage(TeTrainers trainer, Model model) throws SQLException {
 
 		trainersService.saveOrUpdate(trainer);
 		model.addAttribute("trainer", new TeTrainers());
