@@ -78,6 +78,14 @@ public class TeTrainers implements java.io.Serializable {
 	private boolean hasDocuments = false;
 	private boolean canUpload = false;
 	private String pwd;
+	private String title;
+	private String sex;
+	private String county;
+	private String postCode;
+	private String country;
+	private String nationality;
+	private String maritalStatus;
+	private String spouseName;
 	
 	
 	public static enum VerifiedStatus{
@@ -536,6 +544,75 @@ public class TeTrainers implements java.io.Serializable {
 		this.pwd = pwd;
 	}
 
-	
-	
+	@Transient
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	@Transient
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	@Transient
+	public String getCounty() {
+		return county;
+	}
+
+	public void setCounty(String county) {
+		this.county = county;
+	}
+
+	@Transient
+	public String getPostCode() {
+		return postCode;
+	}
+
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
+	}
+
+	@Transient
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	@Transient
+	public String getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
+
+	@Transient
+	public String getMaritalStatus() {
+		return maritalStatus;
+	}
+
+	public void setMaritalStatus(String maritalStatus) {
+		this.maritalStatus = maritalStatus;
+	}
+
+	@Transient
+	public String getSpouseName() {
+		return spouseName;
+	}
+
+	public void setSpouseName(String spouseName) {
+		this.spouseName = spouseName;
+	}
 }

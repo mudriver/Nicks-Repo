@@ -30,6 +30,7 @@ import ie.turfclub.trainers.model.TeTrainers;
 import ie.turfclub.trainers.model.TeTrainersJsonObject;
 import ie.turfclub.trainers.pojos.Employee;
 import ie.turfclub.trainers.pojos.EmployeeHistoryRequest;
+import ie.turfclub.trainers.service.EmployeeService;
 import ie.turfclub.trainers.service.StableStaffService;
 import ie.turfclub.trainers.service.TrainersService;
 import ie.turfclub.utilities.EmployeeHistoryUtils;
@@ -68,6 +69,9 @@ public class TrainersController {
 	private TokenService tokenService;
 	
 	@Autowired
+	private EmployeeService employeeService;
+	
+	@Autowired
 	private MessageSource messageSource;
 	
 	@Autowired
@@ -94,6 +98,18 @@ public class TrainersController {
 
 		model.addAttribute("trainer", new TeTrainers());
 		model.addAttribute("verifiedStatusEnum", trainersService.getVerifiedStatus());
+		model.addAttribute("sexEnum", employeeService.getSexEnum());
+		model.addAttribute("maritalEnum",
+				employeeService.getMaritalStatusEnum());
+		model.addAttribute("employmentCatEnum",
+				employeeService.getEmploymentCategoryEnum());
+		model.addAttribute("titlesEnum", employeeService.getTitlesEnum());
+		model.addAttribute("countiesEnum", employeeService.getCountiesEnum());
+		model.addAttribute("countriesEnum",
+				employeeService.getCountriesEnum());
+		model.addAttribute("cardTypeEnum", employeeService.getAllCardType());
+		model.addAttribute("pensionEnum", employeeService.getPension());
+		model.addAttribute("nationalityEnum", employeeService.getNationalityEnum());
 		return "trainer-add";
 	}
 	

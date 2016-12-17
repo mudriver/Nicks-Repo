@@ -1206,7 +1206,14 @@ public class TrainerServiceImpl implements TrainersService {
 		person.setEmail(trainer.getTrainerEmail());
 		person.setComments(trainer.getTrainerNotes());
 		person.setRoleId(RoleEnum.TRAINER.getId());
-		
+		person.setTitle(trainer.getTitle());
+		person.setSex(trainer.getSex());
+		person.setNationality(trainer.getNationality());
+		person.setMaritalStatus(trainer.getMaritalStatus());
+		person.setSpouseName(trainer.getSpouseName());
+		person.setCounty(trainer.getCounty());
+		person.setCountry(trainer.getCountry());
+		person.setPostCode(trainer.getPostCode());
 		return person;
 	}
 }

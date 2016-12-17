@@ -90,168 +90,100 @@
 					<label for="batch no" class="col-sm-4" data-th-text="#{trainer.batch.no}">Batch No :</label>
 					<div class="col-sm-8">
 			  			<input class="form-control input-sm" placeholder='You must enter Batch No'
-			  				data-th-field="*{trainerBatchNo}" type='text' required="required"></input> 
+			  				data-th-field="*{trainerBatchNo}" type='text' required="required" tabindex="1"></input> 
 					</div>		
 				</div>
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.account.no}">Account No :</label>
 		  			<div class="col-sm-8">
 			  			<input class="form-control input-sm" data-th-field="*{trainerAccountNo}" 
-			  				type='text' required="required" placeholder='You must enter Account No'></input> 
+			  				type='text' required="required" placeholder='You must enter Account No' tabindex="2"></input> 
 					</div>
 				</div>
-				<div class="form-group col-sm-12">
-					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.surname}">Surname :</label>
-		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerSurname}" 
-			  				type='text' required="required" placeholder='You must enter Surname'></input> 
-					</div>
-				</div>
-				<div class="form-group col-sm-12">
-					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.firstname}">Firstname :</label>
-		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerFirstName}" 
-			  				type='text' required="required" placeholder='You must enter first name'></input> 
-					</div>
-				</div>
-				<div class="form-group col-sm-12">
-					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.address1}">Address1 :</label>
-		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerAddress1}" 
-			  				type='text' required="required" placeholder='You must enter address1'></input> 
-					</div>
-				</div>
-				<div class="form-group col-sm-12">
-					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.address2}">Address2 :</label>
-		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerAddress2}" 
-			  				type='text' required="required" placeholder='You must enter address2'></input> 
-					</div>
-				</div>
-				<div class="form-group col-sm-12">
-					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.address3}">Address3 :</label>
-		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerAddress3}" 
-			  				type='text' required="required" placeholder='You must enter address3'></input> 
-					</div>
-				</div>
-				<div class="form-group col-sm-12">
-					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.mobile.no}">Mobile No :</label>
-		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerMobilePhone}" 
-			  				type='text' required="required" placeholder='You must enter Mobile No'></input> 
-					</div>
-				</div>
-				<div class="form-group col-sm-12">
-					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.home.no}">Home No :</label>
-		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerHomePhone}" 
-			  				type='text'></input> 
-					</div>
-				</div>
-				<div class="form-group col-sm-12">
-					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.fax}">Fax :</label>
-		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerFax}" 
-			  				type='text'></input> 
-					</div>
-				</div>	
-				<div class="form-group col-sm-12">
-					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.date.of.birth}">Date Of Birth :</label>
-		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerDateOfBirth}" data-dateofbirth="dateofbirth"
-			  				type='text' required="required" placeholder='You must enter Date Of Birth'></input> 
-					</div>
-				</div>	
+			</div>
+			
+			<div class="section-card right-form col-sm-6">
+			
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.insurance.expiry}">Insurance Expiry :</label>
 		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerInsuranceExpiry}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerInsuranceExpiry}" tabindex="21" 
 			  				type='text' required="required" placeholder='You must enter Insurance Expiry'></input> 
 					</div>
 				</div>	
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.contact.name}">Contact Name :</label>
 		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerContactName}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerContactName}" tabindex="22"
 			  				type='text'></input> 
 					</div>
 				</div>	
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.contact.phone}">Contact Phone :</label>
 		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerContactPhone}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerContactPhone}" tabindex="23"
 			  				type='text'></input> 
 					</div>
 				</div>	
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.notes}">Notes :</label>
 		  			<div class="col-sm-8">
-		  				<textarea data-th-field="*{trainerNotes}" class="form-control" cols="34" rows="3"></textarea>
+		  				<textarea data-th-field="*{trainerNotes}" class="form-control" cols="39" rows="3" tabindex="24"></textarea>
 					</div>
 				</div>	
-			</div>
-			
-			<div class="section-card right-form col-sm-6">
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.stable.address1}">Stable Address1 :</label>
 		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerStableAddress1}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerStableAddress1}" tabindex="25"
 			  				type='text'></input> 
 					</div>
 				</div>
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.stable.address2}">Stable Address2 :</label>
 		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerStableAddress2}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerStableAddress2}" tabindex="26"
 			  				type='text'></input> 
 					</div>
 				</div>
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.stable.address3}">Stable Address3 :</label>
 		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerStableAddress3}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerStableAddress3}" tabindex="27"
 			  				type='text'></input> 
-					</div>
-				</div>
-				<div class="form-group col-sm-12">
-					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.email}">Email :</label>
-		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerEmail}" data-emailpattern="emailpattern"
-			  				type='text' required="required" placeholder='You must enter Email'></input> 
 					</div>
 				</div>
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.restricted}">Restricted :</label>
 		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerRestricted}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerRestricted}" tabindex="28"
 			  				type='text' required="required" placeholder='You must enter Restricted'></input> 
 					</div>
 				</div>
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.hunter.chase}">Hunter Chase :</label>
 		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerHunterChase}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerHunterChase}" tabindex="29"
 			  				type='text' required="required" placeholder='You must enter Hunter Chase'></input> 
 					</div>
 				</div>
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.curragh}">Curragh :</label>
 		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerCurragh}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerCurragh}" tabindex="30"
 			  				type='text' required="required" placeholder='You must enter Curragh'></input> 
 					</div>
 				</div>
 				<div class="form-group col-sm-12">
 					<label class="col-sm-4" data-th-text="#{trainer.return.complete}">Return Complete</label>
 					<div class="col-sm-8">
-						<input type="checkbox" data-th-field="*{trainerReturnComplete}" value="true" class="form-control input-sm" />
+						<input type="checkbox" data-th-field="*{trainerReturnComplete}" value="true" 
+							class="form-control input-sm" tabindex="31" />
 					</div>
 				</div>
 				<div class="form-group col-sm-12">
 					<label for="categoryOfEmployment" class="col-sm-4" data-th-text="#{trainer.verified.status}">Verified Status :</label>
 					<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerVerifiedStatus}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerVerifiedStatus}" tabindex="32"
 			  				required="required" type='text' data-error="You must select an employment category"></input> 
 						<input type="hidden" id="verifiedStatusEnum" data-th-value="  ${verifiedStatusEnum}"></input>
 					</div>
@@ -259,25 +191,158 @@
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.last.racecard.id}">Last Racecard Id</label>
 		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerLastRacecardId}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerLastRacecardId}" tabindex="33"
 			  				type='text' required="required" placeholder='You must enter Last RaceCard Id'></input> 
 					</div>
 				</div>
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.time.entered}">Time Entered</label>
 		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerTimeEntered}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerTimeEntered}" tabindex="34"
 			  				type='text' required="required" placeholder='You must enter Time Entered'></input> 
 					</div>
 				</div>
 				<div class="form-group col-sm-12">
 					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.date.completed}">Date Completed</label>
 		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{trainerDateCompleted}" 
+			  			<input class="form-control input-sm" data-th-field="*{trainerDateCompleted}" tabindex="35"
 			  				type='text' required="required" placeholder='You must enter Date Completed'></input> 
 					</div>
 				</div>
 			</div>
+			<div class="left-form col-sm-6 section-card">
+				<div class="form-group col-sm-12">
+					<label for="title" class="col-sm-4" data-th-text="#{employee.title}">Title :</label>
+					<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-title="title" tabindex="3"
+			  				data-th-field="*{title}" type='text' required="required"></input> 
+			  			<input type="hidden" id="titles" data-th-value="  ${titlesEnum}"></input>
+					</div>		
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="sex" class="col-sm-4" data-th-text="#{employee.sex}">Sex :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{sex}" tabindex="4"
+			  				type='text' required="required"></input> 
+						<input type="hidden" id="sexEnum" data-th-value="  ${sexEnum}"></input>
+					</div>
+				</div>		
+				<div class="form-group col-sm-12">
+					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.firstname}">Firstname :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{trainerFirstName}" tabindex="5"
+			  				type='text' required="required" placeholder='You must enter first name'></input> 
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.surname}">Surname :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{trainerSurname}" tabindex="6"
+			  				type='text' required="required" placeholder='You must enter Surname'></input> 
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.date.of.birth}">Date Of Birth :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{trainerDateOfBirth}" data-dateofbirth="dateofbirth"
+			  				type='text' required="required" placeholder='You must enter Date Of Birth' tabindex="7"></input> 
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.address1}">Address1 :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{trainerAddress1}" tabindex="8"
+			  				type='text' required="required" placeholder='You must enter address1' ></input> 
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.address2}">Address2 :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{trainerAddress2}" tabindex="9"
+			  				type='text' required="required" placeholder='You must enter address2'></input> 
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.address3}">Address3 :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{trainerAddress3}" tabindex="10"
+			  				type='text' required="required" placeholder='You must enter address3'></input> 
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="county" class="col-sm-4" data-th-text="#{employee.county}">County :</label>
+					<div class="col-sm-8">
+			  			<input data-county="county" class="form-control input-sm" data-th-field="*{county}" 
+			  				type='text' required="required" tabindex="11"></input> 
+						<input type="hidden" id="countiesEnum" data-th-value="  ${countiesEnum}"></input>
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="postcode" class="col-sm-4" data-th-text="#{employee.postcode}">Post Code :</label>
+					<div class="col-sm-8">
+		  				<input data-th-field="*{postCode}" class="form-control input-sm" tabindex="12"
+		  					required="required" placeholder='Post Code (if applicable)'/>
+		  			</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="country" class="col-sm-4" data-th-text="#{employee.country}">Country :</label>
+					<div class="col-sm-8">
+			  			<input data-country="country" class="form-control input-sm" data-th-field="*{country}" 
+			  				type='text' required="required" tabindex="13"></input> 
+						<input type="hidden" id="countriesEnum" data-th-value="  ${countriesEnum}"></input>
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="nationality" class="col-sm-4" data-th-text="#{employee.nationality}">Nationality :</label>
+					<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{nationality}" 
+			  				type='text' required="required" tabindex="14"></input> 
+						<input type="hidden" id="nationalityEnum" data-th-value="  ${nationalityEnum}"></input>
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.phone.no}">Phone No :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{trainerHomePhone}" 
+			  				type='text' tabindex="15"></input> 
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.mobile.no}">Mobile No :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{trainerMobilePhone}" tabindex="16"
+			  				type='text' required="required" placeholder='You must enter Mobile No'></input> 
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.fax}">Fax :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{trainerFax}" 
+			  				type='text' tabindex="17"></input> 
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="acccount no" class="col-sm-4" data-th-text="#{trainer.email}">Email :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{trainerEmail}" data-emailpattern="emailpattern"
+			  				type='text' required="required" placeholder='You must enter Email' tabindex="18"></input> 
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label class="col-sm-4"><span  data-th-text="#{employee.marital.status}">Marital Status</span></label>
+					<div class="col-sm-8">
+						<input class="form-control input-sm" data-th-field="*{maritalStatus}" 
+							type='text' required="required" tabindex="19"></input> 
+						<input type="hidden" id="maritalEnum" data-th-value="  ${maritalEnum}"></input>
+					</div>
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="spouseName" class="col-sm-4" data-th-text="#{employee.spouse.name}">Spouse's Name :</label>
+					<div class="col-sm-8">
+		  				<input data-th-field="*{spouseName}" class="form-control input-sm" tabindex="20"/>
+		  			</div>
+				</div>	
+			</div>	
 			
 			<div class="form-group col-sm-12 text-center">
 				<button type="button" id="submitButton" class="btn btn-success" th:value="#{employee.save.record}" >Save Record</button>

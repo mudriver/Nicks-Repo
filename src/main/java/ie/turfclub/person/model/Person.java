@@ -21,12 +21,6 @@ public class Person {
 	@Column(name="ref_id")
 	private Integer refId;
 	
-	/*@Column(name="pps_number")
-	private String ppsNumber;
-	
-	@Column(name="title")
-	private String title;*/
-	
 	@Column(name="surname")
 	private String surname;
 	
@@ -39,18 +33,6 @@ public class Person {
 	@Column(name="date_of_birth")
 	private Date dateOfBirth;
 	
-	/*@Column(name="nationality")
-	private String nationality;
-	
-	@Column(name="sex")
-	private String sex;
-	
-	@Column(name="marital_status")
-	private String maritalStatus;
-	
-	@Column(name="spouse_name")
-	private String spouseName;*/
-	
 	@Column(name="address1")
 	private String address1;
 	
@@ -59,15 +41,6 @@ public class Person {
 	
 	@Column(name="address3")
 	private String address3;
-	
-	/*@Column(name="address4")
-	private String address4;
-	
-	@Column(name="address5")
-	private String address5;
-	
-	@Column(name="postcode")
-	private String postCode;*/
 	
 	@Column(name="phone_no")
 	private String phoneNo;
@@ -81,14 +54,71 @@ public class Person {
 	@Column(name="comments")
 	private String comments;
 	
+	@Column(name="date_entered")
+	private Date dateEntered;
+	
+	@Column(name="request_date")
+	private Date requestDate;
+	
+	@Column(name="title")
+	private String title;
+	
+	@Column(name="sex")
+	private String sex;
+	
+	@Column(name="county")
+	private String county;
+	
+	@Column(name="country")
+	private String country;
+	
+	@Column(name="post_code")
+	private String postCode;
+	
+	@Column(name="nationality")
+	private String nationality;
+	
+	@Column(name="marital_status")
+	private String maritalStatus;
+	
+	@Column(name="spouse_name")
+	private String spouseName;
+	
+	@Transient
+	private long roleId;
+	
+	/*@Column(name="nationality")
+	private String nationality;
+	
+	@Column(name="sex")
+	private String sex;
+	
+	@Column(name="marital_status")
+	private String maritalStatus;
+	
+	@Column(name="spouse_name")
+	private String spouseName;*/
+	
+	/*@Column(name="address4")
+	private String address4;
+	
+	@Column(name="address5")
+	private String address5;
+	
+	@Column(name="postcode")
+	private String postCode;*/
+	
+	/*@Column(name="pps_number")
+	private String ppsNumber;
+	
+	@Column(name="title")
+	private String title;*/
+	
 	/*@Column(name="hri_account_no")
 	private String hriAccountNo;
 	
 	@Column(name="last_updated")
 	private Date lastUpdated;*/
-	
-	@Column(name="date_entered")
-	private Date dateEntered;
 	
 	/*@Column(name="is_new")
 	private boolean isNew;
@@ -98,9 +128,6 @@ public class Person {
 	
 	@Column(name="employee_verified")
 	private boolean employeeVerified;*/
-	
-	@Column(name="request_date")
-	private Date requestDate;
 	
 	/*@Column(name="existing_air_card_holder")
 	private String existingAIRCardHolder;
@@ -167,9 +194,6 @@ public class Person {
 	
 	@Column(name="role")
 	private String role;*/
-
-	@Transient
-	private long roleId;
 
 	public long getId() {
 		return id;
@@ -297,5 +321,69 @@ public class Person {
 
 	public void setRefId(Integer refId) {
 		this.refId = refId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public String getCounty() {
+		return county;
+	}
+
+	public void setCounty(String county) {
+		this.county = county;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getPostCode() {
+		return postCode;
+	}
+
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
+	}
+
+	public String getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
+
+	public String getMaritalStatus() {
+		return maritalStatus;
+	}
+
+	public void setMaritalStatus(String maritalStatus) {
+		this.maritalStatus = maritalStatus;
+	}
+
+	public String getSpouseName() {
+		return spouseName;
+	}
+
+	public void setSpouseName(String spouseName) {
+		this.spouseName = spouseName;
 	}
 }

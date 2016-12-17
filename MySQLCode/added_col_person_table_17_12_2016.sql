@@ -1,0 +1,8 @@
+ALTER TABLE person ADD COLUMN title varchar(10);
+ALTER TABLE person ADD COLUMN sex enum('Male','Female');
+ALTER TABLE person ADD COLUMN nationality enum('Afghan','Algerian','Angolan','Argentine','Austrian','Australian','Bangladeshi','Belarusian','Belgian','Bolivian','Bosnian/Herzegovinian','Brazilian','British','Bulgarian','Cambodian','Cameroonian','Canadian','Central African','Chadian','Chinese','Colombian','Costa Rican','Croatian','Czech','Congolese','Danish','Ecuadorian','Egyptian','Salvadoran','English','Estonian','Ethiopian','Finnish','French','German','Ghanaian','Greek','Guatemalan','Dutch','Honduran','Hungarian','Icelandic','Indian','Indonesian','Iranian','Iraqi','Irish','Israeli','Italian','Ivorian','Jamaican','Japanese','Jordanian','Kazakh','Kenyan','Lao','Latvian','Libyan','Lithuanian','Malagasy','Malaysian','Malian','Mauritanian','Mexican','Moroccan','Namibian','Nicaraguan','Nigerien','Nigerian','Norwegian','Omani','Pakistani','Panamanian','Paraguayan','Peruvian','Philippine','Polish','Portuguese','Congolese','Romanian','Russian','Saudi, Saudi Arabian','Scottish','Senegalese','Serbian','Singaporean','Slovak','Somalian','South African','Spanish','Sudanese','Swedish','Swiss','Syrian','Thai','Tunisian','Turkish','Turkmen','Ukranian','Emirati','American','Uruguayan','Vietnamese','Welsh','Zambian','Zimbabwean','Georgia');
+ALTER TABLE person ADD COLUMN marital_status enum('Single','Divorced','Widowed','Separated','Married','Civil Partner','Cohabiting');
+ALTER TABLE person ADD COLUMN spouse_name varchar(200);
+ALTER TABLE person ADD COLUMN county varchar(200);
+ALTER TABLE person ADD COLUMN country varchar(200);
+ALTER TABLE person ADD COLUMN post_code varchar(20);

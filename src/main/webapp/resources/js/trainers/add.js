@@ -4,6 +4,131 @@ $(function() {
 		$('#successMsg').hide();
 	}, 5000);
 	
+	$("#employeesTitle").select2({
+		placeholder : "You must enter a title",
+		allowClear : true,
+		createSearchChoice : function(term, data) {
+			if ($(data).filter(function() {
+				return this.text.localeCompare(term) === 0;
+			}).length === 0) {
+				return {
+					id : term,
+					text : term
+				};
+			}
+		},
+		multiple : false,
+		data : $.parseJSON($("#titles").val())
+	});
+
+	$("#title").select2({
+		placeholder : "You must enter a title",
+		allowClear : true,
+		createSearchChoice : function(term, data) {
+			if ($(data).filter(function() {
+				return this.text.localeCompare(term) === 0;
+			}).length === 0) {
+				return {
+					id : term,
+					text : term
+				};
+			}
+		},
+		multiple : false,
+		data : $.parseJSON($("#titles").val())
+	});
+	
+	$("#sex").select2({
+		placeholder : "You must select a gender",
+		allowClear : true,
+		createSearchChoice : function(term, data) {
+			if ($(data).filter(function() {
+				return this.text.localeCompare(term) === 0;
+			}).length === 0) {
+				return {
+					id : term,
+					text : term
+				};
+			}
+		},
+		multiple : false,
+		data : $.parseJSON($("#sexEnum").val())
+	});
+	
+	$('#maritalStatus').select2({
+		placeholder : "You must select a marital status",
+		allowClear : true,
+		createSearchChoice : function(term, data) {
+			if ($(data).filter(function() {
+				return this.text.localeCompare(term) === 0;
+			}).length === 0) {
+				return {
+					id : term,
+					text : term
+				};
+			}
+		},
+		multiple : false,
+		data : $.parseJSON($("#maritalEnum").val())
+	});
+	
+	$('#county').select2({
+		placeholder : "You must select a county",
+		allowClear : true,
+		createSearchChoice : function(term, data) {
+			if ($(data).filter(function() {
+				return this.text.localeCompare(term) === 0;
+			}).length === 0) {
+				return {
+					id : term,
+					text : term
+				};
+			}
+		},
+		multiple : false,
+		data : $.parseJSON($("#countiesEnum").val())
+	});
+
+	$('#country').select2({
+		placeholder : "You must select a country",
+		allowClear : true,
+		createSearchChoice : function(term, data) {
+			if ($(data).filter(function() {
+				return this.text.localeCompare(term) === 0;
+			}).length === 0) {
+				return {
+					id : term,
+					text : term
+				};
+			}
+		},
+		multiple : false,
+		data : $.parseJSON($("#countriesEnum").val())
+	});
+	
+	var select = $("#nationality");
+	select.find('option[value="Irish"]').insertBefore(
+			select.find('option:eq(1)'));
+	select.find('option[value="British"]').insertBefore(
+			select.find('option:eq(2)'));
+
+	$('#nationality').select2({
+		placeholder : "You must select an Nationality",
+		allowClear : true,
+		createSearchChoice : function(term, data) {
+			if ($(data).filter(function() {
+				return this.text.localeCompare(term) === 0;
+			}).length === 0) {
+				return {
+					id : term,
+					text : term
+				};
+			}
+		},
+		multiple : false,
+		data : $.parseJSON($("#nationalityEnum").val())
+	});
+
 	$('#trainerVerifiedStatus').select2({
 		placeholder : "You must select a verified status",
 		allowClear : true,
