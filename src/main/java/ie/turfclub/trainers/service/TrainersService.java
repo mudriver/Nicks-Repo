@@ -2,6 +2,7 @@ package ie.turfclub.trainers.service;
 
 
 
+import ie.turfclub.common.bean.SearchByNameTrainerBean;
 import ie.turfclub.trainers.model.TeAuthorisedReps;
 import ie.turfclub.trainers.model.TeEmployeeTrainerVerified;
 import ie.turfclub.trainers.model.TeEmployees;
@@ -32,7 +33,7 @@ public interface TrainersService {
 	public List<TeEmployentHistory> getEmploymentHistories(Integer trainerId,Integer employeeId, Date yearFrom , Date yearTo);
 	public List<TeEmployeeTrainerVerified> getEmployeeTrainerVerified(Integer trainerId, Integer employeeId);
 	public List<HashMap<String, String>> getTrainers(String chars);
-	public TeTrainers getTrainer(Integer id);
+	public TeTrainers getTrainer(Integer id) throws Exception;
 	public HashMap<String, Object> getEmployees(Integer trainerId, TeEmployeesSavedSearch savedSearch);
 	public List<HashMap<String, String>> getEmployees(String chars);
 	public TeEmployees getEmployee(Integer id);
@@ -44,7 +45,7 @@ public interface TrainersService {
 	public List<Object> getEmployeesSavedSearches(int userId);
 	public void saveEmployeeSavedSearches(TeEmployeesSavedSearch savedsearch);
 	public List<Object> getTrainersSavedSearches(int userId);
-	public void saveTrainerSavedSearches(TeTrainersSavedSearch savedsearch);
+	public void saveTrainerSavedSearches(TeTrainersSavedSearch savedsearch) throws Exception;
 	public List<Object> getTrainersPensionSavedSearches(int userId);
 	public void saveTrainerPensionSavedSearches(TeTrainersPensionSavedSearch savedsearch);
 	public void updateTrainer(TeTrainers trainer);
@@ -61,5 +62,6 @@ public interface TrainersService {
 	 * @throws SQLException 
 	 */
 	public void handleCopyRecord() throws SQLException;
+	public List<SearchByNameTrainerBean> findByName(String search) throws Exception;
 	
 }

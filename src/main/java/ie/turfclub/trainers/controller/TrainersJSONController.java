@@ -385,7 +385,7 @@ public class TrainersJSONController {
 	public @ResponseBody
 	Boolean updateTrainerVerified(
 			@PathVariable(value = "id") Integer trainerId,
-			@RequestBody(required = false) Boolean verified) {
+			@RequestBody(required = false) Boolean verified) throws Exception {
 
 		if (verified != null) {
 

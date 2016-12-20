@@ -6,11 +6,13 @@ import ie.turfclub.trainers.model.TeCards;
 import ie.turfclub.trainers.model.TeEmployees;
 import ie.turfclub.trainers.model.TeEmployentHistory;
 import ie.turfclub.trainers.model.TePension;
+import ie.turfclub.trainers.model.TeTrainers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +47,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private Environment env;
 	@Autowired
 	private StableStaffService stableStaffService;
+	@Autowired
+	private TrainersService trainersService;
 	
 	List<String> sexEnum;
 	List<String> maritalEnum;
@@ -307,5 +311,43 @@ public class EmployeeServiceImpl implements EmployeeService {
 		records.put("partTime", partTimeCount);
 		records.put("fullTime", fullTimeCount);
 		return records;
+	}
+	
+	@Override
+	public void handleSaveOrUpdate(TeEmployees emp) throws Exception {
+		
+		emp.setEmployeesDateEntered(new Date());
+		emp.setEmployeesLastUpdated(new Date());
+		emp.getTeCard().setCardsCardStatus("Applied");
+		emp.getTeCard().setTeEmployees(emp);
+		
+		if(emp.getHistories() != null && emp.getHistories().size() > 0) {
+			for (TeEmployentHistory history : emp.getHistories()) {
+				history.setTeEmployees(emp);
+				if(history.getTeTrainers().getTrainerId() != null) {
+					TeTrainers trainer = trainersService.getTrainer(history.getTeTrainers().getTrainerId());
+					history.setTeTrainers(trainer);
+				}
+			}
+			emp.setTeEmployentHistories(new HashSet<TeEmployentHistory>(emp.getHistories()));
+		}
+		
+		if(emp.getPensions() != null && emp.getPensions().size() > 0) {
+			for (TePension pension : emp.getPensions()) {
+				
+				if(pension != null && pension.getPensionCardType() != null && pension.getPensionType() != null &&
+						pension.getPensionDateJoinedScheme() != null) {
+					pension.setTeEmployees(emp);
+					
+					if(pension.getPensionTrainer().getTrainerId() != null) {
+						TeTrainers trainer = trainersService.getTrainer(pension.getPensionTrainer().getTrainerId());
+						pension.setPensionTrainer(trainer);
+					}
+				}
+			}
+			emp.setTePensions(new HashSet<TePension>(emp.getPensions()));
+		}
+		
+		saveOrUpdate(emp);
 	}
 }

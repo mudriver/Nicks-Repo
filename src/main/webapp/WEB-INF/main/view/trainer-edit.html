@@ -8,7 +8,7 @@
  <meta http-equiv="expires" content="-1" />
  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
  <meta name="viewport" content="width=device-width, initial-scale=1" />
- <title data-th-text="#{add.trainer}">Title</title>
+ <title data-th-text="#{edit.trainer}">Title</title>
   
 <!-- Core CSS - Include with every page -->
     <link type="text/css" rel="stylesheet"
@@ -76,7 +76,7 @@
  
     <div data-th-replace="mainmenu :: top-nav"></div>
     
-    <h3 data-th-text="#{add.trainer}">Add Trainer</h3>
+    <h3 data-th-text="#{edit.trainer}">Edit Trainer</h3>
     
     <div class="form-container">
     	<div class="alert alert-success" id="successMsg" th:if="${success != null and success != ''}">
@@ -347,7 +347,7 @@
 			
 			<div class="form-group col-sm-12 text-center">
 				<button type="button" id="submitButton" class="btn btn-success" th:value="#{employee.save.record}" >Save Record</button>
-				<a href="/turfclubPrograms/employees/manageStaff"><button type="button" class="btn btn-danger" th:value="#{employee.exit}" >Exit</button></a>
+				<a href="/turfclubPrograms/trainers/searchPage"><button type="button" class="btn btn-danger" th:value="#{employee.exit}" >Exit</button></a>
 			</div>
 		</form>
 	</div>
@@ -389,7 +389,7 @@
         
     <script type="text/javascript"
 		src="../../resources/js/employee/add.js"
-		data-th-src="@{/resources/js/trainers/add.js}"></script>
+		data-th-src="@{/resources/js/trainers/edit.js}"></script>
         
     <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/	

@@ -1,11 +1,16 @@
 package ie.turfclub.person.service;
 
+import ie.turfclub.common.bean.SearchByNameTrainerBean;
+import ie.turfclub.common.enums.RoleEnum;
 import ie.turfclub.common.service.JDBCConnection;
 import ie.turfclub.person.model.Person;
+import ie.turfclub.trainers.model.TeTrainers;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,5 +111,51 @@ public class PersonServiceImpl implements PersonService {
 			personSTMT.setObject(21, person.getRefId());
 			personSTMT.executeUpdate();
 		}
+	}
+	
+	@Override
+	public List<SearchByNameTrainerBean> findByNameTrainer(String search) throws Exception {
+		
+		PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
+				+ "p.firstname as firstname,  p.ref_id as refId from person as p join person_role as pr "
+				+ "on p.id = pr.person_id where pr.role_id = ? and (p.surname like ? or p.firstname like ?) ");
+		pstmt.setObject(1, RoleEnum.TRAINER.getId());
+		pstmt.setObject(2, "%"+search+"%");
+		pstmt.setObject(3, "%"+search+"%");
+		ResultSet set = pstmt.executeQuery();
+		List<SearchByNameTrainerBean> records = new ArrayList<SearchByNameTrainerBean>();
+		if(set.next()) {
+			SearchByNameTrainerBean bean = new SearchByNameTrainerBean();
+			bean.setId(Integer.parseInt(set.getString("refId")));
+			bean.setName(set.getString("surname")+" "+set.getString("firstname"));
+			records.add(bean);
+		}
+		return records;
+	}
+	
+	@Override
+	public TeTrainers setSomeFieldInTrainer(TeTrainers trainer) {
+		
+		try {
+			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.* from person as p join person_role as pr "
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id = ?");
+			pstmt.setObject(1, RoleEnum.TRAINER.getId());
+			pstmt.setObject(2, trainer.getTrainerId());
+			ResultSet set = pstmt.executeQuery();
+			if(set.next()) {
+				trainer.setTitle(set.getString("title"));
+				trainer.setSex(set.getString("sex"));
+				trainer.setNationality(set.getString("nationality"));
+				trainer.setMaritalStatus(set.getString("marital_status"));
+				trainer.setSpouseName(set.getString("spouse_name"));
+				trainer.setCounty(set.getString("county"));
+				trainer.setCountry(set.getString("country"));
+				trainer.setPostCode(set.getString("post_code"));
+			}
+			return trainer;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

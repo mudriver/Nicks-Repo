@@ -182,46 +182,31 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String handleEmployee(TeEmployees emp, HttpServletRequest request, ModelMap model) throws ParseException, SQLException {
+	public String handleEmployee(TeEmployees emp, HttpServletRequest request, ModelMap model) throws Exception {
 		
-		emp.setEmployeesDateEntered(new Date());
-		emp.setEmployeesLastUpdated(new Date());
-		emp.getTeCard().setCardsCardStatus("Applied");
-		emp.getTeCard().setTeEmployees(emp);
-		
-		if(emp.getHistories() != null && emp.getHistories().size() > 0) {
-			for (TeEmployentHistory history : emp.getHistories()) {
-				history.setTeEmployees(emp);
-				if(history.getTeTrainers().getTrainerId() != null) {
-					TeTrainers trainer = trainersService.getTrainer(history.getTeTrainers().getTrainerId());
-					history.setTeTrainers(trainer);
-				}
-			}
-			emp.setTeEmployentHistories(new HashSet<TeEmployentHistory>(emp.getHistories()));
-		}
-		
-		if(emp.getPensions() != null && emp.getPensions().size() > 0) {
-			for (TePension pension : emp.getPensions()) {
-				
-				if(pension != null && pension.getPensionCardType() != null && pension.getPensionType() != null &&
-						pension.getPensionDateJoinedScheme() != null) {
-					pension.setTeEmployees(emp);
-					
-					if(pension.getPensionTrainer().getTrainerId() != null) {
-						TeTrainers trainer = trainersService.getTrainer(pension.getPensionTrainer().getTrainerId());
-						pension.setPensionTrainer(trainer);
-					}
-				}
-			}
-			emp.setTePensions(new HashSet<TePension>(emp.getPensions()));
-		}
-		
-		employeeService.saveOrUpdate(emp);
-		
+		if(emp.getEmployeesEmployeeId() != null && emp.getEmployeesEmployeeId() > 0)
+			model.addAttribute("success", messageSource.getMessage("success.updated.employee", new String[] {}, Locale.US));
+		else
+			model.addAttribute("success", messageSource.getMessage("success.added.employee", new String[] {}, Locale.US));
+	
+		employeeService.handleSaveOrUpdate(emp);
 		Person person = createPerson(emp);
 		personService.addPerson(person);
-		model.addAttribute("emp", new TeEmployees());
-		model.addAttribute("success", messageSource.getMessage("success.added.employee", new String[] {}, Locale.US));
+		
+		model.addAttribute("emp", emp);
+		model.addAttribute("trainers", trainersService.getAllTrainers());
+		model.addAttribute("sexEnum", employeeService.getSexEnum());
+		model.addAttribute("maritalEnum",
+				employeeService.getMaritalStatusEnum());
+		model.addAttribute("employmentCatEnum",
+				employeeService.getEmploymentCategoryEnum());
+		model.addAttribute("titlesEnum", employeeService.getTitlesEnum());
+		model.addAttribute("countiesEnum", employeeService.getCountiesEnum());
+		model.addAttribute("countriesEnum",
+				employeeService.getCountriesEnum());
+		model.addAttribute("cardTypeEnum", employeeService.getAllCardType());
+		model.addAttribute("pensionEnum", employeeService.getPension());
+		model.addAttribute("nationalityEnum", employeeService.getNationalityEnum());
 		return "emp-add";
 	}
 

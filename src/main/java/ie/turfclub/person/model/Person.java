@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Formula;
+
 @Table
 @Entity(name="person")
 public class Person {
@@ -86,6 +88,9 @@ public class Person {
 	
 	@Transient
 	private long roleId;
+	
+	@Formula(value = " concat(surname, ' ', firstname) ")
+	private String fullName;
 	
 	/*@Column(name="nationality")
 	private String nationality;
@@ -385,5 +390,13 @@ public class Person {
 
 	public void setSpouseName(String spouseName) {
 		this.spouseName = spouseName;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 }

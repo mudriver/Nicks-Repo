@@ -76,14 +76,16 @@
     		<a data-th-href="@{/employees/partFullTimeStat}" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.full.time.part.time.stats}">Full Time / Part Time Stats</span></a>
     	</div>
     	<div class="home-links-parent">
-    		<!-- <a href="javascript:void(0);" class="home-links col-sm-6" data-toggle="modal" data-target="#searchNumberModal"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.by.number}">Search By Number</span></a> -->
     		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-arrows" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.create.air.file.transfer}">Create AIR File Transfer</span></a>
     		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-database" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.stable.bonus.scheme}">Stable Bonus Scheme</span></a>
     	</div>
     	<div class="home-links-parent">
     		<a data-th-href="@{/trainers/add}" class="home-links col-sm-6"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.add.trainer}">Add Trainer</span></a>
-    		<!-- <a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.list.of.employees}">List of Employees</span></a> -->
     		<a href="javascript:void(0)" class="home-links col-sm-6" id="copyRecord"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.save.trainer.record.into.person.table}">Save Trainer Record into Person table</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a data-th-href="@{/trainers/searchPage}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.for.trainer}">Search For Trainer</span></a>
+    		<!-- <a data-th-href="@{/employees/partFullTimeStat}" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.full.time.part.time.stats}">Full Time / Part Time Stats</span></a> -->
     	</div>
     </div>
 </div>              <!-- /#wrapper -->

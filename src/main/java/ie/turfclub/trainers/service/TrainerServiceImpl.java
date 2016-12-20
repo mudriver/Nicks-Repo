@@ -1,5 +1,6 @@
 package ie.turfclub.trainers.service;
 
+import ie.turfclub.common.bean.SearchByNameTrainerBean;
 import ie.turfclub.common.enums.RoleEnum;
 import ie.turfclub.person.model.Person;
 import ie.turfclub.person.service.PersonService;
@@ -305,6 +306,8 @@ public class TrainerServiceImpl implements TrainersService {
 	public TeTrainers getTrainer(Integer id) {
 		TeTrainers trainer = (TeTrainers) getCurrentSession().get(
 				TeTrainers.class, id);
+		
+		trainer = personService.setSomeFieldInTrainer(trainer);
 		return trainer;
 	}
 
@@ -1229,5 +1232,11 @@ public class TrainerServiceImpl implements TrainersService {
 				personService.addPerson(person);
 			}
 		}
+	}
+	
+	@Override
+	public List<SearchByNameTrainerBean> findByName(String search) throws Exception {
+		
+		return personService.findByNameTrainer(search);
 	}
 }

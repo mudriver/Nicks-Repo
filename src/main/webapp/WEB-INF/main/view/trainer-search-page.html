@@ -6,7 +6,7 @@
  <meta charset="utf-8" />
  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
  <meta name="viewport" content="width=device-width, initial-scale=1" />
- <title data-th-text="#{link.search.for.employee}">Search For Employee</title>
+ <title data-th-text="#{link.search.for.trainer}">Search By Name</title>
   
 <!-- Core CSS - Include with every page -->
     <link type="text/css" rel="stylesheet"
@@ -80,7 +80,7 @@
 
 	<div data-th-replace="mainmenu :: top-nav"></div>
     
-    <h3 data-th-text="#{link.search.for.employee}">Search For Employee</h3>
+    <h3 data-th-text="#{link.search.for.trainer}">Search For Trainer</h3>
 
     <div class="">
     	<div class="alert alert-success" id="successMsg" th:if="${success != null and success != ''}">
@@ -88,36 +88,12 @@
     	</div>
     	<form class="form-horizontal" id="searchDiv">
 	    	<div class="form-group margin-bottom-10 col-sm-6">
-	    		<label class="col-sm-4" data-th-text="#{employee.employee.name}">Employee Name : </label>
+	    		<label class="col-sm-4" data-th-text="#{trainer.trainer.name}">Trainer Name : </label>
 	    		<div class="col-sm-8">
 	    			<input type="text" class="form-control input-sm " id="searchTxt" placeholder="Please enter min 3 characters" />
 	    		</div>
 	    	</div>
-	    	<div class="form-group margin-bottom-10 col-sm-6">
-	    		<label class="col-sm-4" data-th-text="#{employee.employee.number}">Employee Number : </label>
-	    		<div class="col-sm-8">
-	    			<input type="text" class="form-control input-sm " id="searchNumberTxt" placeholder="Please enter min 3 characters" />
-	    		</div>
-	    	</div>
     	</form>
-    	<!-- <table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
-        	<thead>
-        		<tr>
-        			<th th:text="#{employee.card.number}" class="width-30">Card Number</th>
-	        		<th th:text="#{employee.card.type}" class="width-30">Card Type</th>
-	        		<th th:text="#{employee.name}" class="width-30">Name</th>
-	        		<th th:text="#{expenses.manager.action}" class="width-10">Action</th>
-	        	</tr>
-        	</thead>
-        	<tbody>
-        		<tr th:each="record,iterStat : ${records}">
-        			<td th:text="${record.cardNumber}"></td>
-        			<td th:text="${record.cardType}"></td>
-        			<td th:text="${record.fullName}"></td>
-        			<td><button class="btn btn-default">View</button></td>
-        		</tr>
-        	</tbody>
-        </table> -->
     </div> 
 
 </div>              <!-- /#wrapper -->
@@ -166,83 +142,16 @@
    				$('#successMsg').hide();
    			}, 5000);
    			
-   			/* $('#searchTxt').on('keyup', function() {
-   				
-   				$('#example').find('tbody').children().remove();
-   				var search = $(this).val();
-   				if(search.length >= 3) {
-					$.ajax({
-						url: '/turfclubPrograms/employees/findByName/'+search,
-						type: 'GET',
-						success: function(data) {
-							handleDataTable(data);
-							//table.ajax.reload();
-							//table.draw();
-						}
-					})
-   				} else {
-   					$('#example').find('tbody').append('<tr class="text-align-center">'+
-   							'<td colspan="4">No data available in table</td>'+
-   							'</tr>');
-   				}
-   			}); */
-   			
-			/* $('#searchNumberTxt').on('keyup', function() {
-   				
-   				$('#example').find('tbody').children().remove();
-   				var search = $(this).val();
-   				if(search.length >= 3) {
-					$.ajax({
-						url: '/turfclubPrograms/employees/findByNumber/'+search,
-						type: 'GET',
-						success: function(data) {
-							handleDataTable(data);
-							//table.ajax.reload();
-							//table.draw();
-						}
-					})
-   				} else {
-   					$('#example').find('tbody').append('<tr class="text-align-center">'+
-   							'<td colspan="4">No data available in table</td>'+
-   							'</tr>');
-   				}
-   			}); */
-			
    			$('#searchTxt').autocomplete({
 				source: function(request, response) {
 					//Autocomplete
-					$.getJSON('/turfclubPrograms/employees/findByName',{q:request.term}, function(data) {
+					$.getJSON('/turfclubPrograms/trainers/findByName',{q:request.term}, function(data) {
 						
 						if(data.length > 0) {
 							response( $.map(data, function( item ) {
 					              return {			            	  
-					                label: item.cardNumber + " - "+ item.fullName,
-					                value: item.fullName,
-					                id: item.id
-					              }
-							}));
-						} else {
-							response([{ label: 'No results found.', id: -1}]);
-						}
-					});
-				},
-				minLength: 3,
-				select: function( event, ui ) {			
-					
-					goToDetailPage(ui.item.id);
-				}
-			});
-   			
-			$('#searchNumberTxt').autocomplete({
-				source: function(request, response) {
-					//Autocomplete
-					$.getJSON('/turfclubPrograms/employees/findByNumber',{q:request.term}, function(data) {
-						
-						if(data.length > 0) {
-							response( $.map(data, function( item ) {
-					              return {			            	  
-					                label: item.cardNumber + " - "+ item.fullName,
-					                value: item.cardNumber,
+					                label: item.name,
+					                value: item.name,
 					                id: item.id
 					              }
 							}));
@@ -282,7 +191,7 @@
    		
    		function goToDetailPage(id) {
    			
-   			window.location.replace('/turfclubPrograms/employees/detail/'+id);
+   			window.location.replace('/turfclubPrograms/trainers/detail/'+id);
    		}
    		
    		/*]]>*/

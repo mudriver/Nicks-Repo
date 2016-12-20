@@ -80,7 +80,7 @@ public class FileController {
     @RequestMapping(value = "/upload/{id}", method = RequestMethod.POST)
     public @ResponseBody Map upload(MultipartHttpServletRequest request, HttpServletResponse response, Authentication authentication, 
 			
-			@PathVariable(value = "id") Integer trainerId) {
+			@PathVariable(value = "id") Integer trainerId) throws Exception {
         System.out.println("uploadPost called");
         
         Iterator<String> itr = request.getFileNames();

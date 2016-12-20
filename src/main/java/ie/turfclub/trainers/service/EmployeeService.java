@@ -45,4 +45,6 @@ public interface EmployeeService {
 
 	HashMap<String, Object> getPartFullTimeRecords(String hours);
 
+	void handleSaveOrUpdate(TeEmployees emp) throws Exception;
+
 }
