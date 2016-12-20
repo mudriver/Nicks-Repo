@@ -121,4 +121,13 @@ public class TrainersController {
 		model.addAttribute("success", messageSource.getMessage("success.added.trainer", new String[] {}, Locale.US));
 		return "trainer-add";
 	}
+	
+	@RequestMapping(value = "/person/copyRecord", method = RequestMethod.GET)
+	@ResponseBody
+	public String handleCopyRecord(HttpServletRequest req, Model model) throws SQLException {
+
+		trainersService.handleCopyRecord();
+		String success = messageSource.getMessage("success.save.record.to.person", new String[] {}, Locale.US);
+		return success;
+	}
 }

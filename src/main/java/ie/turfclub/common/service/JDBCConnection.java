@@ -14,6 +14,7 @@ public class JDBCConnection {
 	private String connectionUrl = "jdbc:mysql://localhost:3306/person_db";
 	private String username = "root";
 	private String password = "root";
+	Connection conn = null;
 	
 	/**
 	 * Get Connection
@@ -23,8 +24,7 @@ public class JDBCConnection {
 	 */
 	public Connection getConnection() throws SQLException {
 		
-		Connection conn = null;
-		conn = (Connection) DriverManager.getConnection(connectionUrl, username, password);
+		conn = (conn != null) ? conn : (Connection) DriverManager.getConnection(connectionUrl, username, password);
 		return conn;
 	}
 }

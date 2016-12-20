@@ -56,4 +56,10 @@ public interface TrainersService {
 	public Object getVerifiedStatus();
 	public String saveOrUpdate(TeTrainers trainer) throws SQLException;
 	
+	/**
+	 * Save trainer record into person DB
+	 * @throws SQLException 
+	 */
+	public void handleCopyRecord() throws SQLException;
+	
 }

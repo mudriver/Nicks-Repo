@@ -1216,4 +1216,18 @@ public class TrainerServiceImpl implements TrainersService {
 		person.setPostCode(trainer.getPostCode());
 		return person;
 	}
+	
+	@Override
+	public void handleCopyRecord() throws SQLException {
+		
+		List<TeTrainers> trainers = getCurrentSession().createCriteria(TeTrainers.class).list();
+		
+		if(trainers != null && trainers.size() > 0) {
+			
+			for (TeTrainers trainer : trainers) {
+				Person person = createPerson(trainer);
+				personService.addPerson(person);
+			}
+		}
+	}
 }

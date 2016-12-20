@@ -21,8 +21,9 @@ public class PersonServiceImpl implements PersonService {
 	@Override
 	public void addPerson(Person person) throws SQLException {
 		
-		PreparedStatement pstmt = conn.getConnection().prepareStatement("select * from person where id = ? and ref_id = ?");
-		pstmt.setObject(1, person.getId());
+		PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.* from person as p join person_role as pr "
+				+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id = ?");
+		pstmt.setObject(1, person.getRoleId());
 		pstmt.setObject(2, person.getRefId());
 		ResultSet personDB = pstmt.executeQuery();
 		if(!personDB.next()) {
