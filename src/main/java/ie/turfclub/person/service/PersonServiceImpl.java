@@ -124,7 +124,7 @@ public class PersonServiceImpl implements PersonService {
 		pstmt.setObject(3, "%"+search+"%");
 		ResultSet set = pstmt.executeQuery();
 		List<SearchByNameTrainerBean> records = new ArrayList<SearchByNameTrainerBean>();
-		if(set.next()) {
+		while(set.next()) {
 			SearchByNameTrainerBean bean = new SearchByNameTrainerBean();
 			bean.setId(Integer.parseInt(set.getString("refId")));
 			bean.setName(set.getString("surname")+" "+set.getString("firstname"));
