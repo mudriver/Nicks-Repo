@@ -1,9 +1,11 @@
 package ie.turfclub.trainers.service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+import ie.turfclub.common.bean.AdvanceSearchRecordBean;
 import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.trainers.model.TeEmployees;
 
@@ -46,5 +48,13 @@ public interface EmployeeService {
 	HashMap<String, Object> getPartFullTimeRecords(String hours);
 
 	void handleSaveOrUpdate(TeEmployees emp) throws Exception;
+
+	HashMap<String, Object> getAdvanceSearchRecordByType(String type, int start, int length, int draw);
+
+	void handleCopyRecord() throws SQLException;
+
+	HashMap<String, Object> getCSVString(String type, String title);
+
+	void handleEncryptPPSNumber();
 
 }

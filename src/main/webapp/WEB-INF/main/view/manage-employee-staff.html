@@ -81,11 +81,18 @@
     	</div>
     	<div class="home-links-parent">
     		<a data-th-href="@{/trainers/add}" class="home-links col-sm-6"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.add.trainer}">Add Trainer</span></a>
-    		<a href="javascript:void(0)" class="home-links col-sm-6" id="copyRecord"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.save.trainer.record.into.person.table}">Save Trainer Record into Person table</span></a>
+    		<a href="javascript:void(0)" class="home-links col-sm-6" id="copyRecordTrainer"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.save.trainer.record.into.person.table}">Save Trainer Record into Person table</span></a>
     	</div>
     	<div class="home-links-parent">
     		<a data-th-href="@{/trainers/searchPage}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.for.trainer}">Search For Trainer</span></a>
-    		<!-- <a data-th-href="@{/employees/partFullTimeStat}" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.full.time.part.time.stats}">Full Time / Part Time Stats</span></a> -->
+    		<a data-th-href="@{/employees/advSearch}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.advance.search}">Advance Search</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a href="javascript:void(0)" class="home-links col-sm-6" id="copyRecordEmployee"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.save.employee.record.into.person.table}">Save Employee Record into Person table</span></a>
+    		<a data-th-href="@{/user/add}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.add.user}">Add User</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a href="javascript:void(0);" id="encryptPPSLink" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.encrypt.pps.number}">Encrypt PPS Number</span></a>
     	</div>
     </div>
 </div>              <!-- /#wrapper -->
@@ -117,14 +124,44 @@
 		</div>
 	</div>
 	
-	<div id="copyRecordModal" class="modal fade" role="dialog">
+	<div id="copyRecordEmployeeModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 		
 		  <!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Save Trainer record into Person table</h4>
+					<h4 class="modal-title" data-th-text="#{link.save.employee.record.into.person.table}">Save Trainer record into Person table</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-inline" role="form">
+					 	<div class="form-group width-100">
+							<label for="" class="">Are you sure you want to save Employee record into Person table?</label>
+						</div>
+						<div class="form-group width-100">
+							<label for="" class="">&nbsp;</label>
+						</div>
+						<div class="form-group width-100">
+							<label for="" class="">NOTE : It will take long time.</label>
+						</div>
+				 	</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" id="confirmcopyRecordEmployee">Yes</button>
+				  	<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="copyRecordTrainerModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+		
+		  <!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title" data-th-text="#{link.save.trainer.record.into.person.table}">Save Trainer record into Person table</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-inline" id="searchNumberForm" role="form">
@@ -140,11 +177,34 @@
 				 	</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" id="confirmCopyRecord">Yes</button>
+					<button type="button" class="btn btn-default" id="confirmcopyRecordTrainer">Yes</button>
 				  	<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
 				</div>
 			</div>
+		</div>
+	</div>
+	
+	<div id="encryptPPSNumberModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
 		
+		  <!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title" data-th-text="#{link.encrypt.pps.number}">Save Trainer record into Person table</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-inline" id="searchNumberForm" role="form">
+					 	<div class="form-group width-100">
+							<label for="" class="">Are you sure you want to encrypt PPS Number?</label>
+						</div>
+				 	</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" id="confirmEncryptPPS">Yes</button>
+				  	<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	
@@ -175,23 +235,71 @@
     	
     	var cards = [[${cards}]];
     	$(function() {
+    		
+    		$("#encryptPPSLink").click(function() {
+    			$('#encryptPPSNumberModal').modal('show');
+    		});
+    		
+    		$('#confirmEncryptPPS').click(function() {
+    			
+    			$('#encryptPPSNumberModal').modal('hide');
+    			$.blockUI({css: {color: 'black'}});
+    			$.ajax({
+    				url: '/turfclubPrograms/employees/encryptPPS',
+    				type: 'GET',
+    				data: {},
+    				success: function(data) {
+    					$.unblockUI();
+    					$('#successMsg').find('span').html(data);
+    					$('#successMsg').show();
+    					setTimeout(function() {
+    						$('#successMsg').hide();	
+    					}, 5000);
+    				}
+    			});
+    		});
+    		
     		$('#searchNumber').typeahead({
     		    source: cards
     		}).on('blur', function (event, data) {
     		    window.location.replace('/turfclubPrograms/employees/getByCardId/'+$(this).next().find('li.active').data('value'));
     		});
     		
-    		$('#copyRecord').click(function() {
+    		$('#copyRecordTrainer').click(function() {
     			
-    			$('#copyRecordModal').modal('show');
+    			$('#copyRecordTrainerModal').modal('show');
     		});
     		
-    		$(document).on('click', '#confirmCopyRecord', function() {
+			$('#copyRecordEmployee').click(function() {
     			
-    			$('#copyRecordModal').modal('hide');
+    			$('#copyRecordEmployeeModal').modal('show');
+    		});
+    		
+    		$(document).on('click', '#confirmcopyRecordTrainer', function() {
+    			
+    			$('#copyRecordTrainerModal').modal('hide');
     			$.blockUI({css: {color: 'black'}});
     			$.ajax({
     				url: '/turfclubPrograms/trainers/person/copyRecord',
+    				type: 'GET',
+    				data: {},
+    				success: function(data) {
+    					$.unblockUI();
+    					$('#successMsg').find('span').html(data);
+    					$('#successMsg').show();
+    					setTimeout(function() {
+    						$('#successMsg').hide();	
+    					}, 5000);
+    				}
+    			});
+    		});
+    		
+			$(document).on('click', '#confirmcopyRecordEmployee', function() {
+    			
+    			$('#copyRecordEmployeeModal').modal('hide');
+    			$.blockUI({css: {color: 'black'}});
+    			$.ajax({
+    				url: '/turfclubPrograms/employees/person/copyRecord',
     				type: 'GET',
     				data: {},
     				success: function(data) {

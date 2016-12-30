@@ -1,45 +1,39 @@
 package ie.turfclub.trainers.controller;
 
 import ie.turfclub.common.bean.SearchByNameEmployeeBean;
-import ie.turfclub.common.enums.RoleEnum;
-import ie.turfclub.person.model.Person;
+import ie.turfclub.common.enums.AdvanceSearchEnum;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.trainers.model.TeEmployees;
-import ie.turfclub.trainers.model.TeEmployentHistory;
-import ie.turfclub.trainers.model.TePension;
-import ie.turfclub.trainers.model.TeTrainers;
 import ie.turfclub.trainers.service.EmployeeService;
 import ie.turfclub.trainers.service.StableStaffService;
 import ie.turfclub.trainers.service.TrainersService;
 
+import java.io.BufferedWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "/employees")
 public class EmployeeController {
+	
+	public static int noOfRecords = 10;
 	
 	@Autowired
 	private TrainersService trainersService;
@@ -190,8 +184,6 @@ public class EmployeeController {
 			model.addAttribute("success", messageSource.getMessage("success.added.employee", new String[] {}, Locale.US));
 	
 		employeeService.handleSaveOrUpdate(emp);
-		Person person = createPerson(emp);
-		personService.addPerson(person);
 		
 		model.addAttribute("emp", emp);
 		model.addAttribute("trainers", trainersService.getAllTrainers());
@@ -210,45 +202,125 @@ public class EmployeeController {
 		return "emp-add";
 	}
 
-	//set all value from employee to person object
-	private Person createPerson(TeEmployees emp) {
+	@RequestMapping(value="/advSearch", method=RequestMethod.GET)
+	public String getAdvanceSearchPage( HttpServletRequest request, ModelMap model) {
 		
-		Person person = new Person();
-		person.setRefId(emp.getEmployeesEmployeeId());
-		person.setSurname(emp.getEmployeesSurname());
-		person.setFirstname(emp.getEmployeesFirstname());
-		person.setDateOfBirth(emp.getEmployeesDateOfBirth());
-		person.setRequestDate(emp.getEmployeeRequestDate());
-		person.setDateEntered(emp.getEmployeesDateEntered());
-		person.setAddress1(emp.getEmployeesAddress1());
-		person.setAddress2(emp.getEmployeesAddress2());
-		person.setAddress3(emp.getEmployeesAddress3());
-		person.setPhoneNo(emp.getEmployeesPhoneNo());
-		person.setMobileNo(emp.getEmployeesMobileNo());
-		person.setEmail(emp.getEmployeesEmail());
-		person.setComments(emp.getEmployeesComments());
-		person.setRoleId(RoleEnum.EMPLOYEE.getId());
-		person.setTitle(emp.getEmployeesTitle());
-		person.setSex(emp.getEmployeesSex());
-		person.setNationality(emp.getEmployeesNationality());
-		person.setMaritalStatus(emp.getEmployeesMaritalStatus());
-		person.setSpouseName(emp.getEmployeesSpouseName());
-		person.setCounty(emp.getEmployeesAddress4());
-		person.setCountry(emp.getEmployeesAddress5());
-		person.setPostCode(emp.getEmployeesPostCode());
-		/*person.setAddress4(emp.getEmployeesAddress4());
-		person.setAddress5(emp.getEmployeesAddress5());
-		person.setHriAccountNo(emp.getEmployeesHriAccountNo());
-		person.setLastUpdated(emp.getEmployeesLastUpdated());
-		person.setNew(emp.getEmployeesIsNew());
-		person.setHasTaxableEarnings(emp.getEmployeesHasTaxableEarnings() != null ? emp.getEmployeesHasTaxableEarnings() : false);
-		person.setEmployeeVerified(emp.isEmployeeVerified());
-		person.setPpsNumber(emp.getEmployeesPpsNumber());
-		person.setExistingAIRCardHolder(emp.getEmployeeExistingAIRCardHolder());
-		person.setOldEmployeeCardNumber(emp.getEmployeeOldEmployeeCardNumber());
-		person.setCategoryOfEmployment(emp.getEmployeeCategoryOfEmployment());
-		person.setLastYearPaid(emp.getEmployeeLastYearPaid());
-		person.setNumHourWorked(emp.getEmployeeNumHourWorked());*/
-		return person;
+		return "advance-search";
+	}
+	
+	@RequestMapping(value="/encryptPPS", method=RequestMethod.GET)
+	@ResponseBody
+	public String handleEncryptPPSNumber( HttpServletRequest request, ModelMap model) {
+		
+		employeeService.handleEncryptPPSNumber();
+		return messageSource.getMessage("success.encrypt.pps.number", new String[] {}, Locale.US);
+	}
+	
+	@RequestMapping(value="/advSearchType", method=RequestMethod.GET)
+	public String getAdvanceSearchType(@RequestParam(value="type") String type, HttpServletRequest request, ModelMap model) {
+	
+		model.addAttribute("type", type);
+		model.addAttribute("recordFor", AdvanceSearchEnum.getNameById(type));
+		return "advance-search-type";
+	}
+	
+	@RequestMapping(value="/advSearchRec", method=RequestMethod.GET)
+	@ResponseBody
+	public Object getAdvanceSearchRecordByType(@RequestParam(value="type") String type, 
+			@RequestParam(value="start") int start, @RequestParam(value="length") int length,  
+			@RequestParam(value="draw") int draw, HttpServletRequest request, ModelMap model) {
+		
+		length = (length == -1) ? noOfRecords : length;
+		return employeeService.getAdvanceSearchRecordByType(type, start, length, draw);
+	}
+	
+	@RequestMapping(value = "/person/copyRecord", method = RequestMethod.GET)
+	@ResponseBody
+	public String handleCopyRecord(HttpServletRequest req, Model model) throws SQLException {
+
+		employeeService.handleCopyRecord();
+		String success = messageSource.getMessage("success.employee.save.record.to.person", new String[] {}, Locale.US);
+		return success;
+	}
+	
+	@RequestMapping(value = "/exportCSV", method=RequestMethod.GET)
+	public void exportCSV(@RequestParam( value = "type") String type, HttpServletRequest request,
+			HttpServletResponse response) {
+		
+		try {
+			
+			BufferedWriter writer = new BufferedWriter(response.getWriter());
+			
+			response.setContentType("text/csv");
+			// creates mock data
+			HashMap<String, Object> map = employeeService.getCSVString(type, getTitleForExportCSV(type));
+			String headerValue = String.format("attachment; filename=\"%s\"", getFileName(type));
+			response.setHeader("Content-Disposition", headerValue);
+			writer.write(((String) map.get("csvstring")));
+			writer.flush();
+			writer.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Get Title for export CSV
+	 * 
+	 * @param type
+	 * @return
+	 */
+	private String getTitleForExportCSV(String type) {
+		
+		String title = "";
+		switch(type) {
+			case "1":
+				title = messageSource.getMessage("link.all.a.card.holders", new String[] {}, Locale.US);
+				break;
+			case "2":
+				title = messageSource.getMessage("link.all.b.card.holders", new String[] {}, Locale.US);
+				break;
+			case "3":
+				break;
+			case "4":
+				break;
+			case "5":
+				break;
+			case "6":
+				break;
+			case "7":
+				break;
+		}
+		return title;
+	}
+
+	/**
+	 * get Export CSV filename
+	 * 
+	 * @param type
+	 * @return
+	 */
+	private String getFileName(String type) {
+		
+		String filename = "Demo";
+		switch(type) {
+			case "1":
+				filename = messageSource.getMessage("filename.all.a.card.holders", new String[] {}, Locale.US);
+				break;
+			case "2":
+				filename = messageSource.getMessage("filename.all.b.card.holders", new String[] {}, Locale.US);
+				break;
+			case "3":
+				break;
+			case "4":
+				break;
+			case "5":
+				break;
+			case "6":
+				break;
+			case "7":
+				break;
+		}
+		return filename+".csv";
 	}
 }

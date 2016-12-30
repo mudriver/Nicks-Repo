@@ -189,7 +189,7 @@ public class TeEmployees implements java.io.Serializable {
 		this.employeesEmployeeId = employeesEmployeeId;
 	}
 
-	@Column(name = "employees_pps_number", unique = true, length = 8)
+	@Column(name = "employees_pps_number", unique = true, length = 255)
 	public String getEmployeesPpsNumber() {
 		return this.employeesPpsNumber;
 	}

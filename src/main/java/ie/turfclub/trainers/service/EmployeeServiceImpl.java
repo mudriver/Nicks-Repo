@@ -1,19 +1,28 @@
 package ie.turfclub.trainers.service;
 
+import ie.turfclub.common.bean.AdvanceSearchRecordBean;
 import ie.turfclub.common.bean.SearchByNameEmployeeBean;
+import ie.turfclub.common.enums.RoleEnum;
 import ie.turfclub.common.service.NullAwareBeanUtilsBean;
+import ie.turfclub.person.model.Person;
+import ie.turfclub.person.service.PersonService;
 import ie.turfclub.trainers.model.TeCards;
 import ie.turfclub.trainers.model.TeEmployees;
 import ie.turfclub.trainers.model.TeEmployentHistory;
 import ie.turfclub.trainers.model.TePension;
 import ie.turfclub.trainers.model.TeTrainers;
+import ie.turfclub.utilities.EncryptDecryptUtils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -23,13 +32,13 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -49,6 +58,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private StableStaffService stableStaffService;
 	@Autowired
 	private TrainersService trainersService;
+	@Autowired
+	private PersonService personService;
+	@Autowired
+	private MessageSource messageSource;
 	
 	List<String> sexEnum;
 	List<String> maritalEnum;
@@ -68,6 +81,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public void saveOrUpdate(TeEmployees emp) {
 	
+		emp.setEmployeesPpsNumber(EncryptDecryptUtils.encrypt(emp.getEmployeesPpsNumber()));
 		getCurrentSession().saveOrUpdate(emp);
 	}
 	
@@ -185,6 +199,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 				String sql = "From TeEmployees where employeesEmployeeId = "+cards.get(0).getTeEmployees().getEmployeesEmployeeId();
 				List<TeEmployees> employees = getCurrentSession().createQuery(sql).list();
 				if(employees != null && employees.size() > 0) {
+					employees.get(0).setEmployeesPpsNumber(EncryptDecryptUtils.encrypt(employees.get(0).getEmployeesPpsNumber()));
 					return employees.get(0);
 				}
 			}
@@ -220,10 +235,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public List<SearchByNameEmployeeBean> findByName(String search) {
 		
-		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
+		/*Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
 		criteria.add(Restrictions.ilike("employeesFullName", search, MatchMode.ANYWHERE));
 		List<TeEmployees> employees = criteria.list();
-		return convertEmployeesToBean(employees);
+		return convertEmployeesToBean(employees);*/
+		List<SearchByNameEmployeeBean> records = personService.getEmployeeByName(search);
+		return records;
 	}
 	
 	@Override
@@ -265,17 +282,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		Period p = Period.fieldDifference(ld, LocalDate.now());
 		emp.setAge(p.getYears());
+		emp.setEmployeesPpsNumber(EncryptDecryptUtils.decrypt(emp.getEmployeesPpsNumber()));
  		return emp;
 	}
 	
 	@Override
 	public List<SearchByNameEmployeeBean> findByNumber(String search) {
 		
-		String sql = "select e from TeEmployees e, TeCards c where c.cardsCardId = e.teCard.cardsCardId"
+		/*String sql = "select e from TeEmployees e, TeCards c where c.cardsCardId = e.teCard.cardsCardId"
 				+ " and lower(c.cardsCardNumber) like lower('%"+search+"%')";
 		
 		List<TeEmployees> employees = getCurrentSession().createQuery(sql).list();
-		return convertEmployeesToBean(employees);
+		return convertEmployeesToBean(employees);*/
+		
+		List<SearchByNameEmployeeBean> records = personService.getEmployeeByCardNumber(search);
+		return records;
 	}
 	
 	@Override
@@ -349,5 +370,175 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		
 		saveOrUpdate(emp);
+		
+		Person person = createPerson(emp);
+		personService.addPerson(person);
+	}
+	
+	@Override
+	public HashMap<String, Object> getAdvanceSearchRecordByType(
+			String type, int start, int length, int draw) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int count = 0;
+		List<AdvanceSearchRecordBean> records = new ArrayList<AdvanceSearchRecordBean>();
+		switch(type) {
+			case "1":
+				
+				count = personService.getAdvanceSearchRecordForAllACardCount();
+				records = personService.getAdvanceSearchRecordForAllACardByLimit(start, length);
+				break;
+			case "2":
+				count = personService.getAdvanceSearchRecordForAllBCardCount();
+				records = personService.getAdvanceSearchRecordForAllBCardByLimit(start, length);
+				break;
+			case "3":
+				break;
+			case "4":
+				break;
+			case "5":
+				break;
+			case "6":
+				break;
+			case "7":
+				break;
+		}
+		
+		AdvanceSearchRecordBean[] beanArr = new AdvanceSearchRecordBean[records.size()];
+		beanArr = records.toArray(beanArr);
+		
+		map.put("data", beanArr);
+		map.put("draw", draw);
+		map.put("recordsTotal", count);
+		map.put("recordsFiltered", count);
+		
+		return map;
+	}
+	
+	//set all value from employee to person object
+	private Person createPerson(TeEmployees emp) {
+		
+		Person person = new Person();
+		person.setRefId(emp.getEmployeesEmployeeId());
+		person.setSurname(emp.getEmployeesSurname());
+		person.setFirstname(emp.getEmployeesFirstname());
+		person.setDateOfBirth(emp.getEmployeesDateOfBirth());
+		person.setRequestDate(emp.getEmployeeRequestDate());
+		person.setDateEntered(emp.getEmployeesDateEntered());
+		person.setAddress1(emp.getEmployeesAddress1());
+		person.setAddress2(emp.getEmployeesAddress2());
+		person.setAddress3(emp.getEmployeesAddress3());
+		person.setPhoneNo(emp.getEmployeesPhoneNo());
+		person.setMobileNo(emp.getEmployeesMobileNo());
+		person.setEmail(emp.getEmployeesEmail());
+		person.setComments(emp.getEmployeesComments());
+		person.setRoleId(RoleEnum.EMPLOYEE.getId());
+		person.setTitle(emp.getEmployeesTitle());
+		person.setSex(emp.getEmployeesSex());
+		person.setNationality(emp.getEmployeesNationality());
+		person.setMaritalStatus(emp.getEmployeesMaritalStatus());
+		person.setSpouseName(emp.getEmployeesSpouseName());
+		person.setCounty(emp.getEmployeesAddress4());
+		person.setCountry(emp.getEmployeesAddress5());
+		person.setPostCode(emp.getEmployeesPostCode());
+		person.setCardType(emp.getTeCard() != null ? emp.getTeCard().getCardsCardType() : null);
+		person.setCardNumber(emp.getTeCard() != null ? emp.getTeCard().getCardsCardNumber() : null);
+		if(emp.getTeEmployentHistories() != null && !emp.getTeEmployentHistories().isEmpty()) {
+			List<TeEmployentHistory> histories = new ArrayList<TeEmployentHistory>();
+			histories.addAll(emp.getTeEmployentHistories());
+			
+			try {
+				Collections.sort(histories, new Comparator<TeEmployentHistory>() {
+				    @Override
+				    public int compare(TeEmployentHistory o1, TeEmployentHistory o2) {
+				        return -1 * o1.getEhDateFrom().compareTo(o2.getEhDateFrom());
+				    }
+				});
+				if(histories != null && histories.size() > 0 && histories.get(0).getTeTrainers() != null) {
+					person.setTrainerName(histories.get(0).getTeTrainers().getTrainerFullName());
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return person;
+	}
+	
+	@Override
+	public void handleCopyRecord() throws SQLException {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
+		List<TeEmployees> employees = criteria.list();
+		if(employees != null) {
+			for (TeEmployees employee : employees) {
+				
+				Person person = createPerson(employee);
+				personService.addPerson(person);
+			}
+		}
+	}
+	
+	@Override
+	public HashMap<String, Object> getCSVString(String type, String title) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		List<AdvanceSearchRecordBean> records = new ArrayList<AdvanceSearchRecordBean>();
+		switch(type) {
+			case "1":
+				records = personService.getAdvanceSearchRecordForAllACard();
+				break;
+			case "2":
+				records = personService.getAdvanceSearchRecordForAllBCard();
+				break;
+			case "3":
+				break;
+			case "4":
+				break;
+			case "5":
+				break;
+			case "6":
+				break;
+			case "7":
+				break;
+		}
+		
+		map.put("csvstring", getCSVStringByData(records, title));
+		return map;
+	}
+
+	/**
+	 * Get CSV String for exportCSV file
+	 * 
+	 * @param records
+	 * @return
+	 */
+	private String getCSVStringByData(List<AdvanceSearchRecordBean> records, String title) {
+		
+		String csvString = ",,";
+		csvString += title+",";
+		csvString += "\n\n";
+		csvString += "Card Number,Name,Date Of Birth,Current/Last Trainer\n";
+		if(records != null && records.size() > 0) {
+			for (AdvanceSearchRecordBean bean : records) {
+				csvString += bean.getCardNumber()+","+bean.getName()+","+bean.getDateOfBirth()+","+bean.getTrainerName()+"\n";
+			}
+		}
+		return csvString;
+	}
+	
+	@Override
+	public void handleEncryptPPSNumber() {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
+		List<TeEmployees> employees = criteria.list();
+		if(employees != null && employees.size() > 0) {
+			for (TeEmployees teEmployees : employees) {
+				if(teEmployees.getEmployeesPpsNumber() != null && teEmployees.getEmployeesPpsNumber().length() <= 8) {
+					
+					teEmployees.setEmployeesPpsNumber(EncryptDecryptUtils.encrypt(teEmployees.getEmployeesPpsNumber()));
+					getCurrentSession().saveOrUpdate(teEmployees);
+				}
+			}
+		}
 	}
 }

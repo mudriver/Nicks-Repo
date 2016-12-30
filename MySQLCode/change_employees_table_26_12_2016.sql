@@ -1,0 +1,1 @@
+ALTER TABLE te_employees MODIFY employees_pps_number varchar(255);

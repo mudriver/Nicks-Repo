@@ -1,5 +1,6 @@
 package ie.turfclub.person.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,10 +11,19 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Formula;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Table
-@Entity(name="person")
-public class Person {
+@Entity
+@Table(name="person", catalog="person_db")
+public class Person implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	static Logger logger = LoggerFactory.getLogger(Person.class);
 
 	@Id
 	@GeneratedValue
@@ -28,9 +38,6 @@ public class Person {
 	
 	@Column(name="firstname")
 	private String firstname;
-	
-	@Transient
-	private String fullname;
 	
 	@Column(name="date_of_birth")
 	private Date dateOfBirth;
@@ -89,117 +96,19 @@ public class Person {
 	@Transient
 	private long roleId;
 	
+	@Transient
 	@Formula(value = " concat(surname, ' ', firstname) ")
 	private String fullName;
 	
-	/*@Column(name="nationality")
-	private String nationality;
+	@Column(name="card_type")
+	private String cardType;
 	
-	@Column(name="sex")
-	private String sex;
+	@Column(name="card_number")
+	private String cardNumber;
 	
-	@Column(name="marital_status")
-	private String maritalStatus;
+	@Column(name="trainer_name")
+	private String trainerName;
 	
-	@Column(name="spouse_name")
-	private String spouseName;*/
-	
-	/*@Column(name="address4")
-	private String address4;
-	
-	@Column(name="address5")
-	private String address5;
-	
-	@Column(name="postcode")
-	private String postCode;*/
-	
-	/*@Column(name="pps_number")
-	private String ppsNumber;
-	
-	@Column(name="title")
-	private String title;*/
-	
-	/*@Column(name="hri_account_no")
-	private String hriAccountNo;
-	
-	@Column(name="last_updated")
-	private Date lastUpdated;*/
-	
-	/*@Column(name="is_new")
-	private boolean isNew;
-	
-	@Column(name="has_taxable_earnings")
-	private boolean hasTaxableEarnings;
-	
-	@Column(name="employee_verified")
-	private boolean employeeVerified;*/
-	
-	/*@Column(name="existing_air_card_holder")
-	private String existingAIRCardHolder;
-	
-	@Column(name="old_employee_card_holder")
-	private String oldEmployeeCardNumber;
-	
-	@Column(name="category_of_employment")
-	private String categoryOfEmployment;
-	
-	@Column(name="last_year_paid")
-	private Double lastYearPaid;
-	
-	@Column(name="num_hour_worked")
-	private Double numHourWorked;
-	
-	@Column(name="batch_no")
-	private int batchNo;
-	
-	@Column(name="acc_no")
-	private String accNo;
-	
-	@Column(name="stable_address1")
-	private String stableAddress1;
-	
-	@Column(name="stable_address2")
-	private String stableAddress2;
-	
-	@Column(name="stable_address3")
-	private String stableAddress3;
-	
-	@Column(name="fax")
-	private String fax;
-	
-	@Column(name="restricted")
-	private String restricted;
-	
-	@Column(name="hunter_chase")
-	private String hunterChase;
-	
-	@Column(name="curragh")
-	private String curragh;
-	
-	@Column(name="insurance_expiry")
-	private Date insuranceExpiry;
-	
-	@Column(name="last_racecard_id")
-	private int lastRacecardId;
-	
-	@Column(name="return_completed")
-	private boolean returnCompleted;
-	
-	@Column(name="contact_name")
-	private String contactName;
-	
-	@Column(name="contact_number")
-	private String contactNumber;
-	
-	@Column(name="verified_status")
-	private VerifiedStatus verifiedStatus;
-	
-	@Column(name="notes")
-	private String notes;
-	
-	@Column(name="role")
-	private String role;*/
-
 	public long getId() {
 		return id;
 	}
@@ -222,14 +131,6 @@ public class Person {
 
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
-	}
-
-	public String getFullname() {
-		return fullname;
-	}
-
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
 	}
 
 	public Date getDateOfBirth() {
@@ -398,5 +299,29 @@ public class Person {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
+	}
+
+	public String getCardType() {
+		return cardType;
+	}
+
+	public void setCardType(String cardType) {
+		this.cardType = cardType;
+	}
+
+	public String getCardNumber() {
+		return cardNumber;
+	}
+
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+
+	public String getTrainerName() {
+		return trainerName;
+	}
+
+	public void setTrainerName(String trainerName) {
+		this.trainerName = trainerName;
 	}
 }

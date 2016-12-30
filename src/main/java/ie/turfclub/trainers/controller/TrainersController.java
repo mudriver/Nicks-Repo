@@ -149,7 +149,7 @@ public class TrainersController {
 	public String handleCopyRecord(HttpServletRequest req, Model model) throws SQLException {
 
 		trainersService.handleCopyRecord();
-		String success = messageSource.getMessage("success.save.record.to.person", new String[] {}, Locale.US);
+		String success = messageSource.getMessage("success.trainer.save.record.to.person", new String[] {}, Locale.US);
 		return success;
 	}
 	
