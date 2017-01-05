@@ -53,7 +53,9 @@ public class LinkController {
 	         case "ACCOUNTS":
 	        	 model.addAttribute("ACCOUNTS","ACCOUNTS");
 	        	 break;	
-
+	         case "SUPER_USER":
+	        	 model.addAttribute("SUPERUSER", "SUPERUSER");
+	        	 break;
 	        
 	         default:
 	        	 

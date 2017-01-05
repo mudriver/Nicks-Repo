@@ -1,0 +1,1 @@
+insert into user_role_types(role_type_name) values ('SUPER_USER');

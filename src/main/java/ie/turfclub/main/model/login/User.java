@@ -12,6 +12,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,9 @@ public class User implements UserDetails {
 
 	@Column(name = "users_surname", length = 200)
 	private String surname;
+	
+	@Formula(value = " concat(users_surname, ' ', users_first_name) ")
+	private String fullName;
 
 	@Transient
 	private String confirmPassword;
@@ -210,6 +214,14 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return this.getEnabled();
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 }

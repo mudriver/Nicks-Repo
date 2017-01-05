@@ -62,7 +62,7 @@
    		<span th:text="${success}"></span>
    	</div>
     
-    <div class="home-parent">
+    <div class="home-parent" data-th-with="role=${#httpServletRequest.userPrincipal?.authorities[0].authority}">
     	<!-- <div class="home-links-parent">
     		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.employee.printouts}">Employee Printouts</span></a>
     		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.stableyard.list}">StableYard List</span></a>
@@ -93,6 +93,7 @@
     	</div>
     	<div class="home-links-parent">
     		<a href="javascript:void(0);" id="encryptPPSLink" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.encrypt.pps.number}">Encrypt PPS Number</span></a>
+    		<a th:if="${role == 'SUPER_USER'}" data-th-href="@{/user/searchPage}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.user}">Search User</span></a>
     	</div>
     </div>
 </div>              <!-- /#wrapper -->

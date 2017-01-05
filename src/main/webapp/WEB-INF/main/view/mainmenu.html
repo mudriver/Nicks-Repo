@@ -29,6 +29,7 @@
             border-top-style: none;
             border-bottom-style: none;
         }
+        
     </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -66,7 +67,7 @@
                        <li class="divider"></li>
                        <li>
                                  <form class="navbar-form" data-th-action="@{/logout}" method="post">
-                                 <label for="mySubmit" class="btn"><i class="fa fa-sign-out fa-fw"></i>Log Out</label>
+                                 <label for="mySubmit" class="btn" id="logoutLabel"><i class="fa fa-sign-out fa-fw"></i>Log Out</label>
                                  <input id="mySubmit" type="submit" value="Go" class="hidden" />
                                  </form>
                              </li>

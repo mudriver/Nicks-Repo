@@ -42,8 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	http 
     	.authorizeRequests()
                 .antMatchers("/resources/**").permitAll()
-                .antMatchers("/home/**","/expenses/**").access("hasAnyRole('INSPECTIONS_CEO','INSPECTIONS_LICENCING','INSPECTIONS_ADMIN','VET_USER','VET_ADMIN','ACCOUNTS','TRAINERS_USER','TRAINERS_ADMIN','STABLESTAFF','STABLESTAFF_PENSION')")
-                .antMatchers("/vetReports/**").access("hasAnyRole('VET_USER','VET_ADMIN')")
+                .antMatchers("/user/searchPage","/user/search","/user/edit", "/user/update").access("hasAnyRole('SUPER_USER')")
+                .antMatchers("/home/**","/expenses/**").access("hasAnyRole('INSPECTIONS_CEO','INSPECTIONS_LICENCING','INSPECTIONS_ADMIN','VET_USER','VET_ADMIN','ACCOUNTS','TRAINERS_USER','TRAINERS_ADMIN','STABLESTAFF','STABLESTAFF_PENSION','SUPER_USER')")
+                .antMatchers("/vetReports/**").access("hasAnyRole('VET_USER','VET_ADMIN','SUPER_USER')")
                 .antMatchers("/inspections/**").access("hasAnyRole('INSPECTIONS_ADMIN','INSPECTIONS_LICENCING','INSPECTIONS_CEO')")
                 .antMatchers("/accountsReports/**").access("hasAnyRole('ACCOUNTS')")
                 .antMatchers("/trainersEmployees/**").access("hasAnyRole('TRAINERS_USER','TRAINERS_ADMIN','STABLESTAFF','STABLESTAFF_PENSION')")

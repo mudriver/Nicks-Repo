@@ -68,7 +68,7 @@
         data-th-src="@{/resources/img/inspections.jpg}" alt="inspections" height="200" width="200"></img>Inspections</span>
       </a>
       </div>
-<div data-th-if="${TRAINERS} != null" class="col-lg-3">
+<div data-th-if="${TRAINERS} != null or ${SUPERUSER} != null" class="col-lg-3">
 		<a href="#" data-th-href="@{/trainers/home}">     
       <span class="thumbnail text-center text-info">
           
@@ -76,7 +76,7 @@
         data-th-src="@{/resources/img/trainers.jpg}" alt="trainers" height="200" width="200"></img>Trainers</span>
       </a>
       </div>
-      <div data-th-if="${STABLESTAFF} != null" class="col-lg-3">
+      <div data-th-if="${STABLESTAFF} != null or ${SUPERUSER} != null" class="col-lg-3">
 		<a href="#" data-th-href="@{/trainers/home#/pensionTrainerlist}">     
       <span class="thumbnail text-center text-info">
           
@@ -85,7 +85,7 @@
       </a>
       </div>        
       
-      <div data-th-if="${STABLESTAFF} != null" class="col-lg-3">
+      <div data-th-if="${STABLESTAFF} != null or ${SUPERUSER} != null" class="col-lg-3">
 		<a href="#" data-th-href="@{/employees/manageStaff}">     
       <span class="thumbnail text-center text-info">
           

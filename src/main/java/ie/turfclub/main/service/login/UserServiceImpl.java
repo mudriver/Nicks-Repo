@@ -1,9 +1,11 @@
 package ie.turfclub.main.service.login;
 
+import ie.turfclub.common.bean.SearchUserBean;
 import ie.turfclub.main.model.login.Roles;
 import ie.turfclub.main.model.login.User;
 import ie.turfclub.main.model.login.UserRoles;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +81,20 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
+    public boolean isExistsEmail(String username, Integer id) {
+    	
+    	Criteria criteria = getCurrentSession().createCriteria(User.class);
+    	criteria.add(Restrictions.eq("user_login", username));
+    	criteria.add(Restrictions.ne("user_id", id));
+    	List<User> users = criteria.list();
+    	User userFromDB = (users != null && users.size() > 0) ? users.get(0) : null;
+    	if(userFromDB != null)
+    		return true;
+    	else
+    		return false;
+    }
+    
+    @Override
     public String handleUser(User user) {
     	
     	user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -103,4 +120,35 @@ public class UserServiceImpl implements UserService {
     	List<Roles> records = criteria.list();
     	return records;
     }
+    
+    @Override
+    public List<SearchUserBean> getUserBySearch(String q) {
+    	Criteria criteria = getCurrentSession().createCriteria(User.class);
+    	criteria.add(Restrictions.ilike("fullName", q, MatchMode.ANYWHERE));
+    	List<User> records = criteria.list();
+    	return convertEntityToBean(records);
+    }
+
+	private List<SearchUserBean> convertEntityToBean(List<User> records) {
+		
+		List<SearchUserBean> results = new ArrayList<SearchUserBean>();
+		if(records != null && records.size() > 0) {
+			for (User user : records) {
+				SearchUserBean bean = new SearchUserBean();
+				bean.setId(user.getUser_id());
+				bean.setFullName(user.getFullName());
+				results.add(bean);
+			}
+		}
+		return results;
+	}
+	
+	@Override
+	public User findById(Integer id) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(User.class);
+		criteria.add(Restrictions.eq("user_id", id));
+		List<User> records = criteria.list();
+		return (records != null && records.size() > 0) ? records.get(0) : null;
+	}
 }

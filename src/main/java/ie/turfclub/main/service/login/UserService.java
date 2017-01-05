@@ -1,5 +1,8 @@
 package ie.turfclub.main.service.login;
 
+import java.util.List;
+
+import ie.turfclub.common.bean.SearchUserBean;
 import ie.turfclub.main.model.login.User;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,4 +18,10 @@ public interface UserService extends UserDetailsService {
 	public boolean isExistsEmail(String username);
 
 	public Object getAllRoles();
+
+	public List<SearchUserBean> getUserBySearch(String q);
+
+	public User findById(Integer id);
+	
+	public boolean isExistsEmail(String username, Integer id);
 }
