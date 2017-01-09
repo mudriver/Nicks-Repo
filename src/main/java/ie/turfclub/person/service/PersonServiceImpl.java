@@ -318,7 +318,7 @@ public class PersonServiceImpl implements PersonService {
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
 					+ "p.firstname as firstname,  p.ref_id as refId, p.card_type as cardType, p.card_number as cardNumber"
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.card_number like ? ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id like ? ");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
 			pstmt.setObject(2, "%"+search+"%");
 			ResultSet set = pstmt.executeQuery();
