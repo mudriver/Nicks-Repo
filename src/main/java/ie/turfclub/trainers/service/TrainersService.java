@@ -13,7 +13,6 @@ import ie.turfclub.trainers.model.TeTrainers.VerifiedStatus;
 import ie.turfclub.trainers.model.savedSearches.TeAuthRepsSavedSearches;
 import ie.turfclub.trainers.model.savedSearches.TeEmployeesPensionSavedSearch;
 import ie.turfclub.trainers.model.savedSearches.TeEmployeesSavedSearch;
-import ie.turfclub.trainers.model.savedSearches.TeSavedSearches;
 import ie.turfclub.trainers.model.savedSearches.TeTrainersPensionSavedSearch;
 import ie.turfclub.trainers.model.savedSearches.TeTrainersSavedSearch;
 
@@ -21,6 +20,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import com.lowagie.text.pdf.PdfPTable;
 
 public interface TrainersService {
 
@@ -63,5 +64,7 @@ public interface TrainersService {
 	 */
 	public void handleCopyRecord() throws SQLException;
 	public List<SearchByNameTrainerBean> findByName(String search) throws Exception;
+	public String getCSVStringForTrainerEmployees(Integer id, String type);
+	public PdfPTable createPDFDocumentWithDetails(Integer id, String type);
 	
 }

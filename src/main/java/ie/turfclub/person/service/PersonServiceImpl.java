@@ -3,6 +3,7 @@ package ie.turfclub.person.service;
 import ie.turfclub.common.bean.AdvanceSearchRecordBean;
 import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.common.bean.SearchByNameTrainerBean;
+import ie.turfclub.common.bean.TrainerUserBean;
 import ie.turfclub.common.enums.RoleEnum;
 import ie.turfclub.common.service.JDBCConnection;
 import ie.turfclub.person.model.Person;
@@ -76,7 +77,7 @@ public class PersonServiceImpl implements PersonService {
 					+ "date_of_birth, address1,address2, address3, phone_no, mobile_no,"
 					+ "email, comments, date_entered, request_date, ref_id, title, sex, nationality,"
 					+ " marital_status, spouse_name, county, country, post_code, card_type, card_number,"
-					+ " trainer_name) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";		
+					+ " trainer_name,account_number) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";		
 			
 			PreparedStatement personSTMT = (PreparedStatement) conn.getConnection().prepareStatement(personSQL, Statement.RETURN_GENERATED_KEYS);
 			personSTMT.setObject(1, person.getSurname());
@@ -103,6 +104,7 @@ public class PersonServiceImpl implements PersonService {
 			personSTMT.setObject(22, person.getCardType());
 			personSTMT.setObject(23, person.getCardNumber());
 			personSTMT.setObject(24, person.getTrainerName());
+			personSTMT.setObject(25, person.getAccountNumber());
 			
 			personSTMT.executeUpdate();
 			
@@ -129,7 +131,7 @@ public class PersonServiceImpl implements PersonService {
 					+ "email = ?, comments = ?, date_entered = ? , request_date = ?,"
 					+ " title = ? , sex = ? , nationality = ? , marital_status = ? , spouse_name = ? ,"
 					+ " county = ?, country = ? , post_code = ?, card_type = ? , card_number = ? , "
-					+ " trainer_name = ? where ref_id = ?";		
+					+ " trainer_name = ?, account_number = ? where ref_id = ?";		
 			
 			PreparedStatement personSTMT = (PreparedStatement) conn.getConnection().prepareStatement(personSQL);
 			personSTMT.setObject(1, person.getSurname());
@@ -155,7 +157,8 @@ public class PersonServiceImpl implements PersonService {
 			personSTMT.setObject(21, person.getCardType());
 			personSTMT.setObject(22, person.getCardNumber());
 			personSTMT.setObject(23, person.getTrainerName());
-			personSTMT.setObject(24, person.getRefId());
+			personSTMT.setObject(24, person.getAccountNumber());
+			personSTMT.setObject(25, person.getRefId());
 			personSTMT.executeUpdate();
 		}
 	}
@@ -555,6 +558,36 @@ public class PersonServiceImpl implements PersonService {
 			bean.setDateOfBirth(set.getDate("dateOfBirth"));
 			bean.setTrainerName(set.getString("trainerName"));
 			records.add(bean);
+		}
+		return records;
+	}
+	
+	@Override
+	public List<TrainerUserBean> getTrainerUserBean() {
+		
+		try {
+			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
+					+ "p.firstname as firstname,  p.ref_id as id, p.account_number as accountNumber "
+					+ " from person as p join person_role as pr "
+					+ "on p.id = pr.person_id where pr.role_id = ? order by p.surname ");
+			pstmt.setObject(1, RoleEnum.TRAINER.getId());
+			ResultSet set = pstmt.executeQuery();
+			return convertEntityToTrainerUserBean(set);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private List<TrainerUserBean> convertEntityToTrainerUserBean(ResultSet set) throws SQLException {
+		
+		List<TrainerUserBean> records = new ArrayList<TrainerUserBean>();
+		while(set.next()) {
+			TrainerUserBean trainerUserBean = new TrainerUserBean();
+			trainerUserBean.setId(set.getInt("id"));
+			trainerUserBean.setName(set.getString("firstname")+" "+set.getString("surname"));
+			trainerUserBean.setAccNumber(set.getString("accountNumber"));
+			records.add(trainerUserBean);
 		}
 		return records;
 	}

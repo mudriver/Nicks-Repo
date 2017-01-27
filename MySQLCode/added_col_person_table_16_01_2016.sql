@@ -1,0 +1,1 @@
+ALTER TABLE person ADD COLUMN account_number varchar(20);

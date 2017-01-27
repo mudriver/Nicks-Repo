@@ -20,6 +20,7 @@ import ie.turfclub.trainers.model.savedSearches.TeOrderByFields;
 import ie.turfclub.trainers.model.savedSearches.TeTrainersPensionSavedSearch;
 import ie.turfclub.trainers.model.savedSearches.TeTrainersSavedSearch;
 
+import java.awt.Color;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,13 +32,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.annotation.Resource;
 
+import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -49,6 +56,11 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
+import org.joda.time.DateTime;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
@@ -58,6 +70,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.Gson;
+import com.itextpdf.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
 
 @PropertySource("classpath:ie/turfclub/trainers/resources/config/config.properties")
 @Service
@@ -72,6 +90,8 @@ public class TrainerServiceImpl implements TrainersService {
 	private MessageSource messageSource;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private EmployeeService employeeService;
 	
 	@Autowired
 	private PersonService personService;
@@ -1217,6 +1237,7 @@ public class TrainerServiceImpl implements TrainersService {
 		person.setCounty(trainer.getCounty());
 		person.setCountry(trainer.getCountry());
 		person.setPostCode(trainer.getPostCode());
+		person.setAccountNumber(trainer.getTrainerAccountNo());
 		return person;
 	}
 	
@@ -1239,4 +1260,506 @@ public class TrainerServiceImpl implements TrainersService {
 		
 		return personService.findByNameTrainer(search);
 	}
+	
+	@Override
+	public String getCSVStringForTrainerEmployees(Integer id, String type) {
+		
+		List<TeEmployentHistory> records = employeeService.getListOfTrainersEmployees(id, type);
+		String csvString = "";
+		csvString += "Card Type,Card Number,Surname,Firstname,From Year,To Year,Num\n";
+		for (TeEmployentHistory record : records) {
+			csvString += record.getTeEmployees().getTeCard().getCardsCardType()+",";
+			csvString += record.getTeEmployees().getTeCard().getCardsCardNumber()+",";
+			csvString += record.getTeEmployees().getEmployeesSurname()+",";
+			csvString += record.getTeEmployees().getEmployeesFirstname()+",";
+			csvString += record.getEhDateFrom()+",";
+			if(record.getEhDateTo() != null)
+				csvString += record.getEhDateTo()+",";
+			else
+				csvString += ",";
+			if(record.getEhHoursWorked() != null)
+				csvString += record.getEhHoursWorked()+"\n";
+			else
+				csvString += "\n";
+		}
+		return csvString;
+	}
+	
+	@Override
+	public PdfPTable createPDFDocumentWithDetails(Integer id, String type) {
+		
+		PdfPTable pdfPTable = new PdfPTable(8);
+		try {
+			Criteria criteria = getCurrentSession().createCriteria(TeTrainers.class);
+			criteria.add(Restrictions.eq("trainerId", id));
+			List<TeTrainers> trainers = criteria.list();
+			TeTrainers trainer = (trainers != null && trainers.size() > 0) ? trainers.get(0) : null;
+			pdfPTable.setWidthPercentage(100);
+			
+			Font bold = FontFactory.getFont("Bold", 12, Color.BLACK);
+			PdfPCell cell = new PdfPCell(new Phrase("The Employees of "+trainer.getTrainerFullName()+"  Acc No. "+trainer.getTrainerAccountNo(), bold));
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(0);
+			cell.setColspan(8);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			bold = FontFactory.getFont("Bold", 8, Color.BLACK);
+			cell = new PdfPCell(new Phrase("Hours Worked Weekly", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Card No", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Name", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Date Of Birth", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Marital Status", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Spouse's Name (if applicable) ", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Category Of Employment", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Date Left (if applicable) ", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			
+			/*List<TeEmployentHistory> records = employeeService.getListOfTrainersEmployees(id, type);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			
+			if(records != null && records.size() > 0) {
+				Integer currEmp = records.get(0).getTeEmployees().getEmployeesEmployeeId();
+				Integer nextEmp = records.get(0).getTeEmployees().getEmployeesEmployeeId();
+				for(int i=0; i < records.size(); i++) {
+					if(currEmp != nextEmp) {
+						
+					}
+					
+				}
+			}*/
+			
+			List<TeEmployentHistory> records = null;
+			if(type.equalsIgnoreCase("all")) {
+				criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
+				criteria.add(Restrictions.eq("teTrainers.trainerId", id));
+				criteria.addOrder(Order.desc("teEmployees.employeesEmployeeId"));
+				criteria.addOrder(Order.desc("ehHoursWorked"));
+				records = criteria.list();
+			} else {
+				criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
+				criteria.add(Restrictions.eq("teTrainers.trainerId", id));
+				criteria.add(Restrictions.eq("ehDateTo", null));
+				DateTime date = new DateTime();
+				Date today = new Date();
+				Date firstDay = date.dayOfYear().withMinimumValue().toDate();
+				criteria.add(Restrictions.between("ehDateFrom", firstDay, today));
+				criteria.addOrder(Order.desc("teEmployees.employeesEmployeeId"));
+				criteria.addOrder(Order.desc("ehHoursWorked"));
+				records = criteria.list();
+			}
+			
+			List<TeEmployentHistory> moreThan8HoursRecords = new ArrayList<TeEmployentHistory>();
+			List<TeEmployentHistory> lessThan8HoursRecords = new ArrayList<TeEmployentHistory>();
+			if(records != null && records.size() > 0) {
+				Integer currEmp = 0;
+				Integer prevEmp = records.get(0).getTeEmployees().getEmployeesEmployeeId();
+				for (int i = 0; i < records.size(); i++) {
+					TeEmployentHistory history = records.get(i);
+					currEmp = records.get(i).getTeEmployees().getEmployeesEmployeeId();
+					if(currEmp != prevEmp || i == 0) {
+						if(history.getEhHoursWorked() != null) {
+							moreThan8HoursRecords.add(history);
+						} else {
+							lessThan8HoursRecords.add(history);
+						}
+					}
+					prevEmp = records.get(i).getTeEmployees().getEmployeesEmployeeId();
+				}
+			}
+			
+			if(moreThan8HoursRecords != null && moreThan8HoursRecords.size() > 0) {
+				for (int i = 0; i < moreThan8HoursRecords.size(); i++) {
+					TeEmployentHistory history = moreThan8HoursRecords.get(i);
+					cell = new PdfPCell(new Phrase("8 hours or Over", bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					cell = new PdfPCell(new Phrase(history.getTeEmployees().getTeCard().getCardsCardNumber(), bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					cell = new PdfPCell(new Phrase(history.getTeEmployees().getEmployeesFullName(), bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+					cell = new PdfPCell(new Phrase(formatter.format(history.getTeEmployees().getEmployeesDateOfBirth()), bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					String maritalStatus = history.getTeEmployees().getEmployeesMaritalStatus();
+					maritalStatus = maritalStatus != null ? maritalStatus : "";
+					cell = new PdfPCell(new Phrase(maritalStatus, bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					String spouseName = history.getTeEmployees().getEmployeesSpouseName();
+					spouseName = spouseName != null ? spouseName : "";
+					cell = new PdfPCell(new Phrase(spouseName+"", bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					cell = new PdfPCell(new Phrase(history.getTeEmployees().getEmployeeCategoryOfEmployment(), bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					cell = new PdfPCell(new Phrase("", bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+				}
+			}
+			
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase(" * Please indicate from any of the list of examples below and insert "
+					+ " under \"Category of Employment \". (This is for information and statistical purposes only) ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase("Assistant Trainer ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Stable Lad ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Employed Horse Box Driver ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Feedman ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase("Head Lad ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Stable Girl ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Trainers Secretary ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Work Rider ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase("Travelling Head Lad ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Apprentice Jockey ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Yardman ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Other Duty (Please specify) ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase("Race Day Help", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Conditional Jockey ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Black Smith ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase("This is the list of employees to be renewed for 2014/2015 ", bold));
+			cell.setColspan(8);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase("Signed : ___________________________________ ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			for(int i = 0; i < 16; i++) {
+				cell = new PdfPCell(new Phrase(" ", bold));
+				cell.setColspan(8);
+				cell.setBorder(0);
+				cell.setPadding(10);
+				pdfPTable.addCell(cell);
+			}
+			
+			bold = FontFactory.getFont("Bold", 12, Color.BLACK);
+			cell = new PdfPCell(new Phrase("The Employees of "+trainer.getTrainerFullName()+"  Acc No. "+trainer.getTrainerAccountNo(), bold));
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(0);
+			cell.setColspan(8);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			bold = FontFactory.getFont("Bold", 8, Color.BLACK);
+			cell = new PdfPCell(new Phrase("Hours Worked Weekly", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Card No", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Name", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Date Of Birth", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Marital Status", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Spouse's Name (if applicable) ", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Category Of Employment", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Date Left (if applicable) ", bold));
+			cell.setBorder(0);
+			cell.setPadding(5);
+			pdfPTable.addCell(cell);
+			
+			if(lessThan8HoursRecords != null && lessThan8HoursRecords.size() > 0) {
+				for (int i = 0; i < lessThan8HoursRecords.size(); i++) {
+					TeEmployentHistory history = lessThan8HoursRecords.get(i);
+					cell = new PdfPCell(new Phrase("Less than 8 Hours", bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					cell = new PdfPCell(new Phrase(history.getTeEmployees().getTeCard().getCardsCardNumber(), bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					cell = new PdfPCell(new Phrase(history.getTeEmployees().getEmployeesFullName(), bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+					cell = new PdfPCell(new Phrase(formatter.format(history.getTeEmployees().getEmployeesDateOfBirth()), bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					String maritalStatus = history.getTeEmployees().getEmployeesMaritalStatus();
+					maritalStatus = maritalStatus != null ? maritalStatus : "";
+					cell = new PdfPCell(new Phrase(maritalStatus, bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					String spouseName = history.getTeEmployees().getEmployeesSpouseName();
+					spouseName = spouseName != null ? spouseName : "";
+					cell = new PdfPCell(new Phrase(spouseName+"", bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					cell = new PdfPCell(new Phrase(history.getTeEmployees().getEmployeeCategoryOfEmployment(), bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+					cell = new PdfPCell(new Phrase("", bold));
+					cell.setPadding(5);
+					pdfPTable.addCell(cell);
+				}
+			}
+			
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase(" * Please indicate from any of the list of examples below and insert "
+					+ " under \"Category of Employment \". (This is for information and statistical purposes only) ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase("Assistant Trainer ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Stable Lad ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Employed Horse Box Driver ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Feedman ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase("Head Lad ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Stable Girl ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Trainers Secretary ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Work Rider ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase("Travelling Head Lad ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Apprentice Jockey ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Yardman ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Other Duty (Please specify) ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase("Race Day Help", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Conditional Jockey ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase("Black Smith ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(2);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase("This is the list of employees to be renewed for 2014/2015 ", bold));
+			cell.setColspan(8);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase(" ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			cell = new PdfPCell(new Phrase("Signed : ___________________________________ ", bold));
+			cell.setColspan(8);
+			cell.setBorder(0);
+			pdfPTable.addCell(cell);
+			
+			
+			return pdfPTable;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 }

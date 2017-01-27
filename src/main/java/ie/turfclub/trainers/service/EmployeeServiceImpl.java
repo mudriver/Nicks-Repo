@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -32,6 +31,7 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
@@ -251,10 +251,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<TeEmployees> employees = criteria.list();
 		TeEmployees emp =  (employees != null && employees.size() > 0) ? employees.get(0) : null;
 		
-		if(emp.getTeEmployentHistories() != null && !emp.getTeEmployentHistories().isEmpty()) {
+		criteria = getCurrentSession().createCriteria(TeEmployentHistory.class);
+		criteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", id));
+		List<TeEmployentHistory> currHistories = criteria.list();
+		if(currHistories != null && currHistories.size() > 0) {
 			List<TeEmployentHistory> histories = new ArrayList<TeEmployentHistory>();
-			List<TeEmployentHistory> currHistories = new ArrayList<TeEmployentHistory>();
-			currHistories.addAll(emp.getTeEmployentHistories());
 			for (TeEmployentHistory teEmployentHistory : currHistories) {
 				TeEmployentHistory history = new TeEmployentHistory();
 				BeanUtilsBean notNull=new NullAwareBeanUtilsBean();
@@ -265,10 +266,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 			emp.setHistories(histories);
 		}
 		
+		criteria = getCurrentSession().createCriteria(TePension.class);
+		criteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", id));
+		List<TePension> currPensions = criteria.list();
+		
 		if(emp.getTePensions() != null && !emp.getTePensions().isEmpty()) {
 			List<TePension> pensions = new ArrayList<TePension>();
-			List<TePension> currPensions = new ArrayList<TePension>();
-			currPensions.addAll(emp.getTePensions());
 			for (TePension tePension : currPensions) {
 				TePension pension = new TePension();
 				BeanUtilsBean notNull=new NullAwareBeanUtilsBean();
@@ -539,6 +542,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 					getCurrentSession().saveOrUpdate(teEmployees);
 				}
 			}
+		}
+	}
+	
+	@Override
+	public List<TeEmployentHistory> getListOfTrainersEmployees(Integer id, String type) {
+		
+		if(type.equalsIgnoreCase("all")) {
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
+			criteria.add(Restrictions.eq("teTrainers.trainerId", id));
+			List<TeEmployentHistory> records = criteria.list();
+			return records;
+		} else {
+			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
+			criteria.add(Restrictions.eq("teTrainers.trainerId", id));
+			criteria.add(Restrictions.eq("ehDateTo", null));
+			DateTime date = new DateTime();
+			Date today = new Date();
+			Date firstDay = date.dayOfYear().withMinimumValue().toDate();
+			criteria.add(Restrictions.between("ehDateFrom", firstDay, today));
+			List<TeEmployentHistory> records = criteria.list();
+			return records;
 		}
 	}
 }

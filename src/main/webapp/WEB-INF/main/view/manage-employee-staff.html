@@ -69,7 +69,7 @@
     	</div>-->
     	<div class="home-links-parent">
     		<a href="#/empAdd" data-th-href="@{/employees/add}" class="home-links col-sm-6"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.add.new.employee}">Add new Employee</span></a>
-    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.list.trainers.employees}">List Trainer's Employees</span></a>
+    		<a data-th-href="@{/trainers/list}" class="home-links col-sm-6"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.list.trainers.employees}">List Trainer's Employees</span></a>
     	</div>
     	<div class="home-links-parent">
     		<a data-th-href="@{/employees/searchByName}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.for.employee}">Search For Employee</span></a>

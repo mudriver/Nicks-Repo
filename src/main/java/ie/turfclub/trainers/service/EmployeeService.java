@@ -1,13 +1,13 @@
 package ie.turfclub.trainers.service;
 
+import ie.turfclub.common.bean.SearchByNameEmployeeBean;
+import ie.turfclub.trainers.model.TeEmployees;
+import ie.turfclub.trainers.model.TeEmployentHistory;
+
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-
-import ie.turfclub.common.bean.AdvanceSearchRecordBean;
-import ie.turfclub.common.bean.SearchByNameEmployeeBean;
-import ie.turfclub.trainers.model.TeEmployees;
 
 public interface EmployeeService {
 
@@ -56,5 +56,7 @@ public interface EmployeeService {
 	HashMap<String, Object> getCSVString(String type, String title);
 
 	void handleEncryptPPSNumber();
+
+	List<TeEmployentHistory> getListOfTrainersEmployees(Integer id, String type);
 
 }

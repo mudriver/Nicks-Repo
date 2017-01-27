@@ -109,6 +109,9 @@ public class Person implements Serializable {
 	@Column(name="trainer_name")
 	private String trainerName;
 	
+	@Column(name="account_number")
+	private String accountNumber;
+	
 	public long getId() {
 		return id;
 	}
@@ -323,5 +326,13 @@ public class Person implements Serializable {
 
 	public void setTrainerName(String trainerName) {
 		this.trainerName = trainerName;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 }

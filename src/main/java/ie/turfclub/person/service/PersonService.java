@@ -3,6 +3,7 @@ package ie.turfclub.person.service;
 import ie.turfclub.common.bean.AdvanceSearchRecordBean;
 import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.common.bean.SearchByNameTrainerBean;
+import ie.turfclub.common.bean.TrainerUserBean;
 import ie.turfclub.person.model.Person;
 import ie.turfclub.trainers.model.TeTrainers;
 
@@ -34,4 +35,6 @@ public interface PersonService {
 	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllACard();
 	
 	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllBCard();
+
+	public List<TrainerUserBean> getTrainerUserBean();
 }
