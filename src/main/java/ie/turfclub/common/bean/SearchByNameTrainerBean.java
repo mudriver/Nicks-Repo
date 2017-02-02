@@ -11,6 +11,7 @@ public class SearchByNameTrainerBean implements Serializable {
 	
 	private Integer id;
 	private String name;
+	private String accountNumber;
 	
 	public Integer getId() {
 		return id;
@@ -23,6 +24,12 @@ public class SearchByNameTrainerBean implements Serializable {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 
 }

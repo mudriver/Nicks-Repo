@@ -184,7 +184,7 @@ public class PersonServiceImpl implements PersonService {
 		}
 		return results;*/
 		PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
-				+ "p.firstname as firstname,  p.ref_id as refId from person as p join person_role as pr "
+				+ "p.firstname as firstname,  p.ref_id as refId, p.account_number as accountNumber from person as p join person_role as pr "
 				+ "on p.id = pr.person_id where pr.role_id = ? and (p.surname like ? or p.firstname like ?) ");
 		pstmt.setObject(1, RoleEnum.TRAINER.getId());
 		pstmt.setObject(2, "%"+search+"%");
@@ -195,6 +195,7 @@ public class PersonServiceImpl implements PersonService {
 			SearchByNameTrainerBean bean = new SearchByNameTrainerBean();
 			bean.setId(Integer.parseInt(set.getString("refId")));
 			bean.setName(set.getString("surname")+" "+set.getString("firstname"));
+			bean.setAccountNumber(set.getString("accountNumber"));
 			records.add(bean);
 		}
 		return records;

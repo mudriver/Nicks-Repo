@@ -1,1 +1,1 @@
-ALTER TABLE person ADD COLUMN card_number varchar(20);
+ALTER TABLE person ADD COLUMN account_number varchar(20);

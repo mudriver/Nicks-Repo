@@ -59,6 +59,13 @@
         .pull-right { text-align: right;}
         .paginate_button { color: white !important; }
         .dataTables_info { color: white !important; }
+        #trainers-list { background-color: white !important; height: 350px; width: 30%; overflow: scroll; }
+        #trainers-list li {cursor: pointer; display: inherit;}
+        .center-block {
+		  display: block;
+		  margin-left: auto;
+		  margin-right: auto;
+		}
     </style>
 </head>
 <body>
@@ -68,24 +75,24 @@
     
     <h3 data-th-text="#{link.list.trainers.employees}">List Trainer's Employees</h3>
 
-    <div class="">
+    <div align="center">
     	<div class="alert alert-success" id="successMsg" th:if="${success != null and success != ''}">
     		<span th:text="${success}"></span>
     	</div>
-    	<form class="form-horizontal" id="searchDiv">
+    	<form class="" id="searchDiv">
 	    	<!-- <div class="form-group margin-bottom-10 col-sm-6">
 	    		<label class="col-sm-4" data-th-text="#{trainer.trainer.name}">Trainer Name : </label>
 	    		<div class="col-sm-8">
 	    			<input type="text" class="form-control input-sm " id="searchNameTxt" placeholder="Please enter min 3 characters" />
 	    		</div>
 	    	</div> -->
-	    	<div class="form-group margin-bottom-10 col-sm-6" style="margin-bottom: -27px; z-index: 1;">
+	    	<div class="" style="">
 	    		<label><input type="radio" name="selectEmployee" value="All" checked="checked" /> &nbsp;&nbsp;All Employees</label>&nbsp;&nbsp;&nbsp;&nbsp;
 	    		<label><input type="radio" name="selectEmployee" value="Current" /> &nbsp;&nbsp;Current Employees</label>
 	    		<br/>
 	    	</div>
 	    	
-	    	<table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
+	    	<!-- <table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
 	        	<thead>
 	        		<tr>
 	        			<th th:text="#{trainer.account.number}" class="width-50">Account Number</th>
@@ -98,24 +105,33 @@
 	        			<td><a href="javascript:void(0);" th:onclick="'getTrainersEmployees(\''+${record.id}+'\');'"><span th:text="${record.name}"></span></a></td>
 	        		</tr>
 	        	</tbody>
-	        </table>
+	        </table> -->
+	        <br/>
+	        <div style="clear: both; width: 30%;">
+		        <input type="text" class="form-control" id="searchNameTxt" />
+	        </div>
+	        <div style="clear: both;">
+		        <ul id="trainers-list" >
+		        	<li th:each="record, status : ${records}" th:text="${record.accNumber+' '+record.name}" th:onclick="'getTrainersEmployees(\''+${record.id}+'\');'"></li>
+		        </ul>
+	        </div>
 	        
-	    	<div class="form-group col-sm-12" style="margin-top: 10px;">
-	    		<div class="col-sm-4 margin-bottom-10">
+	    	<div class="" align="center">
+	    		<!-- <div class="col-sm-4 margin-bottom-10">
 		    		<button type="button" class="btn btn-default col-sm-12" id="allTrainerEmployees" data-th-text="#{button.print.all.trainers.employees}" /> 
 		    	</div>
 	    		<div class="col-sm-4 margin-bottom-10">
 		    		<button type="button" class="btn btn-default col-sm-12" id="lisWithAmountBoxes" data-th-text="#{button.print.list.with.amount.boxes}" /> 
-		    	</div>
-	    		<div class="col-sm-4 margin-bottom-10">
+		    	</div> -->
+	    		<div class="" style="width: 30%;">
 		    		<button type="button" class="btn btn-default col-sm-12" id="sbsSignatureSheet" data-th-text="#{button.print.sbs.signature.sheet}" /> 
 		    	</div>
-	    		<div class="col-sm-4 margin-bottom-10">
+	    		<!-- <div class="col-sm-4 margin-bottom-10">
 		    		<button type="button" class="btn btn-default col-sm-12" id="perTrainerReport" data-th-text="#{button.total.per.trainer.report}" /> 
 		    	</div>
 	    		<div class="col-sm-4 margin-bottom-10">
 		    		<button type="button" class="btn btn-default col-sm-12" id="unpaidOrRelinquished" data-th-text="#{button.unpaid.or.relinquished}" /> 
-		    	</div>
+		    	</div> -->
 	    	</div>
     	</form>
     </div> 
@@ -156,20 +172,35 @@
    				$('#successMsg').hide();
    			}, 5000);
    			
-   			table = $('#example').DataTable( {
-    	        dom: 'Bfrtip',
-    	        "searching": true,
-    	        buttons: [],
-    	        "ordering": false
-    	    } );
+   			$('#searchNameTxt').keyup(function() {
+   				
+   				var q = $(this).val();
+   				$.ajax({
+   					url: '/turfclubPrograms/trainers/findByName',
+   					type: 'GET',
+   					data: {q: q},
+   					success: function(data) {
+   						$('#trainers-list').children().remove();
+   						if(data != null && data.length > 0) {
+   							for(var i=0; i<data.length ; i++) {
+   								var record = data[i];
+   								$('#trainers-list').append('<li onclick="getTrainersEmployees(\''+record.id+'\');">'+record.accountNumber+' '+record.name+'</li>');
+   							}
+   						} else {
+   							$('#trainers-list').append('<li>No Record Found!!!</li>');
+   						}
+   					}
+   				});
+   			});
    			
-			$('#searchNameTxt').autocomplete({
+			/* $('#searchNameTxt').autocomplete({
 				source: function(request, response) {
 					//Autocomplete
 					$.getJSON('/turfclubPrograms/trainers/findByName',{q:request.term}, function(data) {
 						
 						if(data.length > 0) {
 							response( $.map(data, function( item ) {
+								console.log(item);
 					              return {			            	  
 					                label: item.name,
 					                value: item.name,
@@ -186,7 +217,7 @@
 					
 					$(this).val(ui.item.id);
 				}
-			});
+			}); */
    		})
    		
    		function goToDetailPage(id) {
