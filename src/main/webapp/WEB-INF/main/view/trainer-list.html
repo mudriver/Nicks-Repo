@@ -87,8 +87,8 @@
 	    		</div>
 	    	</div> -->
 	    	<div class="" style="">
-	    		<label><input type="radio" name="selectEmployee" value="All" checked="checked" /> &nbsp;&nbsp;All Employees</label>&nbsp;&nbsp;&nbsp;&nbsp;
-	    		<label><input type="radio" name="selectEmployee" value="Current" /> &nbsp;&nbsp;Current Employees</label>
+	    		<label><input type="radio" name="selectEmployee" value="All"  /> &nbsp;&nbsp;All Employees</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	    		<label><input type="radio" name="selectEmployee" value="Current" checked="checked" /> &nbsp;&nbsp;Current Employees</label>
 	    		<br/>
 	    	</div>
 	    	
@@ -222,14 +222,16 @@
    		
    		function goToDetailPage(id) {
    			
-   			window.location.replace('/turfclubPrograms/employees/detail/'+id);
+   			window.location.href = '/turfclubPrograms/employees/detail/'+id;
    		}
    		
    		function getTrainersEmployees(id) {
    			
    			var empType = $('input[name="selectEmployee"]:checked').val();
-   			window.location.replace('/turfclubPrograms/trainers/'+id+'/employees/'+empType);
+   			window.location.href = '/turfclubPrograms/trainers/'+id+'/employees/'+empType;
    		}
+   		
+   		
    		
    		/*]]>*/
        </script>    

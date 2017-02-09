@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+ 
+<head data-th-fragment="header">
+ <meta charset="utf-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title data-th-text="#{sbs.form}">SBS Form</title>
+  
+<!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link type="text/css" rel="stylesheet"
+	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+ 
+
+     
+    <style>
+        .no-border-on-me>thead>tr>th,
+        .no-border-on-me>tbody>tr>th,
+        .no-border-on-me>tfoot>tr>th,
+        .no-border-on-me>thead>tr>td,
+        .no-border-on-me>tbody>tr>td,
+        .no-border-on-me>tfoot>tr>td
+        {
+            border-top-style: none;
+            border-bottom-style: none;
+        }
+        .width-40 { width: 40%;}
+        .width-60 { width: 60%;}
+        .width-100 {width: 100%;}
+        h1 { color: black !important;}
+        .home-links {color: #777;}
+    </style>
+     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+ <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+ <!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+</head>
+<body>
+ <div class="container-fluid" >                <!-- /#wrapper -->
+ 
+    <div data-th-replace="mainmenu :: top-nav"></div>
+    
+    <h3 data-th-text="#{sbs.form}">SBS Form	</h3>
+    
+    <div class="alert alert-success" id="successMsg" style="display: none;">
+   		<span th:text="${success}"></span>
+   	</div>
+    
+    <div class="home-parent" style="margin: auto;width: 60%;text-align: center;background-color: white;">
+    	<div class="home-links-parent">
+    		<a data-th-href="@{/trainers/sbs/uploadPage}" id="saveHRIReport" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{save.hri.report.here}">1. Save HRI Report Here</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a data-th-href="@{/employees/advSearchType?type=3}" class="home-links col-sm-6">&nbsp;&nbsp;<span data-th-text="#{generate.initial.letter.labels}">2. Generate Initial Letter/Labels</span></a>
+    		<a data-th-href="@{/employees/advSearchType?type=4}" class="home-links col-sm-6">&nbsp;&nbsp;<span data-th-text="#{reprint}">Reprint</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a href="javascript:void(0);" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{enter.agreements.returned}">3. Enter Agreements Returned</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a href="javascript:void(0);" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{send.text.message.reminder}">4. Send Text Message Reminder</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a href="javascript:void(0);" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{fifth.enter.agreements.returned}">5. Enter Agreements Returned</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a href="javascript:void(0);" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{generate.final.reminder.letter.labels}">6. Generate FINAL Reminder Letter / Labels</span></a>
+    	</div>
+    	
+    </div>
+    
+    
+	<!-- Modal -->
+	<div id="myModal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title" data-th-text="#{save.hri.report.here.text}"></h4>
+	      </div>
+	      <div class="modal-body">
+	      	<form action="/turfclubPrograms/trainers/sbs/upload" id="fileUploadForm" method="post" enctype="multipart/form-data">
+		        <p> <span data-th-text="#{please.select.hri.report.file}" ></span>
+		        	<button type="button" class="btn btn-default" id="uploadBtn">Upload File</button>
+		        	<span id="fileName">No file selected</span>
+		        	<input type="file" name="files" id="uploadFile" style="display: none;" />
+		        </p>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	       	<button type="button" class="btn btn-success" id="uploadSubmitBtn">Upload</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	
+	  </div>
+	</div>
+</div>              <!-- /#wrapper -->
+
+	
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
+        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/jquery.blockui.js"
+        data-th-src="@{/resources/js/jquery.blockui.js}"></script>
+         
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
+        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+ 
+    <!-- Core Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
+        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+         
+    <!-- SB Admin Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/angularjs/typeahead/typeahead.js}"></script>
+        
+   <script type="text/javascript" th:inline="javascript">
+    	/*<![CDATA[*/
+    	
+    	$(function() {
+    		$('#saveHRIReport').click(function() {
+    			$('#myModal').modal('show');
+    		});
+    		
+    		$('#uploadBtn').click(function() {
+    			$('#uploadFile').trigger('click');
+    		});
+    		
+    		$('#uploadFile').change(function() {
+    			var fileName = $(this).val().split('\\').pop();
+    			$('#fileName').html(fileName);
+    		});
+    		
+    		$('#uploadSubmitBtn').click(function() {
+    			var formData = new FormData();
+    			formData.append("files", $('input[type="file"]')[0].files);
+    			var action = $('#fileUploadForm').attr('action');
+    			console.log(action);
+    			
+    			$.ajax({
+    				url: action,
+    		        type: 'POST',
+    		        data: formData,
+    		        async: false,
+    		        cache: false,
+    		        processData: false, // Don't process the files
+    		        contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+    		        success: function(data, textStatus, jqXHR)
+    		        {
+    		        	console.log(data);	
+    		        },
+    		        error: function(jqXHR, textStatus, errorThrown)
+    		        {
+    		            // Handle errors here
+    		            console.log('ERRORS: ' + textStatus);
+    		            // STOP LOADING SPINNER
+    		        }
+    			});
+    		});
+    	});
+    	
+    	
+    	/*]]>*/
+    </script>
+        </body>
+        
+    
+</html>

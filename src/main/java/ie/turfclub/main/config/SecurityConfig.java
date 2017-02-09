@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	
     	http 
     	.authorizeRequests()
-                .antMatchers("/resources/**").permitAll()
+                .antMatchers("/resources/**","/sbscheme/**").permitAll()
                 .antMatchers("/user/searchPage","/user/search","/user/edit", "/user/update").access("hasAnyRole('SUPER_USER')")
                 .antMatchers("/home/**","/expenses/**").access("hasAnyRole('INSPECTIONS_CEO','INSPECTIONS_LICENCING','INSPECTIONS_ADMIN','VET_USER','VET_ADMIN','ACCOUNTS','TRAINERS_USER','TRAINERS_ADMIN','STABLESTAFF','STABLESTAFF_PENSION','SUPER_USER')")
                 .antMatchers("/vetReports/**").access("hasAnyRole('VET_USER','VET_ADMIN','SUPER_USER')")
@@ -60,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          
                 //.defaultSuccessUrl("/hunterCert/handlerDetail", true)
                 .permitAll()
-            
+                
                 .and()
                 
                 
@@ -68,8 +68,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
            
             .permitAll()
             .and()
-		.exceptionHandling().accessDeniedPage("/logout?logout=Please login to access this page").and()
-		.csrf()
+            //.csrf().disable();
+		///.exceptionHandling().accessDeniedPage("/logout?logout=Please login to access this page").and()
+            .csrf()
                 .csrfTokenRepository(csrfTokenRepository()).and()
                 .addFilterAfter(csrfFilter(), org.springframework.security.web.csrf.CsrfFilter.class);
 		//.and()

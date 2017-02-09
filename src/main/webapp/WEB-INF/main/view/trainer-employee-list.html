@@ -60,6 +60,7 @@
         .paginate_button { color: white !important; }
         .dataTables_info { color: white !important; }
         h4{ color: white !important; }
+        .yellow-background {background-color: yellow !important;}
     </style>
 </head>
 <body>
@@ -91,7 +92,7 @@
 	        			<td><a th:href="@{|/employees/detail/${record.teEmployees.employeesEmployeeId}|}" class="btn btn-default">View</a></td>
 	        			<td><span th:if="${record.teEmployees.teCard != null}" th:text="${record.teEmployees.teCard.cardsCardNumber}"></span></td>
 	        			<td th:text="${record.teEmployees.employeesFullName}"></td>
-	        			<td th:text="${record.ehDateFrom}"></td>
+	        			<td><span th:text="${record.ehDateFrom}" class="yellow-background"></span></td>
 	        			<td th:text="${record.ehDateTo}"></td>
 	        		</tr>
 	        	</tbody>
@@ -108,7 +109,7 @@
 		    		<a th:href="@{|/trainers/detail/${trainer.trainerId}|}"><button type="button" class="btn btn-default col-sm-12" id="sbsSignatureSheet" data-th-text="#{button.trainer.details}" /></a> 
 		    	</div>
 	    		<div class="col-sm-4 margin-bottom-10">
-		    		<button type="button" class="btn btn-default col-sm-12" id="perTrainerReport" data-th-text="#{button.exit}" /> 
+		    		<button type="button" onclick="exit();" class="btn btn-default col-sm-12" id="perTrainerReport" data-th-text="#{button.exit}" /> 
 		    	</div>
 	    		<div class="col-sm-4 margin-bottom-10">
 		    		<button type="button" class="btn btn-default col-sm-12" id="unpaidOrRelinquished" data-th-text="#{button.update.all.employees}" /> 
@@ -205,6 +206,10 @@
    			
    			var empType = $('input[name="selectEmployee"]:checked').val();
    			window.location.replace('/turfclubPrograms/trainers/'+id+'/employees/'+empType);
+   		}
+   		
+   		function exit() {
+   			window.location.href = '/turfclubPrograms/employees/manageStaff';
    		}
    		
    		/*]]>*/

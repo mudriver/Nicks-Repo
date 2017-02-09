@@ -551,12 +551,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if(type.equalsIgnoreCase("all")) {
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
 			criteria.add(Restrictions.eq("teTrainers.trainerId", id));
+			//criteria.add(Restrictions.eq("ehDateTo", null));
+			criteria.add(Restrictions.isNull("ehDateTo"));
 			List<TeEmployentHistory> records = criteria.list();
 			return records;
 		} else {
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
 			criteria.add(Restrictions.eq("teTrainers.trainerId", id));
-			criteria.add(Restrictions.eq("ehDateTo", null));
+			criteria.add(Restrictions.isNull("ehDateTo"));
 			DateTime date = new DateTime();
 			Date today = new Date();
 			Date firstDay = date.dayOfYear().withMinimumValue().toDate();

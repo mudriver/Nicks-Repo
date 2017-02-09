@@ -1364,20 +1364,18 @@ public class TrainerServiceImpl implements TrainersService {
 			if(type.equalsIgnoreCase("all")) {
 				criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
 				criteria.add(Restrictions.eq("teTrainers.trainerId", id));
-				criteria.addOrder(Order.desc("teEmployees.employeesEmployeeId"));
-				criteria.addOrder(Order.desc("ehHoursWorked"));
+				//criteria.add(Restrictions.eq("ehDateTo", null));
+				criteria.add(Restrictions.isNull("ehDateTo"));
 				records = criteria.list();
 			} else {
 				criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
 				criteria.add(Restrictions.eq("teTrainers.trainerId", id));
-				criteria.add(Restrictions.eq("ehDateTo", null));
+				criteria.add(Restrictions.isNull("ehDateTo"));
 				DateTime date = new DateTime();
 				Date today = new Date();
 				Date firstDay = date.dayOfYear().withMinimumValue().toDate();
 				criteria.add(Restrictions.between("ehDateFrom", firstDay, today));
-				criteria.addOrder(Order.desc("teEmployees.employeesEmployeeId"));
-				criteria.addOrder(Order.desc("ehHoursWorked"));
-				records = criteria.list();
+				criteria.list();
 			}
 			
 			List<TeEmployentHistory> moreThan8HoursRecords = new ArrayList<TeEmployentHistory>();
