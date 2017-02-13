@@ -68,8 +68,8 @@
     		<a data-th-href="@{/trainers/sbs/uploadPage}" id="saveHRIReport" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{save.hri.report.here}">1. Save HRI Report Here</span></a>
     	</div>
     	<div class="home-links-parent">
-    		<a data-th-href="@{/employees/advSearchType?type=3}" class="home-links col-sm-6">&nbsp;&nbsp;<span data-th-text="#{generate.initial.letter.labels}">2. Generate Initial Letter/Labels</span></a>
-    		<a data-th-href="@{/employees/advSearchType?type=4}" class="home-links col-sm-6">&nbsp;&nbsp;<span data-th-text="#{reprint}">Reprint</span></a>
+    		<a href="javascript:void(0);" id="initialLetterLink" class="home-links col-sm-6">&nbsp;&nbsp;<span data-th-text="#{generate.initial.letter.labels}">2. Generate Initial Letter/Labels</span></a>
+    		<a href="javascript:void(0);" id="reprintLink" class="home-links col-sm-6">&nbsp;&nbsp;<span data-th-text="#{reprint}">Reprint</span></a>
     	</div>
     	<div class="home-links-parent">
     		<a href="javascript:void(0);" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{enter.agreements.returned}">3. Enter Agreements Returned</span></a>
@@ -86,34 +86,95 @@
     	
     </div>
     
-    
-	<!-- Modal -->
-	<div id="myModal" class="modal fade" role="dialog">
+    <div id="initialWarning" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
 	
 	    <!-- Modal content-->
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
-	        <h4 class="modal-title" data-th-text="#{save.hri.report.here.text}"></h4>
+	        <h4 class="modal-title">Warning</h4>
 	      </div>
 	      <div class="modal-body">
-	      	<form action="/turfclubPrograms/trainers/sbs/upload" id="fileUploadForm" method="post" enctype="multipart/form-data">
-		        <p> <span data-th-text="#{please.select.hri.report.file}" ></span>
-		        	<button type="button" class="btn btn-default" id="uploadBtn">Upload File</button>
-		        	<span id="fileName">No file selected</span>
-		        	<input type="file" name="files" id="uploadFile" style="display: none;" />
-		        </p>
-	        </form>
+	        <p><img alt="Warning" src="../../resources/img/warning.png" style="margin-right: 10px;"/>You can only run this ONCE for each NEW quarter!</p>
 	      </div>
 	      <div class="modal-footer">
-	       	<button type="button" class="btn btn-success" id="uploadSubmitBtn">Upload</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" id="initialWarningBtn" class="btn btn-default">OK</button>
 	      </div>
 	    </div>
 	
 	  </div>
 	</div>
+	
+	<div id="initialSelectPopup" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Select</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p><img alt="Confirmation" src="../../resources/img/question_mark.png" style="margin-right: 10px;"/>Are you sure this is the 1st time you have run this routine for this quarter?</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" id="selectPopupBtn">Yes</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div id="initialFormPopup" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Enter Parameter Value</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>
+	        	<span style="display: none; color: red;" id="errorSpan">Please fill the fields</span><br/>
+	        	Enter Return Date : <input type="text" class="form-control" id="returnDate" name="returnDate"/><br/>
+	        	Enter Quarter : <input type="text" class="form-control" id="quarter" name="quarter"/>
+	        </p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" id="formBtn">OK</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div id="reprintPopup" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Enter Parameter Value</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>
+	        	<span style="display: none; color: red;" id="errorReprintSpan">Please fill the fields</span><br/>
+	        	Enter Trainer Id : <input type="text" class="form-control" id="reprintTrainerId" name="reprintTrainerId"/><br/>
+	        	Enter Return Date : <input type="text" class="form-control" id="reprintReturnDate" name="reprintReturnDate"/><br/>
+	        	Enter Quarter : <input type="text" class="form-control" id="reprintQuarter" name="reprintQuarter"/>
+	        </p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" id="reprintFormBtn">OK</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
 </div>              <!-- /#wrapper -->
 
 	
@@ -139,21 +200,93 @@
     <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
         data-th-src="@{/resources/js/angularjs/typeahead/typeahead.js}"></script>
         
+        <script type="text/javascript" src="../../resources/js/jquery-inputmask.js"
+        data-th-src="@{/resources/js/jquery-inputmask.js}"></script>
+        
    <script type="text/javascript" th:inline="javascript">
     	/*<![CDATA[*/
     	
+		var isExistsTrainerId = false;
     	$(function() {
-    		$('#saveHRIReport').click(function() {
-    			$('#myModal').modal('show');
+    		
+    		$('#reprintFormBtn').click(function() {
+    			var tId = $('#reprintTrainerId').val();
+    			var returnDate = $('#reprintReturnDate').val();
+    			var quarter = $('#reprintQuarter').val();
+    			if(!isExistsTrainerId) {
+    				$('#errorReprintSpan').html('Trainer Id is not exists');
+					$('#errorReprintSpan').show();
+    				setTimeout(function() {
+    					$('#errorReprintSpan').hide();	
+    				}, 5000);
+    			} else if(returnDate != '' && quarter != '' && tId != '') {
+    				window.location.href = '/turfclubPrograms/trainers/sbs/reprint?r='+returnDate+'&q='+quarter+'&t='+tId;
+    			} else {
+    				$('#errorReprintSpan').html('Please fill fields');
+					$('#errorReprintSpan').show();
+    				setTimeout(function() {
+    					$('#errorReprintSpan').hide();	
+    				}, 5000);
+    			}
     		});
     		
-    		$('#uploadBtn').click(function() {
-    			$('#uploadFile').trigger('click');
+    		$('#reprintTrainerId').change(function() {
+    			
+    			var tId = $(this).val();
+    			if(tId != '') {
+	    			$.ajax({
+	    				url: '/turfclubPrograms/trainers/sbs/existsTrainerId',
+	    				type: 'GET',
+	    				data: {tId : tId},
+	    				success: function(data) {
+	    					console.log(data);
+	    					isExistsTrainerId = data.exists;
+	    					if(!data.exists) {
+	    						$('#errorReprintSpan').html(data.message);
+	    						$('#errorReprintSpan').show();
+	    						setTimeout(function() {
+	    							$('#errorReprintSpan').hide();	
+	    						}, 5000);
+	    					}
+	    				}
+	    			});
+    			}
     		});
     		
-    		$('#uploadFile').change(function() {
-    			var fileName = $(this).val().split('\\').pop();
-    			$('#fileName').html(fileName);
+    		$('#returnDate').mask("99/99/9999",{placeholder:"mm/dd/yyyy"});
+    		
+    		$('#reprintReturnDate').mask("99/99/9999",{placeholder:"mm/dd/yyyy"});
+    		
+    		$('#reprintLink').click(function() {
+    			
+    			$('#reprintPopup').modal('show');
+    		});
+    		
+    		$('#initialLetterLink').click(function() {
+    			$('#initialWarning').modal('show');
+    		});
+    		
+    		$('#initialWarningBtn').click(function() {
+    			$('#initialWarning').modal('hide');
+    			$('#initialSelectPopup').modal('show');
+    		});
+    		
+    		$('#selectPopupBtn').click(function() {
+    			$('#initialSelectPopup').modal('hide');
+    			$('#initialFormPopup').modal('show');
+    		});
+    		
+    		$('#formBtn').click(function() {
+    			var returnDate = $('#returnDate').val();
+    			var quarter = $('#quarter').val();
+    			if(returnDate != '' && quarter != '') {
+    				window.location.href = '/turfclubPrograms/trainers/sbs/initialLetter?r='+returnDate+'&q='+quarter;
+    			} else {
+    				$('#errorSpan').show();
+    				setTimeout(function() {
+    					$('#errorSpan').hide();	
+    				}, 5000);
+    			}
     		});
     		
     		$('#uploadSubmitBtn').click(function() {

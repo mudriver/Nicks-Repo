@@ -17,6 +17,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -591,5 +592,33 @@ public class PersonServiceImpl implements PersonService {
 			records.add(trainerUserBean);
 		}
 		return records;
+	}
+	
+	@Override
+	public HashMap<String, Object> getEmpNameAndNumberById(Integer empId) {
+		
+		try {
+			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
+					+ "p.firstname as firstname,  p.card_number as cardNumber "
+					+ " from person as p join person_role as pr "
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id  = ? order by p.surname ");
+			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
+			pstmt.setObject(2, empId);
+			ResultSet set = pstmt.executeQuery();
+			return convertEntityToEmpMap(set);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private HashMap<String, Object> convertEntityToEmpMap(ResultSet set) throws SQLException {
+		
+		HashMap<String, Object> record = new HashMap<String, Object>();
+		while(set.next()) {
+			record.put("name", set.getString("firstname")+" "+set.getString("surname"));
+			record.put("cardNumber", set.getString("cardNumber"));
+		}
+		return record;
 	}
 }

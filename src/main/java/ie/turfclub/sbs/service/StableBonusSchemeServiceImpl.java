@@ -1,8 +1,12 @@
 package ie.turfclub.sbs.service;
 
+import ie.turfclub.person.service.PersonService;
 import ie.turfclub.sbs.model.SBSEntity;
+import ie.turfclub.trainers.model.TeEmployentHistory;
 
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,6 +31,9 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	private PersonService personService;
 
 	private Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
@@ -268,6 +275,150 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		    break;
 		}
 		return cellValue;
-
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> getSBSInitialRecords(String date, String quarter) {
+		
+		List<HashMap<String, Object>> results = new ArrayList<HashMap<String,Object>>();
+		
+		String hql = "select new map(sbs.sbsName as name, sbs.address1 as address1, sbs.address2 as address2, "
+				+ "sbs.address3 as address3, tt.trainerId as trainerId, sbs.amount as amount, sbs.title as title,"
+				+ " sbs.surname as surname, sbs.trainerId as accNo, sbs.address4 as address4) "
+				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId";
+		results = getCurrentSession().createQuery(hql).list();
+		
+		Date today = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		int noOfBreakLine = 25;
+		if(results != null && results.size() > 0) {
+			for (HashMap<String, Object> result : results) {
+				
+				result.put("date", formatter.format(today));
+				String name = (String) result.get("name");
+				result.put("trainerName", name.replace("SBS", ""));
+				result.put("returnDate", date);
+				switch(quarter) {
+					case "1":
+						result.put("quarter", "1st");
+						break;
+					case "2":
+						result.put("quarter", "2nd");
+						break;
+					case "3":
+						result.put("quarter", "3rd");
+						break;
+					case "4":
+						result.put("quarter", "4th");
+						break;
+				}
+				Integer trainerId = (Integer) result.get("trainerId");
+				String empIdHql = "select new map(teEmployees.employeesEmployeeId as empId) from "
+						+ "TeEmployentHistory where teTrainers.trainerId="+trainerId
+						+" and ehDateTo is null";
+				List<HashMap<String, Object>> empIdsList = getCurrentSession().createQuery(empIdHql).list();
+				if(empIdsList != null) {
+					List<HashMap<String, Object>> empLists = new ArrayList<HashMap<String,Object>>();
+					for (HashMap<String, Object> empIdMap : empIdsList) {
+						Integer empId = (Integer) empIdMap.get("empId");
+						HashMap<String, Object> empRecord = personService.getEmpNameAndNumberById(empId);
+						empLists.add(empRecord);
+					}
+					result.put("emp", empLists);
+					result.put("space", noOfBreakLine-(empLists.size()));
+					
+				} else {
+					result.put("emp", new HashMap<String, Object>());
+					result.put("space", noOfBreakLine);
+				}
+			}
+		}
+		
+		return results;
+	}
+	
+	@Override
+	public List<SBSEntity> getAll() {
+		
+		Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
+		List<SBSEntity> records = criteria.list();
+		return records;
+	}
+	
+	@Override
+	public HashMap<String, Object> isExistsTrainerId(String tId) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
+		criteria.add(Restrictions.eq("trainerId", tId));
+		List<SBSEntity> records = criteria.list();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(records != null && records.size() > 0) {
+			map.put("exists", true);
+		} else {
+			map.put("exists", false);
+			map.put("message", "Trainer Id is not exists");
+		}
+		return map;
+	}
+	
+	@Override
+	public HashMap<String, Object> getSBSReprint(String date, String quarter,
+			String tId) {
+		
+		List<HashMap<String, Object>> results = new ArrayList<HashMap<String,Object>>();
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		String hql = "select new map(sbs.sbsName as name, sbs.address1 as address1, sbs.address2 as address2, "
+				+ "sbs.address3 as address3, tt.trainerId as trainerId, sbs.amount as amount, sbs.title as title,"
+				+ " sbs.surname as surname, sbs.trainerId as accNo, sbs.address4 as address4) "
+				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId"
+				+ " and sbs.trainerId = '"+tId+"'";
+		results = getCurrentSession().createQuery(hql).list();
+		
+		Date today = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		int noOfBreakLine = 25;
+		if(results != null && results.size() > 0) {
+			result = results.get(0);
+				
+			result.put("date", formatter.format(today));
+			String name = (String) result.get("name");
+			result.put("trainerName", name.replace("SBS", ""));
+			result.put("returnDate", date);
+			switch(quarter) {
+				case "1":
+					result.put("quarter", "1st");
+					break;
+				case "2":
+					result.put("quarter", "2nd");
+					break;
+				case "3":
+					result.put("quarter", "3rd");
+					break;
+				case "4":
+					result.put("quarter", "4th");
+					break;
+			}
+			Integer trainerId = (Integer) result.get("trainerId");
+			String empIdHql = "select new map(teEmployees.employeesEmployeeId as empId) from "
+					+ "TeEmployentHistory where teTrainers.trainerId="+trainerId
+					+" and ehDateTo is null";
+			List<HashMap<String, Object>> empIdsList = getCurrentSession().createQuery(empIdHql).list();
+			if(empIdsList != null) {
+				List<HashMap<String, Object>> empLists = new ArrayList<HashMap<String,Object>>();
+				for (HashMap<String, Object> empIdMap : empIdsList) {
+					Integer empId = (Integer) empIdMap.get("empId");
+					HashMap<String, Object> empRecord = personService.getEmpNameAndNumberById(empId);
+					empLists.add(empRecord);
+				}
+				result.put("emp", empLists);
+				result.put("space", noOfBreakLine-(empLists.size()));
+				
+			} else {
+				result.put("emp", new HashMap<String, Object>());
+				result.put("space", noOfBreakLine);
+			}
+		}
+		
+		return result;
 	}
 }

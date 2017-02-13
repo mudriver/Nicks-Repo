@@ -6,6 +6,7 @@ import ie.turfclub.main.model.login.User;
 import ie.turfclub.main.service.downloads.DownloadService;
 import ie.turfclub.main.service.downloads.TokenService;
 import ie.turfclub.person.service.PersonService;
+import ie.turfclub.sbs.model.SBSEntity;
 import ie.turfclub.sbs.service.StableBonusSchemeService;
 import ie.turfclub.trainers.model.TeEmployentHistory;
 import ie.turfclub.trainers.model.TeTrainers;
@@ -78,6 +79,13 @@ public class TrainersController {
 		return "sbs-page";
 	}
 	
+	@RequestMapping(value="/sbs/existsTrainerId", method=RequestMethod.GET)
+	@ResponseBody
+	public Object isExistsTrainerId(HttpServletRequest req, ModelMap model) {
+		String tId = req.getParameter("tId");
+		return sbsService.isExistsTrainerId(tId);
+	}
+	
 	@RequestMapping(value="/sbs/uploadPage", method=RequestMethod.GET)
 	public String getUploadPage(HttpServletRequest request, ModelMap model) {
 		return "sbs-upload-page";
@@ -89,6 +97,27 @@ public class TrainersController {
 			MultipartHttpServletRequest request, ModelMap model) {
 		HashMap<String, Object> map = sbsService.handleUploadedFile(file);
 		return map;
+	}
+	
+	@RequestMapping(value="/sbs/initialLetter", method=RequestMethod.GET)
+	public String getSBSInitialLetter(HttpServletRequest request, ModelMap model) {
+		String date = request.getParameter("r");
+		String quarter = request.getParameter("q");
+		List<HashMap<String, Object>> records = sbsService.getSBSInitialRecords(date, quarter);
+		List<SBSEntity> sbsRecords = sbsService.getAll();
+		model.addAttribute("sbsRecords", sbsRecords);
+		model.addAttribute("records", records);
+		return "sbs-initial-letter";
+	}
+	
+	@RequestMapping(value="/sbs/reprint", method=RequestMethod.GET)
+	public String getSBSReprint(HttpServletRequest request, ModelMap model) {
+		String date = request.getParameter("r");
+		String quarter = request.getParameter("q");
+		String tId = request.getParameter("t");
+		HashMap<String, Object> record = sbsService.getSBSReprint(date, quarter, tId);
+		model.addAttribute("rec", record);
+		return "sbs-reprint";
 	}
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)

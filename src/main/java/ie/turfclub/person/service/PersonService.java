@@ -8,6 +8,7 @@ import ie.turfclub.person.model.Person;
 import ie.turfclub.trainers.model.TeTrainers;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 public interface PersonService {
@@ -37,4 +38,6 @@ public interface PersonService {
 	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllBCard();
 
 	public List<TrainerUserBean> getTrainerUserBean();
+
+	public HashMap<String, Object> getEmpNameAndNumberById(Integer empId);
 }

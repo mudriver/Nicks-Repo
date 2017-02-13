@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+ 
+<head>
+ <meta charset="utf-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title data-th-text="#{sbs.initial.letter}">SBS Initial Letter</title>
+  
+<!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link type="text/css" rel="stylesheet"
+	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
+    <style>
+    	@media print {
+           body * {
+             visibility: visible;
+           }
+           .hidden-to-print {
+             visibility: hidden;
+             display: none !important;
+           }
+         }
+        html {background: inherit; }
+        label { font-weight: inherit;}
+        .black-belt {color: white; background: black; margin: auto; display: block; text-align: center;}
+     	.left { float: left; }
+     	.right { float: right; }
+    </style>
+</head>
+<body>
+
+	<div class="hidden-to-print" style="width:100%; ">
+        <a href="javascript:void(0);" id="printButton" style="text-align: center; display: block;"><i class="glyphicon glyphicon-print"></i>Print</a>
+    </div>
+        
+    <div th:each="rec , itrStat : ${records}">
+    
+	    <!-- First Page -->
+	    <div>
+	    	<img alt="TurfClubPrograms" src="../../resources/img/tclogo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
+	    </div>
+	    
+	    <div class="col-sm-12" >
+	    	<div class="col-sm-6" style="float: left">
+	    		<label th:text="${rec[name]}">Name</label><br/>
+	    		<label th:text="${rec[address1]}">Address1</label><br/>
+	    		<label th:text="${rec[address2]}">Address2</label><br/>
+	    		<label th:text="${rec[address3]}">Address3</label><br/>
+	    		<label th:text="${rec[address4]}">Address4</label>
+	    	</div>
+	    	<div class="col-sm-6" style="float: right; text-align: right;">
+	    		<label th:text="${rec[date]}">Date</label><br/>
+	    	</div>
+	    </div>
+	    <br/><br/>
+	    
+	    <div style="clear: both;">
+	    	<label style="text-align: center; display: block;"><br/><br/><u><b>Stable Employee Bonus Scheme</b></u></label>
+	    </div>
+	    
+	    <div class="col-sm-12">
+	    	<p>
+	    		Dear <span th:text="${rec[title]}"></span>&nbsp;<span th:text="${rec[surname]}"></span>,<br/><br/>
+	    		Please find attached documentation in relation to the Stable Employee Bonus Scheme.<br/><br/>
+	    		As per the provisions of Rule 298 you are required to complete the attached Trainer's Recipt form. You are 
+	    		also required to insert the gross amount payable to each registered stable employee on the attached listing of 
+	    		your registered employee's. Please note this must be divided according to the most recently lodged Staff
+	    		Agreement.<br/><br/>
+	    		Please return the completed Trainer's Receipt along with one copy of your registered employee's detailing the
+	    		gross amount paid to each employee to the Licensing Department of the Turf Club. This documentation
+	    		should be returned by : <b><u>ghf</u></b><br/><br/>
+	    		The other copy of your registered employee's detailing the gross amount paid to each employee must be
+	    		displayed in a Staff Working area at your premises where it can be inspected by all your registered 
+	    		employee's. Payments may only be made to persons whose names are included in the Register of Stable
+	    		Employees as being either currently employed by you or employed during the period covered by the return.<br/><br/>
+	    		Please note the Bonus payment is fully taxable and should be processed through your wages system, all
+	    		appropriate Tax deductions should be deducted on all amounts paid to employees.<br/><br/>
+	    		Failure to comply with the Terms and Conditions of this Scheme shall constitute a breach of Rule 298 and
+	    		will be referred to the Referrals Committee.<br/><br/>
+	    		Yours Sincerely.<br/><br/><br/><br/>
+	    		Sally Wilson<br/>
+	    		<b><u>LICENSING DEPARTMENT</u></b><br/><br/><br/><br/><br/><br/><br/>
+	    	</p>
+	    </div>
+	    
+	    <!-- Second Page  -->
+	     <div>
+	    	<img alt="TurfClubPrograms" src="../../resources/img/tclogo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
+	    </div>
+	    
+	    <div class="col-sm-12" >
+	    	<div class="col-sm-6" style="float: left">
+	    		<label th:text="${rec[name]}">Name</label><br/>
+	    		<label th:text="${rec[address1]}">Address1</label><br/>
+	    		<label th:text="${rec[address2]}">Address2</label><br/>
+	    		<label th:text="${rec[address3]}">Address3</label><br/>
+	    		<label th:text="${rec[address4]}">Address4</label>
+	    	</div>
+	    	<div class="col-sm-6" style="float: right; text-align: right;">
+	    		<label th:text="${rec[date]}">Date</label><br/>
+	    	</div>
+	    </div>
+	    <br/><br/>
+	    
+	    <div style="clear: both;">
+	    	<label style="text-align: center; display: block;"><br/><br/><u><b>Trainer Receipt</b></u></label>
+	    </div>
+	    <div style="clear: both;">
+	    	<label style="text-align: center; display: block;">(<span th:text="${rec[quarter]}"></span>) Quarter<br/><br/></label>
+	    </div>
+	    
+	    <div style="clear: both;">
+	    	<p>
+	    		I confirm that the amount paid to me of &euro;<span th:text="${rec[amount]}"></span> under the Stable Employees Bonus will be distributed to my
+	    		staff on (<span th:text="${rec[returnDate]}"></span>) in accordance with the distribution agreement agreed amongst themselves. I am
+	    		attaching a completed duplicate sheet which sets out the gross payment to each employee.<br/><br/><br/>
+	    		Yours truly,<br/><br/><br/>
+	    		<b>Singed:_______________________________________________</b><br/>
+	    		<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Trainer's Signature only)</b><br/>
+	    		<b>Name:  ________________________________________________</b><br/>
+	    		<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(BLOACK CAPITALS)</b><br/>
+	    		<br/><br/>
+	    		<b>This form must be returned to the Turf Club no later than ghf. Failure to do so will result in this matter being
+	    		referred to th Referrals Committee.</b><br/><br/>
+	    	</p>
+	    	<label style="color: white; background: black; margin: auto; display: block; text-align: center;">PLEASE RETURN TO THE TURF CLUB</label>
+	    	&nbsp;<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+	    </div>
+	    
+	    <!-- Third Page -->
+	    <div style="margin-bottom: 10px;">
+	    	<img alt="TurfClubPrograms" src="../../resources/img/tclogo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
+	    </div>
+	    
+	    <div style="clear: both; margin: auto; width: 90%; padding: 10px; border: 1px solid black;" >
+	    	<div>
+	    		<label style="text-align: center; display: block;"><u><b>Quarterly Bonus Payment (<span th:text="${rec[quarter]}"></span>) </b></u></label><br/><br/>
+	    		<p>
+	    			The employees for Trainer <span th:text="${rec[trainerName]}"></span> (<span th:text="${rec[accNo]}"></span>) are listed below :
+	    			<br/>
+	    		</p>
+	    		<table style="width: 100%;">
+	    			<tr>
+	    				<th style="text-align: center; width: 30%;">Number</th>
+	    				<th style="text-align: center; width: 40%;">Employee Name</th>
+	    				<th style="text-align: center; width: 30%;">Amount</th>
+	    			</tr>
+	    			<tr>
+	    				<td colspan="3" style="text-align: center;"><b><u>A Card Holders</u></b></td>
+	    			</tr>
+	    			<tr th:each="emp : ${rec[emp]}">
+	    				<th style="text-align: center; width: 30%;" th:text="${emp[cardNumber]}"></th>
+	    				<th style="text-align: center; width: 40%;" th:text="${emp[name]}">John Lane</th>
+	    				<th style="text-align: center; width: 30%;"></th>
+	    			</tr>
+	    		</table>
+	    		
+	    		<div style="float: right; width: 100%; clear: both; text-align: right;">
+	    			<br/>
+	    			<label><b>Total = &euro;</b></label><input type="text" th:value="${rec[amount]}" /><br/>
+	    			<label>* Gross Bonus</label>
+	    		</div>
+	    		
+	    		<div style="width: 100%; clear: both;">
+	    			<br/>
+	    			<label style="color: white; background: black; margin: auto; display: block; text-align: center;">PLEASE RETURN TO THE TURF CLUB</label>
+	    			<br/>
+	    		</div>
+	    		<p>
+	    		* Please note the Bonus payment is liable for tax and should be processed through your wages system.
+	    		All appropriate Tax deductions should be deducted on all amounts paid to employees.
+	    		</p>
+	    	</div>
+	    </div>
+	    
+	    <p>
+			&nbsp;<br th:each="i : ${#numbers.sequence(1, rec[space])}"/>
+	   	</p>
+	    
+	    <!-- Fourth Page -->
+	    <div style="margin-bottom: 10px;">
+	    	<img alt="TurfClubPrograms" src="../../resources/img/tclogo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
+	    </div>
+	    
+	    <div style="clear: both; margin: auto; width: 90%; padding: 10px; border: 1px solid black;" >
+	    	<div>
+	    		<label style="text-align: center; display: block;"><u><b>Quarterly Bonus Payment (<span th:text="${rec[quarter]}"></span>) </b></u></label><br/><br/>
+	    		<p>
+	    			The employees for Trainer <span th:text="${rec[trainerName]}"></span> (<span th:text="${rec[accNo]}"></span>) are listed below :
+	    			<br/>
+	    		</p>
+	    		<table style="width: 100%;">
+	    			<tr>
+	    				<th style="text-align: center; width: 30%;">Number</th>
+	    				<th style="text-align: center; width: 40%;">Employee Name</th>
+	    				<th style="text-align: center; width: 30%;">Amount</th>
+	    			</tr>
+	    			<tr>
+	    				<td colspan="3" style="text-align: center;"><b><u>A Card Holders</u></b></td>
+	    			</tr>
+	    			<tr th:each="emp : ${rec[emp]}">
+	    				<th style="text-align: center; width: 30%;" th:text="${emp[cardNumber]}"></th>
+	    				<th style="text-align: center; width: 40%;" th:text="${emp[name]}">John Lane</th>
+	    				<th style="text-align: center; width: 30%;"></th>
+	    			</tr>
+	    		</table>
+	    		
+	    		<div style="float: right; width: 100%; clear: both; text-align: right;">
+	    			<br/>
+	    			<label><b>Total = &euro;</b></label><input type="text" th:value="${rec[amount]}" /><br/>
+	    			<label>* Gross Bonus</label>
+	    		</div>
+	    		
+	    		<div style="width: 100%; clear: both;">
+	    			<br/>
+	    			<label style="color: white; background: black; margin: auto; display: block; text-align: center;">PLEASE Display in a Staff Working Area.</label>
+	    			<br/>
+	    		</div>
+	    		<p>
+	    		* Please note the Bonus payment is liable for tax and should be processed through your wages system.
+	    		All appropriate Tax deductions should be deducted on all amounts paid to employees.
+	    		</p>
+	    	</div>
+	    </div>
+	    
+	    <p>
+			&nbsp;<br th:each="i : ${#numbers.sequence(1, rec[space])}"/>    	
+	   	</p>
+    </div>
+    
+    <div style="width: 100%; padding: 10px;">
+    	<div >
+    		<p th:each="sbs , iterStat : ${sbsRecords}" style="width: 50%; padding: 10px; font-size: 12px;" th:class="${iterStat.odd} ? 'left' : 'right'">
+    			<label th:text="${sbs.sbsName}"></label><br/>
+    			<label th:text="${sbs.address1}"></label><br/>
+    			<label th:text="${sbs.address2}"></label><br/>
+    			<label th:text="${sbs.address3}"></label><br/>
+    			<label th:text="${sbs.address4}"></label><br/>
+    		</p>
+    	</div>
+    </div>
+    
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
+        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/jquery.blockui.js"
+        data-th-src="@{/resources/js/jquery.blockui.js}"></script>
+         
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
+        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+ 
+    <!-- Core Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
+        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+         
+    <!-- SB Admin Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/angularjs/typeahead/typeahead.js}"></script>
+        
+   <script type="text/javascript" th:inline="javascript">
+    	/*<![CDATA[*/
+    	
+    	$(function() {
+    		$('#printButton').click(function() {
+            	window.print();
+ 			});
+    	});
+    	
+    	
+    	/*]]>*/
+    </script>
+        </body>
+        
+    
+</html>
