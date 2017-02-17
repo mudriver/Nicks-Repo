@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfPTable;
@@ -108,6 +109,17 @@ public class TrainersController {
 		model.addAttribute("sbsRecords", sbsRecords);
 		model.addAttribute("records", records);
 		return "sbs-initial-letter";
+	}
+	
+	@RequestMapping(value="/sbs/finalReminder", method=RequestMethod.GET)
+	public String getSBSFinalReminder(HttpServletRequest request, ModelMap model) {
+		String date = request.getParameter("r");
+		String quarter = request.getParameter("q");
+		List<HashMap<String, Object>> records = sbsService.getSBSInitialRecords(date, quarter);
+		List<SBSEntity> sbsRecords = sbsService.getAll();
+		model.addAttribute("sbsRecords", sbsRecords);
+		model.addAttribute("records", records);
+		return "sbs-final-reminder";
 	}
 	
 	@RequestMapping(value="/sbs/reprint", method=RequestMethod.GET)
@@ -284,14 +296,21 @@ public class TrainersController {
 	}
 
 	@RequestMapping(value = "/pdfDoc/{id}/{type}", method = RequestMethod.GET)
-	public void handleExportWordDocForTrainerEmployeeRecords(
+	public ModelAndView handleExportWordDocForTrainerEmployeeRecords(
 			@PathVariable("id") Integer id, @PathVariable("type") String type,
 			HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws Exception {
 
 		Document document = new Document();
 		try {
-			TeTrainers trainer = trainersService.getTrainer(id);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("id", id);
+			map.put("type", type);
+			ModelAndView modelAndView = new ModelAndView("trainerPDFView", "map",map);
+			  
+			return modelAndView;
+			
+			/*TeTrainers trainer = trainersService.getTrainer(id);
 			PdfPTable table = trainersService.createPDFDocumentWithDetails(id, type);//new XWPFDocument();
 			PdfWriter.getInstance(document, response.getOutputStream());
 			response.setContentType("application/pdf");
@@ -300,7 +319,7 @@ public class TrainersController {
 
 			document.open();
 			document.add(table);
-			document.close();
+			document.close();*/
 		} catch (Exception ioe) {
 			throw new ServletException(ioe.getMessage());
 		} finally {

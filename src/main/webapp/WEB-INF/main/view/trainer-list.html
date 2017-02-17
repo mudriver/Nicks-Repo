@@ -60,7 +60,7 @@
         .paginate_button { color: white !important; }
         .dataTables_info { color: white !important; }
         #trainers-list { background-color: white !important; height: 350px; width: 30%; overflow: scroll; }
-        #trainers-list li {cursor: pointer; display: inherit;}
+        #trainers-list li {cursor: pointer; display: inherit; text-align: left;}
         .center-block {
 		  display: block;
 		  margin-left: auto;
@@ -112,7 +112,8 @@
 	        </div>
 	        <div style="clear: both;">
 		        <ul id="trainers-list" >
-		        	<li th:each="record, status : ${records}" th:text="${record.accNumber+' '+record.name}" th:onclick="'getTrainersEmployees(\''+${record.id}+'\');'"></li>
+		        	<li style="white-space: pre;" th:each="record, status : ${records}" th:text="${record.accNumber+'    '+record.name}" th:onclick="'getTrainersEmployees(\''+${record.id}+'\');'">
+		        	</li>
 		        </ul>
 	        </div>
 	        
@@ -184,7 +185,7 @@
    						if(data != null && data.length > 0) {
    							for(var i=0; i<data.length ; i++) {
    								var record = data[i];
-   								$('#trainers-list').append('<li onclick="getTrainersEmployees(\''+record.id+'\');">'+record.accountNumber+' '+record.name+'</li>');
+   								$('#trainers-list').append('<li onclick="getTrainersEmployees(\''+record.id+'\');" style="white-space: pre;">'+record.accountNumber+'    '+record.name+'</li>');
    							}
    						} else {
    							$('#trainers-list').append('<li>No Record Found!!!</li>');

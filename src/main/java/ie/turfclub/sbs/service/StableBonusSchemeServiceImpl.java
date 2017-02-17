@@ -290,7 +290,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		
 		Date today = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		int noOfBreakLine = 25;
+		int noOfBreakLine = 22;
 		if(results != null && results.size() > 0) {
 			for (HashMap<String, Object> result : results) {
 				

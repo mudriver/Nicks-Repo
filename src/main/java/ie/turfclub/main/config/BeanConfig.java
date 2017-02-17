@@ -3,6 +3,9 @@ package ie.turfclub.main.config;
 
 
 
+import java.util.Properties;
+
+import ie.turfclub.trainers.service.TrainerPDFView;
 import ie.turfclub.utilities.AccountReporting;
 import ie.turfclub.utilities.EmployeeHistoryUtils;
 import ie.turfclub.utilities.MailUtility;
@@ -16,6 +19,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.jasperreports.JasperReportsHtmlView;
 import org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView;
 import org.springframework.web.servlet.view.jasperreports.JasperReportsXlsView;
@@ -53,6 +57,13 @@ public class BeanConfig {
 	 BeanNameViewResolver viewResolver = new BeanNameViewResolver();
 	 viewResolver.setOrder(1);
 	 return viewResolver;
+		 /*InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		 viewResolver.setOrder(1);
+		 Properties properties = new Properties();
+		 properties.setProperty("order", "1");
+		 properties.setProperty("basename", "views");
+		 viewResolver.setAttributes(properties);
+		 return viewResolver;*/
 	 }
 
 	
@@ -86,5 +97,10 @@ public class BeanConfig {
 	 @Bean
 	 public EmployeeHistoryUtils employeeUtils(){
 		 return new EmployeeHistoryUtils();
+	 }
+	 
+	 @Bean
+	 public TrainerPDFView trainerPDFView() {
+		 return new TrainerPDFView();
 	 }
 }

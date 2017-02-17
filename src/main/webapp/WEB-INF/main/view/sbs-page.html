@@ -81,7 +81,7 @@
     		<a href="javascript:void(0);" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{fifth.enter.agreements.returned}">5. Enter Agreements Returned</span></a>
     	</div>
     	<div class="home-links-parent">
-    		<a href="javascript:void(0);" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{generate.final.reminder.letter.labels}">6. Generate FINAL Reminder Letter / Labels</span></a>
+    		<a href="javascript:void(0);" id="finalReminderLink" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{generate.final.reminder.letter.labels}">6. Generate FINAL Reminder Letter / Labels</span></a>
     	</div>
     	
     </div>
@@ -144,6 +144,50 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" id="formBtn">OK</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div id="finalReminderSelectPopup" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Select</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p><img alt="Confirmation" src="../../resources/img/question_mark.png" style="margin-right: 10px;"/>Are you sure you want to generate the Final Reminder Letter?</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" id="finalReminderSelectPopupBtn">Yes</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div id="finalReminderFormPopup" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Enter Parameter Value</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>
+	        	<span style="display: none; color: red;" id="reminderErrorSpan">Please fill the fields</span><br/>
+	        	Enter Return Date : <input type="text" class="form-control" id="reminderReturnDate" name="reminderReturnDate"/><br/>
+	        	Enter Quarter : <input type="text" class="form-control" id="reminderQuarter" name="reminderQuarter"/>
+	        </p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" id="finalReminderFormBtn">OK</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 	      </div>
 	    </div>
@@ -220,6 +264,7 @@
     					$('#errorReprintSpan').hide();	
     				}, 5000);
     			} else if(returnDate != '' && quarter != '' && tId != '') {
+    				$('#initialFormPopup').modal('hide');
     				window.location.href = '/turfclubPrograms/trainers/sbs/reprint?r='+returnDate+'&q='+quarter+'&t='+tId;
     			} else {
     				$('#errorReprintSpan').html('Please fill fields');
@@ -255,6 +300,8 @@
     		
     		$('#returnDate').mask("99/99/9999",{placeholder:"mm/dd/yyyy"});
     		
+    		$('#reminderReturnDate').mask("99/99/9999",{placeholder:"mm/dd/yyyy"});
+    		
     		$('#reprintReturnDate').mask("99/99/9999",{placeholder:"mm/dd/yyyy"});
     		
     		$('#reprintLink').click(function() {
@@ -276,12 +323,54 @@
     			$('#initialFormPopup').modal('show');
     		});
     		
+    		$('#finalReminderLink').click(function() {
+    			$('#finalReminderSelectPopup').modal('show');
+    		});
+    		
+    		$('#finalReminderSelectPopupBtn').click(function() {
+    			$('#finalReminderSelectPopup').modal('hide');
+    			$('#finalReminderFormPopup').modal('show');
+    		});
+    		
+    		$('#finalReminderFormBtn').click(function() {
+    			var returnDate = $('#reminderReturnDate').val();
+    			var quarter = $('#reminderQuarter').val();
+    			if(returnDate != '' && quarter != '' ) {
+    				if(quarter == '1' || quarter == '2' || quarter == '3' || quarter == '4')
+    					window.open('/turfclubPrograms/trainers/sbs/finalReminder?r='+returnDate+'&q='+quarter, '_blank');
+    				else {
+    					$('#reminderErrorSpan').html('Quarter Value must be 1,2,3 or 4')
+    					$('#reminderErrorSpan').show();
+        				setTimeout(function() {
+        					$('#reminderErrorSpan').hide();	
+        				}, 5000);
+    				}
+    					
+    			} else {
+    				$('#reminderErrorSpan').html('Please fill the fields')
+    				$('#reminderErrorSpan').show();
+    				setTimeout(function() {
+    					$('#reminderErrorSpan').hide();	
+    				}, 5000);
+    			}
+    		});
+    		
     		$('#formBtn').click(function() {
     			var returnDate = $('#returnDate').val();
     			var quarter = $('#quarter').val();
-    			if(returnDate != '' && quarter != '') {
-    				window.location.href = '/turfclubPrograms/trainers/sbs/initialLetter?r='+returnDate+'&q='+quarter;
+    			if(returnDate != '' && quarter != '' ) {
+    				if(quarter == '1' || quarter == '2' || quarter == '3' || quarter == '4')
+    					window.open('/turfclubPrograms/trainers/sbs/initialLetter?r='+returnDate+'&q='+quarter, '_blank');
+    				else {
+    					$('#errorSpan').html('Quarter Value must be 1,2,3 or 4')
+    					$('#errorSpan').show();
+        				setTimeout(function() {
+        					$('#errorSpan').hide();	
+        				}, 5000);
+    				}
+    					
     			} else {
+    				$('#errorSpan').html('Please fill the fields')
     				$('#errorSpan').show();
     				setTimeout(function() {
     					$('#errorSpan').hide();	

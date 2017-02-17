@@ -6,7 +6,7 @@
  <meta charset="utf-8" />
  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
  <meta name="viewport" content="width=device-width, initial-scale=1" />
- <title data-th-text="#{sbs.initial.letter}">SBS Initial Letter</title>
+ <title data-th-text="#{sbs.final.reminder}">SBS Final Reminder</title>
   
 <!-- Core CSS - Include with every page -->
     <link type="text/css" rel="stylesheet"
@@ -60,7 +60,12 @@
 		    	<img alt="TurfClubPrograms" src="../../resources/img/tclogo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
 		    </div>
 		    
+		    <div class="col-sm-12" style="clear: both;text-align: center; font-size: 15px;">
+		    	<br/><label ><b><u>*** FINAL REMINDER NOTICE ***</u></b></label><br/>
+		    </div>
+		    <br/>
 		    <div class="col-sm-12" >
+		    	<br/>
 		    	<div class="col-sm-6" style="float: left; clear: both;">
 		    		<label th:text="${rec[name]}">Name</label><br/>
 		    		<label th:text="${rec[address1]}">Address1</label><br/>
@@ -72,34 +77,24 @@
 		    		<label th:text="${rec[date]}">Date</label><br/>
 		    	</div>
 		    </div>
-		    <br/><br/>
+		    
 		    
 		    <div style="clear: both;">
 		    	<label style="text-align: center; display: block;"><br/><u><b>Stable Employee Bonus Scheme</b></u></label>
 		    </div>
-		    
 		    <div class="col-sm-12" style="clear: both;">
 		    	<p>
-		    		Dear <span th:text="${rec[title]}"></span>&nbsp;<span th:text="${rec[surname]}"></span>,<br/><br/>
-		    		Please find attached documentation in relation to the Stable Employee Bonus Scheme.<br/><br/>
-		    		As per the provisions of Rule 298 you are required to complete the attached Trainer's Recipt form. You are 
-		    		also required to insert the gross amount payable to each registered stable employee on the attached listing of 
-		    		your registered employee's. Please note this must be divided according to the most recently lodged Staff
-		    		Agreement.<br/><br/>
-		    		Please return the completed Trainer's Receipt along with one copy of your registered employee's detailing the
-		    		gross amount paid to each employee to the Licensing Department of the Turf Club. This documentation
-		    		should be returned by : <b><u><span th:text="${rec[returnDate]}"></span></u></b><br/><br/>
-		    		The other copy of your registered employee's detailing the gross amount paid to each employee must be
-		    		displayed in a Staff Working area at your premises where it can be inspected by all your registered 
-		    		employee's. Payments may only be made to persons whose names are included in the Register of Stable
-		    		Employees as being either currently employed by you or employed during the period covered by the return.<br/><br/>
-		    		Please note the Bonus payment is fully taxable and should be processed through your wages system, all
-		    		appropriate Tax deductions should be deducted on all amounts paid to employees.<br/><br/>
-		    		Failure to comply with the Terms and Conditions of this Scheme shall constitute a breach of Rule 298 and
-		    		will be referred to the Referrals Committee.<br/><br/>
+		    		<br/>Dear <span th:text="${rec[title]}"></span>&nbsp;<span th:text="${rec[surname]}"></span>,<br/><br/>
+		    		I refer to the most recent Stable Employees Bonus Scheme payment you received (see attached). I note
+		    		from our records you have failed to return the necessary documentation in accordance with Rule 298.<br/><br/>
+		    		Please find attached duplicate documentation which you are required to complete and return to this office
+		    		within 7 days of the date of this letter. I must put you on notice that failure to do so will mean that
+		    		this matter will be referred to the Referrals Committee in accordance with Rule 298.<br/><br/>
+		    		Should you have any query in relation to this matter, please do not hesitate to contact me.
+		    		
 		    		Yours Sincerely.<br/><br/><br/><br/>
-		    		Sally Wilson<br/>
-		    		<b><u>LICENSING DEPARTMENT</u></b><br/>
+		    		Seamus Gibson<br/>
+		    		<b><u>SECRETARY TO THE LICENSING COMMITTEE</u></b><br/><br/><br/><br/><br/><br/>
 		    	</p>
 		    </div>
 	    </div>
@@ -253,18 +248,6 @@
 				&nbsp;<br th:each="i : ${#numbers.sequence(1, rec[space])}"/>    	
 		   	</p>
 		</div>
-    </div>
-    
-    <div style="width: 97%; padding: 15px; background-color: white !important; display: inline-block; margin: 15px;">
-    	<div >
-    		<p th:each="sbs , iterStat : ${sbsRecords}" style="width: 50%; padding: 10px; font-size: 12px;" th:class="${iterStat.odd} ? 'left' : 'right'">
-    			<label th:text="${sbs.sbsName}"></label><br/>
-    			<label th:text="${sbs.address1}"></label><br/>
-    			<label th:text="${sbs.address2}"></label><br/>
-    			<label th:text="${sbs.address3}"></label><br/>
-    			<label th:text="${sbs.address4}"></label><br/>
-    		</p>
-    	</div>
     </div>
     
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
