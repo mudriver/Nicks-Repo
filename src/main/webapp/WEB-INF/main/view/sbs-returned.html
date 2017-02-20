@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+ 
+<head data-th-fragment="header">
+ <meta charset="utf-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title data-th-text="#{link.enter.agreements.returned}">Enter Agreements Returned</title>
+  
+<!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+	
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/jquery-ui-1.10.3.custom.css"
+	data-th-href="@{/resources/css/jquery-ui-1.10.3.custom.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link type="text/css" rel="stylesheet"
+	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/datatables/jquery.datatables.min.css"
+	data-th-href="@{/resources/css/datatables/jquery.dataTables.min.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/datatables/buttons.datatable.min.css"
+	data-th-href="@{/resources/css/datatables/buttons.dataTables.min.css}" />
+	
+    <style>
+        .no-border-on-me>thead>tr>th,
+        .no-border-on-me>tbody>tr>th,
+        .no-border-on-me>tfoot>tr>th,
+        .no-border-on-me>thead>tr>td,
+        .no-border-on-me>tbody>tr>td,
+        .no-border-on-me>tfoot>tr>td
+        {
+            border-top-style: none;
+            border-bottom-style: none;
+        }
+        .section-card { background-color: #666E94;}
+        th { text-align: center; color: white; vertical-align: inherit !important;}
+        .width-50 { width: 50% !important;}
+        .margin-bottom-10 { margin-bottom: 10px;}
+        /* .form-group { width: 100% !important;} */
+        form input { margin-bottom:  5px; }
+        .errorMsg { color: red;}
+        input[type="search"] { color: black !important;}
+        label { color: white; }
+        .pull-right { text-align: right;}
+        .paginate_button { color: white !important; }
+        .dataTables_info { color: white !important; }
+        #trainers-list { background-color: white !important; height: 350px; width: 30%; overflow: scroll; }
+        #trainers-list li { display: inherit; text-align: left;}
+        .center-block {
+		  display: block;
+		  margin-left: auto;
+		  margin-right: auto;
+		}
+    </style>
+</head>
+<body>
+ <div class="container-fluid" >                <!-- /#wrapper -->
+
+	<div data-th-replace="mainmenu :: top-nav"></div>
+    
+    <h3 data-th-text="#{link.enter.agreements.returned}">Enter Agreements Returned</h3>
+
+    <div align="center">
+    	<div class="alert alert-success" id="successMsg" th:if="${success != null and success != ''}">
+    		<span th:text="${success}"></span>
+    	</div>
+    	<form class="" id="searchDiv">
+	        <br/>
+	        <div style="clear: both; width: 30%;">
+		        <input type="text" class="form-control" id="searchNameTxt" />
+	        </div>
+	        <div style="clear: both;">
+		        <ul id="trainers-list" >
+		        	<li th:each="record, status : ${records}" style="padding: 5px;color: black; font-weight: normal;">
+		        		<input th:onchange="'changeReturned(\''+${record.id}+'\');'" style="cursor: pointer;" type="checkbox" value="${record.id}" th:if="${record.returned}" checked="checked" />
+		        		<input th:onchange="'changeReturned(\''+${record.id}+'\');'" style="cursor: pointer;" type="checkbox" value="${record.id}" th:if="${!record.returned}" />
+		        		&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${record.sbsName}" ></span>
+		        	</li>
+		        </ul>
+	        </div>
+    	</form>
+    </div> 
+
+</div>              <!-- /#wrapper -->
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
+        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/jquery-ui-1.10.3.custom.min.js"
+        data-th-src="@{/resources/js/jquery-ui-1.10.3.custom.min.js}"></script>
+         
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
+        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+ 
+    <!-- Core Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
+        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+         
+    <!-- SB Admin Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/datatable/jquery.datatable.min.js"
+        data-th-src="@{/resources/js/datatable/jquery.dataTables.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/datatable/datatable.buttons.min.js"
+        data-th-src="@{/resources/js/datatable/dataTables.buttons.min.js}"></script>
+    
+    <script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/	
+               
+   		var table;
+   		$(function() {
+   			
+   			setTimeout(function() {
+   				$('#successMsg').hide();
+   			}, 5000);
+   			
+   			$('#searchNameTxt').keyup(function() {
+   				
+   				var q = $(this).val();
+   				$.ajax({
+   					url: '/turfclubPrograms/trainers/sbs/findByName',
+   					type: 'GET',
+   					data: {q: q},
+   					success: function(data) {
+   						$('#trainers-list').children().remove();
+   						if(data != null && data.length > 0) {
+   							for(var i=0; i<data.length ; i++) {
+   								var record = data[i];
+   								var append = '<li style="padding: 5px;color: black; font-weight: normal;">';
+   								if(record.returned)
+   									append += '<input style="cursor: pointer;" onchange="changeReturned(\''+record.id+'\');" type="checkbox" value="'+record.id+'" checked="checked" />';
+   								else
+   									append += '<input style="cursor: pointer;" onchange="changeReturned(\''+record.id+'\');" type="checkbox" value="'+record.id+'" />';
+   									
+   				        		append += '&nbsp;&nbsp;&nbsp;&nbsp;<span >'+record.sbsName+'</span></li>';
+   								$('#trainers-list').append(append);
+   							}
+   						} else {
+   							$('#trainers-list').append('<li>No Record Found!!!</li>');
+   						}
+   					}
+   				});
+   			});
+   		});
+   		
+   		function changeReturned(id) {
+   			
+   			$.ajax({
+   				url: '/turfclubPrograms/trainers/sbs/handleReturned',
+   				type: 'get',
+   				data: {id: id},
+   				success: function(data) {
+   					console.log(data);
+   				}
+   			})
+   		}
+   		
+   		/*]]>*/
+       </script>    
+          	
+        </body>
+</html>

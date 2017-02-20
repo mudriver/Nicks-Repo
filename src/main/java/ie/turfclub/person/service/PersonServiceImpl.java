@@ -621,4 +621,28 @@ public class PersonServiceImpl implements PersonService {
 		}
 		return record;
 	}
+	
+	@Override
+	public String getTrainerMobileNumbers(String cmsIds) {
+		try {
+			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.mobile_no as mobileNo "
+					+ " from person as p join person_role as pr "
+					+ " on p.id = pr.person_id where pr.role_id = "+RoleEnum.TRAINER.getId()+" and p.ref_id  "
+							+ "IN ( "+cmsIds+" ) ");
+			ResultSet set = pstmt.executeQuery();
+			return convertEntityToCMSMobileString(set);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private String convertEntityToCMSMobileString(ResultSet set) throws SQLException {
+		
+		String csmMobile = "";
+		while(set.next()) {
+			csmMobile += set.getString("mobileNo")+"\n";
+		}
+		return csmMobile;
+	}
 }

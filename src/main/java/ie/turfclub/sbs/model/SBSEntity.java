@@ -72,6 +72,17 @@ public class SBSEntity implements Serializable {
 	
 	@Column(name="created_date")
 	private Date createdDate;
+	
+	@Column(name="is_returned")
+	private boolean returned;
+
+	public boolean isReturned() {
+		return returned;
+	}
+
+	public void setReturned(boolean returned) {
+		this.returned = returned;
+	}
 
 	public long getId() {
 		return id;

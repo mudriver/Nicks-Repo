@@ -40,4 +40,6 @@ public interface PersonService {
 	public List<TrainerUserBean> getTrainerUserBean();
 
 	public HashMap<String, Object> getEmpNameAndNumberById(Integer empId);
+
+	public String getTrainerMobileNumbers(String cmsIds);
 }

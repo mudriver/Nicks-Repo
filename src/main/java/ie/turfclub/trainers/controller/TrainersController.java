@@ -15,11 +15,15 @@ import ie.turfclub.trainers.service.StableStaffService;
 import ie.turfclub.trainers.service.TrainersService;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +32,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -48,18 +55,26 @@ import com.lowagie.text.pdf.PdfWriter;
 
 @Controller
 @RequestMapping(value = "/trainers")
+@PropertySource("classpath:ie/turfclub/main/resources/properties/config.properties")
 public class TrainersController {
 
 	static Logger logger = LoggerFactory.getLogger(TrainersController.class);
 
+	@Resource
+	private Environment env;
+	
 	@Autowired
 	StableStaffService stableStaffService;
+	
 	@Autowired
 	private DownloadService downloadService;
 
 	@Autowired
 	private TokenService tokenService;
 
+	@Autowired
+	private ServletContext context;
+	
 	@Autowired
 	private EmployeeService employeeService;
 
@@ -111,6 +126,30 @@ public class TrainersController {
 		return "sbs-initial-letter";
 	}
 	
+	@RequestMapping(value="/sbs/returned", method=RequestMethod.GET)
+	public String getSBSReturned1(HttpServletRequest request, ModelMap model) {
+		List<SBSEntity> sbsRecords = sbsService.getAllOrderByNameAsc();
+		model.addAttribute("records", sbsRecords);
+		return "sbs-returned";
+	}
+	
+	@RequestMapping(value="/sbs/handleReturned", method=RequestMethod.GET)
+	@ResponseBody
+	public String handleReturned(HttpServletRequest request, ModelMap model) {
+		String id = request.getParameter("id");
+		sbsService.handleReturned(id);
+		return "sbs-returned";
+	}
+	
+	@RequestMapping(value="/sbs/msgReminder", method=RequestMethod.GET)
+	@ResponseBody
+	public String handleMsgReminder(HttpServletRequest request, ModelMap model) throws IOException {
+		
+		System.out.println(env.getRequiredProperty("upload.txt.filepath"));
+		sbsService.handleMsgReminder(env.getRequiredProperty("upload.txt.filepath"));
+		return "sbs-returned";
+	}
+	
 	@RequestMapping(value="/sbs/finalReminder", method=RequestMethod.GET)
 	public String getSBSFinalReminder(HttpServletRequest request, ModelMap model) {
 		String date = request.getParameter("r");
@@ -120,6 +159,16 @@ public class TrainersController {
 		model.addAttribute("sbsRecords", sbsRecords);
 		model.addAttribute("records", records);
 		return "sbs-final-reminder";
+	}
+	
+	@RequestMapping(value = "/sbs/findByName", method = RequestMethod.GET)
+	@ResponseBody
+	public Object getSBSFindByName(HttpServletRequest request, ModelMap model)
+			throws Exception {
+
+		String search = request.getParameter("q");
+		List<SBSEntity> records = sbsService.findByName(search);
+		return records;
 	}
 	
 	@RequestMapping(value="/sbs/reprint", method=RequestMethod.GET)

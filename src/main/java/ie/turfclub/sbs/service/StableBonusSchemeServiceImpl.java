@@ -2,9 +2,10 @@ package ie.turfclub.sbs.service;
 
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.sbs.model.SBSEntity;
-import ie.turfclub.trainers.model.TeEmployentHistory;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +13,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -19,11 +23,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 @Service
 @Transactional
@@ -34,7 +41,10 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	
 	@Autowired
 	private PersonService personService;
-
+	
+	@Autowired
+	private ServletContext context;
+	
 	private Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
 	}
@@ -420,5 +430,54 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public List<SBSEntity> getAllOrderByNameAsc() {
+		
+		Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
+		criteria.addOrder(Order.asc("sbsName"));
+		return criteria.list();
+	}
+	
+	@Override
+	public List<SBSEntity> findByName(String search) {
+		Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
+		criteria.add(Restrictions.like("sbsName", search, MatchMode.ANYWHERE));
+		criteria.addOrder(Order.asc("sbsName"));
+		return criteria.list();
+	}
+	
+	@Override
+	public void handleReturned(String id) {
+		
+		Long sbsId = Long.parseLong(id);
+		Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
+		criteria.add(Restrictions.eq("id", sbsId));
+		List<SBSEntity> records = criteria.list();
+		if(records != null && records.size() > 0) {
+			SBSEntity record = records.get(0);
+			record.setReturned(!record.isReturned());
+			getCurrentSession().save(record);
+		}
+	}
+	
+	@Override
+	public void handleMsgReminder(String path) {
+		
+		String hql = "select tt.trainerId from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
+				+ " sbs.returned = false";
+		List<Long> ids = getCurrentSession().createQuery(hql).list();
+		String cmsIds = StringUtils.join(ids, "','");
+		cmsIds = "'"+cmsIds+"'";
+		String mobileNumberTexts = personService.getTrainerMobileNumbers(cmsIds);
+		File file = new File(path);
+		try {
+			file.createNewFile();
+			FileUtils.writeStringToFile(file, mobileNumberTexts);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

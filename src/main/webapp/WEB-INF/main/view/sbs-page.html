@@ -72,13 +72,13 @@
     		<a href="javascript:void(0);" id="reprintLink" class="home-links col-sm-6">&nbsp;&nbsp;<span data-th-text="#{reprint}">Reprint</span></a>
     	</div>
     	<div class="home-links-parent">
-    		<a href="javascript:void(0);" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{enter.agreements.returned}">3. Enter Agreements Returned</span></a>
+    		<a th:href="@{/trainers/sbs/returned}" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{enter.agreements.returned}">3. Enter Agreements Returned</span></a>
     	</div>
     	<div class="home-links-parent">
-    		<a href="javascript:void(0);" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{send.text.message.reminder}">4. Send Text Message Reminder</span></a>
+    		<a href="javascript:void(0);" id="msgReminderLink" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{send.text.message.reminder}">4. Send Text Message Reminder</span></a>
     	</div>
     	<div class="home-links-parent">
-    		<a href="javascript:void(0);" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{fifth.enter.agreements.returned}">5. Enter Agreements Returned</span></a>
+    		<a th:href="@{/trainers/sbs/returned}" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{fifth.enter.agreements.returned}">5. Enter Agreements Returned</span></a>
     	</div>
     	<div class="home-links-parent">
     		<a href="javascript:void(0);" id="finalReminderLink" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{generate.final.reminder.letter.labels}">6. Generate FINAL Reminder Letter / Labels</span></a>
@@ -273,6 +273,17 @@
     					$('#errorReprintSpan').hide();	
     				}, 5000);
     			}
+    		});
+    		
+    		$('#msgReminderLink').click(function() {
+    			$.ajax({
+    				url: '/turfclubPrograms/trainers/sbs/msgReminder',
+    				type: 'GET',
+    				data: {},
+    				success: function(data) {
+    					
+    				}
+    			});
     		});
     		
     		$('#reprintTrainerId').change(function() {

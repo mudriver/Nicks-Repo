@@ -51,4 +51,31 @@ public interface StableBonusSchemeService {
 	HashMap<String, Object> getSBSReprint(String date, String quarter,
 			String tId);
 
+	/**
+	 * Get All Records Order by name asc
+	 * 
+	 * @return
+	 */
+	List<SBSEntity> getAllOrderByNameAsc();
+
+	/**
+	 * Get All records find by name
+	 * 
+	 * @param search
+	 * @return
+	 */
+	List<SBSEntity> findByName(String search);
+
+	/**
+	 * handle returned
+	 * 
+	 * @param id
+	 */
+	void handleReturned(String id);
+
+	/**
+	 * Handle Message Reminder
+	 */
+	void handleMsgReminder(String path);
+
 }
