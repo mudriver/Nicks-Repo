@@ -43,7 +43,7 @@
      	#quarEmpTable #header { border-bottom: 2px solid black;}
      	#quarEmpTable #border {border: 1px solid black;}
      	
-     	.page-card-layout { margin: 15px; border: 1px solid #ccc; padding: 15px; border-radius: 5px; background-color: white;}
+     	.page-card-layout { margin: 15px; padding: 15px; border-radius: 5px; background-color: white;}
      	body {background-color: #ccc;}
     </style>
 </head>
@@ -54,7 +54,7 @@
     </div>
         
     
-	   <!-- First Page -->
+		<!-- First Page -->
 	    <div class="page-card-layout" style="clear: both; display: inline-block;">
 		    <div style="clear: both;">
 		    	<img alt="TurfClubPrograms" src="../../resources/img/tclogo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
@@ -99,7 +99,7 @@
 		    		will be referred to the Referrals Committee.<br/><br/>
 		    		Yours Sincerely.<br/><br/><br/><br/>
 		    		Sally Wilson<br/>
-		    		<b><u>LICENSING DEPARTMENT</u></b><br/>
+		    		<b><u>LICENSING DEPARTMENT</u></b><br/><br/>
 		    	</p>
 		    </div>
 	    </div>
@@ -134,7 +134,7 @@
 		    <div style="clear: both;">
 		    	<p>
 		    		I confirm that the amount paid to me of &euro;<span th:text="${rec[amount]}"></span> under the Stable Employees Bonus will be distributed to my
-		    		staff on (<span th:text="${rec[returnDate]}"></span>) in accordance with the distribution agreement agreed amongst themselves. I am
+		    		staff on (&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) in accordance with the distribution agreement agreed amongst themselves. I am
 		    		attaching a completed duplicate sheet which sets out the gross payment to each employee.<br/><br/><br/>
 		    		Yours truly,<br/><br/><br/>
 		    		<b>Singed:_______________________________________________</b><br/>
@@ -151,7 +151,7 @@
 		</div>
 	    
 	    <!-- Third Page -->
-	    <div class="page-card-layout" style="clear: both;">
+	    <div class="page-card-layout" style="clear: both;" th:each="page : ${#numbers.sequence(1, rec[noOfPages])}">
 		    <div style="margin-bottom: 10px;">
 		    	<img alt="TurfClubPrograms" src="../../resources/img/tclogo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
 		    </div>
@@ -172,7 +172,7 @@
 		    			<tr>
 		    				<td colspan="3" style="text-align: center;"><b><u>A Card Holders</u></b></td>
 		    			</tr>
-		    			<tr th:each="emp : ${rec[emp]}" id="border" >
+		    			<tr th:each="emp : ${rec[emp__${page}__]}" id="border" >
 		    				<th style="text-align: center; width: 30%;" th:text="${emp[cardNumber]}"></th>
 		    				<th style="text-align: center; width: 40%;" th:text="${emp[name]}">John Lane</th>
 		    				<th style="text-align: center; width: 30%;"></th>
@@ -198,12 +198,12 @@
 		    </div>
 		    
 		    <p>
-				&nbsp;<br th:each="i : ${#numbers.sequence(1, rec[space])}"/>
+				&nbsp;<br th:each="i : ${#numbers.sequence(1, rec[space__${page}__])}"/>
 		   	</p>
 		</div>
 	    
 	    <!-- Fourth Page -->
-	    <div class="page-card-layout" style="clear: both;">
+	    <div class="page-card-layout" style="clear: both;" th:each="page : ${#numbers.sequence(1, rec[noOfPages])}">
 		    <div style="margin-bottom: 10px;">
 		    	<img alt="TurfClubPrograms" src="../../resources/img/tclogo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
 		    </div>
@@ -224,7 +224,7 @@
 		    			<tr>
 		    				<td colspan="3" style="text-align: center;"><b><u>A Card Holders</u></b></td>
 		    			</tr>
-		    			<tr th:each="emp : ${rec[emp]}" id="border">
+		    			<tr th:each="emp : ${rec[emp__${page}__]}" id="border">
 		    				<th style="text-align: center; width: 30%;" th:text="${emp[cardNumber]}"></th>
 		    				<th style="text-align: center; width: 40%;" th:text="${emp[name]}">John Lane</th>
 		    				<th style="text-align: center; width: 30%;"></th>
@@ -241,7 +241,7 @@
 		    			<br/>
 		    			<label style="color: white; background: black; margin: auto; display: block; text-align: center;">PLEASE Display in a Staff Working Area.</label>
 		    			<br/>
-		    		</div>
+		    		</div>	
 		    		<p>
 		    		* Please note the Bonus payment is liable for tax and should be processed through your wages system.
 		    		All appropriate Tax deductions should be deducted on all amounts paid to employees.
@@ -250,13 +250,9 @@
 		    </div>
 		    
 		    <p>
-				&nbsp;<br th:each="i : ${#numbers.sequence(1, rec[space])}"/>    	
+				&nbsp;<br th:each="i : ${#numbers.sequence(1, rec[space__${page}__])}"/>    	
 		   	</p>
 		</div>
-	    
-	    <p>
-			&nbsp;<br th:each="i : ${#numbers.sequence(1, rec[space])}"/>    	
-	   	</p>
 	   	
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"

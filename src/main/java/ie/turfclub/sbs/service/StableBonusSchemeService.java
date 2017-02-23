@@ -78,4 +78,14 @@ public interface StableBonusSchemeService {
 	 */
 	void handleMsgReminder(String path);
 
+	/**
+	 * Get SBS Final Reminder
+	 * 
+	 * @param date
+	 * @param quarter
+	 * @return
+	 */
+	List<HashMap<String, Object>> getSBSFinalReminder(String date,
+			String quarter);
+
 }

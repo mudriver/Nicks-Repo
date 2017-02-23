@@ -300,7 +300,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		
 		Date today = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		int noOfBreakLine = 22;
+		int noOfBreakLine = 24;
 		if(results != null && results.size() > 0) {
 			for (HashMap<String, Object> result : results) {
 				
@@ -332,14 +332,110 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 					for (HashMap<String, Object> empIdMap : empIdsList) {
 						Integer empId = (Integer) empIdMap.get("empId");
 						HashMap<String, Object> empRecord = personService.getEmpNameAndNumberById(empId);
-						empLists.add(empRecord);
+						if(empRecord != null)
+							empLists.add(empRecord);
 					}
-					result.put("emp", empLists);
-					result.put("space", noOfBreakLine-(empLists.size()));
+					int noOfPages = (int) Math.ceil((empLists.size()/10.0));
+					if(noOfPages > 0) {
+						for (int i = 1; i <= noOfPages; i++) {
+							if((i*10)-1 > empLists.size()) {
+								result.put("emp"+i, empLists.subList((i-1)*10, empLists.size()));
+								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*10, empLists.size()).size()));
+							} else {
+								result.put("emp"+i, empLists.subList((i-1)*10, (i*10)-1));
+								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*10, (i*10)-1).size())-1);
+							}
+						}
+						result.put("noOfPages", noOfPages);
+					} else {
+						result.put("emp1", new HashMap<String, Object>());
+						result.put("space1", noOfBreakLine);
+						result.put("noOfPages", 1);
+					}
 					
 				} else {
-					result.put("emp", new HashMap<String, Object>());
-					result.put("space", noOfBreakLine);
+					result.put("emp1", new HashMap<String, Object>());
+					result.put("space1", noOfBreakLine);
+					result.put("noOfPages", 1);
+				}
+			}
+		}
+		
+		return results;
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> getSBSFinalReminder(String date,
+			String quarter) {
+		
+		List<HashMap<String, Object>> results = new ArrayList<HashMap<String,Object>>();
+		
+		String hql = "select new map(sbs.sbsName as name, sbs.address1 as address1, sbs.address2 as address2, "
+				+ "sbs.address3 as address3, tt.trainerId as trainerId, sbs.amount as amount, sbs.title as title,"
+				+ " sbs.surname as surname, sbs.trainerId as accNo, sbs.address4 as address4) "
+				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
+				+ " sbs.returned = false";
+		results = getCurrentSession().createQuery(hql).list();
+		
+		Date today = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		int noOfBreakLine = 24;
+		if(results != null && results.size() > 0) {
+			for (HashMap<String, Object> result : results) {
+				
+				result.put("date", formatter.format(today));
+				String name = (String) result.get("name");
+				result.put("trainerName", name.replace("SBS", ""));
+				result.put("returnDate", date);
+				switch(quarter) {
+					case "1":
+						result.put("quarter", "1st");
+						break;
+					case "2":
+						result.put("quarter", "2nd");
+						break;
+					case "3":
+						result.put("quarter", "3rd");
+						break;
+					case "4":
+						result.put("quarter", "4th");
+						break;
+				}
+				Integer trainerId = (Integer) result.get("trainerId");
+				String empIdHql = "select new map(teEmployees.employeesEmployeeId as empId) from "
+						+ "TeEmployentHistory where teTrainers.trainerId="+trainerId
+						+" and ehDateTo is null";
+				List<HashMap<String, Object>> empIdsList = getCurrentSession().createQuery(empIdHql).list();
+				if(empIdsList != null) {
+					List<HashMap<String, Object>> empLists = new ArrayList<HashMap<String,Object>>();
+					for (HashMap<String, Object> empIdMap : empIdsList) {
+						Integer empId = (Integer) empIdMap.get("empId");
+						HashMap<String, Object> empRecord = personService.getEmpNameAndNumberById(empId);
+						if(empRecord != null)
+							empLists.add(empRecord);
+					}
+					int noOfPages = (int) Math.ceil((empLists.size()/10.0));
+					if(noOfPages > 0) {
+						for (int i = 1; i <= noOfPages; i++) {
+							if((i*10)-1 > empLists.size()) {
+								result.put("emp"+i, empLists.subList((i-1)*10, empLists.size()));
+								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*10, empLists.size()).size()));
+							} else {
+								result.put("emp"+i, empLists.subList((i-1)*10, (i*10)-1));
+								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*10, (i*10)-1).size())-1);
+							}
+						}
+						result.put("noOfPages", noOfPages);
+					} else {
+						result.put("emp1", new HashMap<String, Object>());
+						result.put("space1", noOfBreakLine);
+						result.put("noOfPages", 1);
+					}
+					
+				} else {
+					result.put("emp1", new HashMap<String, Object>());
+					result.put("space1", noOfBreakLine);
+					result.put("noOfPages", 1);
 				}
 			}
 		}
@@ -418,14 +514,32 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 				for (HashMap<String, Object> empIdMap : empIdsList) {
 					Integer empId = (Integer) empIdMap.get("empId");
 					HashMap<String, Object> empRecord = personService.getEmpNameAndNumberById(empId);
-					empLists.add(empRecord);
+					if(empRecord != null)
+						empLists.add(empRecord);
 				}
-				result.put("emp", empLists);
-				result.put("space", noOfBreakLine-(empLists.size()));
+				
+				int noOfPages = (int) Math.ceil((empLists.size()/10.0));
+				if(noOfPages > 0) {
+					for (int i = 1; i <= noOfPages; i++) {
+						if((i*10)-1 > empLists.size()) {
+							result.put("emp"+i, empLists.subList((i-1)*10, empLists.size()));
+							result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*10, empLists.size()).size()));
+						} else {
+							result.put("emp"+i, empLists.subList((i-1)*10, (i*10)-1));
+							result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*10, (i*10)-1).size())-1);
+						}
+					}
+					result.put("noOfPages", noOfPages);
+				} else {
+					result.put("emp1", new HashMap<String, Object>());
+					result.put("space1", noOfBreakLine);
+					result.put("noOfPages", 1);
+				}
 				
 			} else {
-				result.put("emp", new HashMap<String, Object>());
-				result.put("space", noOfBreakLine);
+				result.put("emp1", new HashMap<String, Object>());
+				result.put("space1", noOfBreakLine);
+				result.put("noOfPages", 1);
 			}
 		}
 		

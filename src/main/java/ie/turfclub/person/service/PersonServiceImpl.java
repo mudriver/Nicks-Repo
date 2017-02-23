@@ -614,8 +614,9 @@ public class PersonServiceImpl implements PersonService {
 
 	private HashMap<String, Object> convertEntityToEmpMap(ResultSet set) throws SQLException {
 		
-		HashMap<String, Object> record = new HashMap<String, Object>();
+		HashMap<String, Object> record = null;
 		while(set.next()) {
+			record = new HashMap<String, Object>();
 			record.put("name", set.getString("firstname")+" "+set.getString("surname"));
 			record.put("cardNumber", set.getString("cardNumber"));
 		}
@@ -641,7 +642,9 @@ public class PersonServiceImpl implements PersonService {
 		
 		String csmMobile = "";
 		while(set.next()) {
-			csmMobile += set.getString("mobileNo")+"\n";
+			String mobile = set.getString("mobileNo");
+			mobile = mobile.replaceAll("[^\\d0-9]", "");
+			csmMobile += mobile+"\n";
 		}
 		return csmMobile;
 	}

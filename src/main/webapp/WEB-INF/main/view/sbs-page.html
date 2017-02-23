@@ -62,6 +62,9 @@
     <div class="alert alert-success" id="successMsg" style="display: none;">
    		<span th:text="${success}"></span>
    	</div>
+   	<div class="alert alert-danger" id="errorMsg" style="display: none;">
+   		<span></span>
+   	</div>
     
     <div class="home-parent" style="margin: auto;width: 60%;text-align: center;background-color: white;">
     	<div class="home-links-parent">
@@ -264,7 +267,7 @@
     					$('#errorReprintSpan').hide();	
     				}, 5000);
     			} else if(returnDate != '' && quarter != '' && tId != '') {
-    				$('#initialFormPopup').modal('hide');
+    				$('#reprintPopup').modal('hide');
     				window.location.href = '/turfclubPrograms/trainers/sbs/reprint?r='+returnDate+'&q='+quarter+'&t='+tId;
     			} else {
     				$('#errorReprintSpan').html('Please fill fields');
@@ -276,12 +279,20 @@
     		});
     		
     		$('#msgReminderLink').click(function() {
+    			
+    			$.blockUI();
     			$.ajax({
     				url: '/turfclubPrograms/trainers/sbs/msgReminder',
     				type: 'GET',
     				data: {},
     				success: function(data) {
-    					
+    					$('#successMsg').find('span').html('Successfully created SMSReminder.txt file');
+    					$('#successMsg').show();
+    					$.unblockUI();
+    					setTimeout(function() {
+    						$('#successMsg').find('span').html('');
+    						$('#successMsg').hide();
+    					}, 5000);
     				}
     			});
     		});
@@ -347,9 +358,10 @@
     			var returnDate = $('#reminderReturnDate').val();
     			var quarter = $('#reminderQuarter').val();
     			if(returnDate != '' && quarter != '' ) {
-    				if(quarter == '1' || quarter == '2' || quarter == '3' || quarter == '4')
+    				if(quarter == '1' || quarter == '2' || quarter == '3' || quarter == '4') {
+    					$('#finalReminderFormPopup').modal('hide');
     					window.open('/turfclubPrograms/trainers/sbs/finalReminder?r='+returnDate+'&q='+quarter, '_blank');
-    				else {
+    				} else {
     					$('#reminderErrorSpan').html('Quarter Value must be 1,2,3 or 4')
     					$('#reminderErrorSpan').show();
         				setTimeout(function() {
@@ -370,9 +382,10 @@
     			var returnDate = $('#returnDate').val();
     			var quarter = $('#quarter').val();
     			if(returnDate != '' && quarter != '' ) {
-    				if(quarter == '1' || quarter == '2' || quarter == '3' || quarter == '4')
+    				if(quarter == '1' || quarter == '2' || quarter == '3' || quarter == '4') {
+    					$('#initialFormPopup').modal('hide');
     					window.open('/turfclubPrograms/trainers/sbs/initialLetter?r='+returnDate+'&q='+quarter, '_blank');
-    				else {
+    				} else {
     					$('#errorSpan').html('Quarter Value must be 1,2,3 or 4')
     					$('#errorSpan').show();
         				setTimeout(function() {

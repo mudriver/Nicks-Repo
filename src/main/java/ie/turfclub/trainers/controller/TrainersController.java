@@ -154,7 +154,7 @@ public class TrainersController {
 	public String getSBSFinalReminder(HttpServletRequest request, ModelMap model) {
 		String date = request.getParameter("r");
 		String quarter = request.getParameter("q");
-		List<HashMap<String, Object>> records = sbsService.getSBSInitialRecords(date, quarter);
+		List<HashMap<String, Object>> records = sbsService.getSBSFinalReminder(date, quarter);
 		List<SBSEntity> sbsRecords = sbsService.getAll();
 		model.addAttribute("sbsRecords", sbsRecords);
 		model.addAttribute("records", records);

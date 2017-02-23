@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
@@ -26,7 +27,7 @@ import org.springframework.web.servlet.view.jasperreports.JasperReportsXlsView;
 
 @Configuration
 @PropertySource("classpath:ie/turfclub/main/resources/properties/config.properties")
-
+@EnableScheduling
 public class BeanConfig {
 
 	@Autowired

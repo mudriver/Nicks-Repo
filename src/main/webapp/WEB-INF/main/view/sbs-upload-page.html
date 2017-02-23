@@ -78,7 +78,7 @@
 	        
 	        <div align="center">	
 		        <button type="button" class="btn btn-success" id="uploadSubmitBtn">Upload</button>
-		        <button type="button" class="btn btn-default">Cancel</button>
+		        <button id="exitBtn" type="button" class="btn btn-default">Exit</button>
 	        </div>
 	   	</form>
    	</div>
@@ -130,6 +130,10 @@
     		$('#uploadFile').change(function() {
     			var fileName = $(this).val().split('\\').pop();
     			$('#fileName').html(fileName);
+    		});
+    		
+    		$('#exitBtn').click(function() {
+    			window.location.href = '/turfclubPrograms/trainers/sbs/get';
     		});
     		
     		$('#uploadSubmitBtn').click(function() {

@@ -66,6 +66,7 @@
 		  margin-left: auto;
 		  margin-right: auto;
 		}
+		h3 { margin-bottom: inherit;}
     </style>
 </head>
 <body>
@@ -82,6 +83,7 @@
     	<form class="" id="searchDiv">
 	        <br/>
 	        <div style="clear: both; width: 30%;">
+	        	<button class="btn btn-default" style="text-align: center; margin-bottom: 5px;" id="exitBtn">Exit</button>
 		        <input type="text" class="form-control" id="searchNameTxt" />
 	        </div>
 	        <div style="clear: both;">
@@ -131,6 +133,11 @@
    			setTimeout(function() {
    				$('#successMsg').hide();
    			}, 5000);
+   			
+   			$('#exitBtn').click(function() {
+   				//window.location.replace('/turfclubPrograms/trainers/sbs/get');
+   				window.history.back();
+   			});
    			
    			$('#searchNameTxt').keyup(function() {
    				
