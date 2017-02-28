@@ -2,6 +2,7 @@ package ie.turfclub.sbs.service;
 
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.sbs.model.SBSEntity;
+import ie.turfclub.trainers.model.TeEmployees;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -331,7 +332,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 					List<HashMap<String, Object>> empLists = new ArrayList<HashMap<String,Object>>();
 					for (HashMap<String, Object> empIdMap : empIdsList) {
 						Integer empId = (Integer) empIdMap.get("empId");
-						HashMap<String, Object> empRecord = personService.getEmpNameAndNumberById(empId);
+						HashMap<String, Object> empRecord = this.getEmpNameAndNumberById(empId);
 						if(empRecord != null)
 							empLists.add(empRecord);
 					}
@@ -410,7 +411,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 					List<HashMap<String, Object>> empLists = new ArrayList<HashMap<String,Object>>();
 					for (HashMap<String, Object> empIdMap : empIdsList) {
 						Integer empId = (Integer) empIdMap.get("empId");
-						HashMap<String, Object> empRecord = personService.getEmpNameAndNumberById(empId);
+						HashMap<String, Object> empRecord = this.getEmpNameAndNumberById(empId);
 						if(empRecord != null)
 							empLists.add(empRecord);
 					}
@@ -513,7 +514,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 				List<HashMap<String, Object>> empLists = new ArrayList<HashMap<String,Object>>();
 				for (HashMap<String, Object> empIdMap : empIdsList) {
 					Integer empId = (Integer) empIdMap.get("empId");
-					HashMap<String, Object> empRecord = personService.getEmpNameAndNumberById(empId);
+					HashMap<String, Object> empRecord = this.getEmpNameAndNumberById(empId);
 					if(empRecord != null)
 						empLists.add(empRecord);
 				}
@@ -546,6 +547,20 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		return result;
 	}
 	
+	private HashMap<String, Object> getEmpNameAndNumberById(Integer empId) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map = personService.getEmpNameAndNumberById(empId);
+		/*Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
+		criteria.add(Restrictions.eq("employeesEmployeeId", empId));*/
+		String hql = "select new map(cardsCardNumber as cardNumber) from TeCards where teEmployees.employeesEmployeeId = "+empId;
+		List<HashMap<String, Object>> employees = getCurrentSession().createQuery(hql).list();
+		HashMap<String, Object> emp = (employees != null && employees.size() > 0 ) ? employees.get(0) : null;
+		if(map != null && emp != null)
+			map.put("cardNumber", (emp != null && emp.get("cardNumber") != null ) ? emp.get("cardNumber") : "");
+		return map;
+	}
+
 	@Override
 	public List<SBSEntity> getAllOrderByNameAsc() {
 		

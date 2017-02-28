@@ -14,6 +14,7 @@ public class AdvanceSearchRecordBean implements Serializable {
 	private String name;
 	private Date dateOfBirth;
 	private String trainerName;
+	private Integer id;
 	
 	public String getCardNumber() {
 		return cardNumber;
@@ -38,5 +39,11 @@ public class AdvanceSearchRecordBean implements Serializable {
 	}
 	public void setTrainerName(String trainerName) {
 		this.trainerName = trainerName;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }

@@ -31,7 +31,6 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
@@ -42,6 +41,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import com.google.gson.Gson;
 
@@ -240,6 +240,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<TeEmployees> employees = criteria.list();
 		return convertEmployeesToBean(employees);*/
 		List<SearchByNameEmployeeBean> records = personService.getEmployeeByName(search);
+		if(records != null) {
+			for(SearchByNameEmployeeBean bean : records) {
+				String hql1 = "select new map(cardsCardType as type, cardsCardNumber as number) from TeCards"
+						+ " where teEmployees.employeesEmployeeId = "+bean.getId();
+				List<HashMap<String, Object>> maps = getCurrentSession().createQuery(hql1).list();
+				HashMap<String, Object> mapRecord = (maps != null && maps.size() > 0) ? maps.get(0) : null;
+				if(mapRecord != null && mapRecord.get("type") != null) {
+					bean.setCardNumber((String)mapRecord.get("number"));
+					bean.setCardType((String)mapRecord.get("type"));
+				}
+			}
+		}
 		return records;
 	}
 	
@@ -292,13 +304,26 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public List<SearchByNameEmployeeBean> findByNumber(String search) {
 		
-		/*String sql = "select e from TeEmployees e, TeCards c where c.cardsCardId = e.teCard.cardsCardId"
-				+ " and lower(c.cardsCardNumber) like lower('%"+search+"%')";
+		String sql = "select teEmployees.employeesEmployeeId from TeCards  "
+				+ " where lower(cardsCardNumber) like lower('%"+search+"%')";
 		
-		List<TeEmployees> employees = getCurrentSession().createQuery(sql).list();
-		return convertEmployeesToBean(employees);*/
+		List<Integer> empIds = getCurrentSession().createQuery(sql).list();
+		String ids = StringUtils.join(empIds, "','");
+		ids = "'"+ids+"'";
 		
-		List<SearchByNameEmployeeBean> records = personService.getEmployeeByCardNumber(search);
+		List<SearchByNameEmployeeBean> records = personService.getEmployeeByCardNumber(ids);
+		if(records != null) {
+			for(SearchByNameEmployeeBean bean : records) {
+				String hql1 = "select new map(cardsCardType as type, cardsCardNumber as number) from TeCards"
+						+ " where teEmployees.employeesEmployeeId = "+bean.getId();
+				List<HashMap<String, Object>> maps = getCurrentSession().createQuery(hql1).list();
+				HashMap<String, Object> mapRecord = (maps != null && maps.size() > 0) ? maps.get(0) : null;
+				if(mapRecord != null && mapRecord.get("type") != null) {
+					bean.setCardNumber((String)mapRecord.get("number"));
+					bean.setCardType((String)mapRecord.get("type"));
+				}
+			}
+		}
 		return records;
 	}
 	
@@ -387,13 +412,40 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<AdvanceSearchRecordBean> records = new ArrayList<AdvanceSearchRecordBean>();
 		switch(type) {
 			case "1":
-				
-				count = personService.getAdvanceSearchRecordForAllACardCount();
-				records = personService.getAdvanceSearchRecordForAllACardByLimit(start, length);
+				String hql = "select teEmployees.employeesEmployeeId from TeCards where cardsCardType = 'A'";
+				List<Integer> empIds = getCurrentSession().createQuery(hql).list();
+				String ids = StringUtils.join(empIds, "','");
+				ids = "'"+ids+"'";
+				count = personService.getAdvanceSearchRecordForAllACardCount(ids);
+				records = personService.getAdvanceSearchRecordForAllACardByLimit(start, length, ids);
+				if(records != null) {
+					for(AdvanceSearchRecordBean record: records) {
+						String hql1 = "select new map(cardsCardType as type, cardsCardNumber as number) from TeCards"
+								+ " where teEmployees.employeesEmployeeId = "+record.getId();
+						List<HashMap<String, Object>> maps = getCurrentSession().createQuery(hql1).list();
+						HashMap<String, Object> mapRecord = (maps != null && maps.size() > 0) ? maps.get(0) : null;
+						if(mapRecord != null && mapRecord.get("type") != null) 
+							record.setCardNumber(mapRecord.get("type")+" "+mapRecord.get("number"));
+					}
+				}
 				break;
 			case "2":
-				count = personService.getAdvanceSearchRecordForAllBCardCount();
-				records = personService.getAdvanceSearchRecordForAllBCardByLimit(start, length);
+				hql = "select teEmployees.employeesEmployeeId from TeCards where cardsCardType = 'B'";
+				empIds = getCurrentSession().createQuery(hql).list();
+				ids = StringUtils.join(empIds, "','");
+				ids = "'"+ids+"'";
+				count = personService.getAdvanceSearchRecordForAllBCardCount(ids);
+				records = personService.getAdvanceSearchRecordForAllBCardByLimit(start, length, ids);
+				if(records != null) {
+					for(AdvanceSearchRecordBean record: records) {
+						String hql1 = "select new map(cardsCardType as type, cardsCardNumber as number) from TeCards"
+								+ " where teEmployees.employeesEmployeeId = "+record.getId();
+						List<HashMap<String, Object>> maps = getCurrentSession().createQuery(hql1).list();
+						HashMap<String, Object> mapRecord = (maps != null && maps.size() > 0) ? maps.get(0) : null;
+						if(mapRecord != null && mapRecord.get("type") != null) 
+							record.setCardNumber(mapRecord.get("type")+" "+mapRecord.get("number"));
+					}
+				}
 				break;
 			case "3":
 				break;
@@ -488,10 +540,38 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<AdvanceSearchRecordBean> records = new ArrayList<AdvanceSearchRecordBean>();
 		switch(type) {
 			case "1":
-				records = personService.getAdvanceSearchRecordForAllACard();
+				String hql = "select teEmployees.employeesEmployeeId from TeCards where cardsCardType = 'A'";
+				List<Integer> empIds = getCurrentSession().createQuery(hql).list();
+				String ids = StringUtils.join(empIds, "','");
+				ids = "'"+ids+"'";
+				records = personService.getAdvanceSearchRecordForAllACard(ids);
+				if(records != null) {
+					for(AdvanceSearchRecordBean record: records) {
+						String hql1 = "select new map(cardsCardType as type, cardsCardNumber as number) from TeCards"
+								+ " where teEmployees.employeesEmployeeId = "+record.getId();
+						List<HashMap<String, Object>> maps = getCurrentSession().createQuery(hql1).list();
+						HashMap<String, Object> mapRecord = (maps != null && maps.size() > 0) ? maps.get(0) : null;
+						if(mapRecord != null && mapRecord.get("type") != null) 
+							record.setCardNumber(mapRecord.get("type")+" "+mapRecord.get("number"));
+					}
+				}
 				break;
 			case "2":
-				records = personService.getAdvanceSearchRecordForAllBCard();
+				hql = "select teEmployees.employeesEmployeeId from TeCards where cardsCardType = 'B'";
+				empIds = getCurrentSession().createQuery(hql).list();
+				ids = StringUtils.join(empIds, "','");
+				ids = "'"+ids+"'";
+				records = personService.getAdvanceSearchRecordForAllBCard(ids);
+				if(records != null) {
+					for(AdvanceSearchRecordBean record: records) {
+						String hql1 = "select new map(cardsCardType as type, cardsCardNumber as number) from TeCards"
+								+ " where teEmployees.employeesEmployeeId = "+record.getId();
+						List<HashMap<String, Object>> maps = getCurrentSession().createQuery(hql1).list();
+						HashMap<String, Object> mapRecord = (maps != null && maps.size() > 0) ? maps.get(0) : null;
+						if(mapRecord != null && mapRecord.get("type") != null) 
+							record.setCardNumber(mapRecord.get("type")+" "+mapRecord.get("number"));
+					}
+				}
 				break;
 			case "3":
 				break;

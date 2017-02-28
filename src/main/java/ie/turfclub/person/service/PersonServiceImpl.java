@@ -77,8 +77,8 @@ public class PersonServiceImpl implements PersonService {
 			String personSQL = "INSERT INTO person (surname, firstname, "
 					+ "date_of_birth, address1,address2, address3, phone_no, mobile_no,"
 					+ "email, comments, date_entered, request_date, ref_id, title, sex, nationality,"
-					+ " marital_status, spouse_name, county, country, post_code, card_type, card_number,"
-					+ " trainer_name,account_number) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";		
+					+ " marital_status, spouse_name, county, country, post_code, "
+					+ " trainer_name,account_number) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";		
 			
 			PreparedStatement personSTMT = (PreparedStatement) conn.getConnection().prepareStatement(personSQL, Statement.RETURN_GENERATED_KEYS);
 			personSTMT.setObject(1, person.getSurname());
@@ -102,10 +102,10 @@ public class PersonServiceImpl implements PersonService {
 			personSTMT.setObject(19, person.getCounty());
 			personSTMT.setObject(20, person.getCountry());
 			personSTMT.setObject(21, person.getPostCode());
-			personSTMT.setObject(22, person.getCardType());
-			personSTMT.setObject(23, person.getCardNumber());
-			personSTMT.setObject(24, person.getTrainerName());
-			personSTMT.setObject(25, person.getAccountNumber());
+			/*personSTMT.setObject(22, person.getCardType());
+			personSTMT.setObject(23, person.getCardNumber());*/
+			personSTMT.setObject(22, person.getTrainerName());
+			personSTMT.setObject(23, person.getAccountNumber());
 			
 			personSTMT.executeUpdate();
 			
@@ -131,7 +131,7 @@ public class PersonServiceImpl implements PersonService {
 					+ "date_of_birth = ?, address1 = ?,address2 = ?, address3= ?, phone_no = ?, mobile_no = ?,"
 					+ "email = ?, comments = ?, date_entered = ? , request_date = ?,"
 					+ " title = ? , sex = ? , nationality = ? , marital_status = ? , spouse_name = ? ,"
-					+ " county = ?, country = ? , post_code = ?, card_type = ? , card_number = ? , "
+					+ " county = ?, country = ? , post_code = ?,  "
 					+ " trainer_name = ?, account_number = ? where ref_id = ?";		
 			
 			PreparedStatement personSTMT = (PreparedStatement) conn.getConnection().prepareStatement(personSQL);
@@ -155,11 +155,11 @@ public class PersonServiceImpl implements PersonService {
 			personSTMT.setObject(18, person.getCounty());
 			personSTMT.setObject(19, person.getCountry());
 			personSTMT.setObject(20, person.getPostCode());
-			personSTMT.setObject(21, person.getCardType());
-			personSTMT.setObject(22, person.getCardNumber());
-			personSTMT.setObject(23, person.getTrainerName());
-			personSTMT.setObject(24, person.getAccountNumber());
-			personSTMT.setObject(25, person.getRefId());
+			/*personSTMT.setObject(21, person.getCardType());
+			personSTMT.setObject(22, person.getCardNumber());*/
+			personSTMT.setObject(21, person.getTrainerName());
+			personSTMT.setObject(22, person.getAccountNumber());
+			personSTMT.setObject(23, person.getRefId());
 			personSTMT.executeUpdate();
 		}
 	}
@@ -257,7 +257,7 @@ public class PersonServiceImpl implements PersonService {
 					+ "on p.id = pr.person_id where pr.role_id = ? and (p.surname like ? or p.firstname like ?) ");
 			query.setLong(0, RoleEnum.EMPLOYEE.getId());
 			query.setString(1, "%"+search+"%");
-			query.setString(2, "%"+search+"%");
+			query.setString(2, "%"+search+"%");	
 			List<Object[]> records = query.list();
 			List<SearchByNameEmployeeBean> results = new ArrayList<SearchByNameEmployeeBean>();
 			if(records != null && records.size() > 0) {
@@ -271,8 +271,9 @@ public class PersonServiceImpl implements PersonService {
 				}
 			}
 			return results;*/
+			/*, p.card_type as cardType, p.card_number as cardNumber*/
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
-					+ "p.firstname as firstname,  p.ref_id as refId, p.card_type as cardType, p.card_number as cardNumber"
+					+ "p.firstname as firstname,  p.ref_id as refId"
 					+ " from person as p join person_role as pr "
 					+ "on p.id = pr.person_id where pr.role_id = ? and (p.surname like ? or p.firstname like ?) ");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
@@ -284,8 +285,8 @@ public class PersonServiceImpl implements PersonService {
 				SearchByNameEmployeeBean bean = new SearchByNameEmployeeBean();
 				bean.setId(Integer.parseInt(set.getString("refId")));
 				bean.setFullName(set.getString("surname")+" "+set.getString("firstname"));
-				bean.setCardType(set.getString("cardType"));
-				bean.setCardNumber(set.getString("cardNumber"));
+				/*bean.setCardType(set.getString("cardType"));
+				bean.setCardNumber(set.getString("cardNumber"));*/
 				records.add(bean);
 			}
 			return records;
@@ -296,7 +297,7 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	@Override
-	public List<SearchByNameEmployeeBean> getEmployeeByCardNumber(String search) {
+	public List<SearchByNameEmployeeBean> getEmployeeByCardNumber(String ids) {
 		
 		try {
 			/*Query query = getCurrentSession().createSQLQuery("select p.* "
@@ -319,21 +320,20 @@ public class PersonServiceImpl implements PersonService {
 			}
 			
 			return results;*/
-			
+			/*, p.card_type as cardType, p.card_number as cardNumber*/
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
-					+ "p.firstname as firstname,  p.ref_id as refId, p.card_type as cardType, p.card_number as cardNumber"
+					+ "p.firstname as firstname,  p.ref_id as refId"
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id like ? ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") ");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
-			pstmt.setObject(2, "%"+search+"%");
 			ResultSet set = pstmt.executeQuery();
 			List<SearchByNameEmployeeBean> records = new ArrayList<SearchByNameEmployeeBean>();
 			while(set.next()) {
 				SearchByNameEmployeeBean bean = new SearchByNameEmployeeBean();
 				bean.setId(Integer.parseInt(set.getString("refId")));
 				bean.setFullName(set.getString("surname")+" "+set.getString("firstname"));
-				bean.setCardType(set.getString("cardType"));
-				bean.setCardNumber(set.getString("cardNumber"));
+				/*bean.setCardType(set.getString("cardType"));
+				bean.setCardNumber(set.getString("cardNumber"));*/
 				records.add(bean);
 			}
 			return records;
@@ -344,7 +344,7 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	@Override
-	public int getAdvanceSearchRecordForAllACardCount() {
+	public int getAdvanceSearchRecordForAllACardCount(String ids) {
 		
 		try {
 			/*Query query = getCurrentSession().createSQLQuery("select count(*) "
@@ -359,9 +359,9 @@ public class PersonServiceImpl implements PersonService {
 			
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select count(*) "
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.card_type = ? ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") ");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
-			pstmt.setObject(2, "A");
+			/*pstmt.setObject(2, "A");*/
 			ResultSet set = pstmt.executeQuery();
 			if(set.next()) {
 				int count = set.getInt(1);
@@ -374,7 +374,7 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	@Override
-	public int getAdvanceSearchRecordForAllBCardCount() {
+	public int getAdvanceSearchRecordForAllBCardCount(String ids) {
 		
 		try {
 			/*Query query = getCurrentSession().createSQLQuery("select count(*) "
@@ -388,9 +388,9 @@ public class PersonServiceImpl implements PersonService {
 			}*/
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select count(*) "
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.card_type = ? ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") ");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
-			pstmt.setObject(2, "B");
+			/*pstmt.setObject(2, "B");*/
 			ResultSet set = pstmt.executeQuery();
 			if(set.next()) {
 				int count = set.getInt(1);
@@ -402,40 +402,6 @@ public class PersonServiceImpl implements PersonService {
 		return 0;
 	}
 	
-	@Override
-	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllACardByLimit(int start, int length) {
-		
-		try {
-			
-			/*Query query = getCurrentSession().createQuery("select p.surname as surname, "
-					+ "p.firstname as firstname,  p.date_of_birth as dateOfBirth, p.trainer_name as trainerName, "
-					+ "p.card_type as cardType, p.card_number as cardNumber"
-					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.card_type = ? LIMIT ?, ? ");
-			query.setLong(0, RoleEnum.EMPLOYEE.getId());
-			query.setString(1, "A");
-			query.setInteger(2, start);
-			query.setInteger(3, length);
-			List<Object[]> records = query.list();
-			return getAdvanceSearchRecords(records);*/
-			
-			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
-					+ "p.firstname as firstname,  p.date_of_birth as dateOfBirth, p.trainer_name as trainerName, "
-					+ "p.card_type as cardType, p.card_number as cardNumber"
-					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.card_type = ? LIMIT ?, ? ");
-			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
-			pstmt.setObject(2, "A");
-			pstmt.setInt(3, start);
-			pstmt.setInt(4, length);
-			System.out.println();
-			ResultSet set = pstmt.executeQuery();
-			return getAdvanceSearchRecords(set);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
 	private List<AdvanceSearchRecordBean> getAdvanceSearchRecords(
 			List<Object[]> records) {
@@ -455,9 +421,47 @@ public class PersonServiceImpl implements PersonService {
 		}
 		return results;
 	}
+	
+	@Override
+	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllACardByLimit(int start, int length,
+			String ids) {
+		
+		try {
+			
+			/*Query query = getCurrentSession().createQuery("select p.surname as surname, "
+					+ "p.firstname as firstname,  p.date_of_birth as dateOfBirth, p.trainer_name as trainerName, "
+					+ "p.card_type as cardType, p.card_number as cardNumber"
+					+ " from person as p join person_role as pr "
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.card_type = ? LIMIT ?, ? ");
+			query.setLong(0, RoleEnum.EMPLOYEE.getId());
+			query.setString(1, "A");
+			query.setInteger(2, start);
+			query.setInteger(3, length);
+			List<Object[]> records = query.list();
+			return getAdvanceSearchRecords(records);*/
+			
+			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
+					+ "p.firstname as firstname,  p.date_of_birth as dateOfBirth, p.trainer_name as trainerName, "
+					/*+ "p.card_type as cardType, p.card_number as cardNumber"*/
+					+" p.ref_id as id "
+					+ " from person as p join person_role as pr "
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") LIMIT ?, ? ");
+			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
+			/*pstmt.setObject(2, "A");*/
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, length);
+			System.out.println();
+			ResultSet set = pstmt.executeQuery();
+			return getAdvanceSearchRecords(set);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	@Override
-	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllBCardByLimit(int start, int length) {
+	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllBCardByLimit(int start, int length,
+			String ids) {
 		
 		try {
 			
@@ -475,13 +479,14 @@ public class PersonServiceImpl implements PersonService {
 			
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
 					+ "p.firstname as firstname,  p.date_of_birth as dateOfBirth, p.trainer_name as trainerName, "
-					+ "p.card_type as cardType, p.card_number as cardNumber"
+					/*+ "p.card_type as cardType, p.card_number as cardNumber"*/
+					+" p.ref_id as id "
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.card_type = ? LIMIT ?, ?");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") LIMIT ?, ?");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
-			pstmt.setObject(2, "B");
-			pstmt.setInt(3, start);
-			pstmt.setInt(4, length);
+			/*pstmt.setObject(2, "B");*/
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, length);
 			ResultSet set = pstmt.executeQuery();
 			return getAdvanceSearchRecords(set);
 		} catch(Exception e) {
@@ -491,7 +496,7 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	@Override
-	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllACard() {
+	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllACard(String ids) {
 		
 		try {
 			
@@ -507,11 +512,12 @@ public class PersonServiceImpl implements PersonService {
 			
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
 					+ "p.firstname as firstname,  p.date_of_birth as dateOfBirth, p.trainer_name as trainerName, "
-					+ "p.card_type as cardType, p.card_number as cardNumber"
+					+" p.ref_id as id "
+					/*+ "p.card_type as cardType, p.card_number as cardNumber"*/
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.card_type = ? ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") ");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
-			pstmt.setObject(2, "A");
+			/*pstmt.setObject(2, "A");*/
 			ResultSet set = pstmt.executeQuery();
 			return getAdvanceSearchRecords(set);
 		} catch(Exception e) {
@@ -521,7 +527,7 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	@Override
-	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllBCard() {
+	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllBCard(String ids) {
 		
 		try {
 			/*Query query = getCurrentSession().createQuery("select p.surname as surname, "
@@ -536,11 +542,12 @@ public class PersonServiceImpl implements PersonService {
 			
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
 					+ "p.firstname as firstname,  p.date_of_birth as dateOfBirth, p.trainer_name as trainerName, "
-					+ "p.card_type as cardType, p.card_number as cardNumber"
+					/*+ "p.card_type as cardType, p.card_number as cardNumber"*/
+					+" p.ref_id as id "
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.card_type = ? ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") ");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
-			pstmt.setObject(2, "B");
+			/*pstmt.setObject(2, "B");*/
 			ResultSet set = pstmt.executeQuery();
 			return getAdvanceSearchRecords(set);
 		} catch(Exception e) {
@@ -556,9 +563,10 @@ public class PersonServiceImpl implements PersonService {
 		while(set.next()) {
 			AdvanceSearchRecordBean bean = new AdvanceSearchRecordBean();
 			bean.setName(set.getString("surname")+" "+set.getString("firstname"));
-			bean.setCardNumber(set.getString("cardType")+" "+set.getString("cardNumber"));
+			/*bean.setCardNumber(set.getString("cardType")+" "+set.getString("cardNumber"));*/
 			bean.setDateOfBirth(set.getDate("dateOfBirth"));
 			bean.setTrainerName(set.getString("trainerName"));
+			bean.setId(set.getInt("id"));
 			records.add(bean);
 		}
 		return records;
@@ -598,8 +606,9 @@ public class PersonServiceImpl implements PersonService {
 	public HashMap<String, Object> getEmpNameAndNumberById(Integer empId) {
 		
 		try {
+			/*,  p.card_number as cardNumber*/
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
-					+ "p.firstname as firstname,  p.card_number as cardNumber "
+					+ "p.firstname as firstname "
 					+ " from person as p join person_role as pr "
 					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id  = ? order by p.surname ");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
@@ -618,7 +627,7 @@ public class PersonServiceImpl implements PersonService {
 		while(set.next()) {
 			record = new HashMap<String, Object>();
 			record.put("name", set.getString("firstname")+" "+set.getString("surname"));
-			record.put("cardNumber", set.getString("cardNumber"));
+			/*record.put("cardNumber", set.getString("cardNumber"));*/
 		}
 		return record;
 	}

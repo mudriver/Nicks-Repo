@@ -241,8 +241,8 @@
 						if(data.length > 0) {
 							response( $.map(data, function( item ) {
 					              return {			            	  
-					                label: item.id + " - "+ item.fullName,
-					                value: item.id,
+					                label: item.cardNumber + " - "+ item.fullName,
+					                value: item.fullName,
 					                id: item.id
 					              }
 							}));

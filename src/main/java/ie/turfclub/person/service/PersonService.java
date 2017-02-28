@@ -21,21 +21,21 @@ public interface PersonService {
 
 	public List<SearchByNameEmployeeBean> getEmployeeByName(String search);
 
-	public List<SearchByNameEmployeeBean> getEmployeeByCardNumber(String search);
+	public List<SearchByNameEmployeeBean> getEmployeeByCardNumber(String ids);
 
-	public int getAdvanceSearchRecordForAllACardCount();
+	public int getAdvanceSearchRecordForAllACardCount(String ids);
 
-	public int getAdvanceSearchRecordForAllBCardCount();
+	public int getAdvanceSearchRecordForAllBCardCount(String ids);
 
 	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllACardByLimit(
-			int start, int length);
+			int start, int length, String ids);
 
 	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllBCardByLimit(
-			int start, int length);
+			int start, int length, String ids);
 
-	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllACard();
+	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllACard(String ids);
 	
-	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllBCard();
+	public List<AdvanceSearchRecordBean> getAdvanceSearchRecordForAllBCard(String ids);
 
 	public List<TrainerUserBean> getTrainerUserBean();
 
