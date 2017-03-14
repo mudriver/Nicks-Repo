@@ -37,14 +37,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
-import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
-import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -56,11 +50,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
+import org.hibernate.transform.Transformers;
 import org.joda.time.DateTime;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
@@ -1759,5 +1750,102 @@ public class TrainerServiceImpl implements TrainersService {
 		return null;
 	}
 	
+	@Override
+	public List<HashMap<String, Object>> getAintreeRecord(int start, int end, HttpSession session) {
+		
+		Calendar prevYear = Calendar.getInstance();
+	    prevYear.add(Calendar.YEAR, -1);
+	    double previousYear = prevYear.get(Calendar.YEAR);
+		
+		String hql1 = "select new map(t.trainerId as tId, e.employeesEmployeeId as eId) from TeEmployentHistory as teh,"
+				+ "TeTrainers as t, TeEmployees as e where "
+				+ " teh.teTrainers.trainerId = t.trainerId and "
+				+ "teh.teEmployees.employeesEmployeeId = e.employeesEmployeeId and teh.ehDateTo is null "
+				+ " and e.employeeLastYearPaid="+previousYear+" order by t.trainerId";
+		//List<HashMap<String, Object>> records = getCurrentSession().createSQLQuery(hql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+		List<HashMap<String, Object>> records = getCurrentSession().createQuery(hql1).list();
+		
+		List<HashMap<String, Object>> results = new ArrayList<HashMap<String,Object>>();
+		
+		Integer lastTrainerId = null;
+		for (int i=start; i < end; i++) {
+			lastTrainerId = (Integer) session.getAttribute("lastTrainerId");
+			HashMap<String, Object> record = records.get(i);
+			Integer eId = (Integer) record.get("eId");
+			Integer tId = (Integer) record.get("tId");
+			
+			HashMap<String, Object> eMap = personService.getEmployeeById(eId);
+			if(lastTrainerId == null || (lastTrainerId != null && !lastTrainerId.equals(tId))) {
+				HashMap<String, Object> tMap = personService.getTrainerById(tId);
+				tMap = (tMap != null ) ? tMap : new HashMap<String, Object>();
+				tMap.put("isTrainer", true);
+				tMap.put("isEmployee", false);
+				
+				if(eMap != null)
+					results.add(tMap);
+				else
+					continue;
+			}
+			
+			if(eMap == null)
+				continue;
+			
+			eMap = (eMap != null) ? eMap : new HashMap<String, Object>();
+			eMap.put("isEmployee", true);
+			eMap.put("isTrainer", false);
+			results.add(eMap);
+			session.setAttribute("lastTrainerId", tId);
+		}
+		return results;
+	}
 	
+	@Override
+	public List<HashMap<String, Object>> getAintreeRecord() {
+		
+		Calendar prevYear = Calendar.getInstance();
+	    prevYear.add(Calendar.YEAR, -1);
+	    double previousYear = prevYear.get(Calendar.YEAR);
+		
+		String hql1 = "select new map(t.trainerId as tId, e.employeesEmployeeId as eId) from TeEmployentHistory as teh,"
+				+ "TeTrainers as t, TeEmployees as e where "
+				+ " teh.teTrainers.trainerId = t.trainerId and "
+				+ "teh.teEmployees.employeesEmployeeId = e.employeesEmployeeId and teh.ehDateTo is null "
+				+ " and e.employeeLastYearPaid="+previousYear+" order by t.trainerId";
+		//List<HashMap<String, Object>> records = getCurrentSession().createSQLQuery(hql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+		List<HashMap<String, Object>> records = getCurrentSession().createQuery(hql1).list();
+		
+		List<HashMap<String, Object>> results = new ArrayList<HashMap<String,Object>>();
+		
+		Integer lastTrainerId = null;
+		//records.size()
+		for (int i=0; i < records.size() ; i++) {
+			
+			HashMap<String, Object> record = records.get(i);
+			Integer eId = (Integer) record.get("eId");
+			Integer tId = (Integer) record.get("tId");
+			
+			HashMap<String, Object> eMap = personService.getEmployeeById(eId);
+			if(lastTrainerId == null || (lastTrainerId != null && !lastTrainerId.equals(tId))) {
+				HashMap<String, Object> tMap = personService.getTrainerById(tId);
+				tMap = (tMap != null ) ? tMap : new HashMap<String, Object>();
+				tMap.put("isTrainer", true);
+				tMap.put("isEmployee", false);
+				
+				if(eMap != null)
+					results.add(tMap);
+				else
+					continue;
+			}
+			
+			if(eMap == null)
+				continue;
+			
+			eMap = (eMap != null) ? eMap : new HashMap<String, Object>();
+			eMap.put("isEmployee", true);
+			eMap.put("isTrainer", false);
+			results.add(eMap);
+			lastTrainerId = tId;
+		}
+		return results;
+	}
 }

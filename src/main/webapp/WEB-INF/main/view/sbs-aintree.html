@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head data-th-fragment="header">
+<meta charset="utf-8" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="expires" content="-1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title th:text="#{button.aintree}">Aintree</title>
+
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/sb-admin-2.css"
+	data-th-href="@{/resources/css/sb-admin-2.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<style>
+	.labelVal { font-weight: normal !important;}
+	/* .section-card { padding-left: 200px; padding-right: 200px;} */
+	.line-height-0 { line-height: 2;}
+	@media print {
+	  body * {
+	    visibility: visible;
+	  }
+	  .hidden-to-print {
+	    visibility: hidden;
+	    display: none !important;
+	  }
+	}
+	#aintreeRecordDiv {
+	   padding-left: 70px;
+	   background: white;
+	   margin-top: 15px;
+	   width: 97%;
+	   margin-left: 15px;
+	   margin-right: 15px;
+	   margin-bottom: 15px;
+	   display: inline-block;
+	   padding-right: 70px;
+	   padding-top: 20px;
+	   padding-bottom: 20px;
+	}
+	#loadMoreDataDiv {clear: both; text-align: center; padding: 15px; }
+	.blue-border {border: 2px solid blue;}
+	#aintreeHeader {
+		border-top: 2px solid blue;
+	    display: inline-table;
+	    border-bottom: 2px solid blue;
+	    width: 97%;
+	    text-align: ce;
+	    color: blue;
+	    font-weight: bold;
+    }
+	span.col-sm-4 { margin-top: 8px;}
+	.color-blue { color: blue;}
+</style>
+</head>
+<body>
+	
+	<div id="aintreeRecordDiv">
+	
+		<div style="text-align: center;">
+			
+			<div class="col-sm-4">
+				<a href="/turfclubPrograms/employees/manageStaff">Back</a>
+				<span id="workingStatus" style="display: none;" th:text="#{pdf.creating}"></span>
+			</div>
+			<div class="col-sm-4">
+				<a href="javascript:void(0);" id="printButton" class="col-sm-12"><i class="fa fa-print"></i>Print</a>
+				<span id="checkStatus" style="display: none;"><a href="javascript:void(0);" th:onclick="'javascript:checkPDFStatus()'" ><span th:text="#{check.status}"></span></a></span>
+			</div>
+			<div class="col-sm-4">
+				<span id="downloadStatus" style="display: none;"><a href="javascript:void(0);" th:onclick="'javascript:downloadPDF()'"><span th:text="#{download.pdf}"></span></a></span>
+			</div>
+		</div>
+		<h3 class="color-blue" th:text="#{button.aintree}" >Aintree</h3>
+		
+		<div id="aintreeHeader">
+			<div>
+				<span class="col-sm-4">Current Trainer</span>
+				<span class="col-sm-4">Surname</span>
+				<span class="col-sm-4">Firstname</span>
+			</div>
+		</div>
+		<div th:each="rec , itrStat : ${records}">
+			<div  th:if="${rec[isTrainer]}">
+				<span class="col-sm-4 color-blue" data-th-text="${rec[name]}"></span>
+				<span class="col-sm-4">&nbsp;</span>
+				<span class="col-sm-4">&nbsp;</span>
+			</div>
+			<div th:if="${rec[isEmployee]}">
+				<span class="col-sm-4">&nbsp;</span>
+				<span class="col-sm-4" data-th-text="${rec[surname]}"></span>
+				<span class="col-sm-4" data-th-text="${rec[firstname]}"></span>
+			</div>
+		</div>
+	</div>
+	
+	<div id="loadMoreDataDiv">
+		<a href="javascript:void(0);" id="loadMoreData">Load More Data</a>
+	</div>
+	
+	<script type="text/javascript"
+		src="../../resources/js/jquery-2.1.1.min.js"
+		data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+	<script type="text/javascript"
+		src="../../resources/js/bootstrap.min.js"
+		data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+
+	<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/	
+        var page = 1;
+        var backUrl = [[${backUrl}]];
+    	$(function() {
+    		
+    		checkPDFStatus();
+    		
+    		$('#printButton').click(function() {
+    			
+    			$.ajax({
+    				url:'/turfclubPrograms/trainers/aintree/print',
+    				type:'GET',
+    				data : {},
+    				success: function(data) {
+    					
+    				}
+    			});
+    			setTimeout(function() {
+    				checkPDFStatus();
+    			}, 3000);
+    		});
+    		
+    		$('#loadMoreData').click(function(data) {
+    			$.ajax({
+    				url:'/turfclubPrograms/trainers/aintree/page',
+    				type:'GET',
+    				data : {page: page},
+    				success: function(data) {
+    					$('#aintreeRecordDiv').append(data);
+    					++page;
+    				}
+    			});
+    		});
+    	});       
+    	
+    	function downloadPDF() {
+    		checkPDFStatus();
+    		window.location.replace('/turfclubPrograms/trainers/aintree/print/download');
+    	}
+    	
+    	function checkPDFStatus() {
+    		$.ajax({
+				url:'/turfclubPrograms/trainers/aintree/printStatus',
+				type:'GET',
+				data : {},
+				success: function(data) {
+					$('#printButton').hide();
+					$('workingStatus').hide();
+					$('#downloadStatus').hide();
+					$('#checkStatus').hide();
+					if(data == 'null') {
+						$('#printButton').show();
+						$('#workingStatus').hide();
+						$('#downloadStatus').hide();
+						$('#checkStatus').hide();
+					} else if(data == 'done') {
+						$('#printButton').hide();
+						$('#workingStatus').hide();
+						$('#downloadStatus').show();
+						$('#checkStatus').hide();
+					} else if(data == 'working') {
+						$('#printButton').hide();
+						$('#workingStatus').show();
+						$('#downloadStatus').hide();
+						$('#checkStatus').show();
+					}
+				}
+			});
+    	}
+   	/*]]>*/
+    </script>    
+</body>
+</html>

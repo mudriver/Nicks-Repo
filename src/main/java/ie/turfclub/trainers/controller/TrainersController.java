@@ -2,6 +2,7 @@ package ie.turfclub.trainers.controller;
 
 import ie.turfclub.common.bean.SearchByNameTrainerBean;
 import ie.turfclub.common.bean.TrainerUserBean;
+import ie.turfclub.common.thread.PrintAintreeThread;
 import ie.turfclub.main.model.login.User;
 import ie.turfclub.main.service.downloads.DownloadService;
 import ie.turfclub.main.service.downloads.TokenService;
@@ -16,7 +17,10 @@ import ie.turfclub.trainers.service.TrainersService;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +31,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -308,6 +313,85 @@ public class TrainersController {
 		List<TrainerUserBean> records = personService.getTrainerUserBean();
 		model.addAttribute("records", records);
 		return "trainer-list";
+	}
+	
+	@RequestMapping(value = "/aintree", method = RequestMethod.GET)
+	public String getAintreePage(Model model, Authentication authentication,
+			HttpServletRequest request) {
+
+		int start = 0;
+		int end = 20;
+		HttpSession session = request.getSession();
+		session.setAttribute("lastTrainerId", null);
+		List<HashMap<String, Object>> records = trainersService.getAintreeRecord(start, end, session);
+		model.addAttribute("records", records);
+		return "sbs-aintree";
+	}
+	
+	@RequestMapping(value = "/aintree/print", method = RequestMethod.GET)
+	@ResponseBody
+	public String getAintreePrint(Model model, Authentication authentication,
+			HttpServletRequest request) {
+		
+		request.getSession().setAttribute("aintreeStatus", "working");
+		PrintAintreeThread printAintreeThread = new PrintAintreeThread(trainersService, env.getRequiredProperty("upload.pdf.aintree"), request.getSession());
+		Thread thread = new Thread(printAintreeThread);
+		thread.start();
+		return "Success";
+	}
+	
+	@RequestMapping(value = "/aintree/print/download", method = RequestMethod.GET)
+	public void getAintreePrintDownload(Model model, Authentication authentication,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		FileInputStream baos = new FileInputStream(env.getRequiredProperty("upload.pdf.aintree"));
+		request.getSession().setAttribute("aintreeStatus", "null");
+        response.setHeader("Expires", "0");
+        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+        response.setContentType("application/pdf");
+        response.addHeader("Content-Disposition", "attachment; filename=aintree.pdf");
+
+        OutputStream os = response.getOutputStream();
+
+        byte buffer[] = new byte[8192];
+        int bytesRead;
+
+        while ((bytesRead = baos.read(buffer)) != -1) {
+            os.write(buffer, 0, bytesRead);
+        }
+
+        os.flush();
+        os.close();
+	}
+	
+	@RequestMapping(value = "/aintree/printStatus", method = RequestMethod.GET)
+	@ResponseBody
+	public String getAintreePrintStatus(Model model, Authentication authentication,
+			HttpServletRequest request) {
+		
+		String status = (String) request.getSession().getAttribute("aintreeStatus");
+		if(status != null && !status.equalsIgnoreCase("undefined") && status.equalsIgnoreCase("done")) {
+			//request.getSession().setAttribute("aintreeStatus", null);
+			return "done";
+		} else if(status != null && !status.equalsIgnoreCase("undefined") && status.equalsIgnoreCase("done")) {
+			return "working";
+		} else {
+			return "null";
+		}
+	}
+	
+	@RequestMapping(value = "/aintree/page", method = RequestMethod.GET)
+	public String getAintreePageByPage(Model model, Authentication authentication, 
+			HttpServletRequest req) {
+
+		int page = Integer.parseInt(req.getParameter("page"));
+		int start = page * 20;
+		int end = (page+1) * 20;
+		HttpSession session = req.getSession();
+		List<HashMap<String, Object>> records = trainersService.getAintreeRecord(start, end, session);
+		model.addAttribute("records", records);
+		return "sbs-aintree-page";
 	}
 
 	@RequestMapping(value = "/{id}/employees/{type}", method = RequestMethod.GET)

@@ -43,7 +43,7 @@
         .width-60 { width: 60%;}
         .width-100 {width: 100%;}
         h1 { color: black !important;}
-        .home-links {color: #777;}
+        
     </style>
      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -66,13 +66,15 @@
    		<span></span>
    	</div>
     
-    <div class="home-parent" style="margin: auto;width: 60%;text-align: center;background-color: white;">
+    <div class="home-parent" style="margin: auto;width: 60%;text-align: center;">
     	<div class="home-links-parent">
     		<a data-th-href="@{/trainers/sbs/uploadPage}" id="saveHRIReport" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{save.hri.report.here}">1. Save HRI Report Here</span></a>
     	</div>
     	<div class="home-links-parent">
-    		<a href="javascript:void(0);" id="initialLetterLink" class="home-links col-sm-6">&nbsp;&nbsp;<span data-th-text="#{generate.initial.letter.labels}">2. Generate Initial Letter/Labels</span></a>
-    		<a href="javascript:void(0);" id="reprintLink" class="home-links col-sm-6">&nbsp;&nbsp;<span data-th-text="#{reprint}">Reprint</span></a>
+    		<a href="javascript:void(0);" id="initialLetterLink" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{generate.initial.letter.labels}">2. Generate Initial Letter/Labels</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a href="javascript:void(0);" id="reprintLink" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{reprint}">Reprint</span></a>
     	</div>
     	<div class="home-links-parent">
     		<a th:href="@{/trainers/sbs/returned}" class="home-links col-sm-12">&nbsp;&nbsp;<span data-th-text="#{enter.agreements.returned}">3. Enter Agreements Returned</span></a>

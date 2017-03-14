@@ -653,8 +653,59 @@ public class PersonServiceImpl implements PersonService {
 		while(set.next()) {
 			String mobile = set.getString("mobileNo");
 			mobile = mobile.replaceAll("[^\\d0-9]", "");
-			csmMobile += mobile+"\n";
+			csmMobile += mobile+"\n\r";
 		}
 		return csmMobile;
+	}
+	
+	@Override
+	public HashMap<String, Object> getEmployeeById(Integer empId) {
+		
+		try {
+			/*,  p.card_number as cardNumber*/
+			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
+					+ "p.firstname as firstname "
+					+ " from person as p join person_role as pr "
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id  = ? ");
+			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
+			pstmt.setObject(2, empId);
+			ResultSet set = pstmt.executeQuery();
+			HashMap<String, Object> record = null;
+			while(set.next()) {
+				record = new HashMap<String, Object>();
+				/*record.put("name", set.getString("firstname")+" "+set.getString("surname"));*/
+				/*record.put("cardNumber", set.getString("cardNumber"));*/
+				record.put("surname", set.getString("surname"));
+				record.put("firstname", set.getString("firstname"));
+			}
+			return record;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public HashMap<String, Object> getTrainerById(Integer tId) {
+		
+		try {
+			/*,  p.card_number as cardNumber*/
+			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
+					+ "p.firstname as firstname "
+					+ " from person as p join person_role as pr "
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id  = ? ");
+			pstmt.setObject(1, RoleEnum.TRAINER.getId());
+			pstmt.setObject(2, tId);
+			ResultSet set = pstmt.executeQuery();
+			HashMap<String, Object> record = null;
+			while(set.next()) {
+				record = new HashMap<String, Object>();
+				record.put("name", set.getString("firstname")+" "+set.getString("surname"));
+			}
+			return record;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

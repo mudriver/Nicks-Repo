@@ -42,4 +42,8 @@ public interface PersonService {
 	public HashMap<String, Object> getEmpNameAndNumberById(Integer empId);
 
 	public String getTrainerMobileNumbers(String cmsIds);
+
+	public HashMap<String, Object> getTrainerById(Integer tId);
+
+	public HashMap<String, Object> getEmployeeById(Integer eId);
 }

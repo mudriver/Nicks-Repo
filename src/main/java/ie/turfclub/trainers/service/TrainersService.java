@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import com.lowagie.text.pdf.PdfPTable;
 
 public interface TrainersService {
@@ -66,5 +68,7 @@ public interface TrainersService {
 	public List<SearchByNameTrainerBean> findByName(String search) throws Exception;
 	public String getCSVStringForTrainerEmployees(Integer id, String type);
 	public PdfPTable createPDFDocumentWithDetails(Integer id, String type);
+	public List<HashMap<String, Object>> getAintreeRecord(int start, int end, HttpSession session);
+	public List<HashMap<String, Object>> getAintreeRecord();
 	
 }

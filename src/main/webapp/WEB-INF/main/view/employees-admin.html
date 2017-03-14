@@ -63,67 +63,17 @@
    	</div>
     
     <div class="home-parent" data-th-with="role=${#httpServletRequest.userPrincipal?.authorities[0].authority}">
-    	<!-- <div class="home-links-parent">
-    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.employee.printouts}">Employee Printouts</span></a>
-    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.stableyard.list}">StableYard List</span></a>
-    	</div>-->
     	<div class="home-links-parent">
-    		<a href="#/empAdd" data-th-href="@{/employees/add}" class="home-links col-sm-6"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.add.new.employee}">Add new Employee</span></a>
-    		<a data-th-href="@{/trainers/list}" class="home-links col-sm-6"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.list.trainers.employees}">List Trainer's Employees</span></a>
+    		<a href="javascript:void(0)" class="home-links col-sm-6" id="copyRecordTrainer"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.save.trainer.record.into.person.table}">Save Trainer Record into Person table</span></a>
+    		<a href="javascript:void(0);" id="encryptPPSLink" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.encrypt.pps.number}">Encrypt PPS Number</span></a>
     	</div>
     	<div class="home-links-parent">
-    		<a data-th-href="@{/employees/searchByName}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.for.employee}">Search For Employee</span></a>
-    		<a data-th-href="@{/employees/partFullTimeStat}" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.full.time.part.time.stats}">Full Time / Part Time Stats</span></a>
-    	</div>
-    	<div class="home-links-parent">
-    		<a href="javascript:void(0);" class="home-links col-sm-6"><i class="fa fa-arrows" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.create.air.file.transfer}">Create AIR File Transfer</span></a>
-    		<a data-th-href="@{/trainers/sbs/get}" class="home-links col-sm-6"><i class="fa fa-database" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.stable.bonus.scheme}">Stable Bonus Scheme</span></a>
-    	</div>
-    	<div class="home-links-parent">
-    		<a data-th-href="@{/trainers/searchPage}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.for.trainer}">Search For Trainer</span></a>
-    		<a data-th-href="@{/employees/advSearch}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.advance.search}">Advance Search</span></a>
-    	</div>
-    	<div class="home-links-parent">
-    		<a data-th-href="@{/trainers/add}" class="home-links col-sm-6"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.add.trainer}">Add Trainer</span></a>
-    		<a th:if="${role == 'SUPER_USER'}" data-th-href="@{/user/searchPage}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.user}">Search User</span></a>
-    	</div>
-    	<div class="home-links-parent">
-    		<div class="col-sm-6">&nbsp;</div>
-    		<div class="col-sm-6">
-    			<button class="btn btn-default" id="aintreeBtn"><span data-th-text="#{button.aintree}"></span></button>
-    			<button class="btn btn-default" id="cheltenhamBtn"><span data-th-text="#{button.cheltenham}"></span></button>
-    		</div>
+    		<a href="javascript:void(0)" class="home-links col-sm-6" id="copyRecordEmployee"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.save.employee.record.into.person.table}">Save Employee Record into Person table</span></a>
+    		<a data-th-href="@{/user/add}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.add.user}">Add User</span></a>
     	</div>
     </div>
 </div>              <!-- /#wrapper -->
 
-	<!-- Modal -->
-	<div id="searchNumberModal" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-		
-		  <!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Search By Number</h4>
-				</div>
-				<div class="modal-body">
-					<form class="form-inline" id="searchNumberForm" role="form">
-					 	<div class="form-group width-100">
-							<label for="" class="width-40">Number :</label>
-				  				<input type="text" id="searchNumber" name="searchNumber" class="form-control input-sm width-60"/>
-						</div>
-				 	</form>
-				</div>
-				<div class="modal-footer">
-					<!-- <button type="button" class="btn btn-default">Search</button> -->
-				  	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		
-		</div>
-	</div>
-	
 	<div id="copyRecordEmployeeModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 		

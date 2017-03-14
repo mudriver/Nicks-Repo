@@ -50,6 +50,14 @@ public class EmployeeController {
 	@Autowired
 	private MessageSource messageSource;
 	
+	@RequestMapping(value="/admin", method=RequestMethod.GET)
+	public String getEmployeesAdminPage(HttpServletRequest request, ModelMap model) {
+		
+		List<HashMap<String, Object>> cards = employeeService.getAllCards();
+		model.addAttribute("cards", cards);
+		return "employees-admin";
+	}
+	
 	@RequestMapping(value="/manageStaff", method=RequestMethod.GET)
 	public String getManageStaffPage(HttpServletRequest request, ModelMap model) {
 		
