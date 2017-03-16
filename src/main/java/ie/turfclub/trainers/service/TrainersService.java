@@ -70,5 +70,9 @@ public interface TrainersService {
 	public PdfPTable createPDFDocumentWithDetails(Integer id, String type);
 	public List<HashMap<String, Object>> getAintreeRecord(int start, int end, HttpSession session);
 	public List<HashMap<String, Object>> getAintreeRecord();
+	public void handleStableListAdministrationReturYearPage(String year);
+	public void handleTrainerEmployeeOnlineReturYearPage(String year);
+	public String getYearForTrainerEmployeeOnline();
+	public String getYearForStaffListAdministrator();
 	
 }

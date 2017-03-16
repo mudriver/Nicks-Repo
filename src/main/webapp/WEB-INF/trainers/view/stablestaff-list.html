@@ -41,12 +41,22 @@
 <link rel="stylesheet" type="text/css"
 	data-th-href="@{/resources/js/angularjs/plugins/uploader/css/jquery.fileupload-ui.css}"/>
 
-
 <script type="text/javascript"
 	src="../../resources/js/jquery-2.1.1.min.js"
 	data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
 <script type="text/javascript" src="../../resources/js/validator.min.js"
 	data-th-src="@{/resources/js/validator.min.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+	/*<![CDATA[*/
+	
+	var teoYear = [[${teoYear}]];
+	$(function() {
+		//teoYear = $('#teoYear').val();
+	});
+	/*]]>*/
+</script>
+
+
 <script type="text/javascript"
 	src="../../resources/js/stableStaff/stablestaff-list.js"
 	data-th-src="@{/resources/js/stableStaff/stablestaff-list.js}"></script>
@@ -521,7 +531,7 @@
 					<div data-th-if="${!viewOnly}" class="row new-employees">
 						<div class="col-xs-12">
 							<h4 class="text-uppercase white">
-								<u data-th-text="#{stablestaff.list.uploadP35.label}"></u><u data-th-text="${(#dates.year(#dates.createNow()))-1}"></u>
+								<u data-th-text="#{stablestaff.list.uploadP35.label}"></u><u id="teoCurrYear" data-th-text="${(#dates.year(#dates.createNow()))-1}"></u>
 							</h4>
 						</div>
 					</div>

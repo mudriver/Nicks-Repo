@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
 import ie.turfclub.main.model.login.User;
 import ie.turfclub.main.pojos.StatusResponse;
 import ie.turfclub.main.service.downloads.DownloadService;
@@ -39,7 +40,9 @@ import ie.turfclub.trainers.model.TeEmployentHistory;
 import ie.turfclub.trainers.model.TeTrainers;
 import ie.turfclub.trainers.service.FileService;
 import ie.turfclub.trainers.service.StableStaffService;
+import ie.turfclub.trainers.service.TrainersService;
 import ie.turfclub.utilities.EmployeeHistoryUtils;
+
 
 
 
@@ -83,7 +86,8 @@ public class StableStaffController {
 	private DownloadService downloadService;
 	@Autowired
 	private FileService fileService;
-	
+	@Autowired
+	private TrainersService trainerService;
 	@Autowired
 	private TokenService tokenService;
 
@@ -120,6 +124,7 @@ public class StableStaffController {
 		model.addAttribute("trainer", trainer);
 		model.addAttribute("trainerId", trainerId);
 		model.addAttribute("USERMENUTYPE", "STABLESTAFF_PENSION");
+		model.addAttribute("teoYear", trainerService.getYearForTrainerEmployeeOnline());
 
 		return "stablestaff-list";
 	}
@@ -132,7 +137,7 @@ public class StableStaffController {
 		System.out.println(trainerId);
 		TeTrainers trainer = stableStaffService.getTrainer(trainerId);
 		model.addAttribute("returnComplete", trainer.isTrainerReturnComplete());
-		model.addAttribute("returnDate", "18/11/2015");
+		model.addAttribute("returnDate", "18/11/"+trainerService.getYearForTrainerEmployeeOnline());
 		model.addAttribute("trainerId", trainerId);
 		//model.addAttribute("p35Returned", fileService.hasFiles(trainer.getTrainerAccountNo()));
 		model.addAttribute("USERMENUTYPE", "STABLESTAFF_PENSION");

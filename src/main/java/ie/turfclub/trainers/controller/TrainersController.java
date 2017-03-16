@@ -95,6 +95,32 @@ public class TrainersController {
 	@Autowired
 	private StableBonusSchemeService sbsService;
 	
+	@RequestMapping(value="/admin/slayear", method=RequestMethod.GET)
+	public String getStableListAdministrationReturYearPage(HttpServletRequest req, ModelMap model) {
+		return "admin-slayear";
+	}
+	
+	@RequestMapping(value="/admin/teoyear", method=RequestMethod.GET)
+	public String getTrainerEmployeeOnlineReturYearPage(HttpServletRequest req, ModelMap model) {
+		return "admin-teoyear";
+	}
+	
+	@RequestMapping(value="/admin/slayear", method=RequestMethod.POST)
+	public String handleStableListAdministrationReturYearPage(HttpServletRequest req, ModelMap model) {
+		String year = req.getParameter("year");
+		trainersService.handleStableListAdministrationReturYearPage(year);
+		model.addAttribute("success", "true");
+		return "admin-slayear";
+	}
+	
+	@RequestMapping(value="/admin/teoyear", method=RequestMethod.POST)
+	public String handleTrainerEmployeeOnlineReturYearPage(HttpServletRequest req, ModelMap model) {
+		String year = req.getParameter("year");
+		trainersService.handleTrainerEmployeeOnlineReturYearPage(year);
+		model.addAttribute("success", "true");
+		return "admin-teoyear";
+	}
+	
 	@RequestMapping(value="/sbs/get", method=RequestMethod.GET)
 	public String getPage(HttpServletRequest req, ModelMap model) {
 		return "sbs-page";

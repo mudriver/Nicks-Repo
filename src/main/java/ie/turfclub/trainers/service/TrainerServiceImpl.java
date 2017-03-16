@@ -1,9 +1,11 @@
 package ie.turfclub.trainers.service;
 
 import ie.turfclub.common.bean.SearchByNameTrainerBean;
+import ie.turfclub.common.enums.ConfigEnum;
 import ie.turfclub.common.enums.RoleEnum;
 import ie.turfclub.person.model.Person;
 import ie.turfclub.person.service.PersonService;
+import ie.turfclub.trainers.model.Config;
 import ie.turfclub.trainers.model.TeAuthorisedReps;
 import ie.turfclub.trainers.model.TeEmployeeTrainerVerified;
 import ie.turfclub.trainers.model.TeEmployees;
@@ -1847,5 +1849,58 @@ public class TrainerServiceImpl implements TrainersService {
 			lastTrainerId = tId;
 		}
 		return results;
+	}
+
+	@Override
+	public void handleStableListAdministrationReturYearPage(String year) {
+		ConfigEnum configEnum = ConfigEnum.STAFFLISTADMINISTRATORYEAR;
+		Criteria criteria = getCurrentSession().createCriteria(Config.class);
+		criteria.add(Restrictions.eq("key", configEnum.getKey()).ignoreCase());
+		List<Config> records = criteria.list();
+		Config config = new Config();
+		config.setCreatedDate(new Date());
+		if(records != null && records.size() > 0) 
+			config = records.get(0);
+		
+		config.setName(configEnum.getName());
+		config.setKey(configEnum.getKey());
+		config.setValue(year);
+		getCurrentSession().saveOrUpdate(config);
+	}
+
+	@Override
+	public void handleTrainerEmployeeOnlineReturYearPage(String year) {
+		ConfigEnum configEnum = ConfigEnum.TRAINEREMPLOYEEONLINEYEAR;
+		Criteria criteria = getCurrentSession().createCriteria(Config.class);
+		criteria.add(Restrictions.eq("key", configEnum.getKey()).ignoreCase());
+		List<Config> records = criteria.list();
+		Config config = new Config();
+		config.setCreatedDate(new Date());
+		if(records != null && records.size() > 0) 
+			config = records.get(0);
+		
+		config.setName(configEnum.getName());
+		config.setKey(configEnum.getKey());
+		config.setValue(year);
+		getCurrentSession().saveOrUpdate(config);
+	}
+	
+	@Override
+	public String getYearForStaffListAdministrator() {
+		
+		ConfigEnum configEnum = ConfigEnum.STAFFLISTADMINISTRATORYEAR;
+		Criteria criteria = getCurrentSession().createCriteria(Config.class);
+		criteria.add(Restrictions.eq("key", configEnum.getKey()).ignoreCase());
+		List<Config> records = criteria.list();
+		return (records != null && records.size() > 0) ? records.get(0).getValue() : "2017";
+	}
+	
+	@Override
+	public String getYearForTrainerEmployeeOnline() {
+		ConfigEnum configEnum = ConfigEnum.TRAINEREMPLOYEEONLINEYEAR;
+		Criteria criteria = getCurrentSession().createCriteria(Config.class);
+		criteria.add(Restrictions.eq("key", configEnum.getKey()).ignoreCase());
+		List<Config> records = criteria.list();
+		return (records != null && records.size() > 0) ? records.get(0).getValue() : "2017";
 	}
 }
