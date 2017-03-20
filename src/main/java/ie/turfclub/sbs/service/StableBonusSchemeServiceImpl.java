@@ -46,6 +46,9 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	@Autowired
 	private ServletContext context;
 	
+	private double dnoOfRecordsInPDFPage = 15.0;
+	private int inoOfRecordsInPDFPage = 15;
+	
 	private Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
 	}
@@ -301,7 +304,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		
 		Date today = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		int noOfBreakLine = 24;
+		int noOfBreakLine = 23;
 		if(results != null && results.size() > 0) {
 			for (HashMap<String, Object> result : results) {
 				
@@ -336,26 +339,28 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 						if(empRecord != null)
 							empLists.add(empRecord);
 					}
-					int noOfPages = (int) Math.ceil((empLists.size()/10.0));
+					int noOfPages = (int) Math.ceil((empLists.size()/dnoOfRecordsInPDFPage));
 					if(noOfPages > 0) {
 						for (int i = 1; i <= noOfPages; i++) {
-							if((i*10)-1 > empLists.size()) {
-								result.put("emp"+i, empLists.subList((i-1)*10, empLists.size()));
-								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*10, empLists.size()).size()));
+							if((i*inoOfRecordsInPDFPage)-1 > empLists.size()) {
+								result.put("emp"+i, empLists.subList((i-1)*inoOfRecordsInPDFPage, empLists.size()));
+								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*inoOfRecordsInPDFPage, empLists.size()).size()));
 							} else {
-								result.put("emp"+i, empLists.subList((i-1)*10, (i*10)-1));
-								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*10, (i*10)-1).size())-1);
+								result.put("emp"+i, empLists.subList((i-1)*inoOfRecordsInPDFPage, (i*inoOfRecordsInPDFPage)-1));
+								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*inoOfRecordsInPDFPage, (i*inoOfRecordsInPDFPage)-1).size())-1);
 							}
 						}
 						result.put("noOfPages", noOfPages);
 					} else {
-						result.put("emp1", new HashMap<String, Object>());
+						List<HashMap<String, Object>> records = new ArrayList<HashMap<String, Object>>();
+						result.put("emp1", records);
 						result.put("space1", noOfBreakLine);
 						result.put("noOfPages", 1);
 					}
 					
 				} else {
-					result.put("emp1", new HashMap<String, Object>());
+					List<HashMap<String, Object>> records = new ArrayList<HashMap<String, Object>>();
+					result.put("emp1", records);
 					result.put("space1", noOfBreakLine);
 					result.put("noOfPages", 1);
 				}
@@ -380,7 +385,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		
 		Date today = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		int noOfBreakLine = 24;
+		int noOfBreakLine = 23;
 		if(results != null && results.size() > 0) {
 			for (HashMap<String, Object> result : results) {
 				
@@ -415,26 +420,28 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 						if(empRecord != null)
 							empLists.add(empRecord);
 					}
-					int noOfPages = (int) Math.ceil((empLists.size()/10.0));
+					int noOfPages = (int) Math.ceil((empLists.size()/dnoOfRecordsInPDFPage));
 					if(noOfPages > 0) {
 						for (int i = 1; i <= noOfPages; i++) {
-							if((i*10)-1 > empLists.size()) {
-								result.put("emp"+i, empLists.subList((i-1)*10, empLists.size()));
-								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*10, empLists.size()).size()));
+							if((i*inoOfRecordsInPDFPage)-1 > empLists.size()) {
+								result.put("emp"+i, empLists.subList((i-1)*inoOfRecordsInPDFPage, empLists.size()));
+								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*inoOfRecordsInPDFPage, empLists.size()).size()));
 							} else {
-								result.put("emp"+i, empLists.subList((i-1)*10, (i*10)-1));
-								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*10, (i*10)-1).size())-1);
+								result.put("emp"+i, empLists.subList((i-1)*inoOfRecordsInPDFPage, (i*inoOfRecordsInPDFPage)-1));
+								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*inoOfRecordsInPDFPage, (i*inoOfRecordsInPDFPage)-1).size())-1);
 							}
 						}
 						result.put("noOfPages", noOfPages);
 					} else {
-						result.put("emp1", new HashMap<String, Object>());
+						List<HashMap<String, Object>> records = new ArrayList<HashMap<String, Object>>();
+						result.put("emp1", records);
 						result.put("space1", noOfBreakLine);
 						result.put("noOfPages", 1);
 					}
 					
 				} else {
-					result.put("emp1", new HashMap<String, Object>());
+					List<HashMap<String, Object>> records = new ArrayList<HashMap<String, Object>>();
+					result.put("emp1", records);
 					result.put("space1", noOfBreakLine);
 					result.put("noOfPages", 1);
 				}
@@ -483,7 +490,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		
 		Date today = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-		int noOfBreakLine = 25;
+		int noOfBreakLine = 23;
 		if(results != null && results.size() > 0) {
 			result = results.get(0);
 				
@@ -519,26 +526,28 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 						empLists.add(empRecord);
 				}
 				
-				int noOfPages = (int) Math.ceil((empLists.size()/10.0));
+				int noOfPages = (int) Math.ceil((empLists.size()/dnoOfRecordsInPDFPage));
 				if(noOfPages > 0) {
 					for (int i = 1; i <= noOfPages; i++) {
-						if((i*10)-1 > empLists.size()) {
-							result.put("emp"+i, empLists.subList((i-1)*10, empLists.size()));
-							result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*10, empLists.size()).size()));
+						if((i*inoOfRecordsInPDFPage)-1 > empLists.size()) {
+							result.put("emp"+i, empLists.subList((i-1)*inoOfRecordsInPDFPage, empLists.size()));
+							result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*inoOfRecordsInPDFPage, empLists.size()).size()));
 						} else {
-							result.put("emp"+i, empLists.subList((i-1)*10, (i*10)-1));
-							result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*10, (i*10)-1).size())-1);
+							result.put("emp"+i, empLists.subList((i-1)*inoOfRecordsInPDFPage, (i*inoOfRecordsInPDFPage)-1));
+							result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*inoOfRecordsInPDFPage, (i*inoOfRecordsInPDFPage)-1).size())-1);
 						}
 					}
 					result.put("noOfPages", noOfPages);
 				} else {
-					result.put("emp1", new HashMap<String, Object>());
+					List<HashMap<String, Object>> records = new ArrayList<HashMap<String, Object>>();
+					result.put("emp1", records);
 					result.put("space1", noOfBreakLine);
 					result.put("noOfPages", 1);
 				}
 				
 			} else {
-				result.put("emp1", new HashMap<String, Object>());
+				List<HashMap<String, Object>> records = new ArrayList<HashMap<String, Object>>();
+				result.put("emp1", records);
 				result.put("space1", noOfBreakLine);
 				result.put("noOfPages", 1);
 			}

@@ -147,14 +147,20 @@ public class TrainersController {
 	}
 	
 	@RequestMapping(value="/sbs/initialLetter", method=RequestMethod.GET)
-	public String getSBSInitialLetter(HttpServletRequest request, ModelMap model) {
+	public ModelAndView getSBSInitialLetter(HttpServletRequest request, ModelMap model) {
 		String date = request.getParameter("r");
 		String quarter = request.getParameter("q");
 		List<HashMap<String, Object>> records = sbsService.getSBSInitialRecords(date, quarter);
 		List<SBSEntity> sbsRecords = sbsService.getAll();
 		model.addAttribute("sbsRecords", sbsRecords);
 		model.addAttribute("records", records);
-		return "sbs-initial-letter";
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("sbsRecords", sbsRecords);
+		map.put("records", records);
+		ModelAndView modelAndView = new ModelAndView("initialLetterPDF", "map",map);
+		  
+		return modelAndView;
+		/*return "sbs-initial-letter";*/
 	}
 	
 	@RequestMapping(value="/sbs/returned", method=RequestMethod.GET)
@@ -182,14 +188,20 @@ public class TrainersController {
 	}
 	
 	@RequestMapping(value="/sbs/finalReminder", method=RequestMethod.GET)
-	public String getSBSFinalReminder(HttpServletRequest request, ModelMap model) {
+	public ModelAndView getSBSFinalReminder(HttpServletRequest request, ModelMap model) {
 		String date = request.getParameter("r");
 		String quarter = request.getParameter("q");
 		List<HashMap<String, Object>> records = sbsService.getSBSFinalReminder(date, quarter);
 		List<SBSEntity> sbsRecords = sbsService.getAll();
 		model.addAttribute("sbsRecords", sbsRecords);
 		model.addAttribute("records", records);
-		return "sbs-final-reminder";
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("sbsRecords", sbsRecords);
+		map.put("records", records);
+		ModelAndView modelAndView = new ModelAndView("reminderLetterPDF", "map",map);
+		  
+		return modelAndView;
+		/*return "sbs-final-reminder";*/
 	}
 	
 	@RequestMapping(value = "/sbs/findByName", method = RequestMethod.GET)
@@ -203,13 +215,18 @@ public class TrainersController {
 	}
 	
 	@RequestMapping(value="/sbs/reprint", method=RequestMethod.GET)
-	public String getSBSReprint(HttpServletRequest request, ModelMap model) {
+	public ModelAndView getSBSReprint(HttpServletRequest request, ModelMap model) {
 		String date = request.getParameter("r");
 		String quarter = request.getParameter("q");
 		String tId = request.getParameter("t");
 		HashMap<String, Object> record = sbsService.getSBSReprint(date, quarter, tId);
 		model.addAttribute("rec", record);
-		return "sbs-reprint";
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("records", record);
+		ModelAndView modelAndView = new ModelAndView("reprintPDF", "map",map);
+		  
+		return modelAndView;
+		/*return "sbs-reprint";*/
 	}
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)

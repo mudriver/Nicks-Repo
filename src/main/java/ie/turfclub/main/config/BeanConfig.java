@@ -5,6 +5,9 @@ package ie.turfclub.main.config;
 
 import java.util.Properties;
 
+import ie.turfclub.trainers.service.InitialLetterPDF;
+import ie.turfclub.trainers.service.ReminderLetterPDF;
+import ie.turfclub.trainers.service.ReprintPDF;
 import ie.turfclub.trainers.service.TrainerPDFView;
 import ie.turfclub.utilities.AccountReporting;
 import ie.turfclub.utilities.EmployeeHistoryUtils;
@@ -103,5 +106,20 @@ public class BeanConfig {
 	 @Bean
 	 public TrainerPDFView trainerPDFView() {
 		 return new TrainerPDFView();
+	 }
+	 
+	 @Bean
+	 public InitialLetterPDF initialLetterPDF() {
+		 return new InitialLetterPDF();
+	 }
+	 
+	 @Bean
+	 public ReminderLetterPDF reminderLetterPDF() {
+		 return new ReminderLetterPDF();
+	 }
+	 
+	 @Bean
+	 public ReprintPDF reprintPDF() {
+		 return new ReprintPDF();
 	 }
 }

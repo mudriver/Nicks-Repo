@@ -42,8 +42,16 @@
      	#quarEmpTable #header { border-bottom: 2px solid black;}
      	#quarEmpTable #border {border: 1px solid black;}
      	
-     	.page-card-layout { margin: 15px; padding: 15px; border-radius: 5px; background-color: white;}
-     	body {background-color: #ccc;}
+     	.page-card-layout { border-radius: 5px; background-color: white;}
+     	/* body {background-color: #ccc;} */
+     	html,body{
+	    	 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+		    height:297mm;
+		    width:210mm;
+		    margin-left: auto;
+	        margin-right: auto;
+	        font-size: 16px;
+		}
      	.sbsrecord { width: 50%; padding: 5px; font-size: 12px; }
     </style>
 </head>
@@ -60,7 +68,7 @@
 		    <div style="clear: both;">
 		    	<img alt="TurfClubPrograms" src="../../resources/img/tclogo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
 		    </div>
-		    
+		    <br/><br/><br/>
 		    <div class="col-sm-12" style="clear: both;text-align: center; font-size: 15px;">
 		    	<br/><label ><b><u>*** FINAL REMINDER NOTICE ***</u></b></label><br/>
 		    </div>
@@ -79,13 +87,13 @@
 		    	</div>
 		    </div>
 		    
-		    
+		    <br/><br/>
 		    <div style="clear: both;">
 		    	<label style="text-align: center; display: block;"><br/><u><b>Stable Employee Bonus Scheme</b></u></label>
 		    </div>
 		    <div class="col-sm-12" style="clear: both;">
 		    	<p>
-		    		<br/>Dear <span th:text="${rec[title]}"></span>&nbsp;<span th:text="${rec[surname]}"></span>,<br/><br/>
+		    		<br/><br/>Dear <span th:text="${rec[title]}"></span>&nbsp;<span th:text="${rec[surname]}"></span>,<br/><br/>
 		    		I refer to the most recent Stable Employees Bonus Scheme payment you received (see attached). I note
 		    		from our records you have failed to return the necessary documentation in accordance with Rule 298.<br/><br/>
 		    		Please find attached duplicate documentation which you are required to complete and return to this office
@@ -93,9 +101,9 @@
 		    		this matter will be referred to the Referrals Committee in accordance with Rule 298.<br/><br/>
 		    		Should you have any query in relation to this matter, please do not hesitate to contact me.
 		    		
-		    		Yours Sincerely.<br/><br/><br/><br/>
+		    		Yours Sincerely.<br/><br/><br/><br/><br/><br/>
 		    		Seamus Gibson<br/>
-		    		<b><u>SECRETARY TO THE LICENSING COMMITTEE</u></b><br/><br/><br/><br/><br/><br/>
+		    		<b><u>SECRETARY TO THE LICENSING COMMITTEE</u></b><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 		    	</p>
 		    </div>
 	    </div>
@@ -105,7 +113,7 @@
 		     <div>
 		    	<img alt="TurfClubPrograms" src="../../resources/img/tclogo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
 		    </div>
-		    
+		    <br/><br/><br/>
 		    <div class="col-sm-12" >
 		    	<div class="col-sm-6" style="float: left">
 		    		<label th:text="${rec[name]}">Name</label><br/>
@@ -118,7 +126,7 @@
 		    		<label th:text="${rec[date]}">Date</label><br/>
 		    	</div>
 		    </div>
-		    <br/><br/>
+		    <br/><br/><br/><br/>
 		    
 		    <div style="clear: both;">
 		    	<label style="text-align: center; display: block;"><br/><br/><u><b>Trainer Receipt</b></u></label>
@@ -142,7 +150,7 @@
 		    		referred to th Referrals Committee.</b><br/><br/>
 		    	</p>
 		    	<label style="color: white; background: black; margin: auto; display: block; text-align: center;">PLEASE RETURN TO THE TURF CLUB</label>
-		    	&nbsp;<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+		    	&nbsp;<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 		    </div>
 		</div>
 	    
@@ -151,7 +159,7 @@
 		    <div style="margin-bottom: 10px;">
 		    	<img alt="TurfClubPrograms" src="../../resources/img/tclogo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
 		    </div>
-		    
+		    <br/><br/><br/>
 		    <div style="clear: both; margin: auto; width: 90%; padding: 10px; border: 1px solid black;" >
 		    	<div>
 		    		<label style="text-align: center; display: block;"><u><b>Quarterly Bonus Payment (<span th:text="${rec[quarter]}"></span>) </b></u></label><br/><br/>
@@ -203,7 +211,7 @@
 		    <div style="margin-bottom: 10px;">
 		    	<img alt="TurfClubPrograms" src="../../resources/img/tclogo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
 		    </div>
-		    
+		    <br/><br/><br/>
 		    <div style="clear: both; margin: auto; width: 90%; padding: 10px; border: 1px solid black;" >
 		    	<div>
 		    		<label style="text-align: center; display: block;"><u><b>Quarterly Bonus Payment (<span th:text="${rec[quarter]}"></span>) </b></u></label><br/><br/>

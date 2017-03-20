@@ -270,7 +270,8 @@
     				}, 5000);
     			} else if(returnDate != '' && quarter != '' && tId != '') {
     				$('#reprintPopup').modal('hide');
-    				window.location.href = '/turfclubPrograms/trainers/sbs/reprint?r='+returnDate+'&q='+quarter+'&t='+tId;
+    				
+    				window.open('/turfclubPrograms/trainers/sbs/reprint?r='+returnDate+'&q='+quarter+'&t='+tId, '_blank');
     			} else {
     				$('#errorReprintSpan').html('Please fill fields');
 					$('#errorReprintSpan').show();
