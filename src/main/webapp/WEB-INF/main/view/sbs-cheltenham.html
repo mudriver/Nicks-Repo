@@ -8,7 +8,7 @@
 <meta http-equiv="expires" content="-1" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title th:text="#{button.aintree}">Aintree</title>
+<title th:text="#{button.cheltenham}">Cheltenham</title>
 
 <link type="text/css" rel="stylesheet"
 	href="../../resources/css/bootstrap.css"
@@ -34,7 +34,7 @@
 	    display: none !important;
 	  }
 	}
-	#aintreeRecordDiv {
+	#cheltenhamRecordDiv {
 	   padding-left: 70px;
 	   background: white;
 	   margin-top: 15px;
@@ -49,7 +49,7 @@
 	}
 	#loadMoreDataDiv {clear: both; text-align: center; padding: 15px; }
 	.blue-border {border: 2px solid blue;}
-	#aintreeHeader {
+	#cheltenhamHeader {
 		border-top: 2px solid blue;
 	    display: inline-table;
 	    border-bottom: 2px solid blue;
@@ -64,7 +64,7 @@
 </head>
 <body>
 	
-	<div id="aintreeRecordDiv">
+	<div id="cheltenhamRecordDiv">
 	
 		<div style="text-align: center;">
 			
@@ -80,9 +80,9 @@
 				<span id="downloadStatus" style="display: none;"><a href="javascript:void(0);" th:onclick="'javascript:downloadPDF()'"><span th:text="#{download.pdf}"></span></a></span>
 			</div>
 		</div>
-		<h3 class="color-blue" th:text="#{button.aintree}" >Aintree</h3>
+		<h3 class="color-blue" th:text="#{button.cheltenham}" >Cheltenham</h3>
 		
-		<div id="aintreeHeader">
+		<div id="cheltenhamHeader">
 			<div>
 				<span class="col-sm-4">Current Trainer</span>
 				<span class="col-sm-4">Surname</span>
@@ -125,7 +125,7 @@
     		$('#printButton').click(function() {
     			
     			$.ajax({
-    				url:'/turfclubPrograms/trainers/aintree/print',
+    				url:'/turfclubPrograms/trainers/cheltenham/print',
     				type:'GET',
     				data : {},
     				success: function(data) {
@@ -139,11 +139,11 @@
     		
     		$('#loadMoreData').click(function(data) {
     			$.ajax({
-    				url:'/turfclubPrograms/trainers/aintree/page',
+    				url:'/turfclubPrograms/trainers/cheltenham/page',
     				type:'GET',
     				data : {page: page},
     				success: function(data) {
-    					$('#aintreeRecordDiv').append(data);
+    					$('#cheltenhamRecordDiv').append(data);
     					++page;
     				}
     			});
@@ -152,12 +152,12 @@
     	
     	function downloadPDF() {
     		checkPDFStatus();
-    		window.location.replace('/turfclubPrograms/trainers/aintree/print/download');
+    		window.location.replace('/turfclubPrograms/trainers/cheltenham/print/download');
     	}
     	
     	function checkPDFStatus(status) {
     		$.ajax({
-				url:'/turfclubPrograms/trainers/aintree/printStatus',
+				url:'/turfclubPrograms/trainers/cheltenham/printStatus',
 				type:'GET',
 				data : {},
 				success: function(data) {

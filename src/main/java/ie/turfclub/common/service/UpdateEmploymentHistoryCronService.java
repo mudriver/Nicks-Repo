@@ -1,6 +1,7 @@
 package ie.turfclub.common.service;
 
 import ie.turfclub.trainers.model.TeEmployentHistory;
+import ie.turfclub.trainers.service.TrainersService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
@@ -24,6 +25,9 @@ public class UpdateEmploymentHistoryCronService {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	private TrainersService trainerService;
 	
 	private Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
@@ -51,9 +55,10 @@ public class UpdateEmploymentHistoryCronService {
 	@Scheduled(cron="0 17 18 * * ?")
 	public void updateEmploymentHistoryRecord() throws IllegalAccessException, InvocationTargetException {
 		
-		//Handle 2014 year record
-		Date startDate = new DateTime(2014, 01, 01, 0, 0).toDate();
-		Date endDate = new DateTime(2014, 12, 31, 0, 0).toDate();
+		//Handle year record
+		int year = Integer.parseInt(trainerService.getYearForTrainerEmployeeOnline())-1;
+		Date startDate = new DateTime(year, 01, 01, 0, 0).toDate();
+		Date endDate = new DateTime(year, 12, 31, 0, 0).toDate();
 		Criteria criteria = getCurrentSession().createCriteria(TeEmployentHistory.class);
 		criteria.add(Restrictions.between("ehDateFrom", startDate, endDate));
 		criteria.add(Restrictions.isNull("ehDateTo"));

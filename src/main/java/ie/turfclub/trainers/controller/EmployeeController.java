@@ -158,6 +158,8 @@ public class EmployeeController {
 		model.addAttribute("cardTypeEnum", employeeService.getAllCardType());
 		model.addAttribute("pensionEnum", employeeService.getPension());
 		model.addAttribute("nationalityEnum", employeeService.getNationalityEnum());
+		model.addAttribute("year", trainersService.getYearForTrainerEmployeeOnline());
+		model.addAttribute("prevYear", Integer.parseInt(trainersService.getYearForTrainerEmployeeOnline())-1);
 		
 		return "employee-edit";
 	}
@@ -180,6 +182,8 @@ public class EmployeeController {
 		model.addAttribute("cardTypeEnum", employeeService.getAllCardType());
 		model.addAttribute("pensionEnum", employeeService.getPension());
 		model.addAttribute("nationalityEnum", employeeService.getNationalityEnum());
+		model.addAttribute("year", trainersService.getYearForTrainerEmployeeOnline());
+		model.addAttribute("prevYear", Integer.parseInt(trainersService.getYearForTrainerEmployeeOnline())-1);
 		return "emp-add";
 	}
 	

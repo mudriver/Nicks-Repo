@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
+
+
 import ie.turfclub.main.model.login.User;
 import ie.turfclub.main.pojos.StatusResponse;
 import ie.turfclub.main.service.downloads.DownloadService;
@@ -42,6 +44,8 @@ import ie.turfclub.trainers.service.FileService;
 import ie.turfclub.trainers.service.StableStaffService;
 import ie.turfclub.trainers.service.TrainersService;
 import ie.turfclub.utilities.EmployeeHistoryUtils;
+
+
 
 
 
@@ -125,7 +129,8 @@ public class StableStaffController {
 		model.addAttribute("trainerId", trainerId);
 		model.addAttribute("USERMENUTYPE", "STABLESTAFF_PENSION");
 		model.addAttribute("teoYear", trainerService.getYearForTrainerEmployeeOnline());
-
+		model.addAttribute("prevYear", Integer.parseInt(trainerService.getYearForTrainerEmployeeOnline())-1);
+		
 		return "stablestaff-list";
 	}
 
@@ -162,6 +167,7 @@ public class StableStaffController {
 		model.addAttribute("p35Returned", fileService.hasFiles(trainer.getTrainerId()));
 		model.addAttribute("trainerId", trainerId);
 		model.addAttribute("USERMENUTYPE", "STABLESTAFF_PENSION");
+		model.addAttribute("prevYear", Integer.parseInt(trainerService.getYearForTrainerEmployeeOnline())-1);
 		return "stablestaff-complete";
 	}
 
@@ -219,6 +225,8 @@ public class StableStaffController {
 		model.addAttribute("currentYear", now.get(Calendar.YEAR));
 		model.addAttribute("trainerId", trainerId);
 		model.addAttribute("USERMENUTYPE", "STABLESTAFF_PENSION");
+		model.addAttribute("year", trainerService.getYearForTrainerEmployeeOnline());
+		model.addAttribute("prevYear", Integer.parseInt(trainerService.getYearForTrainerEmployeeOnline())-1);
 		return "stablestaff-edit";
 	}
 

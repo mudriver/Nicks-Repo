@@ -117,10 +117,10 @@
 					<h4 class="modal-title"></h4>
 				</div>
 				<div class="modal-body text-center">
-					<p>This employee started work with you in 2015</p>
+					<p>This employee started work with you in <span th:text="${year}"></span></p>
 					<p>
 						<small class="text-danger">An employee cannot have taxable
-							Pay in 2014 if they did not work with you in that year! </small>
+							Pay in <span th:text="${prevYear}"></span> if they did not work with you in that year! </small>
 
 
 					</p>

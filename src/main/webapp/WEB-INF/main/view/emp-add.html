@@ -438,15 +438,15 @@
 					<h4 class="modal-title"></h4>
 				</div>
 				<div class="modal-body text-center">
-					<p>The Turf Club records show that this person started work with you in 2015</p>
+					<p>The Turf Club records show that this person started work with you in <span th:text="${year}"></span></p>
 					<p>
 						<small class="text-danger">An employee cannot have
 							taxable
-							Pay in 2014 if they did not work with you in that year. If our records 
+							Pay in <span th:text="${prevYear}"></span> if they did not work with you in that year. If our records 
 							are incorrect please contact Tricia Cullen by email
 							(tricia.cullen@turfclub.ie) or on 045 445600 with the employee name(s)
 							whose employment dates are incorrect and the correct details. 
-							Otherwise please change the earnings to €0.00 if the person has no earning for 2014</small>
+							Otherwise please change the earnings to €0.00 if the person has no earning for <span th:text="${prevYear}"></span></small>
 
 
 					</p>

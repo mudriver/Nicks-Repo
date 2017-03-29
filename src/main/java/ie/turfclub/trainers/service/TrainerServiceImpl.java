@@ -1282,6 +1282,8 @@ public class TrainerServiceImpl implements TrainersService {
 	public PdfPTable createPDFDocumentWithDetails(Integer id, String type) {
 		
 		PdfPTable pdfPTable = new PdfPTable(8);
+		int year = Integer.parseInt(this.getYearForTrainerEmployeeOnline());
+		int prevYear = year-1;
 		try {
 			Criteria criteria = getCurrentSession().createCriteria(TeTrainers.class);
 			criteria.add(Restrictions.eq("trainerId", id));
@@ -1522,7 +1524,7 @@ public class TrainerServiceImpl implements TrainersService {
 			cell.setBorder(0);
 			pdfPTable.addCell(cell);
 			
-			cell = new PdfPCell(new Phrase("This is the list of employees to be renewed for 2014/2015 ", bold));
+			cell = new PdfPCell(new Phrase("This is the list of employees to be renewed for "+prevYear+"/"+year+" ", bold));
 			cell.setColspan(8);
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			cell.setBorder(0);
@@ -1728,7 +1730,7 @@ public class TrainerServiceImpl implements TrainersService {
 			cell.setBorder(0);
 			pdfPTable.addCell(cell);
 			
-			cell = new PdfPCell(new Phrase("This is the list of employees to be renewed for 2014/2015 ", bold));
+			cell = new PdfPCell(new Phrase("This is the list of employees to be renewed for "+prevYear+"/"+year+" ", bold));
 			cell.setColspan(8);
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			cell.setBorder(0);

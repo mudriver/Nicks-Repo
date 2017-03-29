@@ -3,6 +3,7 @@ package ie.turfclub.trainers.controller;
 import ie.turfclub.common.bean.SearchByNameTrainerBean;
 import ie.turfclub.common.bean.TrainerUserBean;
 import ie.turfclub.common.thread.PrintAintreeThread;
+import ie.turfclub.common.thread.PrintCheltenhamThread;
 import ie.turfclub.main.model.login.User;
 import ie.turfclub.main.service.downloads.DownloadService;
 import ie.turfclub.main.service.downloads.TokenService;
@@ -102,6 +103,8 @@ public class TrainersController {
 	
 	@RequestMapping(value="/admin/teoyear", method=RequestMethod.GET)
 	public String getTrainerEmployeeOnlineReturYearPage(HttpServletRequest req, ModelMap model) {
+		String year = trainersService.getYearForTrainerEmployeeOnline();
+		model.addAttribute("year", year);
 		return "admin-teoyear";
 	}
 	
@@ -369,6 +372,85 @@ public class TrainersController {
 		List<HashMap<String, Object>> records = trainersService.getAintreeRecord(start, end, session);
 		model.addAttribute("records", records);
 		return "sbs-aintree";
+	}
+	
+	@RequestMapping(value = "/cheltenham", method = RequestMethod.GET)
+	public String getCheltenhamPage(Model model, Authentication authentication,
+			HttpServletRequest request) {
+
+		int start = 0;
+		int end = 20;
+		HttpSession session = request.getSession();
+		session.setAttribute("lastTrainerId", null);
+		List<HashMap<String, Object>> records = trainersService.getAintreeRecord(start, end, session);
+		model.addAttribute("records", records);
+		return "sbs-cheltenham";
+	}
+	
+	@RequestMapping(value = "/cheltenham/page", method = RequestMethod.GET)
+	public String getCheltenhamPageByPage(Model model, Authentication authentication, 
+			HttpServletRequest req) {
+
+		int page = Integer.parseInt(req.getParameter("page"));
+		int start = page * 20;
+		int end = (page+1) * 20;
+		HttpSession session = req.getSession();
+		List<HashMap<String, Object>> records = trainersService.getAintreeRecord(start, end, session);
+		model.addAttribute("records", records);
+		return "sbs-cheltenham-page";
+	}
+	
+	@RequestMapping(value = "/cheltenham/print", method = RequestMethod.GET)
+	@ResponseBody
+	public String getCheltenhamPrint(Model model, Authentication authentication,
+			HttpServletRequest request) {
+		
+		request.getSession().setAttribute("cheltenhamStatus", "working");
+		PrintCheltenhamThread printCheltenhamThread = new PrintCheltenhamThread(trainersService, env.getRequiredProperty("upload.pdf.cheltenham"), request.getSession());
+		Thread thread = new Thread(printCheltenhamThread);
+		thread.start();
+		return "Success";
+	}
+	
+	@RequestMapping(value = "/cheltenham/print/download", method = RequestMethod.GET)
+	public void getCheltenhamPrintDownload(Model model, Authentication authentication,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		FileInputStream baos = new FileInputStream(env.getRequiredProperty("upload.pdf.cheltenham"));
+		request.getSession().setAttribute("cheltenhamStatus", "null");
+        response.setHeader("Expires", "0");
+        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+        response.setContentType("application/pdf");
+        response.addHeader("Content-Disposition", "attachment; filename=cheltenham.pdf");
+
+        OutputStream os = response.getOutputStream();
+
+        byte buffer[] = new byte[8192];
+        int bytesRead;
+
+        while ((bytesRead = baos.read(buffer)) != -1) {
+            os.write(buffer, 0, bytesRead);
+        }
+
+        os.flush();
+        os.close();
+	}
+	
+	@RequestMapping(value = "/cheltenham/printStatus", method = RequestMethod.GET)
+	@ResponseBody
+	public String getCheltenhamPrintStatus(Model model, Authentication authentication,
+			HttpServletRequest request) {
+		
+		String status = (String) request.getSession().getAttribute("cheltenhamStatus");
+		if(status != null && !status.equalsIgnoreCase("undefined") && status.equalsIgnoreCase("done")) {
+			//request.getSession().setAttribute("aintreeStatus", null);
+			return "done";
+		} else if(status != null && !status.equalsIgnoreCase("undefined") && status.equalsIgnoreCase("done")) {
+			return "working";
+		} else {
+			return "null";
+		}
 	}
 	
 	@RequestMapping(value = "/aintree/print", method = RequestMethod.GET)
