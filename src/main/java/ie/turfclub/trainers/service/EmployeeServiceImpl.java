@@ -31,6 +31,7 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
@@ -628,13 +629,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public List<TeEmployentHistory> getListOfTrainersEmployees(Integer id, String type) {
 		
+		List<TeEmployentHistory> records = new ArrayList<TeEmployentHistory>();
 		if(type.equalsIgnoreCase("all")) {
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
 			criteria.add(Restrictions.eq("teTrainers.trainerId", id));
 			//criteria.add(Restrictions.eq("ehDateTo", null));
 			criteria.add(Restrictions.isNull("ehDateTo"));
-			List<TeEmployentHistory> records = criteria.list();
-			return records;
+			records = criteria.list();
+			
 		} else {
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
 			criteria.add(Restrictions.eq("teTrainers.trainerId", id));
@@ -643,8 +645,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 			Date today = new Date();
 			Date firstDay = date.dayOfYear().withMinimumValue().toDate();
 			criteria.add(Restrictions.between("ehDateFrom", firstDay, today));
-			List<TeEmployentHistory> records = criteria.list();
-			return records;
+			records = criteria.list();
 		}
+		
+		if(records != null && records.size() > 0) {
+			for (TeEmployentHistory history : records) {
+				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
+				criteria.add(Restrictions.eq("teTrainers.trainerId", id));
+				criteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", history.getTeEmployees().getEmployeesEmployeeId()));
+				criteria.addOrder(Order.asc("ehDateFrom"));
+				List<TeEmployentHistory> historyRecords = criteria.list();
+				history.setStartDate(historyRecords.get(0).getEhDateFrom());
+			}
+		}
+		return records;
 	}
 }

@@ -908,7 +908,7 @@ public class TrainersJSONController {
 		buttonDir.setButtonClass("btn btn-success");
 		buttonDir.setButtonDisabledClass("btn btn-default");
 		buttonDir.setButtonGlyphiconClass("glyphicon glyphicon-pencil");
-		buttonDir.setUrl("/trainerEdit/");
+		buttonDir.setUrl("/trainers/detail/");
 		buttonDir.setEnabledDisabledKey("canEdit");
 		column.setDirective(buttonDir);
 		table.getColumns().add(column);
@@ -1104,7 +1104,7 @@ public class TrainersJSONController {
 		buttonDir.setButtonClass("btn btn-success");
 		buttonDir.setButtonDisabledClass("btn btn-default");
 		buttonDir.setButtonGlyphiconClass("glyphicon glyphicon-pencil");
-		buttonDir.setUrl("/employeeEdit/");
+		buttonDir.setUrl("/employees/detail/");
 		buttonDir.setEnabledDisabledKey("canEdit");
 		column.setDirective(buttonDir);
 		table.getColumns().add(column);

@@ -142,7 +142,7 @@ public class StableStaffController {
 		System.out.println(trainerId);
 		TeTrainers trainer = stableStaffService.getTrainer(trainerId);
 		model.addAttribute("returnComplete", trainer.isTrainerReturnComplete());
-		model.addAttribute("returnDate", "18/11/"+trainerService.getYearForTrainerEmployeeOnline());
+		model.addAttribute("returnDate", "18/11/"+trainer.getReturnsCompletedYear());
 		model.addAttribute("trainerId", trainerId);
 		//model.addAttribute("p35Returned", fileService.hasFiles(trainer.getTrainerAccountNo()));
 		model.addAttribute("USERMENUTYPE", "STABLESTAFF_PENSION");
@@ -155,13 +155,12 @@ public class StableStaffController {
 			@PathVariable(value = "id") Integer trainerId) {
 
 	
-		
-
 		TeTrainers trainer = stableStaffService.getTrainer(trainerId);
 		trainer.setTrainerContactName(trainerDetail.getTrainerContactName());
 		trainer.setTrainerContactPhone(trainerDetail.getTrainerContactPhone());
 		trainer.setTrainerReturnComplete(true);
 		trainer.setTrainerDateCompleted(new Date());
+		trainer.setReturnsCompletedYear(trainer.getReturnsCompletedYear()+1);
 		stableStaffService.saveTrainer(trainer);
 		model.addAttribute("ref", trainer.getTrainerAccountNo());
 		model.addAttribute("p35Returned", fileService.hasFiles(trainer.getTrainerId()));

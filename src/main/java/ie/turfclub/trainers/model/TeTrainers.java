@@ -64,6 +64,7 @@ public class TeTrainers implements java.io.Serializable {
 	private Date trainerInsuranceExpiry;
 	private boolean trainerReturnComplete;
 	private VerifiedStatus trainerVerifiedStatus;
+	private int returnsCompletedYear;
 	private int trainerLastRacecardId;
 	private Date trainerTimeEntered;
 	private Date trainerDateCompleted;
@@ -614,5 +615,14 @@ public class TeTrainers implements java.io.Serializable {
 
 	public void setSpouseName(String spouseName) {
 		this.spouseName = spouseName;
+	}
+
+	@Column(name = "returns_completed_year")
+	public int getReturnsCompletedYear() {
+		return returnsCompletedYear;
+	}
+
+	public void setReturnsCompletedYear(int returnsCompletedYear) {
+		this.returnsCompletedYear = returnsCompletedYear;
 	}
 }

@@ -92,7 +92,7 @@
 	        			<td><a th:href="@{|/employees/detail/${record.teEmployees.employeesEmployeeId}|}" class="btn btn-default">View</a></td>
 	        			<td><span th:if="${record.teEmployees.teCard != null}" th:text="${record.teEmployees.teCard.cardsCardNumber}"></span></td>
 	        			<td th:text="${record.teEmployees.employeesFullName}"></td>
-	        			<td><span th:text="${record.ehDateFrom}" class="yellow-background"></span></td>
+	        			<td><span th:text="${#dates.format(record.startDate, 'yyyy-MM-dd')}" class="yellow-background"></span></td>
 	        			<td th:text="${record.ehDateTo}"></td>
 	        		</tr>
 	        	</tbody>

@@ -72,6 +72,7 @@ public class TeEmployentHistory implements java.io.Serializable {
 	private Date employeeLastUpdated;
 	private String trainerName;
 	private int employeeNumHourWorked;
+	private Date startDate;
 
 	public TeEmployentHistory() {
 	}
@@ -208,9 +209,6 @@ public class TeEmployentHistory implements java.io.Serializable {
 		this.ehTempCategory = ehTempCategory;
 	}
 
-	
-	
-	
 	@Column(name = "eh_pps_number", length = 20)
 	public String getEhPpsNumber() {
 		return ehPpsNumber;
@@ -246,6 +244,15 @@ public class TeEmployentHistory implements java.io.Serializable {
 
 	public void setTrainerName(String trainerName) {
 		this.trainerName = trainerName;
+	}
+
+	@Transient
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 
 	public static class TeEmploymentHistoryComparatorTrainerId implements Comparator<TeEmployentHistory>{

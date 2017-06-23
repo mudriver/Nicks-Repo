@@ -3,6 +3,16 @@ var app = angular.module("trainersApp", ['ngRoute','spring-security-csrf-token-i
 app.config(function($routeProvider) {
     
 	$routeProvider
+		.when('/employees/detail/:id', {
+			redirectTo: function(response) {
+		        window.location.replace("/turfclubPrograms/employees/detail/"+response.id);
+		    }
+		})
+		.when('/trainers/detail/:id', {
+			redirectTo: function(response) {
+		        window.location.replace("/turfclubPrograms/trainers/detail/"+response.id);
+		    }
+		})
         .when('/edit/:id', {
             templateUrl: '/turfclubPrograms/resources/js/angularjs/trainers/templates/trainers-edit.html',
         })
@@ -65,3 +75,10 @@ app.config(function($routeProvider) {
 	 
 	            }
 	        ]);
+
+
+function trainerDetailController($scope) {
+	console.log("Details");
+}
+
+trainerDetailController.$inject = ['$scope'];

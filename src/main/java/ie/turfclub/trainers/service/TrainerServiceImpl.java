@@ -1370,7 +1370,7 @@ public class TrainerServiceImpl implements TrainersService {
 				Date today = new Date();
 				Date firstDay = date.dayOfYear().withMinimumValue().toDate();
 				criteria.add(Restrictions.between("ehDateFrom", firstDay, today));
-				criteria.list();
+				records = criteria.list();
 			}
 			
 			List<TeEmployentHistory> moreThan8HoursRecords = new ArrayList<TeEmployentHistory>();
