@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head data-th-fragment="header">
+	<meta charset="utf-8" />
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta http-equiv="expires" content="-1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title data-th-text="#{air.table}">AIR Table</title>
+	
+
+	<!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet"
+		href="../../resources/css/bootstrap.css"
+		data-th-href="@{/resources/css/bootstrap.css}" />
+	<link type="text/css" rel="stylesheet"
+		href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+		data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+	<link type="text/css" rel="stylesheet"
+		href="../../resources/css/sb-admin-2.css"
+		data-th-href="@{/resources/css/sb-admin-2.css}" />
+	<link rel="stylesheet"
+		href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+	<link type="text/css" rel="stylesheet"
+		href="../../resources/css/select2.css"
+		data-th-href="@{/resources/css/select2.css}" />
+	<!-- <link type="text/css" rel="stylesheet"
+		data-th-href="@{/resources/js/angularjs/select2/select.css}" /> -->
+	<link type="text/css" rel="stylesheet"
+		href="../../resources/css/overrides.css"
+		data-th-href="@{/resources/css/overrides.css}" />
+	<link type="text/css" rel="stylesheet"
+		href="../../resources/css/datatables/jquery.datatables.min.css"
+		data-th-href="@{/resources/css/datatables/jquery.dataTables.min.css}" />
+	<link type="text/css" rel="stylesheet"
+		href="../../resources/css/datatables/buttons.datatable.min.css"
+		data-th-href="@{/resources/css/datatables/buttons.dataTables.min.css}" />
+	<style>
+        .no-border-on-me>thead>tr>th,
+        .no-border-on-me>tbody>tr>th,
+        .no-border-on-me>tfoot>tr>th,
+        .no-border-on-me>thead>tr>td,
+        .no-border-on-me>tbody>tr>td,
+        .no-border-on-me>tfoot>tr>td
+        {
+            border-top-style: none;
+            border-bottom-style: none;
+        }
+        th {color: white;}
+        #example_info {color: white !important;}
+        .back-button-div {margin-bottom: 10px;}
+        .dataTables_wrapper .dataTables_paginate .paginate_button { color: white !important;}
+    </style>
+	<body>
+		 <div class="container-fluid" >                <!-- /#wrapper -->
+		 
+		    <div data-th-replace="mainmenu :: top-nav"></div>
+		    
+		    <h3 data-th-text="#{air.table}">AIR Table</h3>
+    	
+    		<div class="pull-left back-button-div">
+	    		<a href="/turfclubPrograms/employees/manageStaff"><input type="button" class="btn btn-default" value="Back" /></a>
+	    	</div>
+    		<table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
+		       	<thead>
+		       		<tr>
+		       			<th th:text="#{air.table.account}">Account</th>
+		       			<th th:text="#{air.table.surname}">Surname</th>
+		       			<th th:text="#{air.table.firstname}">Firstname</th>
+		       			<th th:text="#{air.table.category.code}">Category Code</th>
+		       			<th th:text="#{air.table.address1}">Address1</th>
+		       			<th th:text="#{air.table.address2}">Address2</th>
+		       			<th th:text="#{air.table.address3}">Address3</th>
+		       			<th th:text="#{air.table.current.trainer.num}">Current Trainer Number</th>
+		       			<th th:text="#{air.table.active}">Active</th>
+		       			<th th:text="#{air.table.post.direct}">Posthirect</th>
+		       			<th th:text="#{air.table.hri.account.holder}">HRI Account Holder</th>
+		       			<th th:text="#{air.table.hri.account.num}">HRI Account Number</th>
+		       		</tr>
+		       	</thead>
+		       	<!-- <tbody>
+        			<tr th:each="record,iterStat : ${records}">
+        				<td th:text="${record.account}"></td>
+        				<td th:text="${record.surname}"></td>
+        				<td th:text="${record.firstname}"></td>
+        				<td th:text="${record.categoryCode}"></td>
+        				<td th:text="${record.address1}"></td>
+        				<td th:text="${record.address2}"></td>
+        				<td th:text="${record.address3}"></td>
+        				<td th:text="${record.currentTrainerNum}"></td>
+        				<td th:text="${record.active}"></td>
+        				<td th:text="${record.postDirect}"></td>
+        				<td th:text="${record.hriAccountHolder}"></td>
+        				<td th:text="${record.hriAccNum}"></td>
+        			</tr>
+        		</tbody> -->
+		    </table>
+    	</div>
+    	
+    	<script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
+	        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+	         
+	    <!-- Include all compiled plugins (below), or include individual files as needed -->
+	    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
+	        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+	 
+	    <!-- Core Scripts - Include with every page -->
+	    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
+	        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+	         
+	    <!-- SB Admin Scripts - Include with every page -->
+	    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+	        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+    	
+    	<script type="text/javascript" src="../../resources/js/datatable/jquery.datatable.min.js"
+	        data-th-src="@{/resources/js/datatable/jquery.dataTables.min.js}"></script>
+	        
+	    <!-- <script type="text/javascript" src="../../resources/js/datatable/datatable.buttons.min.js"
+	        data-th-src="@{/resources/js/datatable/dataTables.buttons.min.js}"></script> -->
+	        
+	    <!-- <script type="text/javascript" src="../../resources/js/datatable/buttons.colVis.min.js"
+	        data-th-src="@{/resources/js/datatable/buttons.colVis.min.js}"></script> -->
+	        
+	    <script type="text/javascript" th:inline="javascript">
+	    
+	    	$(function() {
+	    		var table = $('#example').DataTable( {
+	    	        dom: 'Bfrtip',
+	    	        "scrollX": true,
+	    	        "scrollCollapse": true,
+	    	        "paging": true,
+	    	        "searching": false,
+	    	        "processing": true,
+	    	        "serverSide": true,
+	    	        "ordering": false,
+	    	        "start": 0,
+	    	        "length": 10,
+	    	        "ajax": "/turfclubPrograms/air/loadData",
+	    	        "columns": [
+	 	                    { "data": "account" },
+	 	                    { "data": "surname" },
+	 	                    { "data": "firstname" },
+	 	                    { "data": "categoryCode" },
+	 	                   	{ "data": "address1" },
+	 	                   	{ "data": "address2" },
+	 	                   	{ "data": "address3" },
+	 	                   	{ "data": "currentTrainerNum" },
+	 	                  	{ "data": "active" },
+	 	                 	{ "data": "postDirect" },
+	 	                	{ "data": "hriAccountHolder" },
+	 	               		{ "data": "hriAccNum" }
+	 	                  ]
+	    		});
+	    	});
+	    </script>
+    </body>
+</head>
+</html>
