@@ -1398,7 +1398,7 @@ public class TrainerServiceImpl implements TrainersService {
 					cell = new PdfPCell(new Phrase("8 hours or Over", bold));
 					cell.setPadding(5);
 					pdfPTable.addCell(cell);
-					cell = new PdfPCell(new Phrase(history.getTeEmployees().getTeCard().getCardsCardNumber(), bold));
+					cell = new PdfPCell(new Phrase(history.getTeEmployees().getTeCard() != null ? history.getTeEmployees().getTeCard().getCardsCardNumber() : "", bold));
 					cell.setPadding(5);
 					pdfPTable.addCell(cell);
 					cell = new PdfPCell(new Phrase(history.getTeEmployees().getEmployeesFullName(), bold));
@@ -1604,7 +1604,7 @@ public class TrainerServiceImpl implements TrainersService {
 					cell = new PdfPCell(new Phrase("Less than 8 Hours", bold));
 					cell.setPadding(5);
 					pdfPTable.addCell(cell);
-					cell = new PdfPCell(new Phrase(history.getTeEmployees().getTeCard().getCardsCardNumber(), bold));
+					cell = new PdfPCell(new Phrase(history.getTeEmployees().getTeCard() != null ? history.getTeEmployees().getTeCard().getCardsCardNumber() : "", bold));
 					cell.setPadding(5);
 					pdfPTable.addCell(cell);
 					cell = new PdfPCell(new Phrase(history.getTeEmployees().getEmployeesFullName(), bold));
@@ -1770,6 +1770,9 @@ public class TrainerServiceImpl implements TrainersService {
 		List<HashMap<String, Object>> records = getCurrentSession().createQuery(hql1).list();
 		
 		List<HashMap<String, Object>> results = new ArrayList<HashMap<String,Object>>();
+		
+		if(records != null && records.size() > 0)
+			return results;
 		
 		Integer lastTrainerId = null;
 		for (int i=start; i < end; i++) {

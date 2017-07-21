@@ -108,7 +108,7 @@ $(function() {
 		data : $.parseJSON($("#countriesEnum").val())
 	});
 
-	$('#histories0\\.ehEmploymentCategory').select2({
+	$('#pensions0\\.employmentCategory').select2({
 		placeholder : "You must select an Employment Category",
 		allowClear : true,
 		createSearchChoice : function(term, data) {

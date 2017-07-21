@@ -312,7 +312,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 				String name = (String) result.get("name");
 				result.put("trainerName", name.replace("SBS", ""));
 				result.put("returnDate", date);
-				switch(quarter) {
+				/*switch(quarter) {
 					case "1":
 						result.put("quarter", "1st");
 						break;
@@ -325,7 +325,8 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 					case "4":
 						result.put("quarter", "4th");
 						break;
-				}
+				}*/
+				result.put("quarter", quarter);
 				Integer trainerId = (Integer) result.get("trainerId");
 				String empIdHql = "select new map(teEmployees.employeesEmployeeId as empId) from "
 						+ "TeEmployentHistory where teTrainers.trainerId="+trainerId
@@ -393,7 +394,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 				String name = (String) result.get("name");
 				result.put("trainerName", name.replace("SBS", ""));
 				result.put("returnDate", date);
-				switch(quarter) {
+				/*switch(quarter) {
 					case "1":
 						result.put("quarter", "1st");
 						break;
@@ -406,7 +407,8 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 					case "4":
 						result.put("quarter", "4th");
 						break;
-				}
+				}*/
+				result.put("quarter", quarter);
 				Integer trainerId = (Integer) result.get("trainerId");
 				String empIdHql = "select new map(teEmployees.employeesEmployeeId as empId) from "
 						+ "TeEmployentHistory where teTrainers.trainerId="+trainerId

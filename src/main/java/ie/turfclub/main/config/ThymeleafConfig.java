@@ -40,6 +40,7 @@ public class ThymeleafConfig {
         templateResolver.setPrefix("/WEB-INF/main/view/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
+        templateResolver.setCacheable(false);
         stableStaffService.initialize();
         return templateResolver;
     }
@@ -51,7 +52,7 @@ public class ThymeleafConfig {
         templateResolver.setPrefix("/WEB-INF/accountsReports/view/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
-
+        templateResolver.setCacheable(false);
         return templateResolver;
     }
     
@@ -63,6 +64,7 @@ public class ThymeleafConfig {
         templateResolver.setPrefix("/WEB-INF/inspections/view/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
+        templateResolver.setCacheable(false);
         return templateResolver;
     }
     
@@ -73,6 +75,7 @@ public class ThymeleafConfig {
         templateResolver.setPrefix("/WEB-INF/vetReports/view/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
+        templateResolver.setCacheable(false);
         return templateResolver;
     }
     
@@ -85,6 +88,7 @@ public class ThymeleafConfig {
         
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
+        templateResolver.setCacheable(false);
         trainerService.initialize();
         return templateResolver;
     }

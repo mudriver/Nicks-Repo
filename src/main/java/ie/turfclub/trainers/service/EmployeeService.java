@@ -1,7 +1,9 @@
 package ie.turfclub.trainers.service;
 
+import ie.turfclub.common.bean.InapproveEmployeeBean;
 import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.trainers.model.TeEmployees;
+import ie.turfclub.trainers.model.TeEmployeesApproved;
 import ie.turfclub.trainers.model.TeEmployentHistory;
 
 import java.lang.reflect.InvocationTargetException;
@@ -40,6 +42,8 @@ public interface EmployeeService {
 	List<SearchByNameEmployeeBean> findByName(String search);
 
 	TeEmployees getEmployeeById(Integer id) throws IllegalAccessException, InvocationTargetException;
+	
+	TeEmployeesApproved getEmployeeApprovedById(Integer id) throws IllegalAccessException, InvocationTargetException;
 
 	List<SearchByNameEmployeeBean> findByNumber(String search);
 
@@ -58,5 +62,13 @@ public interface EmployeeService {
 	void handleEncryptPPSNumber();
 
 	List<TeEmployentHistory> getListOfTrainersEmployees(Integer id, String type);
+
+	List<InapproveEmployeeBean> getInapproveEmployeeList();
+
+	void handleApproveEmployee(Integer id) throws IllegalAccessException, InvocationTargetException, Exception;
+
+	void deleteEmployeeApprovedById(Integer id) throws IllegalAccessException, InvocationTargetException;
+
+	Object getAutoGeneatedCardNumber();
 
 }

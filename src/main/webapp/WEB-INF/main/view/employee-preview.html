@@ -105,13 +105,13 @@
 			<div class="col-sm-2"><label th:text="#{employee.pension.from.date}"></label></div>
 			<div class="col-sm-2"><label th:text="#{employee.pension.to.date}"></label></div>
 		</div>
-		<div class="edit-pension-form col-sm-12" th:if="${not #lists.isEmpty(emp.pensions)}" th:each="str,iterStat : ${emp.pensions}">
-			<div class="col-sm-2"><label th:text="${emp.pensions[__${iterStat.index}__].pensionCardType}"></label></div>
-			<div class="col-sm-2"><label th:text="${emp.pensions[__${iterStat.index}__].pensionType}"></label></div>
-			<div class="col-sm-2"><label th:text="${emp.pensions[__${iterStat.index}__].pensionTrainerName}"></label></div>
-			<div class="col-sm-2"><label th:text="${emp.pensions[__${iterStat.index}__].pensionHRIAccNum}"></label></div>
-			<div class="col-sm-2"><label th:if="${emp.pensions[__${iterStat.index}__].pensionDateJoinedScheme != null}" th:text="${#dates.format(emp.pensions[__${iterStat.index}__].pensionDateJoinedScheme, 'dd/MM/yyyy')}"></label></div>
-			<div class="col-sm-2"><label th:if="${emp.pensions[__${iterStat.index}__].pensionDateLeftScheme != null}" th:text="${#dates.format(emp.pensions[__${iterStat.index}__].pensionDateLeftScheme, 'dd/MM/yyyy')}"></label></div>
+		<div class="edit-pension-form col-sm-12" th:if="${not #lists.isEmpty(emp.histories)}" th:each="str,iterStat : ${emp.histories}">
+			<div class="col-sm-2"><label th:text="${emp.histories[__${iterStat.index}__].cardType}"></label></div>
+			<div class="col-sm-2"><label th:text="${emp.histories[__${iterStat.index}__].pensionType}"></label></div>
+			<div class="col-sm-2"><label th:text="${emp.histories[__${iterStat.index}__].trainerName}"></label></div>
+			<div class="col-sm-2"><label th:text="${emp.histories[__${iterStat.index}__].hriAccNum}"></label></div>
+			<div class="col-sm-2"><label th:if="${emp.histories[__${iterStat.index}__].ehDateFrom != null}" th:text="${#dates.format(emp.histories[__${iterStat.index}__].ehDateFrom, 'dd/MM/yyyy')}"></label></div>
+			<div class="col-sm-2"><label th:if="${emp.histories[__${iterStat.index}__].ehDateTo != null}" th:text="${#dates.format(emp.histories[__${iterStat.index}__].ehDateTo, 'dd/MM/yyyy')}"></label></div>
 		</div>
 	</div>
 	<script type="text/javascript"

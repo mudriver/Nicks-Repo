@@ -1,4 +1,10 @@
 $(function() {
+
+	/*$.get('/turfclubPrograms/employees/cardnumber/generate', function(response) {
+		
+	});*/
+	
+	$('#employeesIsNew1').trigger('click');
 	
 	setTimeout(function() {
 		$('#successMsg').hide();
@@ -90,7 +96,8 @@ $(function() {
 	var addressselect = $("#employeesAddress5");
 	addressselect.find('option[value="Ireland"]').insertBefore(
 			addressselect.find('option:eq(1)'));
-
+	$("#employeesAddress5").val('Ireland').trigger('change');
+	
 	$('#employeesAddress5').select2({
 		placeholder : "You must select a country",
 		allowClear : true,
@@ -108,7 +115,7 @@ $(function() {
 		data : $.parseJSON($("#countriesEnum").val())
 	});
 
-	$('#histories0\\.ehEmploymentCategory').select2({
+	$('#pensions0\\.employmentCategory').select2({
 		placeholder : "You must select an Employment Category",
 		allowClear : true,
 		createSearchChoice : function(term, data) {

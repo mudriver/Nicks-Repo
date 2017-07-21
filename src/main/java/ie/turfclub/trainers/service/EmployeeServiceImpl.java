@@ -1,15 +1,20 @@
 package ie.turfclub.trainers.service;
 
 import ie.turfclub.common.bean.AdvanceSearchRecordBean;
+import ie.turfclub.common.bean.InapproveEmployeeBean;
 import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.common.enums.RoleEnum;
 import ie.turfclub.common.service.NullAwareBeanUtilsBean;
 import ie.turfclub.person.model.Person;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.trainers.model.TeCards;
+import ie.turfclub.trainers.model.TeCardsApproved;
 import ie.turfclub.trainers.model.TeEmployees;
+import ie.turfclub.trainers.model.TeEmployeesApproved;
 import ie.turfclub.trainers.model.TeEmployentHistory;
+import ie.turfclub.trainers.model.TeEmploymentApprovedHistory;
 import ie.turfclub.trainers.model.TePension;
+import ie.turfclub.trainers.model.TePensionApproved;
 import ie.turfclub.trainers.model.TeTrainers;
 import ie.turfclub.utilities.EncryptDecryptUtils;
 
@@ -27,6 +32,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -257,6 +263,53 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
+	public TeEmployeesApproved getEmployeeApprovedById(Integer id)
+			throws IllegalAccessException, InvocationTargetException {
+	
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployeesApproved.class);
+		criteria.add(Restrictions.eq("employeesEmployeeId", id));
+		List<TeEmployeesApproved> employees = criteria.list();
+		TeEmployeesApproved emp =  (employees != null && employees.size() > 0) ? employees.get(0) : null;
+		
+		criteria = getCurrentSession().createCriteria(TeEmploymentApprovedHistory.class);
+		criteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", id));
+		List<TeEmploymentApprovedHistory> currHistories = criteria.list();
+		if(currHistories != null && currHistories.size() > 0) {
+			List<TeEmploymentApprovedHistory> histories = new ArrayList<TeEmploymentApprovedHistory>();
+			for (TeEmploymentApprovedHistory teEmployentHistory : currHistories) {
+				TeEmploymentApprovedHistory history = new TeEmploymentApprovedHistory();
+				BeanUtilsBean notNull=new NullAwareBeanUtilsBean();
+				notNull.copyProperties(history, teEmployentHistory);
+				history.setTrainerName(history.getTeTrainers().getTrainerFullName());
+				histories.add(history);
+			}
+			emp.setHistories(histories);
+		}
+		
+		criteria = getCurrentSession().createCriteria(TePensionApproved.class);
+		criteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", id));
+		List<TePensionApproved> currPensions = criteria.list();
+		
+		if(emp.getTePensions() != null && !emp.getTePensions().isEmpty()) {
+			List<TePensionApproved> pensions = new ArrayList<TePensionApproved>();
+			for (TePensionApproved tePension : currPensions) {
+				TePensionApproved pension = new TePensionApproved();
+				BeanUtilsBean notNull=new NullAwareBeanUtilsBean();
+				notNull.copyProperties(pension, tePension);
+				pension.setPensionTrainerName(pension.getPensionTrainer().getTrainerFullName());
+				pensions.add(pension);
+			}
+			emp.setPensions(pensions);
+		}
+		LocalDate ld = LocalDate.fromDateFields(emp.getEmployeesDateOfBirth());
+
+		Period p = Period.fieldDifference(ld, LocalDate.now());
+		emp.setAge(p.getYears());
+		//emp.setEmployeesPpsNumber(EncryptDecryptUtils.decrypt(emp.getEmployeesPpsNumber()));
+ 		return emp;
+	}
+	
+	@Override
 	public TeEmployees getEmployeeById(Integer id) throws IllegalAccessException, InvocationTargetException {
 		
 		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
@@ -276,6 +329,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 				history.setTrainerName(history.getTeTrainers().getTrainerFullName());
 				histories.add(history);
 			}
+			
+			Collections.sort(histories, new Comparator<TeEmployentHistory>() {
+				public int compare(TeEmployentHistory h1, TeEmployentHistory h2) {
+					return h1.getEhDateFrom().compareTo(h2.getEhDateFrom());
+				}
+			});
+			
 			emp.setHistories(histories);
 		}
 		
@@ -298,7 +358,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		Period p = Period.fieldDifference(ld, LocalDate.now());
 		emp.setAge(p.getYears());
-		emp.setEmployeesPpsNumber(EncryptDecryptUtils.decrypt(emp.getEmployeesPpsNumber()));
+		if(emp.getEmployeesPpsNumber() != null)
+			emp.setEmployeesPpsNumber(EncryptDecryptUtils.decrypt(emp.getEmployeesPpsNumber()));
  		return emp;
 	}
 	
@@ -336,6 +397,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
+	public void deleteEmployeeApprovedById(Integer id) throws IllegalAccessException, InvocationTargetException {
+		
+		TeEmployeesApproved emp = getEmployeeApprovedById(id);
+		getCurrentSession().delete(emp);
+	}
+	
+	@Override
 	public HashMap<String, Object> getPartFullTimeRecords(String hours) {
 		
 		HashMap<String, Object> records = new HashMap<String, Object>();
@@ -368,6 +436,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		emp.setEmployeesDateEntered(new Date());
 		emp.setEmployeesLastUpdated(new Date());
+		if(emp.getEmployeesEmployeeId() != null && emp.getEmployeesEmployeeId() > 0) {
+			Criteria cardcriteria = getCurrentSession().createCriteria(TeCards.class);
+			cardcriteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", emp.getEmployeesEmployeeId()));
+			List<TeCards> cards = cardcriteria.list();
+			if(cards != null && cards.size() > 0) {
+				emp.getTeCard().setCardsCardId(cards.get(0).getCardsCardId());
+			}
+		}
 		emp.getTeCard().setCardsCardStatus("Applied");
 		emp.getTeCard().setTeEmployees(emp);
 		
@@ -385,14 +461,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if(emp.getPensions() != null && emp.getPensions().size() > 0) {
 			for (TePension pension : emp.getPensions()) {
 				
-				if(pension != null && pension.getPensionCardType() != null && pension.getPensionType() != null &&
-						pension.getPensionDateJoinedScheme() != null) {
-					pension.setTeEmployees(emp);
-					
-					if(pension.getPensionTrainer().getTrainerId() != null) {
-						TeTrainers trainer = trainersService.getTrainer(pension.getPensionTrainer().getTrainerId());
-						pension.setPensionTrainer(trainer);
-					}
+				pension.setTeEmployees(emp);
+				
+				if(pension.getPensionTrainer().getTrainerId() != null) {
+					TeTrainers trainer = trainersService.getTrainer(pension.getPensionTrainer().getTrainerId());
+					pension.setPensionTrainer(trainer);
 				}
 			}
 			emp.setTePensions(new HashSet<TePension>(emp.getPensions()));
@@ -404,6 +477,126 @@ public class EmployeeServiceImpl implements EmployeeService {
 		personService.addPerson(person);
 	}
 	
+	@Override
+	public void handleApproveEmployee(Integer id) throws Exception {
+		
+		TeEmployees emp = getEmployeeFromEmployeeApprovedRecord(id);
+		//emp.setEmployeesPpsNumber(EncryptDecryptUtils.encrypt(emp.getEmployeesPpsNumber()));
+		getCurrentSession().saveOrUpdate(emp);
+		
+		Person person = createPerson(emp);
+		personService.addPerson(person);
+		
+		this.deleteEmployeeApprovedById(id);
+	}
+	
+	private TeEmployees getEmployeeFromEmployeeApprovedRecord(Integer id) throws Exception {
+		
+		//Set TeEmployeesApproved value to TeEmployees
+		TeEmployeesApproved empApproved = getEmployeeApprovedById(id);
+		TeEmployees emp = new TeEmployees();
+		emp.setEmployeesPpsNumber(empApproved.getEmployeesPpsNumber());
+		emp.setEmployeesTitle(empApproved.getEmployeesTitle());
+		emp.setEmployeesSurname(empApproved.getEmployeesSurname());
+		emp.setEmployeesFirstname(empApproved.getEmployeesFirstname());
+		emp.setEmployeesFullName(empApproved.getEmployeesFullName());
+		emp.setEmployeesDateOfBirth(empApproved.getEmployeesDateOfBirth());
+		emp.setEmployeesNationality(empApproved.getEmployeesNationality());
+		emp.setEmployeesMaritalStatus(empApproved.getEmployeesMaritalStatus());
+		emp.setEmployeesSpouseName(empApproved.getEmployeesSpouseName());
+		emp.setEmployeesSex(empApproved.getEmployeesSex());
+		emp.setEmployeesAddress1(empApproved.getEmployeesAddress1());
+		emp.setEmployeesAddress2(empApproved.getEmployeesAddress2());
+		emp.setEmployeesAddress3(empApproved.getEmployeesAddress3());
+		emp.setEmployeesAddress4(empApproved.getEmployeesAddress4());
+		emp.setEmployeesAddress5(empApproved.getEmployeesAddress5());
+		emp.setEmployeesPostCode(empApproved.getEmployeesPostCode());
+		emp.setEmployeesPhoneNo(empApproved.getEmployeesPhoneNo());
+		emp.setEmployeesMobileNo(empApproved.getEmployeesMobileNo());
+		emp.setEmployeesEmail(empApproved.getEmployeesEmail());
+		emp.setEmployeesComments(empApproved.getEmployeesComments());
+		emp.setEmployeesHriAccountNo(empApproved.getEmployeesHriAccountNo());
+		emp.setEmployeesIsNew(empApproved.getEmployeesIsNew());
+		emp.setEmployeesHasTaxableEarnings(empApproved.getEmployeesHasTaxableEarnings());
+		emp.setEmployeesDateEntered(empApproved.getEmployeesDateEntered());
+		emp.setEmployeesLastUpdated(empApproved.getEmployeesLastUpdated());
+		
+		emp.setEmployeeRequestDate(empApproved.getEmployeeRequestDate());
+		emp.setEmployeeExistingAIRCardHolder(empApproved.getEmployeeExistingAIRCardHolder());
+		emp.setEmployeeOldEmployeeCardNumber(empApproved.getEmployeeOldEmployeeCardNumber());
+		emp.setEmployeeCategoryOfEmployment(empApproved.getEmployeeCategoryOfEmployment());
+		emp.setEmployeeLastYearPaid(empApproved.getEmployeeLastYearPaid());
+		emp.setEmployeeNumHourWorked(empApproved.getEmployeeNumHourWorked());
+		emp.setEmployeeVerified(empApproved.isEmployeeVerified());
+		
+		//Set TeCardsApproved value to TeCards value
+		TeCards cards = new TeCards();
+		TeCardsApproved cardsApproved = empApproved.getTeCard();
+		cards.setTeEmployees(emp);
+		cards.setCardsCardNumber(cardsApproved.getCardsCardNumber());
+		cards.setCardsCardReturnedToOffice(cardsApproved.getCardsCardReturnedToOffice());
+		cards.setCardsCardStatus(cardsApproved.getCardsCardStatus());
+		cards.setCardsCardType(cardsApproved.getCardsCardType());
+		cards.setCardsIssueDate(cardsApproved.getCardsIssueDate());
+		cards.setCardsPreviousAirCardHolder(cardsApproved.getCardsPreviousAirCardHolder());
+		emp.setTeCard(cards);
+		
+		List<TeEmployentHistory> empHistories = new ArrayList<TeEmployentHistory>();
+		Criteria criteria = getCurrentSession().createCriteria(TeEmploymentApprovedHistory.class);
+		criteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", id));
+		List<TeEmploymentApprovedHistory> empApprovedHistories = criteria.list();
+		if(empApprovedHistories != null && empApprovedHistories.size() > 0) {
+			for (TeEmploymentApprovedHistory empApprovedHistory : empApprovedHistories) {
+				TeEmployentHistory history = new TeEmployentHistory();
+				history.setTeEmployees(emp);
+				history.setEhDateFrom(empApprovedHistory.getEhDateFrom());
+				history.setEhDateTo(empApprovedHistory.getEhDateTo());
+				history.setEhEarnings(empApprovedHistory.getEhEarnings());
+				//history.setEhEmploymentCategory(empApprovedHistory.getEhEmploymentCategory());
+				history.setEhHoursWorked(empApprovedHistory.getEhHoursWorked());
+				history.setEhPpsNumber(empApprovedHistory.getEhPpsNumber());
+				history.setEhTempCategory(empApprovedHistory.getEhTempCategory());
+				history.setEhVerified(empApprovedHistory.isEhVerified());
+				history.setEhYear(empApprovedHistory.getEhYear());
+				history.setEmployeeNumHourWorked(empApprovedHistory.getEmployeeNumHourWorked());
+				history.setStartDate(empApprovedHistory.getStartDate());
+				history.setTeTrainers(empApprovedHistory.getTeTrainers());
+				history.setTrainerName(empApprovedHistory.getTrainerName());
+				history.setCardType(empApprovedHistory.getCardType());
+				history.setPensionType(empApprovedHistory.getPensionType());
+				history.setHriAccNum(empApprovedHistory.getHriAccNum());
+				empHistories.add(history);
+			}
+		}
+		emp.setHistories(empHistories);
+		emp.setTeEmployentHistories(new HashSet<TeEmployentHistory>(emp.getHistories()));
+		
+		List<TePension> pensions = new ArrayList<TePension>();
+		criteria = getCurrentSession().createCriteria(TePensionApproved.class);
+		criteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", id));
+		List<TePensionApproved> pensionApprovedHistories = criteria.list();
+		if(pensionApprovedHistories != null && pensionApprovedHistories.size() > 0) {
+			for (TePensionApproved tePensionApproved : pensionApprovedHistories) {
+				TePension pension = new TePension();
+				//pension.setPensionCardType(tePensionApproved.getPensionCardType());
+				pension.setPensionDateJoinedScheme(tePensionApproved.getPensionDateJoinedScheme());
+				pension.setPensionDateLeftScheme(tePensionApproved.getPensionDateLeftScheme());
+				pension.setPensionDateRange(tePensionApproved.getPensionDateRange());
+				//pension.setPensionHRIAccNum(tePensionApproved.getPensionHRIAccNum());
+				pension.setPensionTrainer(tePensionApproved.getPensionTrainer());
+				pension.setPensionTrainerName(tePensionApproved.getPensionTrainerName());
+				pension.setEmploymentCategory(tePensionApproved.getEmploymentCategory());
+				//pension.setPensionType(tePensionApproved.getPensionType());
+				pension.setTeEmployees(emp);
+				pensions.add(pension);
+			}
+		}
+		emp.setPensions(pensions);
+		emp.setTePensions(new HashSet<TePension>(emp.getPensions()));
+		
+		return emp; 
+	}
+
 	@Override
 	public HashMap<String, Object> getAdvanceSearchRecordByType(
 			String type, int start, int length, int draw) {
@@ -659,5 +852,38 @@ public class EmployeeServiceImpl implements EmployeeService {
 			}
 		}
 		return records;
+	}
+	
+	@Override
+	public List<InapproveEmployeeBean> getInapproveEmployeeList() {
+		
+		List<InapproveEmployeeBean> results = new ArrayList<InapproveEmployeeBean>();
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployeesApproved.class);
+		List<TeEmployeesApproved> employees = criteria.list();
+		if(employees != null && employees.size() > 0) {
+			for (TeEmployeesApproved emp : employees) {
+				InapproveEmployeeBean bean = new InapproveEmployeeBean();
+				bean.setId(emp.getEmployeesEmployeeId());
+				Criteria criteria1 = getCurrentSession().createCriteria(TeEmploymentApprovedHistory.class);
+				criteria1.add(Restrictions.eq("teEmployees.employeesEmployeeId", emp.getEmployeesEmployeeId()));
+				criteria1.addOrder(Order.asc("ehEmploymentId"));
+				List<TeEmploymentApprovedHistory> histories = criteria1.list();
+				if(histories != null && histories.size() > 0) {
+					bean.setTrainerAccountNumber(histories.get(0).getTeTrainers().getTrainerAccountNo());
+					bean.setTrainerName(histories.get(0).getTeTrainers().getTrainerFullName());
+				}
+				bean.setEmployeeName(emp.getEmployeesFullName());
+				results.add(bean);
+			}
+		}
+		return results;
+	}
+	
+	@Override
+	public Object getAutoGeneatedCardNumber() {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		//Criteria criteria = getCurrentSession().createCriteria(TeCards.class).setProjection(Projections.max("cardsCardNumber"));
+		return map;
 	}
 }
