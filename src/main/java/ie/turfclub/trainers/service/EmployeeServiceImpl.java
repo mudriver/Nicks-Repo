@@ -89,6 +89,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public void saveOrUpdate(TeEmployees emp) {
 	
 		emp.setEmployeesPpsNumber(EncryptDecryptUtils.encrypt(emp.getEmployeesPpsNumber()));
+		/*if(emp.getTeCard() != null && emp.getTeCard().getCardsCardId() != null && emp.getTeCard().getCardsCardId() > 0) {
+			List<TeCards> cards = sessionFactory.getCurrentSession().createCriteria(TeCards.class)
+			.add(Restrictions.eq("cardsCardId", emp.getTeCard().getCardsCardId())).list();
+			if(cards != null && cards.size() > 0 ) {
+				sessionFactory.getCurrentSession().delete(cards.get(0));
+			}
+			emp.getTeCard().setCardsCardId(null);
+		}*/
 		getCurrentSession().saveOrUpdate(emp);
 	}
 	
@@ -280,7 +288,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 				TeEmploymentApprovedHistory history = new TeEmploymentApprovedHistory();
 				BeanUtilsBean notNull=new NullAwareBeanUtilsBean();
 				notNull.copyProperties(history, teEmployentHistory);
-				history.setTrainerName(history.getTeTrainers().getTrainerFullName());
+				if(history.getTeTrainers() != null)
+					history.setTrainerName(history.getTeTrainers().getTrainerFullName());
 				histories.add(history);
 			}
 			emp.setHistories(histories);
@@ -326,7 +335,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 				TeEmployentHistory history = new TeEmployentHistory();
 				BeanUtilsBean notNull=new NullAwareBeanUtilsBean();
 				notNull.copyProperties(history, teEmployentHistory);
-				history.setTrainerName(history.getTeTrainers().getTrainerFullName());
+				if(history.getTeTrainers() != null)
+					history.setTrainerName(history.getTeTrainers().getTrainerFullName());
 				histories.add(history);
 			}
 			
@@ -349,7 +359,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 				TePension pension = new TePension();
 				BeanUtilsBean notNull=new NullAwareBeanUtilsBean();
 				notNull.copyProperties(pension, tePension);
-				pension.setPensionTrainerName(pension.getPensionTrainer().getTrainerFullName());
+				if(pension.getPensionTrainer() != null)
+					pension.setPensionTrainerName(pension.getPensionTrainer().getTrainerFullName());
 				pensions.add(pension);
 			}
 			emp.setPensions(pensions);
@@ -358,7 +369,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		Period p = Period.fieldDifference(ld, LocalDate.now());
 		emp.setAge(p.getYears());
-		if(emp.getEmployeesPpsNumber() != null)
+		if(emp.getEmployeesPpsNumber() != null && emp.getEmployeesPpsNumber().length() > 10)
 			emp.setEmployeesPpsNumber(EncryptDecryptUtils.decrypt(emp.getEmployeesPpsNumber()));
  		return emp;
 	}
@@ -441,35 +452,43 @@ public class EmployeeServiceImpl implements EmployeeService {
 			cardcriteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", emp.getEmployeesEmployeeId()));
 			List<TeCards> cards = cardcriteria.list();
 			if(cards != null && cards.size() > 0) {
-				emp.getTeCard().setCardsCardId(cards.get(0).getCardsCardId());
+				//emp.getTeCard().setCardsCardId(cards.get(0).getCardsCardId());
+				sessionFactory.getCurrentSession().delete(cards.get(0));
+				//sessionFactory.getCurrentSession().flush();
 			}
 		}
 		emp.getTeCard().setCardsCardStatus("Applied");
 		emp.getTeCard().setTeEmployees(emp);
 		
-		if(emp.getHistories() != null && emp.getHistories().size() > 0) {
-			for (TeEmployentHistory history : emp.getHistories()) {
-				history.setTeEmployees(emp);
-				if(history.getTeTrainers().getTrainerId() != null) {
-					TeTrainers trainer = trainersService.getTrainer(history.getTeTrainers().getTrainerId());
-					history.setTeTrainers(trainer);
-				}
-			}
-			emp.setTeEmployentHistories(new HashSet<TeEmployentHistory>(emp.getHistories()));
-		}
 		
-		if(emp.getPensions() != null && emp.getPensions().size() > 0) {
-			for (TePension pension : emp.getPensions()) {
-				
-				pension.setTeEmployees(emp);
-				
-				if(pension.getPensionTrainer().getTrainerId() != null) {
-					TeTrainers trainer = trainersService.getTrainer(pension.getPensionTrainer().getTrainerId());
-					pension.setPensionTrainer(trainer);
+		/*if(emp.getEmployeesEmployeeId() == null || emp.getEmployeesEmployeeId() == 0) {*/
+			if(emp.getHistories() != null && emp.getHistories().size() > 0) {
+				for (TeEmployentHistory history : emp.getHistories()) {
+					history.setTeEmployees(emp);
+					if(history.getTeTrainers().getTrainerId() != null) {
+						TeTrainers trainer = trainersService.getTrainer(history.getTeTrainers().getTrainerId());
+						history.setTeTrainers(trainer);
+					}
 				}
+				emp.setTeEmployentHistories(new HashSet<TeEmployentHistory>(emp.getHistories()));
 			}
+			
+			if(emp.getPensions() != null && emp.getPensions().size() > 0) {
+				for (TePension pension : emp.getPensions()) {
+					
+					pension.setTeEmployees(emp);
+					
+					if(pension.getPensionTrainer().getTrainerId() != null) {
+						TeTrainers trainer = trainersService.getTrainer(pension.getPensionTrainer().getTrainerId());
+						pension.setPensionTrainer(trainer);
+					}
+				}
+				emp.setTePensions(new HashSet<TePension>(emp.getPensions()));
+			}
+		/*} else {
+			emp.setTeEmployentHistories(new HashSet<TeEmployentHistory>(emp.getHistories()));
 			emp.setTePensions(new HashSet<TePension>(emp.getPensions()));
-		}
+		}*/
 		
 		saveOrUpdate(emp);
 		

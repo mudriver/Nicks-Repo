@@ -37,7 +37,8 @@ public class UpdateEmploymentHistoryCronService {
 		
 		if(dest.getTeEmployees() == null) {
 			dest.setTeEmployees(src.getTeEmployees());
-			dest.setTeTrainers(src.getTeTrainers());
+			if(src.getTeTrainers() != null)
+				dest.setTeTrainers(src.getTeTrainers());
 			dest.setEhDateFrom(src.getEhDateFrom());
 			dest.setEhDateTo(src.getEhDateTo());
 			dest.setEhHoursWorked(src.getEhHoursWorked());
@@ -78,7 +79,8 @@ public class UpdateEmploymentHistoryCronService {
 				Criteria criteria1 = getCurrentSession().createCriteria(TeEmployentHistory.class);
 				criteria1.add(Restrictions.between("ehDateFrom", startDate, endDate));
 				criteria1.add(Restrictions.eq("teEmployees.employeesEmployeeId", teEmployentHistory.getTeEmployees().getEmployeesEmployeeId()));
-				criteria1.add(Restrictions.eq("teTrainers.trainerId", teEmployentHistory.getTeTrainers().getTrainerId()));
+				if(teEmployentHistory.getTeTrainers() != null)
+					criteria1.add(Restrictions.eq("teTrainers.trainerId", teEmployentHistory.getTeTrainers().getTrainerId()));
 				List<TeEmployentHistory> rec2015 = criteria1.list();
 				
 				TeEmployentHistory newRecord = (rec2015 != null && rec2015.size() > 0) ? rec2015.get(0) : new TeEmployentHistory();
@@ -92,7 +94,8 @@ public class UpdateEmploymentHistoryCronService {
 				Criteria criteria2 = getCurrentSession().createCriteria(TeEmployentHistory.class);
 				criteria2.add(Restrictions.between("ehDateFrom", startDate, endDate));
 				criteria2.add(Restrictions.eq("teEmployees.employeesEmployeeId", teEmployentHistory.getTeEmployees().getEmployeesEmployeeId()));
-				criteria2.add(Restrictions.eq("teTrainers.trainerId", teEmployentHistory.getTeTrainers().getTrainerId()));
+				if(teEmployentHistory.getTeTrainers() != null)
+					criteria2.add(Restrictions.eq("teTrainers.trainerId", teEmployentHistory.getTeTrainers().getTrainerId()));
 				List<TeEmployentHistory> rec2016 = criteria2.list();
 				
 				TeEmployentHistory newRecord1 = (rec2016 != null && rec2016.size() > 0) ? rec2016.get(0) : new TeEmployentHistory();
@@ -130,7 +133,8 @@ public class UpdateEmploymentHistoryCronService {
 				Criteria criteria4 = getCurrentSession().createCriteria(TeEmployentHistory.class);
 				criteria4.add(Restrictions.between("ehDateFrom", startDate, endDate));
 				criteria4.add(Restrictions.eq("teEmployees.employeesEmployeeId", teEmployentHistory.getTeEmployees().getEmployeesEmployeeId()));
-				criteria4.add(Restrictions.eq("teTrainers.trainerId", teEmployentHistory.getTeTrainers().getTrainerId()));
+				if(teEmployentHistory.getTeTrainers() != null)
+					criteria4.add(Restrictions.eq("teTrainers.trainerId", teEmployentHistory.getTeTrainers().getTrainerId()));
 				List<TeEmployentHistory> rec2016 = criteria4.list();
 				
 				TeEmployentHistory newRecord1 = (rec2016 != null && rec2016.size() > 0) ? rec2016.get(0) : new TeEmployentHistory();

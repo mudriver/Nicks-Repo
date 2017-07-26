@@ -195,8 +195,8 @@
 				<div class="form-group col-sm-12">
 					<label for="email" class="col-sm-4" data-th-text="#{employee.email}">Email :</label>
 					<div class="col-sm-8">
-			  			<input type="email" data-emailorphone="email" data-th-field="*{employeesEmail}" 
-			  				class="form-control input-sm" required="required" 
+			  			<input type="email" data-th-field="*{employeesEmail}" 
+			  				class="form-control input-sm" 
 			  				placeholder='Please enter an email address' />
 					</div>
 				</div>
@@ -240,22 +240,21 @@
 						<label for="categoryOfEmployment" class="col-sm-5" data-th-text="#{employee.category.of.employment}">Category of Employment :</label>
 						<div class="col-sm-7">
 				  			<input class="form-control input-sm" data-th-field="*{pensions[0].employmentCategory}" 
-				  				required="required" type='text' data-error="You must select an employment category"></input> 
+				  				 type='text' data-error="You must select an employment category"></input> 
 							<input type="hidden" id="employmentCatEnum" data-th-value="  ${employmentCatEnum}"></input>
 						</div>
 					</div>
 					<div class="form-group col-sm-12">
 						<label for="card" class="col-sm-5" data-th-text="#{employee.pension.trainer}">Trainer</label>
 						<div class="col-sm-7">
-				  			<input data-th-field="*{pensions[0].pensionTrainerName}" class="form-control input-sm" required="required" />
+				  			<input data-th-field="*{pensions[0].pensionTrainerName}" class="form-control input-sm" required="required"/>
 				  			<input type="hidden" data-th-field="*{pensions[0].pensionTrainer.trainerId}" />
 			  			</div>
 					</div>
 					<div class="form-group col-sm-12">
 						<label for="ppsNumber" class="col-sm-5" data-th-text="#{employee.start.date}">Start Date</label>
 						<div class="col-sm-7">
-			  				<input data-th-field="*{pensions[0].pensionDateJoinedScheme}" class="form-control input-sm"
-			  					required="required" />
+			  				<input data-th-field="*{pensions[0].pensionDateJoinedScheme}" class="form-control input-sm" />
 			  			</div>
 					</div>
 					<div style="display: none;" class="form-group col-sm-12">
@@ -277,8 +276,7 @@
 					<div class="form-group col-sm-12">
 						<label class="col-sm-5" for="cardType" data-th-text="#{employee.card.type}">Card Type :</label>
 						<div class="col-sm-7">
-				  			<input class="form-control input-sm" data-th-field="*{teCard.cardsCardType}" 
-				  				required="required" type='text'></input> 
+				  			<input class="form-control input-sm" data-th-field="*{teCard.cardsCardType}"  type='text'></input> 
 							<input type="hidden" id="cardTypeEnum" data-th-value="  ${cardTypeEnum}"></input>
 						</div>
 					</div>
@@ -296,12 +294,12 @@
 			  					required="required" placeholder='Please select issue date' />
 			  			</div>
 					</div>
-					<div class="form-group col-sm-12">
+					<!-- <div class="form-group col-sm-12">
 						<label for="oldEmployeeCardNumber" class="col-sm-5" data-th-text="#{employee.old.employee.card.number}">Old Employee Card Number :</label>
 						<div class="col-sm-7">
 			  				<input data-th-field="*{employeeOldEmployeeCardNumber}" class="form-control input-sm"/>
 			  			</div>
-					</div>
+					</div> -->
 					<div class="form-group col-sm-12">
 						<label for="existingAirCardHolder" class="col-sm-5" data-th-text="#{employee.existing.air.card.holder}">Existing AIR Card Holder :</label>
 						<div class="col-sm-7">
@@ -319,26 +317,35 @@
 			  					placeholder="HRI Account No. if applicable" pattern="\w{5}"/>
 			  			</div>
 					</div>
-					<div class="form-group col-sm-12">
+					<!-- <div class="form-group col-sm-12">
 						<label for="lastYearPaid" class="col-sm-5" data-th-text="#{employee.last.year.paid}">Last Year Paid :</label>
 						<div class="col-sm-7">
 			  				<input data-th-field="*{employeeLastYearPaid}" class="form-control input-sm" 
 			  					required="required"/>
 			  			</div>
-					</div>
+					</div> -->
 					<div class="form-group col-sm-12">
 						<label for="categoryOfEmployment" class="col-sm-5" data-th-text="#{employee.category.of.employment}">Category of Employment :</label>
 						<div class="col-sm-7">
 				  			<input class="form-control input-sm" data-th-field="*{employeeCategoryOfEmployment}" 
-				  				type='text' required="required"></input> 
+				  				type='text'></input> 
 							<input type="hidden" id="employmentCatEnum" data-th-value="  ${employmentCatEnum}"></input>
 						</div>
 					</div>
 					<div class="form-group col-sm-12">
+						<label for="requestDate" class="col-sm-5" data-th-text="#{employee.employees.hour.worked}">Employees hour worked :</label>
+						<div class="col-sm-7">
+			  				<select data-th-field="*{employeeNumHourWorked}" class="form-control input-sm">
+			  					<option value="0">less than 8</option>
+			  					<option value="1">8 to 19.5</option>
+			  					<option value="2">greater than 20</option>
+			  				</select>
+			  			</div>
+					</div>
+					<div class="form-group col-sm-12">
 						<label for="requestDate" class="col-sm-5" data-th-text="#{employee.request.date}">Request Date :</label>
 						<div class="col-sm-7">
-			  				<input data-th-field="*{employeeRequestDate}" class="form-control input-sm" 
-			  					required="required"/>
+			  				<input data-th-field="*{employeeRequestDate}" class="form-control input-sm" />
 			  			</div>
 					</div>
 					<div class="form-group col-sm-12">
@@ -354,7 +361,7 @@
 				<div class="pension-form col-sm-12">
 					<div class="form-group col-sm-1">
 						<label for="card" data-th-text="#{employee.pension.card}">Card :</label>
-			  			<select data-th-field="*{histories[0].cardType}" class="form-control input-sm" required="required">
+			  			<select data-th-field="*{histories[0].cardType}" class="form-control input-sm" >
 			  				<option value=""></option>
 			  				<option data-th-value="#{employee.a}" value="A" data-th-text="#{employee.a}">A</option>
 			  				<option data-th-value="#{employee.b}" value="B" data-th-text="#{employee.b}">B</option>
@@ -362,7 +369,7 @@
 					</div>
 					<div class="form-group col-sm-2">
 						<label for="card" data-th-text="#{employee.pension.type}">Pension :</label>
-			  			<select data-th-field="*{histories[0].pensionType}" class="form-control input-sm" required="required">
+			  			<select data-th-field="*{histories[0].pensionType}" class="form-control input-sm" >
 			  				<option value=""></option>
 			  				<option data-th-value="#{employee.pension.f}" value="F" data-th-text="#{employee.pension.f}">F</option>
 			  				<option data-th-value="#{employee.pension.p}" value="P" data-th-text="#{employee.pension.p}">P</option>
@@ -371,12 +378,12 @@
 					</div>		
 					<div class="form-group col-sm-2">
 						<label for="card" data-th-text="#{employee.pension.trainer}">Trainer</label>
-			  			<input placeholder="You must enter trainer name" data-th-field="*{histories[0].trainerName}" class="form-control input-sm" required="required"/>
+			  			<input placeholder="You must enter trainer name" data-th-field="*{histories[0].trainerName}" class="form-control input-sm" required="required" />
 			  			<input type="hidden" data-th-field="*{histories[0].teTrainers.trainerId}" />
 					</div>		
 					<div class="form-group col-sm-2">
 						<label for="requestDate" data-th-text="#{employee.pension.hri.ac.num}">HRI A/C Num :</label>
-			  			<input placeholder="You must enter HRI A/c Num" data-th-field="*{histories[0].hriAccNum}" class="form-control input-sm" required="required"/>
+			  			<input placeholder="You must enter HRI A/c Num" data-th-field="*{histories[0].hriAccNum}" class="form-control input-sm" />
 					</div>
 					<!-- <div class="form-group col-sm-3">
 						<label for="requestDate" data-th-text="#{employee.pension.date.range}">Date Range :</label>
@@ -656,7 +663,7 @@
     					'<input type="hidden" id="histories'+noOfPensionRecord+'.ehEmploymentId" name="histories['+noOfPensionRecord+'].ehEmploymentId"></input>'+
     					'<div class="form-group col-sm-1">'+
     					'<label for="card" data-th-text="'+card+'">'+card+'</label>'+
-    						'<select id="histories'+noOfPensionRecord+'.cardType" name="histories['+noOfPensionRecord+'].cardType" class="form-control input-sm" required="required">'+
+    						'<select id="histories'+noOfPensionRecord+'.cardType" name="histories['+noOfPensionRecord+'].cardType" class="form-control input-sm" >'+
     							'<option value=""></option>'+
     							'<option value="'+cardA+'">'+cardA+'</option>'+
     							'<option value="'+cardB+'">'+cardB+'</option>'+
@@ -664,7 +671,7 @@
     				'</div>'+
     				'<div class="form-group col-sm-2">'+
     					'<label for="card" >'+pension+'</label>'+
-    						'<select id="histories'+noOfPensionRecord+'.pensionType" name="histories['+noOfPensionRecord+'].pensionType" class="form-control input-sm" required="required">'+
+    						'<select id="histories'+noOfPensionRecord+'.pensionType" name="histories['+noOfPensionRecord+'].pensionType" class="form-control input-sm" >'+
     							'<option value=""></option>'+
     							'<option value="'+pensionF+'" >'+pensionF+'</option>'+
     							'<option value="'+pensionP+'" >'+pensionP+'</option>'+
@@ -673,12 +680,12 @@
     				'</div>		'+
     				'<div class="form-group col-sm-2">'+
     					'<label for="card" >'+trainer+'</label>'+
-    						'<input placeholder="You must enter trainer name" id="histories'+noOfPensionRecord+'.trainerName" name="histories['+noOfPensionRecord+'].trainerName" class="form-control input-sm" required="required"/>'+
+    						'<input placeholder="You must enter trainer name" id="histories'+noOfPensionRecord+'.trainerName" name="histories['+noOfPensionRecord+'].trainerName" required="required" class="form-control input-sm" />'+
     						'<input type="hidden" id="histories'+noOfPensionRecord+'.teTrainers.trainerId" name="histories['+noOfPensionRecord+'].teTrainers.trainerId" />'+
     				'</div>		'+
     				'<div class="form-group col-sm-2">'+
     					'<label for="requestDate" >'+hriAccNum+'</label>'+
-    						'<input  placeholder="You must enter HRI A/c Num" id="histories'+noOfPensionRecord+'.hriAccNum" name="histories['+noOfPensionRecord+'].hriAccNum" class="form-control input-sm" required="required"/>'+
+    						'<input  placeholder="You must enter HRI A/c Num" id="histories'+noOfPensionRecord+'.hriAccNum" name="histories['+noOfPensionRecord+'].hriAccNum" class="form-control input-sm" />'+
     				'</div>'+
     				'<div class="form-group col-sm-2">'+
 						'<label for="requestDate" data-th-text="#{employee.pension.from.date}">'+fromDate+'</label>'+

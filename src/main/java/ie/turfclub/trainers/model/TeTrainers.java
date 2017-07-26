@@ -71,6 +71,7 @@ public class TeTrainers implements java.io.Serializable {
 	private String trainerContactName;
 	private String trainerContactPhone;
 	private String trainerNotes;
+	private int trainerLicenseType;
 	private  Set<TeFile> trainerFile;
 	private Set<TeEmployeeTrainerVerified> teEmployeeTrainerVerified = new HashSet(0);
 	private Set<TeEmployentHistory> teEmployentHistories = new HashSet(0);
@@ -395,11 +396,16 @@ public class TeTrainers implements java.io.Serializable {
 	public void setTrainerReturnComplete(boolean trainerReturnComplete) {
 		this.trainerReturnComplete = trainerReturnComplete;
 	}
+	
+	@Column(name = "trainer_license_type")
+	public int getTrainerLicenseType() {
+		return trainerLicenseType;
+	}
 
-	
-	
-	
-	
+	public void setTrainerLicenseType(int trainerLicenseType) {
+		this.trainerLicenseType = trainerLicenseType;
+	}
+
 	@Column(name = "trainer_contact_name")
 	public String getTrainerContactName() {
 		return trainerContactName;

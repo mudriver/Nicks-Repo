@@ -30,7 +30,7 @@ public class ThymeleafConfig {
 	        templateResolver.setPrefix("/WEB-INF/inspections/view/manifest/");
 	        templateResolver.setSuffix(".manifest");
 	        templateResolver.setCacheTTLMs((long) 5000);
-	        
+	        templateResolver.setCacheable(false);
 	        return templateResolver;
 	    }
 	

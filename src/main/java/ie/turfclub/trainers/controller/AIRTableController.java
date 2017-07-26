@@ -1,14 +1,15 @@
 package ie.turfclub.trainers.controller;
 
-import java.util.List;
-
-import ie.turfclub.trainers.model.AIRTable;
 import ie.turfclub.trainers.service.AIRTableService;
+
+import java.io.BufferedWriter;
+import java.util.HashMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mysql.jdbc.Constants;
 
 @Controller
 @RequestMapping(value = "/air")
@@ -52,5 +55,26 @@ public class AIRTableController {
 		
 		length = (length == -1) ? noOfRecords : length;
 		return airTableService.loadDataByPagination(start, length, draw);
+	}
+	
+	@RequestMapping(value="/export/csv",method=RequestMethod.GET)
+	public void exportCSV(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+		
+		/*List<AIRTable> records = airTableService.findAll();
+		model.addAttribute("records", records);*/
+		/*return "air-all";*/
+		try {
+			BufferedWriter writer = new BufferedWriter(response.getWriter());
+			
+			response.setContentType("text/csv");
+			// creates mock data
+			String headerValue = String.format("attachment; filename=\"%s\"", "AIR_Table.csv");
+			response.setHeader("Content-Disposition", headerValue);
+			writer.write(airTableService.getCSVString());
+			writer.flush();
+			writer.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

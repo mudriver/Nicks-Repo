@@ -46,10 +46,12 @@
         .controller('MainFileUploadController', [
             '$scope', '$http', '$filter', '$window',
             function ($scope, $http) {
+            	var rootUrl = '/turfclubPrograms';
                 $scope.init = function(userName){
                 	console.log(userName);
                 	$scope.loadingFiles = true;
-                    $http.get("/TurfClubOnline/trainersEmployeesOnline/upload/" + userName)
+                	/*TurfClubOnline*/
+                    $http.get(rootUrl+"/trainersEmployeesOnline/upload/" + userName)
                         .then(
                             function (response) {
                                 $scope.loadingFiles = false;
@@ -60,12 +62,13 @@
                                 $scope.loadingFiles = false;
                             }
                         );
+                    
+                    $scope.options = {
+                        url: rootUrl+"/trainersEmployeesOnline/upload/"+userName,
+                        autoUpload : true
+                    };
                 }
-            	
-            	$scope.options = {
-                    url: "/TurfClubOnline/trainersEmployeesOnline/upload",
-                    autoUpload : true
-                };
+                
 
                     $scope.loadingFiles = false;
                    

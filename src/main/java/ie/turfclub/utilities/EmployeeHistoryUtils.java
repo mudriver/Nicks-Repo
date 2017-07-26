@@ -342,7 +342,7 @@ public class EmployeeHistoryUtils {
 			for (TeEmployentHistory history : employee
 					.getTeEmployentHistories()) {
 				//System.out.println(history.getTeTrainers().getTrainerId() + " " + history.getTeEmployees().getEmployeesEmployeeId());
-				if (history.getTeTrainers().getTrainerId() == trainerId) {
+				if (history.getTeTrainers() != null && history.getTeTrainers().getTrainerId() == trainerId) {
 					histories.add(history);
 				}
 

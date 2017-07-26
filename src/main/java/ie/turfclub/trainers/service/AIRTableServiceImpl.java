@@ -24,6 +24,9 @@ public class AIRTableServiceImpl implements AIRTableService {
 	@Resource
 	private Environment env;
 	
+	private String[] header = {"Account", "Surname", "Firstname", "Category Code", "Address1", "Address2", "Address3",
+			"Current Trainer Number", "Active", "PostDirect", "HRI Account Holder", "HRI Account Number"};
+	
 	@Override
 	public List<AIRTable> findAll() {
 		
@@ -50,5 +53,37 @@ public class AIRTableServiceImpl implements AIRTableService {
 		map.put("recordsFiltered", count);
 		
 		return map;
+	}
+	
+	@Override
+	public String getCSVString() {
+		
+		StringBuffer buffer = new StringBuffer();
+		
+		for(int i=0; i<header.length; i++) {
+			if(i < (header.length - 1))
+				buffer.append(header[i]+",");
+			else
+				buffer.append(header[i]+"\n");
+		}
+		
+		List<AIRTable> records = sessionFactory.getCurrentSession().createCriteria(AIRTable.class).list();
+		if(records != null && records.size() > 0) {
+			for (AIRTable rec : records) {
+				buffer.append("\""+rec.getAccount()+"\","+
+							"\""+rec.getSurname()+"\","+
+							"\""+rec.getFirstname()+"\","+
+							"\""+rec.getCategoryCode()+"\","+
+							"\""+(rec.getAddress1() != null ? rec.getAddress1() : "")+"\","+
+							"\""+(rec.getAddress2() != null ? rec.getAddress2() : "")+"\","+
+							"\""+(rec.getAddress3() != null ? rec.getAddress3() : "")+"\","+
+							"\""+rec.getCurrentTrainerNum()+"\","+
+							"\""+rec.isActive()+"\","+
+							"\""+rec.isPostDirect()+"\","+
+							"\""+rec.isHriAccountHolder()+"\","+
+							"\""+rec.getHriAccNum()+"\"\n");
+			}
+		}
+		return buffer.toString();
 	}
 }

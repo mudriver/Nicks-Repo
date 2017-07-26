@@ -95,6 +95,7 @@ public class TrainersJSONController {
 	TrainersService trainersService;
 	@Autowired
 	private FileService fileService;
+	//private String fileDirectory = "/home/sky/turfclub/";
 	private String fileDirectory = "/home/FTP-shared/stableread/ftp/";
 	// private String fileDirectory = "C:/files/";
 	static Logger logger = LoggerFactory

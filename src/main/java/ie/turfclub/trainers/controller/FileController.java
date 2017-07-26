@@ -52,7 +52,8 @@ public class FileController {
     private FileService fileService;
     @Autowired
     private TrainersService trainerService;
-   private String fileUploadDirectory = "/home/FTP-shared/stableread/ftp";
+    //private String fileUploadDirectory = "/home/sky/turfclub";
+    private String fileUploadDirectory = "/home/FTP-shared/stableread/ftp";
     //private String fileUploadDirectory = "C:/files";
  
     
@@ -129,10 +130,10 @@ public class FileController {
                 file.setMergeCount(1);
                 file.setUploadType(UploadType.UPLOADED);
                 fileService.create(file);
-                
-                file.setUrl("/TurfClubOnline/trainersEmployeesOnline/picture/"+file.getId());
-                file.setThumbnailUrl("/TurfClubOnline/trainersEmployeesOnline/thumbnail/"+file.getId());
-                file.setDeleteUrl("/TurfClubOnline/trainersEmployeesOnline/delete/"+file.getId());
+                String rootUrl = "/turfclubPrograms";// /TurfClubOnline
+                file.setUrl(rootUrl+"/trainersEmployeesOnline/picture/"+file.getId());
+                file.setThumbnailUrl(rootUrl+"/trainersEmployeesOnline/thumbnail/"+file.getId());
+                file.setDeleteUrl(rootUrl+"/trainersEmployeesOnline/delete/"+file.getId());
                 file.setDeleteType("GET");
                 
                 list.add(file);

@@ -10,4 +10,6 @@ public interface AIRTableService {
 
 	Object loadDataByPagination(int start, int length, int draw);
 
+	String getCSVString();
+
 }
