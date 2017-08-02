@@ -367,6 +367,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		LocalDate ld = LocalDate.fromDateFields(emp.getEmployeesDateOfBirth());
 
+		//Handle Phone and Mobile Number
+		if(emp.getEmployeesPhoneNo() != null) emp.setEmployeesPhoneNo(emp.getEmployeesPhoneNo().replaceAll("\\D+", ""));
+		if(emp.getEmployeesMobileNo() != null) emp.setEmployeesMobileNo(emp.getEmployeesMobileNo().replaceAll("\\D+", ""));
+		
 		Period p = Period.fieldDifference(ld, LocalDate.now());
 		emp.setAge(p.getYears());
 		if(emp.getEmployeesPpsNumber() != null && emp.getEmployeesPpsNumber().length() > 10)
@@ -625,7 +629,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<AdvanceSearchRecordBean> records = new ArrayList<AdvanceSearchRecordBean>();
 		switch(type) {
 			case "1":
-				String hql = "select teEmployees.employeesEmployeeId from TeCards where cardsCardType = 'A'";
+				String hql = "select c.teEmployees.employeesEmployeeId from TeCards c, "
+						+ " TeEmployentHistory  eh where c.teEmployees.employeesEmployeeId = eh.teEmployees.employeesEmployeeId"
+						+ " and c.cardsCardType = 'A' and eh.ehDateTo is null ";
 				List<Integer> empIds = getCurrentSession().createQuery(hql).list();
 				String ids = StringUtils.join(empIds, "','");
 				ids = "'"+ids+"'";
@@ -643,7 +649,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 				}
 				break;
 			case "2":
-				hql = "select teEmployees.employeesEmployeeId from TeCards where cardsCardType = 'B'";
+				hql = "select c.teEmployees.employeesEmployeeId from TeCards c, "
+						+ " TeEmployentHistory  eh where c.teEmployees.employeesEmployeeId = eh.teEmployees.employeesEmployeeId"
+						+ " and c.cardsCardType = 'B' and eh.ehDateTo is null ";
 				empIds = getCurrentSession().createQuery(hql).list();
 				ids = StringUtils.join(empIds, "','");
 				ids = "'"+ids+"'";
@@ -829,7 +837,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<TeEmployees> employees = criteria.list();
 		if(employees != null && employees.size() > 0) {
 			for (TeEmployees teEmployees : employees) {
-				if(teEmployees.getEmployeesPpsNumber() != null && teEmployees.getEmployeesPpsNumber().length() <= 8) {
+				if(teEmployees.getEmployeesPpsNumber() != null && teEmployees.getEmployeesPpsNumber().length() <= 9) {
 					
 					teEmployees.setEmployeesPpsNumber(EncryptDecryptUtils.encrypt(teEmployees.getEmployeesPpsNumber()));
 					getCurrentSession().saveOrUpdate(teEmployees);
@@ -870,6 +878,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 				history.setStartDate(historyRecords.get(0).getEhDateFrom());
 			}
 		}
+		
+		Collections.sort(records, new Comparator<TeEmployentHistory>() {
+		    @Override
+		    public int compare(final TeEmployentHistory o1, final TeEmployentHistory o2) {
+		        int compare = o1.getTeEmployees().getEmployeesSurname().compareToIgnoreCase(o2.getTeEmployees().getEmployeesSurname());
+		        if (compare != 0) {
+		            return compare;
+		        }
+		        return o1.getTeEmployees().getEmployeesFirstname().compareToIgnoreCase(o2.getTeEmployees().getEmployeesFirstname());
+		    }
+		});
+		
 		return records;
 	}
 	
@@ -904,5 +924,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		//Criteria criteria = getCurrentSession().createCriteria(TeCards.class).setProjection(Projections.max("cardsCardNumber"));
 		return map;
+	}
+	
+	@Override
+	public Object deleteHistoryRecord(Integer id) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployentHistory.class);
+		criteria.add(Restrictions.eq("ehEmploymentId", id));
+		List<TeEmployentHistory> records = criteria.list();
+		if(records != null && records.size() > 0) {
+			getCurrentSession().delete(records.get(0));
+		}
+		return new HashMap<String, Object>();
 	}
 }

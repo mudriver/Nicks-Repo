@@ -186,7 +186,8 @@ public class PersonServiceImpl implements PersonService {
 		return results;*/
 		PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
 				+ "p.firstname as firstname,  p.ref_id as refId, p.account_number as accountNumber from person as p join person_role as pr "
-				+ "on p.id = pr.person_id where pr.role_id = ? and (p.surname like ? or p.firstname like ?) ");
+				+ "on p.id = pr.person_id where pr.role_id = ? and (p.surname like ? or p.firstname like ?) "
+				+ " order by p.surname, p.firstname");
 		pstmt.setObject(1, RoleEnum.TRAINER.getId());
 		pstmt.setObject(2, "%"+search+"%");
 		pstmt.setObject(3, "%"+search+"%");
@@ -226,7 +227,8 @@ public class PersonServiceImpl implements PersonService {
 			}
 			return trainer;*/
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.* from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id = ?");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id = ?"
+					+ " order by p.surname, p.firstname");
 			pstmt.setObject(1, RoleEnum.TRAINER.getId());
 			pstmt.setObject(2, trainer.getTrainerId());
 			ResultSet set = pstmt.executeQuery();
@@ -275,7 +277,8 @@ public class PersonServiceImpl implements PersonService {
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
 					+ "p.firstname as firstname,  p.ref_id as refId"
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and (p.surname like ? or p.firstname like ?) ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and (p.surname like ? or p.firstname like ?) "
+					+ " order by p.surname, p.firstname");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
 			pstmt.setObject(2, "%"+search+"%");
 			pstmt.setObject(3, "%"+search+"%");
@@ -324,7 +327,8 @@ public class PersonServiceImpl implements PersonService {
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
 					+ "p.firstname as firstname,  p.ref_id as refId"
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") "
+							+ " order by p.surname, p.firstname");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
 			ResultSet set = pstmt.executeQuery();
 			List<SearchByNameEmployeeBean> records = new ArrayList<SearchByNameEmployeeBean>();
@@ -445,7 +449,9 @@ public class PersonServiceImpl implements PersonService {
 					/*+ "p.card_type as cardType, p.card_number as cardNumber"*/
 					+" p.ref_id as id "
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") LIMIT ?, ? ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") "
+							+ " order by p.surname, p.firstname "
+							+ " LIMIT ?, ? ");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
 			/*pstmt.setObject(2, "A");*/
 			pstmt.setInt(2, start);
@@ -482,7 +488,9 @@ public class PersonServiceImpl implements PersonService {
 					/*+ "p.card_type as cardType, p.card_number as cardNumber"*/
 					+" p.ref_id as id "
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") LIMIT ?, ?");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") "
+							+ " order by p.surname, p.firstname"
+							+ " LIMIT ?, ?");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
 			/*pstmt.setObject(2, "B");*/
 			pstmt.setInt(2, start);
@@ -515,7 +523,8 @@ public class PersonServiceImpl implements PersonService {
 					+" p.ref_id as id "
 					/*+ "p.card_type as cardType, p.card_number as cardNumber"*/
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") "
+							+ " order by p.surname, p.firstname");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
 			/*pstmt.setObject(2, "A");*/
 			ResultSet set = pstmt.executeQuery();
@@ -545,7 +554,8 @@ public class PersonServiceImpl implements PersonService {
 					/*+ "p.card_type as cardType, p.card_number as cardNumber"*/
 					+" p.ref_id as id "
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id IN ("+ids+") "
+							+ " order by p.surname, p.firstname");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
 			/*pstmt.setObject(2, "B");*/
 			ResultSet set = pstmt.executeQuery();
@@ -579,7 +589,8 @@ public class PersonServiceImpl implements PersonService {
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
 					+ "p.firstname as firstname,  p.ref_id as id, p.account_number as accountNumber "
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? order by p.surname ");
+					+ "on p.id = pr.person_id where pr.role_id = ? "
+					+ " order by p.surname, p.firstname ");
 			pstmt.setObject(1, RoleEnum.TRAINER.getId());
 			ResultSet set = pstmt.executeQuery();
 			return convertEntityToTrainerUserBean(set);
@@ -595,7 +606,7 @@ public class PersonServiceImpl implements PersonService {
 		while(set.next()) {
 			TrainerUserBean trainerUserBean = new TrainerUserBean();
 			trainerUserBean.setId(set.getInt("id"));
-			trainerUserBean.setName(set.getString("firstname")+" "+set.getString("surname"));
+			trainerUserBean.setName(set.getString("surname")+" "+set.getString("firstname"));
 			trainerUserBean.setAccNumber(set.getString("accountNumber"));
 			records.add(trainerUserBean);
 		}
@@ -610,7 +621,8 @@ public class PersonServiceImpl implements PersonService {
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
 					+ "p.firstname as firstname "
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id  = ? order by p.surname ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id  = ? "
+					+ " order by p.surname, p.firstname ");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
 			pstmt.setObject(2, empId);
 			ResultSet set = pstmt.executeQuery();
@@ -666,7 +678,8 @@ public class PersonServiceImpl implements PersonService {
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
 					+ "p.firstname as firstname "
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id  = ? ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id  = ? "
+					+ " order by p.surname, p.firstname");
 			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
 			pstmt.setObject(2, empId);
 			ResultSet set = pstmt.executeQuery();
@@ -693,7 +706,8 @@ public class PersonServiceImpl implements PersonService {
 			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
 					+ "p.firstname as firstname "
 					+ " from person as p join person_role as pr "
-					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id  = ? ");
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id  = ? "
+					+ " order by p.surname, p.firstname");
 			pstmt.setObject(1, RoleEnum.TRAINER.getId());
 			pstmt.setObject(2, tId);
 			ResultSet set = pstmt.executeQuery();

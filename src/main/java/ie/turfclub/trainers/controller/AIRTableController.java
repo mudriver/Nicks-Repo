@@ -1,8 +1,10 @@
 package ie.turfclub.trainers.controller;
 
+import ie.turfclub.main.model.login.User;
 import ie.turfclub.trainers.service.AIRTableService;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,5 +79,15 @@ public class AIRTableController {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@RequestMapping(value="/send/mail",method=RequestMethod.GET)
+	@ResponseBody
+	public Object sendMailToAdmin(HttpServletRequest request, HttpServletResponse response, ModelMap model,
+			Authentication authentication) throws IllegalStateException, IOException {
+	
+		Object principal = authentication.getPrincipal();
+		User user = (User) principal;
+		return airTableService.sendMailToAdmin(env.getRequiredProperty("upload.pdf.air"), user);
 	}
 }

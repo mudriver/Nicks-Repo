@@ -96,14 +96,6 @@
 					</div>		
 				</div>
 				<div class="form-group col-sm-12">
-					<label for="sex" class="col-sm-4" data-th-text="#{employee.sex}">Sex :</label>
-		  			<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-th-field="*{employeesSex}" 
-			  				type='text' required="required"></input> 
-						<input type="hidden" id="sexEnum" data-th-value="  ${sexEnum}"></input>
-					</div>
-				</div>		
-				<div class="form-group col-sm-12">
 					<label for="firstname" class="col-sm-4" data-th-text="#{employee.firstname}">Firstname :</label>
 					<div class="col-sm-8">
 		  				<input data-th-field="*{employeesFirstname}" class="form-control input-sm" 
@@ -158,7 +150,7 @@
 					<label for="postcode" class="col-sm-4" data-th-text="#{employee.postcode}">Post Code :</label>
 					<div class="col-sm-8">
 		  				<input data-th-field="*{employeesPostCode}" class="form-control input-sm" 
-		  					required="required" placeholder='Post Code (if applicable)'/>
+		  					 placeholder='Post Code (if applicable)'/>
 		  			</div>
 				</div>
 				<div class="form-group col-sm-12">
@@ -178,9 +170,18 @@
 					</div>
 				</div>
 				<div class="form-group col-sm-12">
+					<label for="sex" class="col-sm-4" data-th-text="#{employee.sex}">Sex :</label>
+		  			<div class="col-sm-8">
+			  			<input class="form-control input-sm" data-th-field="*{employeesSex}" 
+			  				type='text' required="required"></input> 
+						<input type="hidden" id="sexEnum" data-th-value="  ${sexEnum}"></input>
+					</div>
+				</div>		
+				<div class="form-group col-sm-12">
 					<label for="phoneNo" class="col-sm-4" data-th-text="#{employee.phone.no}">Phone No :</label>
 					<div class="col-sm-8">
 			  			<input data-minlength="7" data-th-field="*{employeesPhoneNo}" 
+			  				onkeypress="return validateQty(event);"
 			  				class="form-control input-sm" placeholder='Please enter a landline no. (Digits only min. 7)'/>
 					</div>
 				</div>
@@ -189,6 +190,7 @@
 					<div class="col-sm-8">
 			  			<input data-minlength="7" data-emailorphone="emailorphone" required="required"
 			  				data-th-field="*{employeesMobileNo}" class="form-control input-sm" 
+			  				onkeypress="return validateQty(event);"
 			  				placeholder='Please enter a mobile phone no. (Digits only min. 7)' />
 					</div>
 				</div>
@@ -230,12 +232,12 @@
 				
 				<div class="section-card right-form col-sm-6">
 					<input type='hidden' data-th-field="*{pensions[0].pensionPensionId}"></input>
-					<div class="form-group col-sm-12">
+					<!-- <div class="form-group col-sm-12">
 						<label class="col-sm-5" data-th-text="#{employee.taxable.pay}">Taxable Pay</label>
 						<div class="col-sm-7">
 							<input type="checkbox" data-th-field="*{employeesHasTaxableEarnings}" value="true" class="form-control input-sm" />
 						</div>
-					</div>
+					</div> -->
 					<div class="form-group col-sm-12">
 						<label for="categoryOfEmployment" class="col-sm-5" data-th-text="#{employee.category.of.employment}">Category of Employment :</label>
 						<div class="col-sm-7">
@@ -342,12 +344,12 @@
 			  				</select>
 			  			</div>
 					</div>
-					<div class="form-group col-sm-12">
+					<!-- <div class="form-group col-sm-12">
 						<label for="requestDate" class="col-sm-5" data-th-text="#{employee.request.date}">Request Date :</label>
 						<div class="col-sm-7">
 			  				<input data-th-field="*{employeeRequestDate}" class="form-control input-sm" />
 			  			</div>
-					</div>
+					</div> -->
 					<div class="form-group col-sm-12">
 						<label class="col-sm-5" data-th-text="#{employee.tick.if.new}">Tick If New</label>
 						<div class="col-sm-7">
@@ -357,7 +359,7 @@
 					</div>
 				</div>
 			<div class="section-card col-sm-12">
-				<input type="hidden" data-th-field="*{histories[0].ehEmploymentId}"></input>
+				<input type="hidden" class="history-id" data-th-field="*{histories[0].ehEmploymentId}"></input>
 				<div class="pension-form col-sm-12">
 					<div class="form-group col-sm-1">
 						<label for="card" data-th-text="#{employee.pension.card}">Card :</label>
@@ -382,8 +384,9 @@
 			  			<input type="hidden" data-th-field="*{histories[0].teTrainers.trainerId}" />
 					</div>		
 					<div class="form-group col-sm-2">
-						<label for="requestDate" data-th-text="#{employee.pension.hri.ac.num}">HRI A/C Num :</label>
-			  			<input placeholder="You must enter HRI A/c Num" data-th-field="*{histories[0].hriAccNum}" class="form-control input-sm" />
+						<label for="requestDate" data-th-text="#{employees.trainer.hri.acc.num}">HRI A/C Num :</label>
+			  			<input placeholder="You must enter Trainer HRI A/c Num" pattern="\w{5}" 
+			  				data-th-field="*{histories[0].hriAccNum}" class="form-control input-sm" />
 					</div>
 					<!-- <div class="form-group col-sm-3">
 						<label for="requestDate" data-th-text="#{employee.pension.date.range}">Date Range :</label>
@@ -498,6 +501,28 @@
 		</div>
 	</div>
 	<!-- /#wrapper -->
+	
+	<!-- Modal -->
+	<div id="historyDeleteConfirm" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Confirmation</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>Are you sure, you want to delete this record?</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" id="historyConfirmYes">Yes</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+	      </div>
+	    </div>
+	
+	  </div>
+	</div>
     
 </div>              <!-- /#wrapper -->
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -548,13 +573,13 @@
     	var pensionP = [[#{employee.pension.p}]];
     	var pensionN = [[#{employee.pension.n}]];
     	var trainer = [[#{employee.pension.trainer}]];
-    	var hriAccNum = [[#{employee.pension.hri.ac.num}]];
+    	var hriAccNum = [[#{employees.trainer.hri.acc.num}]];
     	var dateRange = [[#{employee.pension.date.range}]];
     	var fromDate = [[#{employee.pension.from.date}]];
     	var endDate = [[#{employee.pension.to.date}]];
+    	var historyEle;
+    	
     	$(function() {
-    		
-    		
     		
     		// setup date pickers
     		$("#teCard\\.cardsIssueDate").datepicker('setDate', new Date());
@@ -631,13 +656,13 @@
     		});
     		
     		// setup date pickers
-    		$("#employeeRequestDate").datepicker({
+    		/* $("#employeeRequestDate").datepicker({
     			changeMonth : true,
     			changeYear : true,
     			format: 'dd/mm/yyyy'
     		}).on('changeDate', function(ev){
     		    $(this).datepicker('hide');
-    		});
+    		}); */
     		
     		$('#pensions0\\.pensionDateRange').daterangepicker({
    				locale: {
@@ -655,12 +680,21 @@
     		$('#histories0\\.trainerName').typeahead({
     		    source: trainers
     		}).on('change', function (event, data) {
+    			var ele = $(this);
     		    $('#histories0\\.teTrainers\\.trainerId').val($(this).next().find('li.active').data('value'));
+    		    $.ajax({
+   					url: '/turfclubPrograms/trainers/json/'+$(this).next().find('li.active').data('value'),
+   					type: 'GET',
+   					data: {},
+   					success: function(data) {
+   						$(ele).parents('div:first').next().find('input').val(data.trainerAccountNo);
+   					}
+   				});
     		});
     		
     		$('#addPensionRecord').click(function() {
     			$('.pension-form').after('<div class="add-pension-form col-sm-12">'+
-    					'<input type="hidden" id="histories'+noOfPensionRecord+'.ehEmploymentId" name="histories['+noOfPensionRecord+'].ehEmploymentId"></input>'+
+    					'<input type="hidden" class="history-id" id="histories'+noOfPensionRecord+'.ehEmploymentId" name="histories['+noOfPensionRecord+'].ehEmploymentId"></input>'+
     					'<div class="form-group col-sm-1">'+
     					'<label for="card" data-th-text="'+card+'">'+card+'</label>'+
     						'<select id="histories'+noOfPensionRecord+'.cardType" name="histories['+noOfPensionRecord+'].cardType" class="form-control input-sm" >'+
@@ -685,7 +719,7 @@
     				'</div>		'+
     				'<div class="form-group col-sm-2">'+
     					'<label for="requestDate" >'+hriAccNum+'</label>'+
-    						'<input  placeholder="You must enter HRI A/c Num" id="histories'+noOfPensionRecord+'.hriAccNum" name="histories['+noOfPensionRecord+'].hriAccNum" class="form-control input-sm" />'+
+    						'<input  placeholder="You must enter HRI A/c Num" pattern="\w{5}" id="histories'+noOfPensionRecord+'.hriAccNum" name="histories['+noOfPensionRecord+'].hriAccNum" class="form-control input-sm" />'+
     				'</div>'+
     				'<div class="form-group col-sm-2">'+
 						'<label for="requestDate" data-th-text="#{employee.pension.from.date}">'+fromDate+'</label>'+
@@ -704,7 +738,16 @@
         		    source: trainers
         		}).on('change', function (event, data) {
         			var index = noOfPensionRecord-1;
+        			var ele = $(this);
         		    $('#pensions'+index+'\\.teTrainers\\.trainerId').val($(this).next().find('li.active').data('value'));
+        		    $.ajax({
+       					url: '/turfclubPrograms/trainers/json/'+$(this).next().find('li.active').data('value'),
+       					type: 'GET',
+       					data: {},
+       					success: function(data) {
+       						$(ele).parents('div:first').next().find('input').val(data.trainerAccountNo);
+       					}
+       				});
         		});
     			
     			$('#histories'+noOfPensionRecord+'\\.pensionDateRange').daterangepicker({
@@ -734,9 +777,30 @@
     		});
     		
     		$(document).on('click', '#deletePensionRecord', function() {
-    			$(this).parents('.add-pension-form:first').remove();
+    			historyEle = $(this);
+    			$('#historyDeleteConfirm').modal('show');
+    			//$(this).parents('.add-pension-form:first').remove();
+    		});
+    		
+    		$(document).on('click', '#historyConfirmYes', function() {
+    			var ele = $(historyEle);
+    			$(ele).parents('.add-pension-form:first').remove();
+    			$('#historyDeleteConfirm').modal('hide');
     		});
     	});
+    	
+    	function validateQty(event) {
+    	    var key = window.event ? event.keyCode : event.which;
+	
+	    	if (event.keyCode == 8 || event.keyCode == 46
+	    	 || event.keyCode == 37 || event.keyCode == 39) {
+	    	    return true;
+	    	}
+	    	else if ( key < 48 || key > 57 ) {
+	    	    return false;
+	    	}
+	    	else return true;
+    	}
     	/*]]>*/
     </script>    
        	

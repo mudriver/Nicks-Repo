@@ -136,6 +136,13 @@ public class TrainersController {
 		return sbsService.isExistsTrainerId(tId);
 	}
 	
+	@RequestMapping(value="/json/{id}", method=RequestMethod.GET)
+	@ResponseBody
+	public Object getTrainerById(@PathVariable("id") Integer id, HttpServletRequest req, ModelMap model) throws Exception {
+		
+		return trainersService.getTrainer(id);
+	}
+	
 	@RequestMapping(value="/sbs/uploadPage", method=RequestMethod.GET)
 	public String getUploadPage(HttpServletRequest request, ModelMap model) {
 		return "sbs-upload-page";

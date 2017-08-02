@@ -1771,7 +1771,7 @@ public class TrainerServiceImpl implements TrainersService {
 		
 		List<HashMap<String, Object>> results = new ArrayList<HashMap<String,Object>>();
 		
-		if(records != null && records.size() > 0)
+		if(records == null || (records != null && records.size() == 0))
 			return results;
 		
 		Integer lastTrainerId = null;

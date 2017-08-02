@@ -303,7 +303,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		results = getCurrentSession().createQuery(hql).list();
 		
 		Date today = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		int noOfBreakLine = 23;
 		if(results != null && results.size() > 0) {
 			for (HashMap<String, Object> result : results) {
@@ -385,7 +385,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		results = getCurrentSession().createQuery(hql).list();
 		
 		Date today = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		int noOfBreakLine = 23;
 		if(results != null && results.size() > 0) {
 			for (HashMap<String, Object> result : results) {
@@ -491,7 +491,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		results = getCurrentSession().createQuery(hql).list();
 		
 		Date today = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		int noOfBreakLine = 23;
 		if(results != null && results.size() > 0) {
 			result = results.get(0);

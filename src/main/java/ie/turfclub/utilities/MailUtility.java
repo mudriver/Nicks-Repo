@@ -34,8 +34,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class MailUtility {
 
 	private Session emailSession;
@@ -141,7 +142,7 @@ public class MailUtility {
 					System.out.println(a.toString());
 				}
 
-				message.addRecipients(Message.RecipientType.TO, this.ItAndAccountsEmailRecipients);
+				message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(this.ItAndAccountsEmailRecipients[0].toString()));
 
 	         // Set Subject: header field
 	         message.setSubject(subject);

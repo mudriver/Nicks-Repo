@@ -96,7 +96,7 @@
 	    	<div class="form-group margin-bottom-10 col-sm-6">
 	    		<label class="col-sm-4" data-th-text="#{employee.employee.number}">Employee Number : </label>
 	    		<div class="col-sm-8">
-	    			<input type="text" class="form-control input-sm " id="searchNumberTxt" placeholder="Please enter min 1 characters" />
+	    			<input type="text" class="form-control input-sm " id="searchNumberTxt" placeholder="Please enter min 3 characters" />
 	    		</div>
 	    	</div>
     	</form>
@@ -251,7 +251,7 @@
 						}
 					});
 				},
-				minLength: 1,
+				minLength: 3,
 				select: function( event, ui ) {			
 					
 					goToDetailPage(ui.item.id);

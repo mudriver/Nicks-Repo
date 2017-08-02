@@ -1,7 +1,12 @@
 package ie.turfclub.trainers.service;
 
+import ie.turfclub.main.model.login.User;
 import ie.turfclub.trainers.model.AIRTable;
+import ie.turfclub.utilities.MailUtility;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import com.opencsv.CSVWriter;
+
 @Service
 @Transactional
 public class AIRTableServiceImpl implements AIRTableService {
@@ -23,6 +30,9 @@ public class AIRTableServiceImpl implements AIRTableService {
 	private SessionFactory sessionFactory;
 	@Resource
 	private Environment env;
+	
+	@Autowired
+	private MailUtility mailUtility;
 	
 	private String[] header = {"Account", "Surname", "Firstname", "Category Code", "Address1", "Address2", "Address3",
 			"Current Trainer Number", "Active", "PostDirect", "HRI Account Holder", "HRI Account Number"};
@@ -85,5 +95,50 @@ public class AIRTableServiceImpl implements AIRTableService {
 			}
 		}
 		return buffer.toString();
+	}
+	
+	@Override
+	public HashMap<String, Object> sendMailToAdmin(String filePath, User user) throws IOException {
+		
+		filePath = filePath+"air_"+user.getId()+".csv";
+		File file = new File(filePath);
+		if(file.exists())
+			file.delete();
+		file = new File(filePath);
+		file.createNewFile();
+		
+		CSVWriter writer = null;
+
+		try {
+		    writer = new CSVWriter(new FileWriter(filePath));
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    }
+		
+		String[] arr = new String[header.length];
+		writer.writeNext(header);
+		
+		List<AIRTable> records = sessionFactory.getCurrentSession().createCriteria(AIRTable.class).list();
+		if(records != null && records.size() > 0) {
+			for (AIRTable rec : records) {
+				arr = new String[header.length];
+				arr[0] = rec.getAccount();
+				arr[1] = rec.getSurname();
+				arr[2] = rec.getFirstname();
+				arr[3] = rec.getCategoryCode();
+				arr[4] = (rec.getAddress1() != null ? rec.getAddress1() : "");
+				arr[5] = (rec.getAddress2() != null ? rec.getAddress2() : "");
+				arr[6] = (rec.getAddress3() != null ? rec.getAddress3() : "");
+				arr[7] = rec.getCurrentTrainerNum();
+				arr[8] = String.valueOf(rec.isActive());
+				arr[9] = String.valueOf(rec.isPostDirect());
+				arr[10] = String.valueOf(rec.isHriAccountHolder());
+				arr[11] = rec.getHriAccNum();
+				writer.writeNext(arr);
+			}
+		}
+		writer.close();
+		mailUtility.sendAccountsEmail("AIR Table Records", "This is test", filePath);
+		return new HashMap<String, Object>();
 	}
 }

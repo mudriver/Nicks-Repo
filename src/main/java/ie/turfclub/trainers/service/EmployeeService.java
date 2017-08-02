@@ -71,4 +71,6 @@ public interface EmployeeService {
 
 	Object getAutoGeneatedCardNumber();
 
+	Object deleteHistoryRecord(Integer id);
+
 }
