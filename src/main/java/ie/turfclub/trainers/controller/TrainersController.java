@@ -197,6 +197,26 @@ public class TrainersController {
 		return "sbs-returned";
 	}
 	
+	@RequestMapping(value="/sbs/send/smsReminder", method=RequestMethod.GET)
+	public String sendSMSReminder(HttpServletRequest request, ModelMap model) throws IOException {
+		
+		return "send-sms-reminder";
+	}
+	
+	@RequestMapping(value="/sbs/send/smsReminder/mail", method=RequestMethod.GET)
+	@ResponseBody
+	public Object sendSMSReminderMail(HttpServletRequest request, ModelMap model, 
+			Authentication authentication) throws IOException {
+		
+		Object principal = authentication.getPrincipal();
+		User user = (User) principal;
+		String emails = request.getParameter("email");
+		sbsService.sendMailToAdmin(env.getRequiredProperty("upload.dir.path"), user, emails);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("message", messageSource.getMessage("sms.reminder.send.mail", new String[] {}, Locale.US));
+		return map;
+	}
+	
 	@RequestMapping(value="/sbs/finalReminder", method=RequestMethod.GET)
 	public ModelAndView getSBSFinalReminder(HttpServletRequest request, ModelMap model) {
 		String date = request.getParameter("r");

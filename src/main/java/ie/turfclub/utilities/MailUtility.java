@@ -5,6 +5,7 @@ package ie.turfclub.utilities;
 import ie.turfclub.accountsReports.model.HuntercertsSales;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -12,6 +13,7 @@ import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
+import javax.mail.Flags.Flag;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -21,7 +23,6 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.Transport;
-import javax.mail.Flags.Flag;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -40,7 +41,7 @@ import org.springframework.stereotype.Service;
 public class MailUtility {
 
 	private Session emailSession;
-	private Properties popProperties;
+	//private Properties popProperties;
 	private Properties smtpProperties;
 
 	private String userName;
@@ -61,8 +62,8 @@ public class MailUtility {
 		System.out.println("init mail");
 		this.userName = env.getProperty("mail.username");
 		this.password = env.getProperty("mail.password");
-		this.popUrl = env.getProperty("mail.pop3.host");
-		this.startFolder = env.getProperty("mail.readmail.startfolder");
+		//this.popUrl = env.getProperty("mail.pop3.host");
+		//this.startFolder = env.getProperty("mail.readmail.startfolder");
 		this.tableHeaderForDescription = env
 				.getProperty("mail.readmail.link.tableHeadingForDescription");
 		this.tableHeaderForDescriptionContains = env
@@ -101,16 +102,15 @@ public class MailUtility {
 		}
 		
 
-		popProperties = new Properties();
-		popProperties.put("mail.pop3.host", env.getProperty("mail.pop3.host"));
-		popProperties.put("mail.pop3.port", env.getProperty("mail.pop3.port"));
-		popProperties.put("mail.pop3.starttls.enable",
-				env.getProperty("mail.pop3.starttls.enable"));
+		//popProperties = new Properties();
+		//popProperties.put("mail.pop3.host", env.getProperty("mail.pop3.host"));
+		//popProperties.put("mail.pop3.port", env.getProperty("mail.pop3.port"));
+		//popProperties.put("mail.pop3.starttls.enable", env.getProperty("mail.pop3.starttls.enable"));
 
 		smtpProperties = new Properties();
 		smtpProperties.put("mail.smtp.auth", env.getProperty("mail.smtp.auth"));
 		smtpProperties.put("mail.smtp.starttls.enable",
-				env.getProperty("mail.pop3.starttls.enable"));
+				env.getProperty("mail.pop3.starttls.enable") );
 		smtpProperties.put("mail.smtp.host", env.getProperty("mail.smtp.host"));
 		smtpProperties.put("mail.smtp.port", env.getProperty("mail.smtp.port"));
 
@@ -161,10 +161,12 @@ public class MailUtility {
 
 	         // Part two is attachment
 	         messageBodyPart = new MimeBodyPart();
-	         String filename = attachmentPath;
-	         DataSource source = new FileDataSource(filename);
-	         messageBodyPart.setDataHandler(new DataHandler(source));
-	         messageBodyPart.setFileName(filename);
+	         if(attachmentPath != null && attachmentPath.length() > 0) {
+		         String filename = attachmentPath;
+		         DataSource source = new FileDataSource(filename);
+		         messageBodyPart.setDataHandler(new DataHandler(source));
+		         messageBodyPart.setFileName(filename);
+	         }
 	         multipart.addBodyPart(messageBodyPart);
 
 	         // Send the complete message parts
@@ -201,7 +203,8 @@ public class MailUtility {
 	         for(String email : recipentEmails){
 				
 				if(email.contains("@")){
-					message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+					//message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+					message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 				}
 	         }
 	         // Set Subject: header field
@@ -370,17 +373,25 @@ public class MailUtility {
 			// Set From: header field of the header.
 			message.setFrom(new InternetAddress(userName));
 
-			InternetAddress[] mailAddress_TO = new InternetAddress[recipients
-					.size()];
-			int i = 0;
+			/*InternetAddress[] mailAddress_TO = new InternetAddress[recipients
+					.size()];*/
+			/*int i = 0;
 			for (String email : recipients) {
 
 				mailAddress_TO[i] = new InternetAddress(email);
 				i++;
 
-			}
+			}*/
+			
+			for(String email : recipients){
+				
+				if(email.contains("@")){
+					//message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+					message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+				}
+	         }
 
-			message.addRecipients(Message.RecipientType.TO, mailAddress_TO);
+			//message.addRecipients(Message.RecipientType.TO, mailAddress_TO);
 			// Set Subject: header field
 			message.setSubject(subject);
 
@@ -421,7 +432,7 @@ public class MailUtility {
 		try {
 
 			System.out.println("CHECK MAIL");
-			emailSession = Session.getDefaultInstance(popProperties);
+			//emailSession = Session.getDefaultInstance(popProperties);
 			String customerName, orderId, amount;
 			boolean readEmailDetails = false;
 
@@ -512,6 +523,12 @@ public class MailUtility {
 		}
 
 		return items;
+	}
+
+	public void sendAIRTableRecordEmail(String subject, String body,
+			String filePath, ArrayList<String> emails) {
+		
+		this.send(subject, body, emails, filePath);
 	}
 
 }

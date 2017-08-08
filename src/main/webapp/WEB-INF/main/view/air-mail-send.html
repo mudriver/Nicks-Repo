@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+ 
+<head data-th-fragment="header">
+ <meta charset="utf-8" />
+ <meta http-equiv="pragma" content="no-cache" />
+ <meta http-equiv="expires" content="-1" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title data-th-text="#{link.send.air.file}">Title</title>
+  
+<!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/sb-admin-2.css"
+	data-th-href="@{/resources/css/sb-admin-2.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+     
+    <style>
+        .no-border-on-me>thead>tr>th,
+        .no-border-on-me>tbody>tr>th,
+        .no-border-on-me>tfoot>tr>th,
+        .no-border-on-me>thead>tr>td,
+        .no-border-on-me>tbody>tr>td,
+        .no-border-on-me>tfoot>tr>td
+        {
+            border-top-style: none;
+            border-bottom-style: none;
+        }
+        .form-horizontal .form-group { margin-right: 0px; margin-left: 0px;}
+        .add-delete-icon { margin-top: 12px !important; }
+        .left-form { float: left;}
+        .right-form { float: right;}
+        input, select { width: 100% !important;}
+        .form-group { margin-top: 2px; margin-bottom: 2px !important;}
+        .emp-button { width: 20% !important;}
+        #employeesComments { resize: none;}
+        input[type="radio"], input[type="checkbox"] {margin: 0;}
+        .datepicker-orient-top { z-index: 9999 !important;}
+        .has-error .form-control { border: 1px solid red !important;}
+        .section-card { background-color: #666E94; padding: 12px; border-radius: 15px; border: 5px solid rgb(14, 23, 60);}
+        label.error { display: block; color: red;}
+    </style>
+     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+ <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+ <!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+</head>
+<body>
+ <div class="container-fluid" >                <!-- /#wrapper -->
+ 
+    <div data-th-replace="mainmenu :: top-nav"></div>
+    
+    <h3 data-th-text="#{link.send.air.file}" class="text-center"></h3>
+    
+    <div class="form-container">
+	    <form id="sendAIRMailForm" class="form-inline" action="javascript:void(0);" method="post" >
+
+			<div class="left-form col-sm-12">
+				<div class="alert alert-success" id="successMsg" style="display: none;">
+			   		<span></span>
+			   	</div>
+			   	<div class="alert alert-danger" id="errorMsg" style="display: none;">
+			   		<span></span>
+			   	</div>
+				<div class="form-group col-sm-12">
+					<label for="title" class="col-sm-1" data-th-text="#{user.email}">Email :</label>
+					<div class="col-sm-11">
+			  			<input class="form-control input-sm" placeholder='You must enter email'
+			  				name="email" id="email" type='text' required="required"></input> 
+					</div>		
+				</div>
+				<div class="form-group col-sm-12">
+					<label for="title" class="col-sm-1"></label>
+					<span for="title" class="col-sm-11" data-th-text="#{text.write.multiple.email}"></span>
+				</div>
+			</div>
+			<div class="form-group col-sm-12 text-center" style="margin-top: 10px">
+				<button type="button" id="sendAirTable" class="btn btn-success" th:value="#{air.send.mail}" >Send Mail</button>
+				<a href="/turfclubPrograms/employees/admin"><button type="button" class="btn btn-danger" th:value="#{employee.exit}" >Exit</button></a>
+			</div>
+		</form>
+	</div>
+	<!-- /#wrapper -->
+    
+</div>              <!-- /#wrapper -->
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
+        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+        
+        <script type="text/javascript" src="../../resources/js/jquery.blockui.js"
+        data-th-src="@{/resources/js/jquery.blockui.js}"></script>
+        
+        <script type="text/javascript" src="../../resources/js/jquery.validate.js"
+        data-th-src="@{/resources/js/jquery.validate.js}"></script>
+         
+    <script type="text/javascript" src="../../resources/js/validator.min.js"
+		data-th-src="@{/resources/js/validator.min.js}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
+        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+ 
+    <script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/	
+    	$(function() {
+    		setTimeout(function() {
+    			$('#successMsg').hide();
+    			$('#errorMsg').hide();
+    		}, 5000);
+    		
+    		jQuery.validator.addMethod(
+   			    "multiemail",
+   			    function (value, element) {
+   			        var email = value.split(/[;,]+/); // split element by , and ;
+   			        valid = true;
+   			        for (var i in email) {
+   			            value = email[i];
+   			            valid = valid && jQuery.validator.methods.email.call(this, $.trim(value), element);
+   			        }
+   			        return valid;
+   			    },
+   			    jQuery.validator.messages.multiemail
+   			);
+    		
+    		$('#sendAIRMailForm').validate({
+    			debug:true,
+    		    rules: {
+    		    	email: {
+    		    		required: true,
+    		    		multiemail: true
+   		            }
+   		        },
+    		    messages: {
+    		    	email: {
+   		                multiemail: "You must enter a valid email, or comma separate multiple",
+   		             	required:"Please enter email address"
+   		            }
+   		        },
+    		    submitHandler: function(form) {
+    		    	return false;
+    		    }
+    		});
+    		
+    		$('#sendAirTable').click(function() {
+    			var email = $('#email').val().trim();
+    			if(email != '' && $('#sendAIRMailForm').valid()) {
+    				$.blockUI();
+					$.ajax({
+	    				url: '/turfclubPrograms/air/send/mail',
+	    				type: 'GET',
+	    				data: {email: email},
+	    				success: function(data) {
+	    					$.unblockUI();
+	    					$('#successMsg').find('span').html(data.message);
+	    					$('#successMsg').show();
+	    					setTimeout(function() {
+	    						$('#successMsg').hide();	
+	    					}, 5000);
+	    				}
+	    			});
+    			} else {
+    				$('#errorMsg').find('span').html('Please enter valid email address');
+    				$('#errorMsg').show();
+    				setTimeout(function() { $('#errorMsg').hide(); }, 5000);
+    			}
+			});
+    	});
+    	/*]]>*/
+    </script>    
+       	
+	</body>
+</html>

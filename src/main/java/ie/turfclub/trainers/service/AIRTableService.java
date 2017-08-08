@@ -17,4 +17,6 @@ public interface AIRTableService {
 
 	HashMap<String, Object> sendMailToAdmin(String requiredProperty, User user) throws IOException;
 
+	void sendMailToAdmin(String requiredProperty, User user, String emails) throws Exception;
+
 }

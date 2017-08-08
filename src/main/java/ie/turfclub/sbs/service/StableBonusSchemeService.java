@@ -1,5 +1,6 @@
 package ie.turfclub.sbs.service;
 
+import ie.turfclub.main.model.login.User;
 import ie.turfclub.sbs.model.SBSEntity;
 
 import java.util.HashMap;
@@ -87,5 +88,7 @@ public interface StableBonusSchemeService {
 	 */
 	List<HashMap<String, Object>> getSBSFinalReminder(String date,
 			String quarter);
+
+	void sendMailToAdmin(String filePath, User user, String emails);
 
 }

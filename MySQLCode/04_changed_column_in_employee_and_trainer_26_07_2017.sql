@@ -4,8 +4,6 @@ alter table te_pension modify column `employment_category` varchar(50);
 
 alter table te_pension modify column `pension_date_joined_scheme` date;
 
---alter table te_employment_history modify column `eh_trainer_id` int(11);
-
 alter table te_employment_history modify column `card_type` varchar(1);
 
 alter table te_employment_history modify column `pension_type` varchar(1);

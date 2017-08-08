@@ -74,7 +74,10 @@
     	<div class="home-links-parent">
     		<!-- <a data-th-href="@{/trainers/admin/slayear}" class="home-links col-sm-6" ><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.save.staff.list.administrator.return.year}"></span></a> -->
     		<a data-th-href="@{/trainers/admin/teoyear}" class="home-links col-sm-6" ><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.save.trainer.employee.online.return.year}"></span></a>
-    		<a href="javascript:void(0);" class="home-links col-sm-6" id="sendAirTable" ><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.send.air.file}"></span></a>
+    		<a data-th-href="@{/air/send/mail/page}" class="home-links col-sm-6" ><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.send.air.file}"></span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a data-th-href="@{/trainers/sbs/send/smsReminder}" class="home-links col-sm-6" ><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.send.sms.reminder.file}"></span></a>
     	</div>
     </div>
 </div>              <!-- /#wrapper -->
@@ -234,22 +237,6 @@
     			$('#copyRecordEmployeeModal').modal('show');
     		});
 			
-			$('#sendAirTable').click(function() {
-				$.ajax({
-    				url: '/turfclubPrograms/air/send/mail',
-    				type: 'GET',
-    				data: {},
-    				success: function(data) {
-    					$.unblockUI();
-    					$('#successMsg').find('span').html(data);
-    					$('#successMsg').show();
-    					setTimeout(function() {
-    						$('#successMsg').hide();	
-    					}, 5000);
-    				}
-    			});
-			});
-    		
     		$(document).on('click', '#confirmcopyRecordTrainer', function() {
     			
     			$('#copyRecordTrainerModal').modal('hide');

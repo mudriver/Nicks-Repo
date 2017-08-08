@@ -1,8 +1,10 @@
 package ie.turfclub.sbs.service;
 
+import ie.turfclub.main.model.login.User;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.sbs.model.SBSEntity;
 import ie.turfclub.trainers.model.TeEmployees;
+import ie.turfclub.utilities.MailUtility;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,6 +47,9 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	
 	@Autowired
 	private ServletContext context;
+	
+	@Autowired
+	private MailUtility mailUtility;
 	
 	private double dnoOfRecordsInPDFPage = 15.0;
 	private int inoOfRecordsInPDFPage = 15;
@@ -619,5 +624,35 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void sendMailToAdmin(String filePath, User user, String email) {
+		
+		String hql = "select tt.trainerId from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
+				+ " sbs.returned = false";
+		List<Long> ids = getCurrentSession().createQuery(hql).list();
+		String cmsIds = StringUtils.join(ids, "','");
+		cmsIds = "'"+cmsIds+"'";
+		String mobileNumberTexts = personService.getTrainerMobileNumbers(cmsIds);
+		String path = filePath + "SMSReminder_"+user.getId()+".txt";
+		File file = new File(path);
+		try {
+			file.createNewFile();
+			FileUtils.writeStringToFile(file, mobileNumberTexts);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ArrayList<String> emails = null;
+		if(email != null && email.indexOf(",") >= 0) {
+			String[] emailArr = email.split(",");
+			emails = new ArrayList<String>();
+			for(int i=0; i<emailArr.length;i++) {
+				emails.add(emailArr[i].trim());
+			}
+		}
+		mailUtility.sendAIRTableRecordEmail("SMS Reminder Records", "This is sms reminder records", path, emails);
 	}
 }

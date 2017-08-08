@@ -6,6 +6,7 @@ import ie.turfclub.trainers.service.AIRTableService;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
@@ -41,6 +43,9 @@ public class AIRTableController {
 	
 	@Autowired
 	private AIRTableService airTableService;
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	@RequestMapping(value="/all",method=RequestMethod.GET)
 	public String getAllAirTable(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
@@ -81,13 +86,24 @@ public class AIRTableController {
 		}
 	}
 	
+	@RequestMapping(value="/send/mail/page",method=RequestMethod.GET)
+	public Object sendMailToAdminPage(HttpServletRequest request, HttpServletResponse response, ModelMap model,
+			Authentication authentication) throws IllegalStateException, IOException {
+	
+		return "air-mail-send";
+	}
+	
 	@RequestMapping(value="/send/mail",method=RequestMethod.GET)
 	@ResponseBody
 	public Object sendMailToAdmin(HttpServletRequest request, HttpServletResponse response, ModelMap model,
-			Authentication authentication) throws IllegalStateException, IOException {
+			Authentication authentication) throws Exception {
 	
 		Object principal = authentication.getPrincipal();
 		User user = (User) principal;
-		return airTableService.sendMailToAdmin(env.getRequiredProperty("upload.pdf.air"), user);
+		String emails = request.getParameter("email");
+		airTableService.sendMailToAdmin(env.getRequiredProperty("upload.dir.path"), user, emails);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("message", messageSource.getMessage("air.table.send.mail", new String[] {}, Locale.US));
+		return map;
 	}
 }
