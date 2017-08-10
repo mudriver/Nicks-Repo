@@ -104,7 +104,7 @@ public class Person implements Serializable {
 	private String cardType;
 	
 	@Column(name="card_number")
-	private String cardNumber;
+	private Integer cardNumber;
 	
 	@Column(name="trainer_name")
 	private String trainerName;
@@ -312,11 +312,11 @@ public class Person implements Serializable {
 		this.cardType = cardType;
 	}
 
-	public String getCardNumber() {
+	public Integer getCardNumber() {
 		return cardNumber;
 	}
 
-	public void setCardNumber(String cardNumber) {
+	public void setCardNumber(Integer cardNumber) {
 		this.cardNumber = cardNumber;
 	}
 

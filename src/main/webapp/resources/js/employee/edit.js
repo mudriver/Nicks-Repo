@@ -4,7 +4,7 @@ $(function() {
 		$('#successMsg').hide();
 	}, 5000);
 	
-	$("#employeesTitle").select2({
+	/*$("#employeesTitle").select2({
 		placeholder : "You must enter a title",
 		allowClear : true,
 		createSearchChoice : function(term, data) {
@@ -19,7 +19,7 @@ $(function() {
 		},
 		multiple : false,
 		data : $.parseJSON($("#titles").val())
-	});
+	});*/
 
 	$("#teCard\\.cardsCardType").select2({
 		placeholder : "You must select a Card Type",

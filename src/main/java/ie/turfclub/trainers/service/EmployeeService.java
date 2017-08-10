@@ -73,4 +73,6 @@ public interface EmployeeService {
 
 	Object deleteHistoryRecord(Integer id);
 
+	int getAutoIncreamentCardNumber();
+
 }

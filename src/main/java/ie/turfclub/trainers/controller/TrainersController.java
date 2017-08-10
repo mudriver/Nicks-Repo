@@ -54,6 +54,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfPTable;
@@ -297,18 +298,18 @@ public class TrainersController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String handleTrainerPage(TeTrainers trainer, Model model)
-			throws SQLException {
+	public String handleTrainerPage(TeTrainers trainer, Model model,
+			RedirectAttributes redirectAttributes) throws SQLException {
 
 		if (trainer.getTrainerId() != null && trainer.getTrainerId() > 0)
-			model.addAttribute("success", messageSource.getMessage(
+			redirectAttributes.addFlashAttribute("success", messageSource.getMessage(
 					"success.updated.trainer", new String[] {}, Locale.US));
 		else
-			model.addAttribute("success", messageSource.getMessage(
+			redirectAttributes.addFlashAttribute("success", messageSource.getMessage(
 					"success.added.trainer", new String[] {}, Locale.US));
 
 		trainersService.saveOrUpdate(trainer);
-		model.addAttribute("trainer", trainer);
+		/*model.addAttribute("trainer", trainer);
 		model.addAttribute("verifiedStatusEnum",
 				trainersService.getVerifiedStatus());
 		model.addAttribute("sexEnum", employeeService.getSexEnum());
@@ -322,8 +323,8 @@ public class TrainersController {
 		model.addAttribute("cardTypeEnum", employeeService.getAllCardType());
 		model.addAttribute("pensionEnum", employeeService.getPension());
 		model.addAttribute("nationalityEnum",
-				employeeService.getNationalityEnum());
-		return "trainer-add";
+				employeeService.getNationalityEnum());*/
+		return "redirect:/trainers/add";
 	}
 
 	@RequestMapping(value = "/person/copyRecord", method = RequestMethod.GET)

@@ -28,6 +28,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -52,7 +53,6 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.sql.JoinType;
-import org.hibernate.transform.Transformers;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -1382,7 +1382,8 @@ public class TrainerServiceImpl implements TrainersService {
 					TeEmployentHistory history = records.get(i);
 					currEmp = records.get(i).getTeEmployees().getEmployeesEmployeeId();
 					if(currEmp != prevEmp || i == 0) {
-						if(history.getEhHoursWorked() != null) {
+						if(history.getTeEmployees().getEmployeeNumHourWorked() != null && 
+								history.getTeEmployees().getEmployeeNumHourWorked() > 0) {
 							moreThan8HoursRecords.add(history);
 						} else {
 							lessThan8HoursRecords.add(history);
@@ -1392,13 +1393,25 @@ public class TrainerServiceImpl implements TrainersService {
 				}
 			}
 			
+			Collections.sort(moreThan8HoursRecords, new Comparator<TeEmployentHistory>() {
+				public int compare(TeEmployentHistory o1, TeEmployentHistory o2){
+				      return o1.getTeEmployees().getEmployeesFullName().compareTo(o2.getTeEmployees().getEmployeesFullName());
+				   }
+			});
+			
+			Collections.sort(lessThan8HoursRecords, new Comparator<TeEmployentHistory>() {
+				public int compare(TeEmployentHistory o1, TeEmployentHistory o2){
+				      return o1.getTeEmployees().getEmployeesFullName().compareTo(o2.getTeEmployees().getEmployeesFullName());
+				   }
+			});
+			
 			if(moreThan8HoursRecords != null && moreThan8HoursRecords.size() > 0) {
 				for (int i = 0; i < moreThan8HoursRecords.size(); i++) {
 					TeEmployentHistory history = moreThan8HoursRecords.get(i);
 					cell = new PdfPCell(new Phrase("8 hours or Over", bold));
 					cell.setPadding(5);
 					pdfPTable.addCell(cell);
-					cell = new PdfPCell(new Phrase(history.getTeEmployees().getTeCard() != null ? history.getTeEmployees().getTeCard().getCardsCardNumber() : "", bold));
+					cell = new PdfPCell(new Phrase(history.getTeEmployees().getTeCard() != null ? history.getTeEmployees().getTeCard().getCardsCardNumber()+"" : "", bold));
 					cell.setPadding(5);
 					pdfPTable.addCell(cell);
 					cell = new PdfPCell(new Phrase(history.getTeEmployees().getEmployeesFullName(), bold));
@@ -1604,7 +1617,7 @@ public class TrainerServiceImpl implements TrainersService {
 					cell = new PdfPCell(new Phrase("Less than 8 Hours", bold));
 					cell.setPadding(5);
 					pdfPTable.addCell(cell);
-					cell = new PdfPCell(new Phrase(history.getTeEmployees().getTeCard() != null ? history.getTeEmployees().getTeCard().getCardsCardNumber() : "", bold));
+					cell = new PdfPCell(new Phrase(history.getTeEmployees().getTeCard() != null ? history.getTeEmployees().getTeCard().getCardsCardNumber()+"" : "", bold));
 					cell.setPadding(5);
 					pdfPTable.addCell(cell);
 					cell = new PdfPCell(new Phrase(history.getTeEmployees().getEmployeesFullName(), bold));

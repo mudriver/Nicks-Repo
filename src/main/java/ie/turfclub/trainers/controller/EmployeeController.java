@@ -4,6 +4,7 @@ import ie.turfclub.common.bean.InapproveEmployeeBean;
 import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.common.enums.AdvanceSearchEnum;
 import ie.turfclub.person.service.PersonService;
+import ie.turfclub.trainers.model.TeCards;
 import ie.turfclub.trainers.model.TeEmployees;
 import ie.turfclub.trainers.service.EmployeeService;
 import ie.turfclub.trainers.service.StableStaffService;
@@ -203,7 +204,12 @@ public class EmployeeController {
 	@RequestMapping(value="/add", method=RequestMethod.GET)
 	public String getEmployeePage(HttpServletRequest request, ModelMap model) {
 		
-		model.addAttribute("emp", new TeEmployees());
+		TeEmployees emp = new TeEmployees();
+		TeCards card = new TeCards();
+		int autoCardNumber = employeeService.getAutoIncreamentCardNumber();
+		card.setCardsCardNumber(autoCardNumber);
+		emp.setTeCard(card);
+		model.addAttribute("emp", emp);
 		
 		model.addAttribute("trainers", trainersService.getAllTrainers());
 		model.addAttribute("sexEnum", employeeService.getSexEnum());
@@ -224,16 +230,17 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String handleEmployee(TeEmployees emp, HttpServletRequest request, ModelMap model) throws Exception {
+	public String handleEmployee(TeEmployees emp, HttpServletRequest request, ModelMap model,
+			RedirectAttributes redirectAttributes) throws Exception {
 		
 		if(emp.getEmployeesEmployeeId() != null && emp.getEmployeesEmployeeId() > 0)
-			model.addAttribute("success", messageSource.getMessage("success.updated.employee", new String[] {}, Locale.US));
+			redirectAttributes.addFlashAttribute("success", messageSource.getMessage("success.updated.employee", new String[] {}, Locale.US));
 		else
-			model.addAttribute("success", messageSource.getMessage("success.added.employee", new String[] {}, Locale.US));
+			redirectAttributes.addFlashAttribute("success", messageSource.getMessage("success.added.employee", new String[] {}, Locale.US));
 	
 		employeeService.handleSaveOrUpdate(emp);
 		
-		if(emp.getEmployeesPpsNumber() != null && emp.getEmployeesPpsNumber().length() > 10)
+		/*if(emp.getEmployeesPpsNumber() != null && emp.getEmployeesPpsNumber().length() > 10)
 			emp.setEmployeesPpsNumber(EncryptDecryptUtils.decrypt(emp.getEmployeesPpsNumber()));
 		model.addAttribute("emp", emp);
 		model.addAttribute("trainers", trainersService.getAllTrainers());
@@ -248,8 +255,8 @@ public class EmployeeController {
 				employeeService.getCountriesEnum());
 		model.addAttribute("cardTypeEnum", employeeService.getAllCardType());
 		model.addAttribute("pensionEnum", employeeService.getPension());
-		model.addAttribute("nationalityEnum", employeeService.getNationalityEnum());
-		return "emp-add";
+		model.addAttribute("nationalityEnum", employeeService.getNationalityEnum());*/
+		return "redirect:/employees/add";
 	}
 
 	@RequestMapping(value="/advSearch", method=RequestMethod.GET)

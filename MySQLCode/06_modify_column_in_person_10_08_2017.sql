@@ -1,0 +1,1 @@
+alter table person MODIFY column card_number integer;

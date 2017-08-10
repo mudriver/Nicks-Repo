@@ -91,9 +91,9 @@
 				<div class="form-group col-sm-12">
 					<label for="title" class="col-sm-4" data-th-text="#{employee.title}">Title :</label>
 					<div class="col-sm-8">
-			  			<input class="form-control input-sm" data-title="title" 
+			  			<input class="form-control input-sm" data-title="title" maxlength="9"
 			  				data-th-field="*{employeesTitle}" type='text' required="required"></input> 
-			  			<input type="hidden" id="titles" data-th-value="  ${titlesEnum}"></input>
+			  			<!-- <input type="hidden" id="titles" data-th-value="  ${titlesEnum}"></input> -->
 					</div>		
 				</div>
 				<div class="form-group col-sm-12">
@@ -221,7 +221,7 @@
 					<label for="ppsNumber" class="col-sm-4" data-th-text="#{employee.pps.number}">PPS Number :</label>
 					<div class="col-sm-8">
 		  				<input data-th-field="*{employeesPpsNumber}" class="form-control input-sm" 
-		  					pattern="([0-9]{7}[a-zA-Z]{1,2}|[a-zA-Z]{2}[0-9]{6}[a-zA-Z]{1})" 
+		  					pattern="([0-9]{7}[a-zA-Z]{1,2}|[a-zA-Z]{2}[0-9]{6}[a-zA-Z]{1})" maxlength="9"
 		  					data-error="You must enter a PPS no. in the correct format (7 digits &#38; 1 or 2 letters) or a National Insurance no. (2 digits &#38; 6 letters &#38; 1 number)"
 		  					placeholder='You must enter a PPS no. or National Insurance no. in the correct format'
 		  					required="required"/>
@@ -287,7 +287,7 @@
 						<label class="col-sm-5" for="number" data-th-text="#{employee.card.number}">Card Number :</label>
 						<div class="col-sm-7">
 			  				<input data-th-field="*{teCard.cardsCardNumber}" class="form-control input-sm" 
-			  					required="required" placeholder='Please enter card number'/>
+			  					required="required" placeholder='Please enter card number' readonly="readonly" />
 			  			</div>
 					</div>
 					<div class="form-group col-sm-12">
@@ -574,7 +574,7 @@
     <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/	
     	var trainers = [[${trainers}]];
-    	var noOfPensionRecord = 1;
+    	var noOfPensionRecord = [[${#lists.size(emp.histories)}]];
     	var card = [[#{employee.pension.card}]];
     	var cardA = [[#{employee.a}]];
     	var cardB = [[#{employee.b}]];
@@ -734,7 +734,10 @@
     	    		$('#histories'+i+'\\.trainerName').typeahead({
     	    		    source: trainers
     	    		}).on('change', function (event, data) {
-    	    		    $('#histories'+i+'\\.teTrainers\\.trainerId').val($(this).next().find('li.active').data('value'));
+    	    			var id =  $(this).attr('id');
+    	    			id = id.substring(0, id.indexOf('.'));
+    	    			id = id.replace('histories', '');
+    	    			$('#histories'+id+'\\.teTrainers\\.trainerId').val($(this).next().find('li.active').data('value'));
     	    		    var ele = $(this);
     	    		    $.ajax({
     	   					url: '/turfclubPrograms/trainers/json/'+$(this).next().find('li.active').data('value'),
@@ -797,8 +800,12 @@
     			$('#histories'+noOfPensionRecord+'\\.trainerName').typeahead({
         		    source: trainers
         		}).on('change', function (event, data) {
-        			var index = noOfPensionRecord-1;
-        		    $('#pensions'+index+'\\.teTrainers\\.trainerId').val($(this).next().find('li.active').data('value'));
+        			var id =  $(this).attr('id');
+	    			id = id.substring(0, id.indexOf('.'));
+	    			id = id.replace('histories', '');
+        			//var index = noOfPensionRecord-1;
+        			var index = id;
+        		    $('#histories'+index+'\\.teTrainers\\.trainerId').val($(this).next().find('li.active').data('value'));
         		    var ele = $(this);
 	    		    $.ajax({
 	   					url: '/turfclubPrograms/trainers/json/'+$(this).next().find('li.active').data('value'),

@@ -262,7 +262,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 				List<HashMap<String, Object>> maps = getCurrentSession().createQuery(hql1).list();
 				HashMap<String, Object> mapRecord = (maps != null && maps.size() > 0) ? maps.get(0) : null;
 				if(mapRecord != null && mapRecord.get("type") != null) {
-					bean.setCardNumber((String)mapRecord.get("number"));
+					bean.setCardNumber(Integer.parseInt(String.valueOf(mapRecord.get("number"))));
 					bean.setCardType((String)mapRecord.get("type"));
 				}
 			}
@@ -396,7 +396,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 				List<HashMap<String, Object>> maps = getCurrentSession().createQuery(hql1).list();
 				HashMap<String, Object> mapRecord = (maps != null && maps.size() > 0) ? maps.get(0) : null;
 				if(mapRecord != null && mapRecord.get("type") != null) {
-					bean.setCardNumber((String)mapRecord.get("number"));
+					bean.setCardNumber(Integer.parseInt(String.valueOf(mapRecord.get("number"))));
 					bean.setCardType((String)mapRecord.get("type"));
 				}
 			}
@@ -936,5 +936,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 			getCurrentSession().delete(records.get(0));
 		}
 		return new HashMap<String, Object>();
+	}
+	
+	@Override
+	public int getAutoIncreamentCardNumber() {
+		
+		Criteria criteria = getCurrentSession()
+		    .createCriteria(TeCards.class)
+		    .setProjection(Projections.max("cardsCardNumber"));
+		Integer maxNumber = (Integer)criteria.uniqueResult();
+		return (maxNumber+1);
 	}
 }

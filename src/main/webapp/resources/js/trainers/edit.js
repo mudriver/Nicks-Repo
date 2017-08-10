@@ -4,7 +4,7 @@ $(function() {
 		$('#successMsg').hide();
 	}, 5000);
 	
-	$("#employeesTitle").select2({
+	/*$("#employeesTitle").select2({
 		placeholder : "You must enter a title",
 		allowClear : true,
 		createSearchChoice : function(term, data) {
@@ -19,9 +19,9 @@ $(function() {
 		},
 		multiple : false,
 		data : $.parseJSON($("#titles").val())
-	});
+	});*/
 
-	$("#title").select2({
+	/*$("#title").select2({
 		placeholder : "You must enter a title",
 		allowClear : true,
 		createSearchChoice : function(term, data) {
@@ -36,7 +36,7 @@ $(function() {
 		},
 		multiple : false,
 		data : $.parseJSON($("#titles").val())
-	});
+	});*/
 	
 	$("#sex").select2({
 		placeholder : "You must select a gender",

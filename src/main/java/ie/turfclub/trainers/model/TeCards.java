@@ -30,7 +30,7 @@ public class TeCards implements java.io.Serializable {
 
 	private Integer cardsCardId;
 	private TeEmployees teEmployees;
-	private String cardsCardNumber;
+	private Integer cardsCardNumber;
 	private Date cardsIssueDate;
 	private Boolean cardsCardReturnedToOffice;
 	private Boolean cardsPreviousAirCardHolder;
@@ -41,12 +41,12 @@ public class TeCards implements java.io.Serializable {
 	public TeCards() {
 	}
 
-	public TeCards(TeEmployees teEmployees, String cardsCardNumber) {
+	public TeCards(TeEmployees teEmployees, Integer cardsCardNumber) {
 		this.teEmployees = teEmployees;
 		this.cardsCardNumber = cardsCardNumber;
 	}
 
-	public TeCards(TeEmployees teEmployees, String cardsCardNumber,
+	public TeCards(TeEmployees teEmployees, Integer cardsCardNumber,
 			Date cardsIssueDate, Boolean cardsCardReturnedToOffice,
 			Boolean cardsPreviousAirCardHolder, Set teEmployentHistories) {
 		this.teEmployees = teEmployees;
@@ -78,12 +78,12 @@ public class TeCards implements java.io.Serializable {
 		this.teEmployees = teEmployees;
 	}
 
-	@Column(name = "cards_card_number", nullable = false, length = 5)
-	public String getCardsCardNumber() {
+	@Column(name = "cards_card_number", nullable = false)
+	public Integer getCardsCardNumber() {
 		return this.cardsCardNumber;
 	}
 
-	public void setCardsCardNumber(String cardsCardNumber) {
+	public void setCardsCardNumber(Integer cardsCardNumber) {
 		this.cardsCardNumber = cardsCardNumber;
 	}
 
