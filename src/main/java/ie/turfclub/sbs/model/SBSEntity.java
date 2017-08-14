@@ -75,6 +75,9 @@ public class SBSEntity implements Serializable {
 	
 	@Column(name="is_returned")
 	private boolean returned;
+	
+	@Column(name="is_old")
+	private boolean old;
 
 	public boolean isReturned() {
 		return returned;
@@ -210,6 +213,14 @@ public class SBSEntity implements Serializable {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public boolean isOld() {
+		return old;
+	}
+
+	public void setOld(boolean old) {
+		this.old = old;
 	}
 	
 }

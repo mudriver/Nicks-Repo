@@ -131,7 +131,7 @@ $(function() {
 		multiple : false,
 		data : $.parseJSON($("#employmentCatEnum").val())
 	});
-	$('#employeeCategoryOfEmployment').select2({
+	$('#histories0\\.ehEmploymentCategory').select2({
 		placeholder : "You must select an Employment Category",
 		allowClear : true,
 		createSearchChoice : function(term, data) {

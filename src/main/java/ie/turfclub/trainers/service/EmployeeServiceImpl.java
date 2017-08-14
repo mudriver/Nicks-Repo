@@ -32,7 +32,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -466,15 +465,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		
 		/*if(emp.getEmployeesEmployeeId() == null || emp.getEmployeesEmployeeId() == 0) {*/
+			TeTrainers ptrainer = null;
+			Date startDate = null;
 			if(emp.getHistories() != null && emp.getHistories().size() > 0) {
 				for (TeEmployentHistory history : emp.getHistories()) {
 					history.setTeEmployees(emp);
 					if(history.getTeTrainers().getTrainerId() != null) {
 						TeTrainers trainer = trainersService.getTrainer(history.getTeTrainers().getTrainerId());
 						history.setTeTrainers(trainer);
+						if(ptrainer == null) {
+							ptrainer = trainer;
+							startDate = history.getEhDateFrom();
+						}
 					}
 				}
 				emp.setTeEmployentHistories(new HashSet<TeEmployentHistory>(emp.getHistories()));
+				if(emp.getHistories().get(emp.getHistories().size()-1).getEmployeeNumHourWorked() > 0)
+					emp.setEmployeeNumHourWorked((double)emp.getHistories().get(emp.getHistories().size()-1).getEmployeeNumHourWorked());
 			}
 			
 			if(emp.getPensions() != null && emp.getPensions().size() > 0) {
@@ -482,10 +489,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 					
 					pension.setTeEmployees(emp);
 					
-					if(pension.getPensionTrainer().getTrainerId() != null) {
+					/*if(pension.getPensionTrainer().getTrainerId() != null) {
 						TeTrainers trainer = trainersService.getTrainer(pension.getPensionTrainer().getTrainerId());
 						pension.setPensionTrainer(trainer);
-					}
+					}*/
+					pension.setPensionTrainer(ptrainer);
+					pension.setPensionDateJoinedScheme(startDate);
 				}
 				emp.setTePensions(new HashSet<TePension>(emp.getPensions()));
 			}

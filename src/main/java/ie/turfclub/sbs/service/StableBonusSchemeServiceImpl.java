@@ -11,6 +11,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -77,6 +79,9 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 			Row headerRow = rowIterator.next();
 			
 			if(validateHeaderForExcelSheet(headerRow)) {
+				
+				String hql = "update SBSEntity set old = true";
+				int isUpdate = getCurrentSession().createQuery(hql).executeUpdate();
 				
 				while (rowIterator.hasNext()) { 
 					
@@ -148,6 +153,8 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 						++count;
 					}
 					sbsEntity.setCreatedDate(new Date());
+					sbsEntity.setOld(false);
+					sbsEntity.setReturned(false);
 					saveOrUpdateSBSEntity(sbsEntity);
 				}
 				map.put("success", true);
@@ -304,7 +311,8 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		String hql = "select new map(sbs.sbsName as name, sbs.address1 as address1, sbs.address2 as address2, "
 				+ "sbs.address3 as address3, tt.trainerId as trainerId, sbs.amount as amount, sbs.title as title,"
 				+ " sbs.surname as surname, sbs.trainerId as accNo, sbs.address4 as address4) "
-				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId";
+				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId "
+				+ " and sbs.old = false ";
 		results = getCurrentSession().createQuery(hql).list();
 		
 		Date today = new Date();
@@ -349,10 +357,22 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 					if(noOfPages > 0) {
 						for (int i = 1; i <= noOfPages; i++) {
 							if((i*inoOfRecordsInPDFPage)-1 > empLists.size()) {
-								result.put("emp"+i, empLists.subList((i-1)*inoOfRecordsInPDFPage, empLists.size()));
+								List<HashMap<String, Object>> empSubLists = empLists.subList((i-1)*inoOfRecordsInPDFPage, empLists.size());
+								Collections.sort(empSubLists, new Comparator<HashMap<String, Object>>() {
+									public int compare(HashMap<String, Object> map1, HashMap<String, Object> map2) {
+										return ((String)map1.get("name")).compareTo((String)(map2.get("name")));
+									}
+								});
+								result.put("emp"+i, empSubLists);
 								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*inoOfRecordsInPDFPage, empLists.size()).size()));
 							} else {
-								result.put("emp"+i, empLists.subList((i-1)*inoOfRecordsInPDFPage, (i*inoOfRecordsInPDFPage)-1));
+								List<HashMap<String, Object>> empSubLists = empLists.subList((i-1)*inoOfRecordsInPDFPage, (i*inoOfRecordsInPDFPage)-1);
+								Collections.sort(empSubLists, new Comparator<HashMap<String, Object>>() {
+									public int compare(HashMap<String, Object> map1, HashMap<String, Object> map2) {
+										return ((String)map1.get("name")).compareTo((String)(map2.get("name")));
+									}
+								});
+								result.put("emp"+i, empSubLists);
 								result.put("space"+i, noOfBreakLine-(empLists.subList((i-1)*inoOfRecordsInPDFPage, (i*inoOfRecordsInPDFPage)-1).size())-1);
 							}
 						}
@@ -386,7 +406,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 				+ "sbs.address3 as address3, tt.trainerId as trainerId, sbs.amount as amount, sbs.title as title,"
 				+ " sbs.surname as surname, sbs.trainerId as accNo, sbs.address4 as address4) "
 				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
-				+ " sbs.returned = false";
+				+ " sbs.returned = false and sbs.old = false ";
 		results = getCurrentSession().createQuery(hql).list();
 		
 		Date today = new Date();
@@ -471,6 +491,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		
 		Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
 		criteria.add(Restrictions.eq("trainerId", tId));
+		criteria.add(Restrictions.eq("old", false));
 		List<SBSEntity> records = criteria.list();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		if(records != null && records.size() > 0) {
@@ -492,7 +513,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 				+ "sbs.address3 as address3, tt.trainerId as trainerId, sbs.amount as amount, sbs.title as title,"
 				+ " sbs.surname as surname, sbs.trainerId as accNo, sbs.address4 as address4) "
 				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId"
-				+ " and sbs.trainerId = '"+tId+"'";
+				+ " and sbs.trainerId = '"+tId+"' and sbs.old = false ";
 		results = getCurrentSession().createQuery(hql).list();
 		
 		Date today = new Date();
@@ -581,6 +602,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	public List<SBSEntity> getAllOrderByNameAsc() {
 		
 		Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
+		criteria.add(Restrictions.eq("old", false));
 		criteria.addOrder(Order.asc("sbsName"));
 		return criteria.list();
 	}
@@ -589,6 +611,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	public List<SBSEntity> findByName(String search) {
 		Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
 		criteria.add(Restrictions.like("sbsName", search, MatchMode.ANYWHERE));
+		criteria.add(Restrictions.eq("old", false));
 		criteria.addOrder(Order.asc("sbsName"));
 		return criteria.list();
 	}

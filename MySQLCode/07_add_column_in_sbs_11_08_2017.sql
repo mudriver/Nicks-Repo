@@ -1,0 +1,1 @@
+alter table sbs add column is_old boolean DEFAULT false;

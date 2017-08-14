@@ -563,7 +563,7 @@ public class TeEmployees implements java.io.Serializable {
 			
 			//CHANGE EARNINGS YEAR HERE
 			//Comment out this line to change back to 2015 earnings year  
-			now.add(Calendar.YEAR, -1);
+			now.add(Calendar.YEAR, -2);
 			yearStart = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/" + now.get(Calendar.YEAR));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

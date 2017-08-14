@@ -50,9 +50,11 @@
             border-top-style: none;
             border-bottom-style: none;
         }
+        .margin-left-4px { margin-left: 4px;}
+        #deletePensionRecord { margin-left: 7px;}
         .form-group label { color: white; }
         .form-horizontal .form-group { margin-right: 0px; margin-left: 0px;}
-        .add-delete-icon { margin-top: 12px !important; }
+        .add-delete-icon { margin-top: 12px !important; margin-left: 7px; }
         .left-form { float: left;}
         .right-form { float: right;}
         input, select { width: 100% !important;}
@@ -86,6 +88,7 @@
 			data-th-action="@{/employees/save}" method="post" data-th-object="${emp}">
 
 			<input type='hidden' data-th-field="*{employeesEmployeeId}"></input>
+			<input type="hidden" id="employmentCatEnum" data-th-value="  ${employmentCatEnum}"></input>
 			<div class="left-form col-sm-6 section-card">
 				<div class="form-group col-sm-12">
 					<label for="title" class="col-sm-4" data-th-text="#{employee.title}">Title :</label>
@@ -246,7 +249,7 @@
 							<input type="hidden" id="employmentCatEnum" data-th-value="  ${employmentCatEnum}"></input>
 						</div>
 					</div>
-					<div class="form-group col-sm-12">
+					<!-- <div class="form-group col-sm-12">
 						<label for="card" class="col-sm-5" data-th-text="#{employee.pension.trainer}">Trainer</label>
 						<div class="col-sm-7">
 				  			<input data-th-field="*{pensions[0].pensionTrainerName}" class="form-control input-sm" required="required"/>
@@ -258,7 +261,7 @@
 						<div class="col-sm-7">
 			  				<input data-th-field="*{pensions[0].pensionDateJoinedScheme}" class="form-control input-sm" />
 			  			</div>
-					</div>
+					</div> -->
 					<div style="display: none;" class="form-group col-sm-12">
 						<label for="ppsNumber" class="col-sm-5" data-th-text="#{employee.end.date}">End Date</label>
 						<div class="col-sm-7">
@@ -326,12 +329,11 @@
 			  					required="required"/>
 			  			</div>
 					</div> -->
-					<div class="form-group col-sm-12">
+					<!-- <div class="form-group col-sm-12">
 						<label for="categoryOfEmployment" class="col-sm-5" data-th-text="#{employee.category.of.employment}">Category of Employment :</label>
 						<div class="col-sm-7">
 				  			<input class="form-control input-sm" data-th-field="*{employeeCategoryOfEmployment}" 
 				  				type='text'></input> 
-							<input type="hidden" id="employmentCatEnum" data-th-value="  ${employmentCatEnum}"></input>
 						</div>
 					</div>
 					<div class="form-group col-sm-12">
@@ -343,7 +345,7 @@
 			  					<option value="2">greater than 20</option>
 			  				</select>
 			  			</div>
-					</div>
+					</div> -->
 					<!-- <div class="form-group col-sm-12">
 						<label for="requestDate" class="col-sm-5" data-th-text="#{employee.request.date}">Request Date :</label>
 						<div class="col-sm-7">
@@ -361,7 +363,7 @@
 			<div class="section-card col-sm-12">
 				<input type="hidden" class="history-id" data-th-field="*{histories[0].ehEmploymentId}"></input>
 				<div class="pension-form col-sm-12">
-					<div class="form-group col-sm-1">
+					<div class="form-group " style="width: 6%">
 						<label for="card" data-th-text="#{employee.pension.card}">Card :</label>
 			  			<select data-th-field="*{histories[0].cardType}" class="form-control input-sm" >
 			  				<option value=""></option>
@@ -369,7 +371,7 @@
 			  				<option data-th-value="#{employee.b}" value="B" data-th-text="#{employee.b}">B</option>
 			  			</select>
 					</div>
-					<div class="form-group col-sm-2">
+					<div class="form-group " style="width: 6%">
 						<label for="card" data-th-text="#{employee.pension.type}">Pension :</label>
 			  			<select data-th-field="*{histories[0].pensionType}" class="form-control input-sm" >
 			  				<option value=""></option>
@@ -378,12 +380,22 @@
 			  				<option data-th-value="#{employee.pension.n}" value="N" data-th-text="#{employee.pension.n}">N</option>
 			  			</select>
 					</div>		
-					<div class="form-group col-sm-2">
+					<div class="form-group " style="width: 16%;">
+						<label for="categoryOfEmployment" data-th-text="#{employee.category.of.employment}">Category of Employment :</label>
+			  			<input class="form-control input-sm" data-th-field="*{histories[0].ehEmploymentCategory}" 
+			  				type='text'></input> 
+					</div>
+					<div class="form-group " style="width: 16%;">
+						<label for="requestDate" data-th-text="#{employee.employees.hour.worked}">Employees hour worked :</label>
+						<input class="form-control input-sm" data-th-field="*{histories[0].employeeNumHourWorked}" 
+			  				type='text'></input> 
+					</div>
+					<div class="form-group " style="width: 14%;">
 						<label for="card" data-th-text="#{employee.pension.trainer}">Trainer</label>
 			  			<input placeholder="You must enter trainer name" data-th-field="*{histories[0].trainerName}" class="form-control input-sm" required="required" />
 			  			<input type="hidden" data-th-field="*{histories[0].teTrainers.trainerId}" />
 					</div>		
-					<div class="form-group col-sm-2">
+					<div class="form-group " style="width: 16%;">
 						<label for="requestDate" data-th-text="#{employees.trainer.hri.acc.num}">HRI A/C Num :</label>
 			  			<input placeholder="You must enter Trainer HRI A/c Num" pattern="\w{5}" 
 			  				data-th-field="*{histories[0].hriAccNum}" class="form-control input-sm" />
@@ -392,15 +404,15 @@
 						<label for="requestDate" data-th-text="#{employee.pension.date.range}">Date Range :</label>
 			  			<input data-th-field="*{pensions[0].pensionDateRange}" class="form-control" />
 					</div> -->
-					<div class="form-group col-sm-2">
+					<div class="form-group " style="width: 10%;">
 						<label for="requestDate" data-th-text="#{employee.pension.from.date}">From Date :</label>
 			  			<input placeholder="You must select from date" data-date-format="dd/mm/yyyy" data-th-field="*{histories[0].ehDateFrom}" class="form-control input-sm" required="required"/>
 					</div>
-					<div class="form-group col-sm-2">
+					<div class="form-group " style="width: 10%;">
 						<label for="requestDate" data-th-text="#{employee.pension.to.date}">To Date :</label>
 			  			<input data-th-field="*{histories[0].ehDateTo}" class="form-control input-sm" />
 					</div>
-					<div class="form-group col-sm-1 add-delete-icon">
+					<div class="form-group add-delete-icon " style="width: 2%;">
 						<a href="javascript:void(0);" id="addPensionRecord" alt="Add Pension Record" title="Add Pension Record"><i class="fa fa-plus fa-3x"></i></a>
 					</div>
 				</div>
@@ -577,6 +589,8 @@
     	var dateRange = [[#{employee.pension.date.range}]];
     	var fromDate = [[#{employee.pension.from.date}]];
     	var endDate = [[#{employee.pension.to.date}]];
+    	var categoryOfEmployment = [[#{employee.category.of.employment}]];
+    	var numHourWorked = [[#{employee.employees.hour.worked}]];
     	var historyEle;
     	
     	$(function() {
@@ -695,7 +709,7 @@
     		$('#addPensionRecord').click(function() {
     			$('.pension-form').after('<div class="add-pension-form col-sm-12">'+
     					'<input type="hidden" class="history-id" id="histories'+noOfPensionRecord+'.ehEmploymentId" name="histories['+noOfPensionRecord+'].ehEmploymentId"></input>'+
-    					'<div class="form-group col-sm-1">'+
+    					'<div class="form-group " style="width: 6%;">'+
     					'<label for="card" data-th-text="'+card+'">'+card+'</label>'+
     						'<select id="histories'+noOfPensionRecord+'.cardType" name="histories['+noOfPensionRecord+'].cardType" class="form-control input-sm" >'+
     							'<option value=""></option>'+
@@ -703,7 +717,7 @@
     							'<option value="'+cardB+'">'+cardB+'</option>'+
     						'</select>'+
     				'</div>'+
-    				'<div class="form-group col-sm-2">'+
+    				'<div class="form-group margin-left-4px" style="width: 6%;">'+
     					'<label for="card" >'+pension+'</label>'+
     						'<select id="histories'+noOfPensionRecord+'.pensionType" name="histories['+noOfPensionRecord+'].pensionType" class="form-control input-sm" >'+
     							'<option value=""></option>'+
@@ -712,24 +726,32 @@
     							'<option value="'+pensionN+'" >'+pensionN+'</option>'+
     						'</select>'+
     				'</div>		'+
-    				'<div class="form-group col-sm-2">'+
+    				'<div class="form-group" style="width: 16%;">'+
+						'<label for="categoryOfEmployment">'+categoryOfEmployment+'</label>'+
+			  			'<input class="form-control input-sm" id="histories'+noOfPensionRecord+'.ehEmploymentCategory" name="histories['+noOfPensionRecord+'].ehEmploymentCategory" type="text"></input>'+ 
+					'</div>'+
+					'<div class="form-group margin-left-4px" style="width: 16%;">'+
+						'<label for="requestDate">'+numHourWorked+'</label>'+
+						'<input class="form-control input-sm" id="histories'+noOfPensionRecord+'.employeeNumHourWorked" name="histories['+noOfPensionRecord+'].employeeNumHourWorked" type="text"></input>'+
+					'</div>'+
+    				'<div class="form-group margin-left-4px" style="width: 14%;">'+
     					'<label for="card" >'+trainer+'</label>'+
     						'<input placeholder="You must enter trainer name" id="histories'+noOfPensionRecord+'.trainerName" name="histories['+noOfPensionRecord+'].trainerName" required="required" class="form-control input-sm" />'+
     						'<input type="hidden" id="histories'+noOfPensionRecord+'.teTrainers.trainerId" name="histories['+noOfPensionRecord+'].teTrainers.trainerId" />'+
     				'</div>		'+
-    				'<div class="form-group col-sm-2">'+
+    				'<div class="form-group" style="width: 16%;">'+
     					'<label for="requestDate" >'+hriAccNum+'</label>'+
-    						'<input  placeholder="You must enter HRI A/c Num" pattern="\w{5}" id="histories'+noOfPensionRecord+'.hriAccNum" name="histories['+noOfPensionRecord+'].hriAccNum" class="form-control input-sm" />'+
+    						'<input  placeholder="You must enter HRI A/c Num" pattern="\\w{5}" id="histories'+noOfPensionRecord+'.hriAccNum" name="histories['+noOfPensionRecord+'].hriAccNum" class="form-control input-sm" />'+
     				'</div>'+
-    				'<div class="form-group col-sm-2">'+
+    				'<div class="form-group margin-left-4px" style="width: 10%;">'+
 						'<label for="requestDate" data-th-text="#{employee.pension.from.date}">'+fromDate+'</label>'+
 			  			'<input placeholder="You must select from date" name="histories['+noOfPensionRecord+'].ehDateFrom" id="histories'+noOfPensionRecord+'.ehDateFrom" class="form-control input-sm" required="required"/>'+
 					'</div>'+
-					'<div class="form-group col-sm-2">'+
+					'<div class="form-group margin-left-4px" style="width: 10%;">'+
 						'<label for="requestDate" data-th-text="#{employee.pension.to.date}">'+endDate+'</label>'+
 			  			'<input name="histories['+noOfPensionRecord+'].ehDateTo" id="histories'+noOfPensionRecord+'.ehDateTo" class="form-control input-sm" />'+
 					'</div>'+
-    				'<div class="form-group col-sm-1 add-delete-icon">'+
+    				'<div class="form-group add-delete-icon" style="width: 2%;">'+
     					'<a href="javascript:void(0);" id="deletePensionRecord" alt="Delete Pension Record" title="Delete Pension Record"><i class="fa fa-trash-o fa-3x"></i></a>'+
     				'</div>'+
     			'</div>');
@@ -742,6 +764,7 @@
    	    			id = id.substring(0, id.indexOf('.'));
    	    			id = id.replace('histories', '');
         			var ele = $(this);
+        			var index = id;
         		    $('#histories'+index+'\\.teTrainers\\.trainerId').val($(this).next().find('li.active').data('value'));
         		    $.ajax({
        					url: '/turfclubPrograms/trainers/json/'+$(this).next().find('li.active').data('value'),
@@ -752,6 +775,23 @@
        					}
        				});
         		});
+    			
+    			$('#histories'+noOfPensionRecord+'\\.ehEmploymentCategory').select2({
+    				placeholder : "You must select an Employment Category",
+    				allowClear : true,
+    				createSearchChoice : function(term, data) {
+    					if ($(data).filter(function() {
+    						return this.text.localeCompare(term) === 0;
+    					}).length === 0) {
+    						return {
+    							id : term,
+    							text : term
+    						};
+    					}
+    				},
+    				multiple : false,
+    				data : $.parseJSON($("#employmentCatEnum").val())
+    			});
     			
     			$('#histories'+noOfPensionRecord+'\\.pensionDateRange').daterangepicker({
        				locale: {

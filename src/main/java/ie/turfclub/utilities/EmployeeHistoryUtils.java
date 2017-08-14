@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -232,6 +233,16 @@ public class EmployeeHistoryUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		Collections.sort(histories, new Comparator<TeEmployentHistory>() {
+
+			@Override
+			public int compare(TeEmployentHistory o1, TeEmployentHistory o2) {
+				// TODO Auto-generated method stub
+				return o1.getEhDateFrom().compareTo(o2.getEhDateFrom());
+			}
+			
+		});
 		for (TeEmployentHistory history : histories) {
 			if (history.getEhPpsNumber() != null && history.getEhDateFrom().before(date)) {
 				ppsNumber = history.getEhPpsNumber();
@@ -265,6 +276,11 @@ public class EmployeeHistoryUtils {
 		history = Collections.max(listOfContinuousEmployment,
 				new TeEmployentHistory.TeEmployentHistoryComparatorDateTo());
 		history.setEhDateFrom(temphistory.getEhDateFrom());
+		if(listOfContinuousEmployment != null && listOfContinuousEmployment.size() > 0) {
+			TeEmployentHistory firsthistory = listOfContinuousEmployment.get(listOfContinuousEmployment.size()-1);
+			if(firsthistory.getEhDateTo() == null) history.setEhDateTo(null);
+			//history.setEhDateTo(firsthistory.getEhDateTo());
+		}
 		history.setEhPpsNumber(ppsNumber);
 		history.setEhEarnings(earnings2014);
 
