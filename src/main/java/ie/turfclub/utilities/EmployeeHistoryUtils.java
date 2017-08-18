@@ -12,7 +12,11 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
+
+import ie.turfclub.trainers.model.TeEmployees;
+import ie.turfclub.trainers.model.TeEmployentHistory;
 
 public class EmployeeHistoryUtils {
 
@@ -44,7 +48,7 @@ public class EmployeeHistoryUtils {
 		currentYear -= 1;
 		// change this to -1 from -2 when current earnings year changes from
 		// 2014 to 2015
-		c.add(Calendar.YEAR, -2);
+		c.add(Calendar.YEAR, -3);
 		int lastYear = c.get(Calendar.YEAR);
 		int endYear = currentYear;
 
@@ -135,7 +139,7 @@ public class EmployeeHistoryUtils {
 		currentYear -= 1;
 		// change this to -1 from -2 when current earnings year changes from
 		// 2014 to 2015
-		c.add(Calendar.YEAR, -2);
+		c.add(Calendar.YEAR, -3);
 
 		int lastYear = c.get(Calendar.YEAR);
 		int endYear = currentYear;
@@ -243,6 +247,11 @@ public class EmployeeHistoryUtils {
 			}
 			
 		});
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.YEAR, -3);
+		Date startDate = new DateTime(cal.get(Calendar.YEAR),1,1,0,0).toDate();
+		Date endDate = new DateTime(cal.get(Calendar.YEAR), 12,31, 0, 0).toDate();
 		for (TeEmployentHistory history : histories) {
 			if (history.getEhPpsNumber() != null && history.getEhDateFrom().before(date)) {
 				ppsNumber = history.getEhPpsNumber();
@@ -251,6 +260,7 @@ public class EmployeeHistoryUtils {
 				earnings2014 = history.getEhEarnings();
 			}
 			listOfContinuousEmployment.add(history);
+			
 
 			// section to split history if break in serivce
 			/*
@@ -270,11 +280,19 @@ public class EmployeeHistoryUtils {
 
 		}
 		TeEmployentHistory temphistory = new TeEmployentHistory();
+		
 		temphistory = Collections.min(listOfContinuousEmployment,
 				new TeEmployentHistory.TeEmployentHistoryComparatorDateFrom());
 		TeEmployentHistory history = new TeEmployentHistory();
+		history.setExistsYearRecord(false);
 		history = Collections.max(listOfContinuousEmployment,
 				new TeEmployentHistory.TeEmployentHistoryComparatorDateTo());
+		for(TeEmployentHistory his : listOfContinuousEmployment) {
+			if((startDate.compareTo(his.getEhDateFrom()) * his.getEhDateFrom().compareTo(endDate)) >= 0) {
+				history.setExistsYearRecord(true);
+				break;
+			}
+		}
 		history.setEhDateFrom(temphistory.getEhDateFrom());
 		if(listOfContinuousEmployment != null && listOfContinuousEmployment.size() > 0) {
 			TeEmployentHistory firsthistory = listOfContinuousEmployment.get(listOfContinuousEmployment.size()-1);
@@ -318,6 +336,7 @@ public class EmployeeHistoryUtils {
 		Date startLastYear = null;
 		Date endLastYear = null;
 		Date earliestDateOfBirth = null;
+		Date endDateFor2014 = null;
 
 		System.out.println(today);
 		System.out.println(c
@@ -338,10 +357,11 @@ public class EmployeeHistoryUtils {
 			c.add(Calendar.YEAR, -1);
 			System.out.println(c
 					.get(Calendar.YEAR) + "-12-31");
+			System.out.println("Start last year value : "+c.get(Calendar.YEAR));
 			startLastYear = new SimpleDateFormat("yyyy-MM-dd").parse(c
-					.get(Calendar.YEAR) + "-12-31");
-
-		} catch (ParseException e) {
+					.get(Calendar.YEAR) + "-01-01");
+			endDateFor2014 = new DateTime(c.get(Calendar.YEAR), 12, 31, 0, 0).toDate();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -376,12 +396,15 @@ public class EmployeeHistoryUtils {
 				// if the current employment does not have an end date
 				if (continuoushistory.getEhDateTo() == null
 						&& DateTimeComparator.getDateOnlyInstance().compare(
-								employee.getEmployeesDateEntered(), today) < 0) {
+								employee.getEmployeesLastUpdated(), today) <= 0
+						&& DateTimeComparator.getDateOnlyInstance().compare(
+								continuoushistory.getEhDateFrom(), endDateFor2014) < 0 
+						&& continuoushistory.isExistsYearRecord()) {
 					currentEmployees.add(employee);
 				}
 				// if the employee left last year add to employees left list
 				else if (continuoushistory.getEhDateTo() != null
-						&& continuoushistory.getEhDateTo().after(startLastYear)) {
+						&& continuoushistory.getEhDateTo().after(startLastYear) && continuoushistory.isExistsYearRecord()) {
 					employeesLeft.add(employee);
 				}
 				// if the employee date entered on the system is today show as
@@ -393,6 +416,8 @@ public class EmployeeHistoryUtils {
 			}
 			// add to over 65 list if still working
 			else if (continuoushistory.getEhDateTo() == null) {
+				employeesOver65.add(employee);
+			} else if (continuoushistory.isExistsYearRecord()) {
 				employeesOver65.add(employee);
 			}
 

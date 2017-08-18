@@ -69,8 +69,8 @@ function setupDocument() {
 	var dateToday = new Date();
 	var year = (dateToday.getFullYear()-1);
 
-	$('#leftHeader').text($('#leftHeader').text().replace("year" , parseInt(teoYear)-1));
-	$('#teoCurrYear').text(teoYear);
+
+	$('#leftHeader').text($('#leftHeader').text().replace("year" , year-2));
 }
 
 

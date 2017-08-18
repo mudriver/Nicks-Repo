@@ -45,22 +45,7 @@ import ie.turfclub.trainers.service.StableStaffService;
 import ie.turfclub.trainers.service.TrainersService;
 import ie.turfclub.utilities.EmployeeHistoryUtils;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +60,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping(value = "/trainersEmployeesOnline")
@@ -106,11 +92,16 @@ public class StableStaffController {
 		
 		TeTrainers trainer = stableStaffService.getTrainer(trainerId);
 
+		Date today = new Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(today);
+		//EARNINGS YEAR 
+		c.add(Calendar.YEAR, -3);
+		Date startDate = new DateTime(c.get(Calendar.YEAR),1,1,0,0).toDate();
+		Date endDate = new DateTime(c.get(Calendar.YEAR), 12,31, 0, 0).toDate();
+		List<TeEmployees> employees2014 = stableStaffService.getEmployees(trainerId);
 		
-
-		List<TeEmployees> employees = stableStaffService.getEmployees(trainerId);
-
-		employeeUtils.sortEmployees(employees, trainerId);
+		employeeUtils.sortEmployees(employees2014, trainerId);
 		if (saveMessage != null) {
 			// logger.info("Save message" + saveMessage);
 			model.addAttribute("saveMessage", saveMessage);
@@ -220,7 +211,7 @@ public class StableStaffController {
 		
 		//CHANGE EARNINGS YEAR HERE
 		//Change here to -1 when earnings for 2015 should be entered  
-		now.add(Calendar.YEAR, -2);
+		now.add(Calendar.YEAR, -3);
 		model.addAttribute("currentYear", now.get(Calendar.YEAR));
 		model.addAttribute("trainerId", trainerId);
 		model.addAttribute("USERMENUTYPE", "STABLESTAFF_PENSION");
@@ -236,7 +227,7 @@ public class StableStaffController {
 			@PathVariable(value = "id") Integer trainerId,
 			@ModelAttribute TeEmployees employeeUpdated,
 			@ModelAttribute TeEmployentHistory history,
-			@RequestParam(value = "saveMessage", required = true) String saveMessage) {
+			@RequestParam(value = "saveMessage", required = false) String saveMessage, RedirectAttributes redirectAttributes) {
 
 	
 		TeEmployees originalEmployee = null;
@@ -702,6 +693,8 @@ public class StableStaffController {
 			// save history record for employee
 			for (TeEmployentHistory newHistory : histories) {
 
+				if(newHistory.getEhEmploymentCategory() != null && newHistory.getEhEmploymentCategory().length() == 0) newHistory.setEhEmploymentCategory(null);
+				if(newHistory.getEhHoursWorked() != null && newHistory.getEhHoursWorked().length() == 0) newHistory.setEhHoursWorked(null);
 				if (originalEmployee.getEmployeesIsNew()) {
 					newHistory.setTeTrainers(trainer);
 					newHistory.setTeEmployees(originalEmployee);
@@ -762,8 +755,8 @@ public class StableStaffController {
 
 		}
 
-		return "redirect:/trainersEmployeesOnline/list/" + trainerId +  "?saveMessage="
-				+ saveMessage;
+		redirectAttributes.addFlashAttribute("saveMessage", "You have successfully updated employee : "+originalEmployee.getEmployeesFirstname()+" "+originalEmployee.getEmployeesSurname());
+		return "redirect:/trainersEmployeesOnline/list/" + trainerId ;
 
 	}
 

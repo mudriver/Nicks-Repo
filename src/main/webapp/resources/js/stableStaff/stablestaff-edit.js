@@ -756,7 +756,8 @@ function setupPensionDialogsInputAndSectionsUpdate() {
 
 		$("#taxable").click(function(e) {
 			console.log("Taxable" + ($(e.target).attr("id") == "yes-pension" && $("#has-taxable").val() != "true") + " " + ($(e.target).attr("id") == "no-pension" && $("#has-taxable").val() != "false") + " " + $("#has-taxable").val());
-			if($(e.target).attr("id") == "yes-pension" && $("#has-taxable").val() != "true") {
+			if($(e.target).attr("id") == "yes-pension" ) {
+				//&& $("#has-taxable").val() != "true"
 				$("#has-taxable").val("true");
 				$('#employeeEditForm').validator('validate');
 				$("#submit-buttons:visible").hide();

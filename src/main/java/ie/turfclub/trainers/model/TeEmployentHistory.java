@@ -69,6 +69,7 @@ public class TeEmployentHistory implements java.io.Serializable {
 	private String ehPpsNumber;
 	@Expose
 	private boolean ehVerified;
+	private boolean existsYearRecord;
 	@Expose
 	private Date employeeLastUpdated;
 	private String trainerName;
@@ -232,6 +233,15 @@ public class TeEmployentHistory implements java.io.Serializable {
 		this.ehVerified = ehVerified;
 	}
 
+	@Transient
+	public boolean isExistsYearRecord() {
+		return existsYearRecord;
+	}
+
+	public void setExistsYearRecord(boolean existsYearRecord) {
+		this.existsYearRecord = existsYearRecord;
+	}
+
 	@Column(name = "employee_num_hour_worked")
 	public int getEmployeeNumHourWorked() {
 		return employeeNumHourWorked;
@@ -241,6 +251,7 @@ public class TeEmployentHistory implements java.io.Serializable {
 		this.employeeNumHourWorked = employeeNumHourWorked;
 	}
 
+	
 	@Transient
 	public String getTrainerName() {
 		return trainerName;

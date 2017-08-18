@@ -360,14 +360,15 @@ public class StableStaffServiceImpl implements StableStaffService {
 
 	@Override
 	public List<TeEmployees> getEmployees(Integer trainerId) {
-		String hql = "select distinct em from TeEmployees em LEFT JOIN fetch em.teEmployentHistories as eh WHERE eh.teTrainers.trainerId= :trainerId ORDER BY em.employeesSurname, em.employeesFirstname";
+		String hql = "select distinct em from TeEmployees em LEFT JOIN fetch em.teEmployentHistories as eh WHERE "
+				+ "eh.teTrainers.trainerId= :trainerId ORDER BY em.employeesSurname, em.employeesFirstname";
 		List<TeEmployees> result = getCurrentSession().createQuery(hql)
 				.setParameter("trainerId", trainerId).list();
 
 		System.out.println(result == null);
 		return result;
 	}
-
+	
 	@Override
 	public TeTrainers getTrainer(int id) {
 		TeTrainers trainer = (TeTrainers) getCurrentSession().get(
