@@ -698,8 +698,8 @@ public class TrainerServiceImpl implements TrainersService {
 		Date endDate = null;
 		try {
 			startDate = new SimpleDateFormat("yyyy-MM-dd").parse((year-2)
-					+ "-12-31");
-			endDate = new SimpleDateFormat("yyyy-MM-dd").parse(year + "-01-01");
+					+ "-01-01");
+			endDate = new SimpleDateFormat("yyyy-MM-dd").parse((year-1) + "-01-01");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -833,7 +833,7 @@ public class TrainerServiceImpl implements TrainersService {
 						}
 
 						//System.out.println(history.getEhDateFrom() + "    "+ startDate + "   " + endDate);
-						if(history.getEhDateFrom().after(startDate) && history.getEhDateFrom().before(endDate)){
+						if((history.getEhDateFrom().after(startDate) && history.getEhDateFrom().before(endDate)) || history.getEhDateFrom().compareTo(startDate) == 0){
 							employ.setEmployeeWorkedWithTrainerInTaxYear(true);
 						}
 						if(history.isEhVerified()){
