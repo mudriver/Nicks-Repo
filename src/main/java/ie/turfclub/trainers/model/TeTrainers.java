@@ -88,6 +88,7 @@ public class TeTrainers implements java.io.Serializable {
 	private String nationality;
 	private String maritalStatus;
 	private String spouseName;
+	private long licensed;
 	
 	
 	public static enum VerifiedStatus{
@@ -630,5 +631,14 @@ public class TeTrainers implements java.io.Serializable {
 
 	public void setReturnsCompletedYear(int returnsCompletedYear) {
 		this.returnsCompletedYear = returnsCompletedYear;
+	}
+
+	@Column(name="licensed")
+	public long getLicensed() {
+		return licensed;
+	}
+
+	public void setLicensed(long licensed) {
+		this.licensed = licensed;
 	}
 }

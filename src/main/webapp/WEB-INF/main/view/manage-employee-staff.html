@@ -61,6 +61,12 @@
     <div class="alert alert-success" id="successMsg" style="display: none;">
    		<span th:text="${success}"></span>
    	</div>
+   	<div class="alert alert-success" id="successMsg" th:if="${success != null and success != ''}">
+    		<span th:text="${success}"></span>
+    	</div>
+    	<div class="alert alert-danger" id="errorMsg" th:if="${error != null and error != ''}">
+    		<span th:text="${error}"></span>
+    	</div>
     
     <div class="home-parent" data-th-with="role=${#httpServletRequest.userPrincipal?.authorities[0].authority}">
     	<!-- <div class="home-links-parent">
@@ -86,6 +92,9 @@
     	<div class="home-links-parent">
     		<a data-th-href="@{/trainers/add}" class="home-links col-sm-6"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.add.trainer}">Add Trainer</span></a>
     		<a data-th-href="@{/employees/inapprove/list}" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.approve.employees}">Approve Employees</span></a>
+    	</div>
+    	<div class="home-links-parent">
+    		<a data-th-href="@{/trainers/print/renewal}" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.print.renewal.list}">Print Renewal List</span></a>
     	</div>
     	<div class="home-links-parent">	
     		<a th:if="${role == 'SUPER_USER'}" data-th-href="@{/user/searchPage}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.user}">Search User</span></a>

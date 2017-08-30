@@ -45,10 +45,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -62,10 +62,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -79,10 +79,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -96,10 +96,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -119,10 +119,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -136,10 +136,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,

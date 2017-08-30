@@ -238,7 +238,32 @@ public class EmployeeController {
 		else
 			redirectAttributes.addFlashAttribute("success", messageSource.getMessage("success.added.employee", new String[] {}, Locale.US));
 	
-		employeeService.handleSaveOrUpdate(emp);
+		boolean isExistsPPSNumber = employeeService.isExistsPPSNumberAndDOB(emp.getEmployeesPpsNumber(), emp.getEmployeesDateOfBirth(), emp.getEmployeesEmployeeId());
+		if(isExistsPPSNumber || ((emp.getEmployeesMobileNo() == null || emp.getEmployeesMobileNo().length() == 0) &&
+				(emp.getEmployeesEmail() == null || emp.getEmployeesEmail().length() == 0))) {
+			if(isExistsPPSNumber) {
+				model.addAttribute("error", messageSource.getMessage("error.employee.exists.pps.and.dob", new String[] {}, Locale.US));
+			} else {
+				model.addAttribute("error", messageSource.getMessage("error.employee.insert.email.or.mobile", new String[] {}, Locale.US));
+			}
+			model.addAttribute("emp", emp);
+			model.addAttribute("trainers", trainersService.getAllTrainers());
+			model.addAttribute("sexEnum", employeeService.getSexEnum());
+			model.addAttribute("maritalEnum",
+					employeeService.getMaritalStatusEnum());
+			model.addAttribute("employmentCatEnum",
+					employeeService.getEmploymentCategoryEnum());
+			model.addAttribute("titlesEnum", employeeService.getTitlesEnum());
+			model.addAttribute("countiesEnum", employeeService.getCountiesEnum());
+			model.addAttribute("countriesEnum",
+					employeeService.getCountriesEnum());
+			model.addAttribute("cardTypeEnum", employeeService.getAllCardType());
+			model.addAttribute("pensionEnum", employeeService.getPension());
+			model.addAttribute("nationalityEnum", employeeService.getNationalityEnum());
+			return "emp-add";
+		} else {
+			employeeService.handleSaveOrUpdate(emp);
+		}
 		
 		/*if(emp.getEmployeesPpsNumber() != null && emp.getEmployeesPpsNumber().length() > 10)
 			emp.setEmployeesPpsNumber(EncryptDecryptUtils.decrypt(emp.getEmployeesPpsNumber()));
@@ -256,7 +281,7 @@ public class EmployeeController {
 		model.addAttribute("cardTypeEnum", employeeService.getAllCardType());
 		model.addAttribute("pensionEnum", employeeService.getPension());
 		model.addAttribute("nationalityEnum", employeeService.getNationalityEnum());*/
-		return "redirect:/employees/add";
+		return "redirect:/employees/manageStaff";
 	}
 
 	@RequestMapping(value="/advSearch", method=RequestMethod.GET)

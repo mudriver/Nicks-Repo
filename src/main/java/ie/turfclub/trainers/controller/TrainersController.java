@@ -168,6 +168,7 @@ public class TrainersController {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("sbsRecords", sbsRecords);
 		map.put("records", records);
+		map.put("date", date);
 		ModelAndView modelAndView = new ModelAndView("initialLetterPDF", "map",map);
 		  
 		return modelAndView;
@@ -251,9 +252,11 @@ public class TrainersController {
 		String quarter = request.getParameter("q");
 		String tId = request.getParameter("t");
 		HashMap<String, Object> record = sbsService.getSBSReprint(date, quarter, tId);
+		record.put("rdate", date);
 		model.addAttribute("rec", record);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("records", record);
+		map.put("date", date);
 		ModelAndView modelAndView = new ModelAndView("reprintPDF", "map",map);
 		  
 		return modelAndView;
@@ -356,6 +359,19 @@ public class TrainersController {
 				.findByName(search);
 		return records;
 	}
+	
+	@RequestMapping(value = "/renewal/findByName", method = RequestMethod.GET)
+	@ResponseBody
+	public Object getRenewalTrainerFindByName(HttpServletRequest request, ModelMap model)
+			throws Exception {
+
+		String search = request.getParameter("q");
+		List<SearchByNameTrainerBean> records = trainersService
+				.getRenewalTrainerFindByName(search);
+		return records;
+	}
+	
+	
 
 	@RequestMapping(value = "/detail/{id}", method = RequestMethod.GET)
 	public String getEmployeeById(@PathVariable("id") Integer id,
@@ -387,6 +403,14 @@ public class TrainersController {
 		List<TrainerUserBean> records = personService.getTrainerUserBean();
 		model.addAttribute("records", records);
 		return "trainer-list";
+	}
+	
+	@RequestMapping(value = "/print/renewal", method = RequestMethod.GET)
+	public String getListOfLicenseTrainers(Model model, Authentication authentication) {
+
+		List<TrainerUserBean> records = personService.getLicensedTrainerUserBean();
+		model.addAttribute("records", records);
+		return "licensed-trainer-list";
 	}
 	
 	@RequestMapping(value = "/aintree", method = RequestMethod.GET)

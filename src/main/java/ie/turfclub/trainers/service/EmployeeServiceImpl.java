@@ -478,6 +478,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 							startDate = history.getEhDateFrom();
 						}
 					}
+					if(history.getEhEmploymentCategory() != null && history.getEhEmploymentCategory().length() == 0)
+						history.setEhEmploymentCategory(null);
 				}
 				emp.setTeEmployentHistories(new HashSet<TeEmployentHistory>(emp.getHistories()));
 				if(emp.getHistories().get(emp.getHistories().size()-1).getEmployeeNumHourWorked() > 0)
@@ -955,5 +957,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 		    .setProjection(Projections.max("cardsCardNumber"));
 		Integer maxNumber = (Integer)criteria.uniqueResult();
 		return (maxNumber+1);
+	}
+	
+	@Override
+	public boolean isExistsPPSNumberAndDOB(String employeesPpsNumber,
+			Date employeesDateOfBirth, Integer empId) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
+		criteria.add(Restrictions.eq("employeesPpsNumber", employeesPpsNumber));
+		criteria.add(Restrictions.eq("employeesDateOfBirth", employeesDateOfBirth));
+		if(empId != null && empId > 0) criteria.add(Restrictions.ne("employeesEmployeeId", empId));
+		List<TeEmployees> employees = criteria.list();
+		return (employees.size() > 0);
 	}
 }

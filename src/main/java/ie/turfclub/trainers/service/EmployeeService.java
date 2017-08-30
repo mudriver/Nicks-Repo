@@ -8,6 +8,7 @@ import ie.turfclub.trainers.model.TeEmployentHistory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,5 +75,8 @@ public interface EmployeeService {
 	Object deleteHistoryRecord(Integer id);
 
 	int getAutoIncreamentCardNumber();
+
+	boolean isExistsPPSNumberAndDOB(String employeesPpsNumber,
+			Date employeesDateOfBirth, Integer empId);
 
 }

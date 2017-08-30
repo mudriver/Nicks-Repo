@@ -46,4 +46,11 @@ public interface PersonService {
 	public HashMap<String, Object> getTrainerById(Integer tId);
 
 	public HashMap<String, Object> getEmployeeById(Integer eId);
+
+	public HashMap<String, Object> getTrainerSurnameFirstnameById(Integer tId);
+
+	public List<TrainerUserBean> getLicensedTrainerUserBean();
+
+	public List<SearchByNameTrainerBean> getRenewalTrainerFindByName(
+			String search) throws Exception;
 }

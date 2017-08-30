@@ -74,5 +74,7 @@ public interface TrainersService {
 	public void handleTrainerEmployeeOnlineReturYearPage(String year);
 	public String getYearForTrainerEmployeeOnline();
 	public String getYearForStaffListAdministrator();
+	public List<SearchByNameTrainerBean> getRenewalTrainerFindByName(
+			String search) throws Exception;
 	
 }

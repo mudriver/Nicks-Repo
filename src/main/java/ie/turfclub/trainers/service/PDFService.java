@@ -50,7 +50,7 @@ public class PDFService {
 	}
 
 	public void buildInitialLetterPDF(Document document,
-			List<HashMap<String, Object>> records, List<SBSEntity> sbsRecords) throws Exception {
+			List<HashMap<String, Object>> records, List<SBSEntity> sbsRecords, String date) throws Exception {
 
 		String logoPath = env.getRequiredProperty("tclogo.path");
 		//document = new Document(PageSize.A4);
@@ -281,7 +281,7 @@ public class PDFService {
 						+ "                     (Trainer's Signature only)\n\n"
 						+ "Name   : _______________________________________\n"
 						+ "                     (BLOCK CAPITALS)\n\n\n"
-						+ "This form must be returned to the Turf Club no later than ghf. Failure to do so"
+						+ "This form must be returned to the Turf Club no later than "+date+". Failure to do so "
 						+ "will result in this matter being referred to the Referrals Committee.";
 				document.add(new Paragraph(new Phrase(new Chunk(text, bold))));
 				
@@ -1234,7 +1234,7 @@ public class PDFService {
 		
 		if(sbsRecords != null) {
 			table = getTable(2);
-			for(int i=0; i<sbsRecords.size(); i++) {
+			for(int i=0; i<sbsRecords.size()-1; i++) {
 				SBSEntity record = sbsRecords.get(i);
 				i++;
 				SBSEntity newrecord = sbsRecords.get(i);
@@ -1314,7 +1314,7 @@ public class PDFService {
 		Font boldWithUnderline = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.BOLD|Font.UNDERLINE);
 		Font bold = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.BOLD);
 		Font font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
-		
+		String date = (String) record.get("rdate");
 		table.setWidths(tableWidth);
 		PdfPCell cell = new PdfPCell();
 		if(record != null) {
@@ -1533,7 +1533,7 @@ public class PDFService {
 					+ "                     (Trainer's Signature only)\n\n"
 					+ "Name   : _______________________________________\n"
 					+ "                     (BLOCK CAPITALS)\n\n\n"
-					+ "This form must be returned to the Turf Club no later than ghf. Failure to do so"
+					+ "This form must be returned to the Turf Club no later than "+date+". Failure to do so "
 					+ "will result in this matter being referred to the Referrals Committee.";
 			document.add(new Paragraph(new Phrase(new Chunk(text, bold))));
 			

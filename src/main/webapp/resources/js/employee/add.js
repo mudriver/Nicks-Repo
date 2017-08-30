@@ -34,10 +34,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -51,10 +51,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -67,10 +67,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -83,10 +83,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -105,17 +105,17 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
 		data : $.parseJSON($("#countriesEnum").val())
 	});
 
-	$('#pensions0\\.employmentCategory').select2({
+	/*$('#pensions0\\.employmentCategory').select2({
 		placeholder : "You must select an Employment Category",
 		allowClear : true,
 		createSearchChoice : function(term, data) {
@@ -130,7 +130,7 @@ $(function() {
 		},
 		multiple : false,
 		data : $.parseJSON($("#employmentCatEnum").val())
-	});
+	});*/
 	$('#histories0\\.ehEmploymentCategory').select2({
 		placeholder : "You must select an Employment Category",
 		allowClear : true,
@@ -138,10 +138,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -161,10 +161,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,

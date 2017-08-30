@@ -5,6 +5,7 @@ import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.common.bean.SearchByNameTrainerBean;
 import ie.turfclub.common.bean.TrainerUserBean;
 import ie.turfclub.common.enums.RoleEnum;
+import ie.turfclub.common.enums.TrainerLicenseEnum;
 import ie.turfclub.common.service.JDBCConnection;
 import ie.turfclub.person.model.Person;
 import ie.turfclub.trainers.model.TeTrainers;
@@ -78,7 +79,7 @@ public class PersonServiceImpl implements PersonService {
 					+ "date_of_birth, address1,address2, address3, phone_no, mobile_no,"
 					+ "email, comments, date_entered, request_date, ref_id, title, sex, nationality,"
 					+ " marital_status, spouse_name, county, country, post_code, "
-					+ " trainer_name,account_number) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";		
+					+ " trainer_name,account_number,licensed) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";		
 			
 			PreparedStatement personSTMT = (PreparedStatement) conn.getConnection().prepareStatement(personSQL, Statement.RETURN_GENERATED_KEYS);
 			personSTMT.setObject(1, person.getSurname());
@@ -106,6 +107,7 @@ public class PersonServiceImpl implements PersonService {
 			personSTMT.setObject(23, person.getCardNumber());*/
 			personSTMT.setObject(22, person.getTrainerName());
 			personSTMT.setObject(23, person.getAccountNumber());
+			personSTMT.setObject(24, person.getLicensed());
 			
 			personSTMT.executeUpdate();
 			
@@ -132,7 +134,7 @@ public class PersonServiceImpl implements PersonService {
 					+ "email = ?, comments = ?, date_entered = ? , request_date = ?,"
 					+ " title = ? , sex = ? , nationality = ? , marital_status = ? , spouse_name = ? ,"
 					+ " county = ?, country = ? , post_code = ?,  "
-					+ " trainer_name = ?, account_number = ? where ref_id = ?";		
+					+ " trainer_name = ?, account_number = ?, licensed = ? where ref_id = ?";		
 			
 			PreparedStatement personSTMT = (PreparedStatement) conn.getConnection().prepareStatement(personSQL);
 			personSTMT.setObject(1, person.getSurname());
@@ -159,7 +161,8 @@ public class PersonServiceImpl implements PersonService {
 			personSTMT.setObject(22, person.getCardNumber());*/
 			personSTMT.setObject(21, person.getTrainerName());
 			personSTMT.setObject(22, person.getAccountNumber());
-			personSTMT.setObject(23, person.getRefId());
+			personSTMT.setObject(23, person.getLicensed());
+			personSTMT.setObject(24, person.getRefId());
 			personSTMT.executeUpdate();
 		}
 	}
@@ -187,6 +190,29 @@ public class PersonServiceImpl implements PersonService {
 		PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
 				+ "p.firstname as firstname,  p.ref_id as refId, p.account_number as accountNumber from person as p join person_role as pr "
 				+ "on p.id = pr.person_id where pr.role_id = ? and (p.surname like ? or p.firstname like ?) "
+				+ " order by p.surname, p.firstname");
+		pstmt.setObject(1, RoleEnum.TRAINER.getId());
+		pstmt.setObject(2, "%"+search+"%");
+		pstmt.setObject(3, "%"+search+"%");
+		ResultSet set = pstmt.executeQuery();
+		List<SearchByNameTrainerBean> records = new ArrayList<SearchByNameTrainerBean>();
+		while(set.next()) {
+			SearchByNameTrainerBean bean = new SearchByNameTrainerBean();
+			bean.setId(Integer.parseInt(set.getString("refId")));
+			bean.setName(set.getString("surname")+" "+set.getString("firstname"));
+			bean.setAccountNumber(set.getString("accountNumber"));
+			records.add(bean);
+		}
+		return records;
+	}
+	
+	@Override
+	public List<SearchByNameTrainerBean> getRenewalTrainerFindByName(
+			String search) throws Exception {
+		
+		PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
+				+ "p.firstname as firstname,  p.ref_id as refId, p.account_number as accountNumber from person as p join person_role as pr "
+				+ "on p.id = pr.person_id where pr.role_id = ? and (p.surname like ? or p.firstname like ?) and p.licensed = "+TrainerLicenseEnum.LICENSED.getId()
 				+ " order by p.surname, p.firstname");
 		pstmt.setObject(1, RoleEnum.TRAINER.getId());
 		pstmt.setObject(2, "%"+search+"%");
@@ -599,6 +625,25 @@ public class PersonServiceImpl implements PersonService {
 		}
 		return null;
 	}
+	
+	@Override
+	public List<TrainerUserBean> getLicensedTrainerUserBean() {
+		
+		try {
+			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
+					+ "p.firstname as firstname,  p.ref_id as id, p.account_number as accountNumber "
+					+ " from person as p join person_role as pr "
+					+ "on p.id = pr.person_id where pr.role_id = ? "
+					+" and p.licensed = "+TrainerLicenseEnum.LICENSED.getId()
+					+ " order by p.surname, p.firstname ");
+			pstmt.setObject(1, RoleEnum.TRAINER.getId());
+			ResultSet set = pstmt.executeQuery();
+			return convertEntityToTrainerUserBean(set);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	private List<TrainerUserBean> convertEntityToTrainerUserBean(ResultSet set) throws SQLException {
 		
@@ -715,6 +760,31 @@ public class PersonServiceImpl implements PersonService {
 			while(set.next()) {
 				record = new HashMap<String, Object>();
 				record.put("name", set.getString("firstname")+" "+set.getString("surname"));
+			}
+			return record;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public HashMap<String, Object> getTrainerSurnameFirstnameById(Integer tId) {
+		
+		try {
+			/*,  p.card_number as cardNumber*/
+			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
+					+ "p.firstname as firstname "
+					+ " from person as p join person_role as pr "
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id  = ? "
+					+ " order by p.surname, p.firstname");
+			pstmt.setObject(1, RoleEnum.TRAINER.getId());
+			pstmt.setObject(2, tId);
+			ResultSet set = pstmt.executeQuery();
+			HashMap<String, Object> record = null;
+			while(set.next()) {
+				record = new HashMap<String, Object>();
+				record.put("name", set.getString("surname")+" "+set.getString("firstname"));
 			}
 			return record;
 		} catch(Exception e) {

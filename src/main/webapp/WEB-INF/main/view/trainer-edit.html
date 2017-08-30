@@ -249,6 +249,15 @@
 			  				type='text' required="required" placeholder='You must enter Returns Year'></input> 
 					</div>
 				</div>
+				<div class="form-group col-sm-12">
+					<label for="licensed" class="col-sm-4" data-th-text="#{trainer.licensed}">Licensed :</label>
+		  			<div class="col-sm-8">
+			  			<select class="form-control input-sm" data-th-field="*{licensed}" tabindex="37" required="required">
+			  				<option value="1" data-th-text="#{trainer.licensed}">Licensed</option>
+			  				<option value="2" data-th-text="#{trainer.unlicensed}">Unlicensed</option>
+			  			</select> 
+					</div>
+				</div>
 			</div>
 			<div class="left-form col-sm-6 section-card">
 				<div class="form-group col-sm-12">

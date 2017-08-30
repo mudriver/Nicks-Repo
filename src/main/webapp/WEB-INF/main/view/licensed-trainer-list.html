@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+ 
+<head data-th-fragment="header">
+ <meta charset="utf-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title data-th-text="#{link.list.trainers.employees}">List Trainer's Employees</title>
+  
+<!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+	
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/jquery-ui-1.10.3.custom.css"
+	data-th-href="@{/resources/css/jquery-ui-1.10.3.custom.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link type="text/css" rel="stylesheet"
+	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/datatables/jquery.datatables.min.css"
+	data-th-href="@{/resources/css/datatables/jquery.dataTables.min.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/datatables/buttons.datatable.min.css"
+	data-th-href="@{/resources/css/datatables/buttons.dataTables.min.css}" />
+	
+    <style>
+        .no-border-on-me>thead>tr>th,
+        .no-border-on-me>tbody>tr>th,
+        .no-border-on-me>tfoot>tr>th,
+        .no-border-on-me>thead>tr>td,
+        .no-border-on-me>tbody>tr>td,
+        .no-border-on-me>tfoot>tr>td
+        {
+            border-top-style: none;
+            border-bottom-style: none;
+        }
+        .section-card { background-color: #666E94;}
+        th { text-align: center; color: white; vertical-align: inherit !important;}
+        .width-50 { width: 50% !important;}
+        .margin-bottom-10 { margin-bottom: 10px;}
+        /* .form-group { width: 100% !important;} */
+        form input { margin-bottom:  5px; }
+        .errorMsg { color: red;}
+        input[type="search"] { color: black !important;}
+        label { color: white; }
+        .pull-right { text-align: right;}
+        .paginate_button { color: white !important; }
+        .dataTables_info { color: white !important; }
+        #trainers-list { background-color: white !important; height: 350px; width: 30%; overflow: scroll; }
+        #trainers-list li {cursor: pointer; display: inherit; text-align: left;}
+        .center-block {
+		  display: block;
+		  margin-left: auto;
+		  margin-right: auto;
+		}
+    </style>
+</head>
+<body>
+ <div class="container-fluid" >                <!-- /#wrapper -->
+
+	<div data-th-replace="mainmenu :: top-nav"></div>
+    
+    <h3 data-th-text="#{link.print.renewal.list}">Print Renewal List</h3>
+
+    <div align="center">
+    	<div class="alert alert-success" id="successMsg" th:if="${success != null and success != ''}">
+    		<span th:text="${success}"></span>
+    	</div>
+    	<form class="" id="searchDiv">
+	    	<!-- <div class="form-group margin-bottom-10 col-sm-6">
+	    		<label class="col-sm-4" data-th-text="#{trainer.trainer.name}">Trainer Name : </label>
+	    		<div class="col-sm-8">
+	    			<input type="text" class="form-control input-sm " id="searchNameTxt" placeholder="Please enter min 3 characters" />
+	    		</div>
+	    	</div> -->
+	    	<div class="" style="">
+	    		<label><input type="radio" name="selectEmployee" value="All"  /> &nbsp;&nbsp;All Employees</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	    		<label><input type="radio" name="selectEmployee" value="Current" checked="checked" /> &nbsp;&nbsp;Current Employees</label>
+	    		<br/>
+	    	</div>
+	    	
+	    	<!-- <table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
+	        	<thead>
+	        		<tr>
+	        			<th th:text="#{trainer.account.number}" class="width-50">Account Number</th>
+		        		<th th:text="#{employee.name}" class="width-50">Name</th>
+		        	</tr>
+	        	</thead>
+	        	<tbody>
+	        		<tr th:each="record, status : ${records}">
+	        			<td th:text="${record.accNumber}"></td>
+	        			<td><a href="javascript:void(0);" th:onclick="'getTrainersEmployees(\''+${record.id}+'\');'"><span th:text="${record.name}"></span></a></td>
+	        		</tr>
+	        	</tbody>
+	        </table> -->
+	        <br/>
+	        <div style="clear: both; width: 30%;">
+		        <input type="text" class="form-control" id="searchNameTxt" />
+	        </div>
+	        <div style="clear: both;">
+		        <ul id="trainers-list" >
+		        	<li style="white-space: pre;" th:each="record, status : ${records}" th:text="${record.accNumber+'    '+record.name}" th:onclick="'getTrainersEmployees(\''+${record.id}+'\');'">
+		        	</li>
+		        </ul>
+	        </div>
+	        
+	    	<div class="" align="center">
+	    		<!-- <div class="col-sm-4 margin-bottom-10">
+		    		<button type="button" class="btn btn-default col-sm-12" id="allTrainerEmployees" data-th-text="#{button.print.all.trainers.employees}" /> 
+		    	</div>
+	    		<div class="col-sm-4 margin-bottom-10">
+		    		<button type="button" class="btn btn-default col-sm-12" id="lisWithAmountBoxes" data-th-text="#{button.print.list.with.amount.boxes}" /> 
+		    	</div> -->
+	    		<!-- <div class="" style="width: 30%;">
+		    		<button type="button" class="btn btn-default col-sm-12" id="sbsSignatureSheet" data-th-text="#{button.print.sbs.signature.sheet}" /> 
+		    	</div> -->
+	    		<!-- <div class="col-sm-4 margin-bottom-10">
+		    		<button type="button" class="btn btn-default col-sm-12" id="perTrainerReport" data-th-text="#{button.total.per.trainer.report}" /> 
+		    	</div>
+	    		<div class="col-sm-4 margin-bottom-10">
+		    		<button type="button" class="btn btn-default col-sm-12" id="unpaidOrRelinquished" data-th-text="#{button.unpaid.or.relinquished}" /> 
+		    	</div> -->
+	    	</div>
+    	</form>
+    </div> 
+
+</div>              <!-- /#wrapper -->
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
+        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/jquery-ui-1.10.3.custom.min.js"
+        data-th-src="@{/resources/js/jquery-ui-1.10.3.custom.min.js}"></script>
+         
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
+        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+ 
+    <!-- Core Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
+        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+         
+    <!-- SB Admin Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/datatable/jquery.datatable.min.js"
+        data-th-src="@{/resources/js/datatable/jquery.dataTables.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/datatable/datatable.buttons.min.js"
+        data-th-src="@{/resources/js/datatable/dataTables.buttons.min.js}"></script>
+    
+    <script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/	
+               
+   		var table;
+   		$(function() {
+   			
+   			setTimeout(function() {
+   				$('#successMsg').hide();
+   			}, 5000);
+   			
+   			$('#searchNameTxt').keyup(function() {
+   				
+   				var q = $(this).val();
+   				$.ajax({
+   					url: '/turfclubPrograms/trainers/renewal/findByName',
+   					type: 'GET',
+   					data: {q: q},
+   					success: function(data) {
+   						$('#trainers-list').children().remove();
+   						if(data != null && data.length > 0) {
+   							for(var i=0; i<data.length ; i++) {
+   								var record = data[i];
+   								$('#trainers-list').append('<li onclick="getTrainersEmployees(\''+record.id+'\');" style="white-space: pre;">'+record.accountNumber+'    '+record.name+'</li>');
+   							}
+   						} else {
+   							$('#trainers-list').append('<li>No Record Found!!!</li>');
+   						}
+   					}
+   				});
+   			});
+   			
+			/* $('#searchNameTxt').autocomplete({
+				source: function(request, response) {
+					//Autocomplete
+					$.getJSON('/turfclubPrograms/trainers/findByName',{q:request.term}, function(data) {
+						
+						if(data.length > 0) {
+							response( $.map(data, function( item ) {
+								console.log(item);
+					              return {			            	  
+					                label: item.name,
+					                value: item.name,
+					                id: item.id
+					              }
+							}));
+						} else {
+							response([{ label: 'No results found.', id: -1}]);
+						}
+					});
+				},
+				minLength: 3,
+				select: function( event, ui ) {			
+					
+					$(this).val(ui.item.id);
+				}
+			}); */
+   		})
+   		
+   		function goToDetailPage(id) {
+   			
+   			window.location.href = '/turfclubPrograms/employees/detail/'+id;
+   		}
+   		
+   		function getTrainersEmployees(id) {
+   			
+   			var empType = $('input[name="selectEmployee"]:checked').val();
+   			window.location.href = '/turfclubPrograms/trainers/'+id+'/employees/'+empType;
+   		}
+   		
+   		
+   		
+   		/*]]>*/
+       </script>    
+          	
+        </body>
+</html>

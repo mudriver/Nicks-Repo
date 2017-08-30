@@ -28,10 +28,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -45,10 +45,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -61,10 +61,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -77,10 +77,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -98,17 +98,17 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
 		data : $.parseJSON($("#countriesEnum").val())
 	});
 
-	$('#pensions0\\.employmentCategory').select2({
+/*	$('#pensions0\\.employmentCategory').select2({
 		placeholder : "You must select an Employment Category",
 		allowClear : true,
 		createSearchChoice : function(term, data) {
@@ -123,8 +123,8 @@ $(function() {
 		},
 		multiple : false,
 		data : $.parseJSON($("#employmentCatEnum").val())
-	});
-	$('#employeeCategoryOfEmployment').select2({
+	});*/
+	/*$('#employeeCategoryOfEmployment').select2({
 		placeholder : "You must select an Employment Category",
 		allowClear : true,
 		createSearchChoice : function(term, data) {
@@ -139,7 +139,7 @@ $(function() {
 		},
 		multiple : false,
 		data : $.parseJSON($("#employmentCatEnum").val())
-	});
+	});*/
 
 	var select = $("#employeesNationality");
 	select.find('option[value="Irish"]').insertBefore(
@@ -154,10 +154,10 @@ $(function() {
 			if ($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,

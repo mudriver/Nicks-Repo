@@ -1,0 +1,1 @@
+alter table te_trainers add column licensed bigint default 1;

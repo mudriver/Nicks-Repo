@@ -1,0 +1,1 @@
+alter table person add column licensed bigint default 1;

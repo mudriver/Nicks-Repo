@@ -148,10 +148,10 @@ function setupDocument() {
 			if($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -166,10 +166,10 @@ function setupDocument() {
 			if($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -188,10 +188,10 @@ function setupDocument() {
 			if($(data).filter(function() {
 				return this.text.localeCompare(term) === 0;
 			}).length === 0) {
-				return {
+				/*return {
 					id : term,
 					text : term
-				};
+				};*/
 			}
 		},
 		multiple : false,
@@ -1203,7 +1203,7 @@ function updatePensionDetail(startDate, endDate, trainerId, employeeId){
 	    		$("#pension-detail-title").html($("#pension-detail-title").html().replace(/TrainerName/g, (itemData.teTrainers.trainerFirstName + itemData.teTrainers.trainerSurname)));
 	    	}
 	    	if(sYear != last){
-	    	 	$('#earnings-table > tbody:last-child').append('<tr><td class="col-xs-2 text-center"><b>' + sYear +  '</b></td><td class="col-xs-10 text-right"><div class="input-group"><span class="input-group-addon">€</span><input name="earnings'+ sYear +'" class="form-control" type="text" /></div></td></tr>');
+	    	 	$('#earnings-table > tbody:last-child').append('<tr><td class="col-xs-2 text-center"><b>' + sYear +  '</b></td><td class="col-xs-10 text-right"><div class="input-group"><span class="input-group-addon">ï¿½</span><input name="earnings'+ sYear +'" class="form-control" type="text" /></div></td></tr>');
 				
 	    	}
 	    	last = sYear;

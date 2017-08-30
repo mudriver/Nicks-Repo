@@ -1231,6 +1231,7 @@ public class TrainerServiceImpl implements TrainersService {
 		person.setCountry(trainer.getCountry());
 		person.setPostCode(trainer.getPostCode());
 		person.setAccountNumber(trainer.getTrainerAccountNo());
+		person.setLicensed(trainer.getLicensed());
 		return person;
 	}
 	
@@ -1252,6 +1253,13 @@ public class TrainerServiceImpl implements TrainersService {
 	public List<SearchByNameTrainerBean> findByName(String search) throws Exception {
 		
 		return personService.findByNameTrainer(search);
+	}
+	
+	@Override
+	public List<SearchByNameTrainerBean> getRenewalTrainerFindByName(
+			String search) throws Exception {
+		
+		return personService.getRenewalTrainerFindByName(search);
 	}
 	
 	@Override
@@ -1774,11 +1782,12 @@ public class TrainerServiceImpl implements TrainersService {
 	    prevYear.add(Calendar.YEAR, -1);
 	    double previousYear = prevYear.get(Calendar.YEAR);
 		
-		String hql1 = "select new map(t.trainerId as tId, e.employeesEmployeeId as eId) from TeEmployentHistory as teh,"
-				+ "TeTrainers as t, TeEmployees as e where "
+		String hql1 = "select new map(t.trainerId as tId, e.employeesEmployeeId as eId) "
+				+ " from TeEmployentHistory as teh,"
+				+ " TeTrainers as t, TeEmployees as e where "
 				+ " teh.teTrainers.trainerId = t.trainerId and "
 				+ "teh.teEmployees.employeesEmployeeId = e.employeesEmployeeId and teh.ehDateTo is null "
-				+ " and e.employeeLastYearPaid="+previousYear+" order by t.trainerId";
+				+ " and e.employeeLastYearPaid="+previousYear+" order by t.trainerSurname, t.trainerFirstName,e.employeesSurname, e.employeesFirstname ";
 		//List<HashMap<String, Object>> records = getCurrentSession().createSQLQuery(hql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
 		List<HashMap<String, Object>> records = getCurrentSession().createQuery(hql1).list();
 		
@@ -1796,7 +1805,7 @@ public class TrainerServiceImpl implements TrainersService {
 			
 			HashMap<String, Object> eMap = personService.getEmployeeById(eId);
 			if(lastTrainerId == null || (lastTrainerId != null && !lastTrainerId.equals(tId))) {
-				HashMap<String, Object> tMap = personService.getTrainerById(tId);
+				HashMap<String, Object> tMap = personService.getTrainerSurnameFirstnameById(tId);
 				tMap = (tMap != null ) ? tMap : new HashMap<String, Object>();
 				tMap.put("isTrainer", true);
 				tMap.put("isEmployee", false);
