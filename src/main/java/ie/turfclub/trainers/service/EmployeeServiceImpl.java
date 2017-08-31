@@ -20,6 +20,8 @@ import ie.turfclub.utilities.EncryptDecryptUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -969,5 +971,31 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if(empId != null && empId > 0) criteria.add(Restrictions.ne("employeesEmployeeId", empId));
 		List<TeEmployees> employees = criteria.list();
 		return (employees.size() > 0);
+	}
+	
+	@Override
+	public Object isExistsDOB(Integer id, Date dob) throws ParseException {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		/*SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = formatter.parse(dob);*/
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
+		criteria.add(Restrictions.eq("employeesDateOfBirth", dob));
+		if(id > 0) criteria.add(Restrictions.ne("employeesEmployeeId", id));
+		List<TeEmployees> employees = criteria.list();
+		map.put("exists", (employees != null && employees.size() > 0));
+		return map;
+	}
+	
+	@Override
+	public Object isExistsPPS(Integer id, String pps) {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
+		criteria.add(Restrictions.eq("employeesPpsNumber", EncryptDecryptUtils.encrypt(pps)));
+		if(id > 0) criteria.add(Restrictions.ne("employeesEmployeeId", id));
+		List<TeEmployees> employees = criteria.list();
+		map.put("exists", (employees != null && employees.size() > 0));
+		return map;
 	}
 }

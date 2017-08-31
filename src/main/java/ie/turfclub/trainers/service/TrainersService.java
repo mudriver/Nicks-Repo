@@ -76,5 +76,6 @@ public interface TrainersService {
 	public String getYearForStaffListAdministrator();
 	public List<SearchByNameTrainerBean> getRenewalTrainerFindByName(
 			String search) throws Exception;
+	public void markEmployeesLeftForTrainer(Integer id);
 	
 }

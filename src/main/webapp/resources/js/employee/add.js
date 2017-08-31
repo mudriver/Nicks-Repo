@@ -283,7 +283,36 @@ $(function() {
 					$("#employeesPpsNumber").val(
 							$("#employeesPpsNumber").val().toUpperCase());
 
-					$('#employeeEditForm').submit();
+					var dob = $('#employeesDateOfBirth').val();
+					var pps = $('#employeesPpsNumber').val();
+					var isDuplicateValue = false;
+					
+					return $.ajax({
+	   					url: '/turfclubPrograms/employees/existsdob/0',
+	   					type: 'GET',
+	   					data: {dob: dob},
+	   					success: function(data) {
+	   						if(data.exists) {
+	   							$('#duplicateDOBConfirm').modal('show');
+	   							return false;
+	   						} else {
+	   							
+	   							$.ajax({
+	   			   					url: '/turfclubPrograms/employees/existspps/0',
+	   			   					type: 'GET',
+	   			   					data: {pps: pps},
+	   			   					success: function(data) {
+	   			   						if(data.exists) {
+	   			   							$('#duplicatePPSConfirm').modal('show');
+	   			   						return false;
+	   			   						} else {
+	   			   							$('#employeeEditForm').submit();
+	   			   						}
+	   			   					}
+	   			   				});
+	   						}
+	   					}
+	   				});
 				}
 			});
 

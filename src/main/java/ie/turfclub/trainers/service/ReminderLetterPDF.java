@@ -30,7 +30,8 @@ public class ReminderLetterPDF extends AbstractPdfView {
 		HashMap<String, Object> map = (HashMap<String, Object>) model.get("map");
 		List<HashMap<String, Object>> records = (List<HashMap<String, Object>>) map.get("records");
 		List<SBSEntity> sbsRecords = (List<SBSEntity>) map.get("sbsRecords");
+		String date = (String) map.get("date");
 		
-		pdfService.buildReminderLetterPDF(document, records, sbsRecords);
+		pdfService.buildReminderLetterPDF(document, records, sbsRecords, date);
 	}
 }

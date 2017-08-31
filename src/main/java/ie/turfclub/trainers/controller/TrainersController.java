@@ -230,6 +230,7 @@ public class TrainersController {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("sbsRecords", sbsRecords);
 		map.put("records", records);
+		map.put("date", date);
 		ModelAndView modelAndView = new ModelAndView("reminderLetterPDF", "map",map);
 		  
 		return modelAndView;
@@ -582,6 +583,19 @@ public class TrainersController {
 		model.addAttribute("records", records);
 		model.addAttribute("type", type);
 		return "trainer-employee-list";
+	}
+	
+	@RequestMapping(value = "/employees/mark/{id}/{type}", method = RequestMethod.GET)
+	public String getListOfTrainers(@PathVariable("id") Integer id,
+			@PathVariable("type") String type, Model model,
+			Authentication authentication, RedirectAttributes redirectAttributes) throws Exception {
+
+		trainersService.markEmployeesLeftForTrainer(id);
+		/*model.addAttribute("trainer", trainersService.getTrainer(id));
+		model.addAttribute("records", records);
+		model.addAttribute("type", type);*/
+		redirectAttributes.addFlashAttribute("success", messageSource.getMessage("success.trainer.employees.left", new String[] {}, Locale.US));
+		return "redirect:/trainers/"+id+"/employees/"+type;
 	}
 
 	@RequestMapping(value = "/export/{id}/{type}", method = RequestMethod.GET)

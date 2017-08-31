@@ -325,7 +325,7 @@
 						<label for="existingHriAccountNumber" class="col-sm-5" data-th-text="#{employee.existing.hri.account.number}">Existing HRI Account Number :</label>
 						<div class="col-sm-7">
 			  				<input data-th-field="*{employeesHriAccountNo}" class="form-control input-sm" 
-			  					placeholder="HRI Account No. if applicable" pattern="\w{5}"/>
+			  					placeholder="HRI Account No. if applicable" pattern="\w{5}" maxlength="5"/>
 			  			</div>
 					</div>
 					<!-- <div class="form-group col-sm-12">
@@ -562,6 +562,47 @@
 	
 	  </div>
 	</div>
+	
+	<div id="duplicateDOBConfirm" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <a href="javascript:void(0);" class="close modal-close" data-dismiss="modal">&times;</a>
+	        <h4 class="modal-title">Confirmation</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>Date of birth is duplicate</p>
+	      </div>
+	      <div class="modal-footer">
+	        <a href="javascript:void(0);" class="btn btn-default modal-close" data-dismiss="modal">Back</a>
+	        <a href="javascript:void(0);" class="btn btn-default" id="duplicateDOBContinue">Continue</a>
+	      </div>
+	    </div>
+	
+	  </div>
+	</div>
+	
+	<div id="duplicatePPSConfirm" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <a href="javascript:void(0);" class="close modal-close" data-dismiss="modal">&times;</a>
+	        <h4 class="modal-title">Confirmation</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>PPS Number is duplicate, Please Click Back button and change it</p>
+	      </div>
+	      <div class="modal-footer">
+	        <a href="javascript:void(0);" class="btn btn-default modal-close" data-dismiss="modal">Back</a>
+	      </div>
+	    </div>
+	
+	  </div>
+	</div>
 </div>              <!-- /#wrapper -->
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
@@ -619,8 +660,36 @@
     	var categoryOfEmployment = [[#{employee.category.of.employment}]];
     	var numHourWorked = [[#{employee.employees.hour.worked}]];
     	var historyEle;
-    	
+    	var eid = $('#employeesEmployeeId').val();
     	$(function() {
+    		
+    		$('.modal-close').click(function(e) {
+    			e.preventDefault();
+    			$('#duplicatePPSConfirm').modal('hide');
+    			$('#duplicateDOBConfirm').modal('hide');
+    			return false;
+    		});
+    		
+    		$('#duplicateDOBContinue').click(function(e) {
+    			e.preventDefault();
+    			$('#duplicateDOBConfirm').modal('hide');
+    			var pps = $('#employeesPpsNumber').val();
+    			
+    			$.ajax({
+	   					url: '/turfclubPrograms/employees/existspps/'+eid,
+	   					type: 'GET',
+	   					data: {pps: pps},
+	   					success: function(data) {
+	   						if(data.exists) {
+	   							$('#duplicatePPSConfirm').modal('show');
+	   							return false;
+	   						} else {
+	   							$('#editModal').modal('show');//$('#employeeEditForm').submit();
+	   						}
+	   					}
+	   				});
+    			return false;
+    		});
     		
     		$('#deleteButton').click(function() {
     			$('#deleteModal').modal('show');

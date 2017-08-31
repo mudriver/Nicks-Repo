@@ -8,6 +8,7 @@ import ie.turfclub.trainers.model.TeEmployentHistory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -78,5 +79,9 @@ public interface EmployeeService {
 
 	boolean isExistsPPSNumberAndDOB(String employeesPpsNumber,
 			Date employeesDateOfBirth, Integer empId);
+
+	Object isExistsDOB(Integer id, Date dob) throws ParseException;
+
+	Object isExistsPPS(Integer id, String pps);
 
 }

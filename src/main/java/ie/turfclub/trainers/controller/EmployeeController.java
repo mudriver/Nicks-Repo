@@ -9,11 +9,12 @@ import ie.turfclub.trainers.model.TeEmployees;
 import ie.turfclub.trainers.service.EmployeeService;
 import ie.turfclub.trainers.service.StableStaffService;
 import ie.turfclub.trainers.service.TrainersService;
-import ie.turfclub.utilities.EncryptDecryptUtils;
 
 import java.io.BufferedWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -27,7 +28,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -238,32 +238,7 @@ public class EmployeeController {
 		else
 			redirectAttributes.addFlashAttribute("success", messageSource.getMessage("success.added.employee", new String[] {}, Locale.US));
 	
-		boolean isExistsPPSNumber = employeeService.isExistsPPSNumberAndDOB(emp.getEmployeesPpsNumber(), emp.getEmployeesDateOfBirth(), emp.getEmployeesEmployeeId());
-		if(isExistsPPSNumber || ((emp.getEmployeesMobileNo() == null || emp.getEmployeesMobileNo().length() == 0) &&
-				(emp.getEmployeesEmail() == null || emp.getEmployeesEmail().length() == 0))) {
-			if(isExistsPPSNumber) {
-				model.addAttribute("error", messageSource.getMessage("error.employee.exists.pps.and.dob", new String[] {}, Locale.US));
-			} else {
-				model.addAttribute("error", messageSource.getMessage("error.employee.insert.email.or.mobile", new String[] {}, Locale.US));
-			}
-			model.addAttribute("emp", emp);
-			model.addAttribute("trainers", trainersService.getAllTrainers());
-			model.addAttribute("sexEnum", employeeService.getSexEnum());
-			model.addAttribute("maritalEnum",
-					employeeService.getMaritalStatusEnum());
-			model.addAttribute("employmentCatEnum",
-					employeeService.getEmploymentCategoryEnum());
-			model.addAttribute("titlesEnum", employeeService.getTitlesEnum());
-			model.addAttribute("countiesEnum", employeeService.getCountiesEnum());
-			model.addAttribute("countriesEnum",
-					employeeService.getCountriesEnum());
-			model.addAttribute("cardTypeEnum", employeeService.getAllCardType());
-			model.addAttribute("pensionEnum", employeeService.getPension());
-			model.addAttribute("nationalityEnum", employeeService.getNationalityEnum());
-			return "emp-add";
-		} else {
-			employeeService.handleSaveOrUpdate(emp);
-		}
+		employeeService.handleSaveOrUpdate(emp);
 		
 		/*if(emp.getEmployeesPpsNumber() != null && emp.getEmployeesPpsNumber().length() > 10)
 			emp.setEmployeesPpsNumber(EncryptDecryptUtils.decrypt(emp.getEmployeesPpsNumber()));
@@ -416,5 +391,19 @@ public class EmployeeController {
 	public @ResponseBody Object delteHistoryRecord(@PathVariable("id") Integer id, HttpServletRequest request) {
 		
 		return employeeService.deleteHistoryRecord(id);
+	}
+	
+	@RequestMapping(value="/existsdob/{id}", method=RequestMethod.GET)
+	public @ResponseBody Object isExistsDOB(@RequestParam("dob") Date dob, @PathVariable("id") Integer id, 
+			HttpServletRequest request) throws ParseException {
+		
+		return employeeService.isExistsDOB(id, dob);
+	}
+	
+	@RequestMapping(value="/existspps/{id}", method=RequestMethod.GET)
+	public @ResponseBody Object isExistsPPS(@RequestParam("pps") String pps, @PathVariable("id") Integer id, 
+			HttpServletRequest request) {
+		
+		return employeeService.isExistsPPS(id, pps);
 	}
 }

@@ -1390,8 +1390,7 @@ public class TrainerServiceImpl implements TrainersService {
 					TeEmployentHistory history = records.get(i);
 					currEmp = records.get(i).getTeEmployees().getEmployeesEmployeeId();
 					if(currEmp != prevEmp || i == 0) {
-						if(history.getTeEmployees().getEmployeeNumHourWorked() != null && 
-								history.getTeEmployees().getEmployeeNumHourWorked() > 0) {
+						if(history.getEmployeeNumHourWorked() >= 8) {
 							moreThan8HoursRecords.add(history);
 						} else {
 							lessThan8HoursRecords.add(history);
@@ -1929,5 +1928,20 @@ public class TrainerServiceImpl implements TrainersService {
 		criteria.add(Restrictions.eq("key", configEnum.getKey()).ignoreCase());
 		List<Config> records = criteria.list();
 		return (records != null && records.size() > 0) ? records.get(0).getValue() : "2017";
+	}
+	
+	@Override
+	public void markEmployeesLeftForTrainer(Integer id) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployentHistory.class);
+		criteria.add(Restrictions.eq("teTrainers.trainerId", id));
+		criteria.add(Restrictions.isNull("ehDateTo"));
+		List<TeEmployentHistory> histories = criteria.list();
+		if(histories != null && histories.size() > 0) {
+			for (TeEmployentHistory history : histories) {
+				history.setEhDateTo(new Date());
+				getCurrentSession().saveOrUpdate(history);
+			}
+		}
 	}
 }

@@ -270,7 +270,7 @@ public class PDFService {
 				
 				document.add(new Phrase("\n"));
 				
-				text = "I confirm that the amount paid to me of €"+record.get("amount")+" under the Stable Employees Bonus will be distributed to my "+
+				text = "I confirm that the amount paid to me of \u20ac"+record.get("amount")+" under the Stable Employees Bonus will be distributed to my "+
 			    		"staff on (   /   /     ) in accordance with the distribution agreement agreed amongst themselves. I am "+
 			    		"attaching a completed duplicate sheet which sets out the gross payment to each employee.\n\n\n "+
 			    		"Yours truly, \n\n\n";
@@ -402,7 +402,7 @@ public class PDFService {
 					cell = new PdfPCell(new Phrase(new Chunk("")));
 					cell.setBorder(0);
 					childTable.addCell(cell);
-					cell = new PdfPCell(new Phrase(new Chunk("Total = € ", bold)));
+					cell = new PdfPCell(new Phrase(new Chunk("Total = \u20ac ", bold)));
 					cell.setBorder(0);
 					cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 					childTable.addCell(cell);
@@ -556,7 +556,7 @@ public class PDFService {
 					cell = new PdfPCell(new Phrase(new Chunk("")));
 					cell.setBorder(0);
 					childTable.addCell(cell);
-					cell = new PdfPCell(new Phrase(new Chunk("Total = € ", bold)));
+					cell = new PdfPCell(new Phrase(new Chunk("Total = \u20ac ", bold)));
 					cell.setBorder(0);
 					cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 					childTable.addCell(cell);
@@ -679,7 +679,7 @@ public class PDFService {
 	}
 
 	public void buildReminderLetterPDF(Document document,
-			List<HashMap<String, Object>> records, List<SBSEntity> sbsRecords) throws Exception {
+			List<HashMap<String, Object>> records, List<SBSEntity> sbsRecords, String date) throws Exception {
 
 		String logoPath = env.getRequiredProperty("tclogo.path");
 		//document = new Document(PageSize.A4);
@@ -897,7 +897,7 @@ public class PDFService {
 				
 				document.add(new Phrase("\n"));
 				
-				text = "I confirm that the amount paid to me of €"+record.get("amount")+" under the Stable Employees Bonus will be distributed to my "+
+				text = "I confirm that the amount paid to me of \u20ac"+record.get("amount")+" under the Stable Employees Bonus will be distributed to my "+
 			    		"staff on (   /   /     ) in accordance with the distribution agreement agreed amongst themselves. I am "+
 			    		"attaching a completed duplicate sheet which sets out the gross payment to each employee.\n\n\n "+
 			    		"Yours truly, \n\n\n";
@@ -908,7 +908,7 @@ public class PDFService {
 						+ "                     (Trainer's Signature only)\n\n"
 						+ "Name   : _______________________________________\n"
 						+ "                     (BLOCK CAPITALS)\n\n\n"
-						+ "This form must be returned to the Turf Club no later than ghf. Failure to do so "
+						+ "This form must be returned to the Turf Club no later than "+date+". Failure to do so "
 						+ "will result in this matter being referred to the Referrals Committee.";
 				document.add(new Paragraph(new Phrase(new Chunk(text, bold))));
 				
@@ -1026,7 +1026,7 @@ public class PDFService {
 					cell = new PdfPCell(new Phrase(new Chunk("")));
 					cell.setBorder(0);
 					childTable.addCell(cell);
-					cell = new PdfPCell(new Phrase(new Chunk("Total = € ", bold)));
+					cell = new PdfPCell(new Phrase(new Chunk("Total = \u20ac ", bold)));
 					cell.setBorder(0);
 					cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 					childTable.addCell(cell);
@@ -1183,7 +1183,7 @@ public class PDFService {
 					cell = new PdfPCell(new Phrase(new Chunk("")));
 					cell.setBorder(0);
 					childTable.addCell(cell);
-					cell = new PdfPCell(new Phrase(new Chunk("Total = € ", bold)));
+					cell = new PdfPCell(new Phrase(new Chunk("Total = \u20ac ", bold)));
 					cell.setBorder(0);
 					cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 					childTable.addCell(cell);
@@ -1522,7 +1522,7 @@ public class PDFService {
 			
 			document.add(new Phrase("\n"));
 			
-			text = "I confirm that the amount paid to me of €"+record.get("amount")+" under the Stable Employees Bonus will be distributed to my "+
+			text = "I confirm that the amount paid to me of \u20ac"+record.get("amount")+" under the Stable Employees Bonus will be distributed to my "+
 		    		"staff on (   /   /     ) in accordance with the distribution agreement agreed amongst themselves. I am "+
 		    		"attaching a completed duplicate sheet which sets out the gross payment to each employee.\n\n\n "+
 		    		"Yours truly, \n\n\n";
@@ -1654,7 +1654,7 @@ public class PDFService {
 				cell = new PdfPCell(new Phrase(new Chunk("")));
 				cell.setBorder(0);
 				childTable.addCell(cell);
-				cell = new PdfPCell(new Phrase(new Chunk("Total = € ", bold)));
+				cell = new PdfPCell(new Phrase(new Chunk("Total = \u20ac ", bold)));
 				cell.setBorder(0);
 				cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 				childTable.addCell(cell);
@@ -1808,7 +1808,7 @@ public class PDFService {
 				cell = new PdfPCell(new Phrase(new Chunk("")));
 				cell.setBorder(0);
 				childTable.addCell(cell);
-				cell = new PdfPCell(new Phrase(new Chunk("Total = € ", bold)));
+				cell = new PdfPCell(new Phrase(new Chunk("Total = \u20ac ", bold)));
 				cell.setBorder(0);
 				cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 				childTable.addCell(cell);

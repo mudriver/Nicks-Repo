@@ -112,7 +112,8 @@
 		    		<button type="button" onclick="exit();" class="btn btn-default col-sm-12" id="perTrainerReport" data-th-text="#{button.exit}" /> 
 		    	</div>
 	    		<div class="col-sm-4 margin-bottom-10">
-		    		<button type="button" class="btn btn-default col-sm-12" id="unpaidOrRelinquished" data-th-text="#{button.update.all.employees}" /> 
+	    			<!-- unpaidOrRelinquished -->
+		    		<button type="button" class="btn btn-default col-sm-12" id="markEmployeesLeft" data-th-text="#{trainers.mark.employees.left}" /> 
 		    	</div>
 	    	</div>
     	</form>
@@ -163,6 +164,10 @@
    			setTimeout(function() {
    				$('#successMsg').hide();
    			}, 5000);
+   			
+   			$('#markEmployeesLeft').click(function() {
+   				window.location.replace('/turfclubPrograms/trainers/employees/mark/'+trainerId+'/'+type);
+   			});
    			
    			table = $('#example').DataTable( {
     	        dom: 'Bfrtip',

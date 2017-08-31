@@ -710,7 +710,7 @@ public class PersonServiceImpl implements PersonService {
 		while(set.next()) {
 			String mobile = set.getString("mobileNo");
 			mobile = mobile.replaceAll("[^\\d0-9]", "");
-			csmMobile += mobile+"\n\r";
+			csmMobile += mobile+System.lineSeparator();
 		}
 		return csmMobile;
 	}
