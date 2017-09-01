@@ -4,6 +4,7 @@ import ie.turfclub.common.bean.SearchByNameTrainerBean;
 import ie.turfclub.common.bean.TrainerUserBean;
 import ie.turfclub.common.thread.PrintAintreeThread;
 import ie.turfclub.common.thread.PrintCheltenhamThread;
+import ie.turfclub.common.thread.PrintRenewalThread;
 import ie.turfclub.main.model.login.User;
 import ie.turfclub.main.service.downloads.DownloadService;
 import ie.turfclub.main.service.downloads.TokenService;
@@ -17,9 +18,7 @@ import ie.turfclub.trainers.service.StableStaffService;
 import ie.turfclub.trainers.service.TrainersService;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
@@ -40,7 +39,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -57,8 +55,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.lowagie.text.Document;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 
 @Controller
 @RequestMapping(value = "/trainers")
@@ -406,14 +402,6 @@ public class TrainersController {
 		return "trainer-list";
 	}
 	
-	@RequestMapping(value = "/print/renewal", method = RequestMethod.GET)
-	public String getListOfLicenseTrainers(Model model, Authentication authentication) {
-
-		List<TrainerUserBean> records = personService.getLicensedTrainerUserBean();
-		model.addAttribute("records", records);
-		return "licensed-trainer-list";
-	}
-	
 	@RequestMapping(value = "/aintree", method = RequestMethod.GET)
 	public String getAintreePage(Model model, Authentication authentication,
 			HttpServletRequest request) {
@@ -425,6 +413,84 @@ public class TrainersController {
 		List<HashMap<String, Object>> records = trainersService.getAintreeRecord(start, end, session);
 		model.addAttribute("records", records);
 		return "sbs-aintree";
+	}
+	
+	@RequestMapping(value = "/print/renewal", method = RequestMethod.GET)
+	public String getListOfLicenseTrainers(HttpServletRequest request, Model model, Authentication authentication) {
+
+		int start = 0;
+		int end = 20;
+		HttpSession session = request.getSession();
+		session.setAttribute("lastTrainerId", null);
+		List<HashMap<String, Object>> records = trainersService.getLicensedTrainerWithCurrentEmployees(start, end, session);
+		model.addAttribute("records", records);
+		return "licensed-trainer-list";
+	}
+	
+	@RequestMapping(value = "/print/renewal/page", method = RequestMethod.GET)
+	public String getPrintRenewalPageByPage(Model model, Authentication authentication, 
+			HttpServletRequest req) {
+
+		int page = Integer.parseInt(req.getParameter("page"));
+		int start = page * 20;
+		int end = (page+1) * 20;
+		HttpSession session = req.getSession();
+		List<HashMap<String, Object>> records = trainersService.getLicensedTrainerWithCurrentEmployees(start, end, session);
+		model.addAttribute("records", records);
+		return "licensed-trainer-list-page";
+	}
+	
+	@RequestMapping(value = "/print/renewal/print", method = RequestMethod.GET)
+	@ResponseBody
+	public String getPrintRenewalPrint(Model model, Authentication authentication,
+			HttpServletRequest request) {
+		
+		request.getSession().setAttribute("printRenewalStatus", "working");
+		PrintRenewalThread printCheltenhamThread = new PrintRenewalThread(trainersService, env.getRequiredProperty("upload.pdf.print.renewal"), request.getSession());
+		Thread thread = new Thread(printCheltenhamThread);
+		thread.start();
+		return "Success";
+	}
+	
+	@RequestMapping(value = "/print/renewal/print/download", method = RequestMethod.GET)
+	public void getPrintRenewalPrintDownload(Model model, Authentication authentication,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		FileInputStream baos = new FileInputStream(env.getRequiredProperty("upload.pdf.print.renewal"));
+		request.getSession().setAttribute("printRenewalStatus", "null");
+        response.setHeader("Expires", "0");
+        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+        response.setContentType("application/pdf");
+        response.addHeader("Content-Disposition", "attachment; filename=All_Trainers_Report.pdf");
+
+        OutputStream os = response.getOutputStream();
+
+        byte buffer[] = new byte[8192];
+        int bytesRead;
+
+        while ((bytesRead = baos.read(buffer)) != -1) {
+            os.write(buffer, 0, bytesRead);
+        }
+
+        os.flush();
+        os.close();
+	}
+	
+	@RequestMapping(value = "/print/renewal/printStatus", method = RequestMethod.GET)
+	@ResponseBody
+	public String getPrintRenewalPrintStatus(Model model, Authentication authentication,
+			HttpServletRequest request) {
+		
+		String status = (String) request.getSession().getAttribute("printRenewalStatus");
+		if(status != null && !status.equalsIgnoreCase("undefined") && status.equalsIgnoreCase("done")) {
+			//request.getSession().setAttribute("aintreeStatus", null);
+			return "done";
+		} else if(status != null && !status.equalsIgnoreCase("undefined") && status.equalsIgnoreCase("working")) {
+			return "working";
+		} else {
+			return "null";
+		}
 	}
 	
 	@RequestMapping(value = "/cheltenham", method = RequestMethod.GET)
@@ -499,7 +565,7 @@ public class TrainersController {
 		if(status != null && !status.equalsIgnoreCase("undefined") && status.equalsIgnoreCase("done")) {
 			//request.getSession().setAttribute("aintreeStatus", null);
 			return "done";
-		} else if(status != null && !status.equalsIgnoreCase("undefined") && status.equalsIgnoreCase("done")) {
+		} else if(status != null && !status.equalsIgnoreCase("undefined") && status.equalsIgnoreCase("working")) {
 			return "working";
 		} else {
 			return "null";
@@ -552,7 +618,7 @@ public class TrainersController {
 		if(status != null && !status.equalsIgnoreCase("undefined") && status.equalsIgnoreCase("done")) {
 			//request.getSession().setAttribute("aintreeStatus", null);
 			return "done";
-		} else if(status != null && !status.equalsIgnoreCase("undefined") && status.equalsIgnoreCase("done")) {
+		} else if(status != null && !status.equalsIgnoreCase("undefined") && status.equalsIgnoreCase("working")) {
 			return "working";
 		} else {
 			return "null";
@@ -631,19 +697,7 @@ public class TrainersController {
 			map.put("id", id);
 			map.put("type", type);
 			ModelAndView modelAndView = new ModelAndView("trainerPDFView", "map",map);
-			  
 			return modelAndView;
-			
-			/*TeTrainers trainer = trainersService.getTrainer(id);
-			PdfPTable table = trainersService.createPDFDocumentWithDetails(id, type);//new XWPFDocument();
-			PdfWriter.getInstance(document, response.getOutputStream());
-			response.setContentType("application/pdf");
-			String headerValue = String.format("attachment; filename=\"%s\"", trainer.getTrainerFullName()+"'s Employees.pdf");
-			response.setHeader("Content-Disposition", headerValue);
-
-			document.open();
-			document.add(table);
-			document.close();*/
 		} catch (Exception ioe) {
 			throw new ServletException(ioe.getMessage());
 		} finally {

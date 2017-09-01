@@ -676,18 +676,18 @@
     			var pps = $('#employeesPpsNumber').val();
     			
     			$.ajax({
-	   					url: '/turfclubPrograms/employees/existspps/'+eid,
-	   					type: 'GET',
-	   					data: {pps: pps},
-	   					success: function(data) {
-	   						if(data.exists) {
-	   							$('#duplicatePPSConfirm').modal('show');
-	   							return false;
-	   						} else {
-	   							$('#editModal').modal('show');//$('#employeeEditForm').submit();
-	   						}
-	   					}
-	   				});
+   					url: '/turfclubPrograms/employees/existspps/'+eid,
+   					type: 'GET',
+   					data: {pps: pps},
+   					success: function(data) {
+   						if(data.exists) {
+   							$('#duplicatePPSConfirm').modal('show');
+   							return false;
+   						} else {
+   							$('#editModal').modal('show');//$('#employeeEditForm').submit();
+   						}
+   					}
+   				});
     			return false;
     		});
     		

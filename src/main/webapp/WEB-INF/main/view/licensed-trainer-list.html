@@ -1,241 +1,211 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:th="http://www.thymeleaf.org">
- 
+	xmlns:th="http://www.thymeleaf.org">
+
 <head data-th-fragment="header">
- <meta charset="utf-8" />
- <meta http-equiv="X-UA-Compatible" content="IE=edge" />
- <meta name="viewport" content="width=device-width, initial-scale=1" />
- <title data-th-text="#{link.list.trainers.employees}">List Trainer's Employees</title>
-  
-<!-- Core CSS - Include with every page -->
-    <link type="text/css" rel="stylesheet"
+<meta charset="utf-8" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="expires" content="-1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title th:text="#{button.all.trainers.report.accounts}">All Trainers Report - Accounts</title>
+
+<link type="text/css" rel="stylesheet"
 	href="../../resources/css/bootstrap.css"
 	data-th-href="@{/resources/css/bootstrap.css}" />
 <link type="text/css" rel="stylesheet"
 	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
 	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/sb-admin-2.css"
+	data-th-href="@{/resources/css/sb-admin-2.css}" />
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
-	
-<link type="text/css" rel="stylesheet"
-	href="../../resources/css/jquery-ui-1.10.3.custom.css"
-	data-th-href="@{/resources/css/jquery-ui-1.10.3.custom.css}" />
-<link type="text/css" rel="stylesheet"
-	href="../../resources/css/select2.css"
-	data-th-href="@{/resources/css/select2.css}" />
-<link type="text/css" rel="stylesheet"
-	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
-<link type="text/css" rel="stylesheet"
-	href="../../resources/css/overrides.css"
-	data-th-href="@{/resources/css/overrides.css}" />
-<link type="text/css" rel="stylesheet"
-	href="../../resources/css/datatables/jquery.datatables.min.css"
-	data-th-href="@{/resources/css/datatables/jquery.dataTables.min.css}" />
-<link type="text/css" rel="stylesheet"
-	href="../../resources/css/datatables/buttons.datatable.min.css"
-	data-th-href="@{/resources/css/datatables/buttons.dataTables.min.css}" />
-	
-    <style>
-        .no-border-on-me>thead>tr>th,
-        .no-border-on-me>tbody>tr>th,
-        .no-border-on-me>tfoot>tr>th,
-        .no-border-on-me>thead>tr>td,
-        .no-border-on-me>tbody>tr>td,
-        .no-border-on-me>tfoot>tr>td
-        {
-            border-top-style: none;
-            border-bottom-style: none;
-        }
-        .section-card { background-color: #666E94;}
-        th { text-align: center; color: white; vertical-align: inherit !important;}
-        .width-50 { width: 50% !important;}
-        .margin-bottom-10 { margin-bottom: 10px;}
-        /* .form-group { width: 100% !important;} */
-        form input { margin-bottom:  5px; }
-        .errorMsg { color: red;}
-        input[type="search"] { color: black !important;}
-        label { color: white; }
-        .pull-right { text-align: right;}
-        .paginate_button { color: white !important; }
-        .dataTables_info { color: white !important; }
-        #trainers-list { background-color: white !important; height: 350px; width: 30%; overflow: scroll; }
-        #trainers-list li {cursor: pointer; display: inherit; text-align: left;}
-        .center-block {
-		  display: block;
-		  margin-left: auto;
-		  margin-right: auto;
-		}
-    </style>
+<style>
+	.labelVal { font-weight: normal !important;}
+	/* .section-card { padding-left: 200px; padding-right: 200px;} */
+	.line-height-0 { line-height: 2;}
+	@media print {
+	  body * {
+	    visibility: visible;
+	  }
+	  .hidden-to-print {
+	    visibility: hidden;
+	    display: none !important;
+	  }
+	}
+	#aintreeRecordDiv {
+	   padding-left: 70px;
+	   background: white;
+	   margin-top: 15px;
+	   width: 97%;
+	   margin-left: 15px;
+	   margin-right: 15px;
+	   margin-bottom: 15px;
+	   display: inline-block;
+	   padding-right: 70px;
+	   padding-top: 20px;
+	   padding-bottom: 20px;
+	}
+	#loadMoreDataDiv {clear: both; text-align: center; padding: 15px; }
+	.blue-border {border: 2px solid blue;}
+	#aintreeHeader {
+		border-top: 2px solid blue;
+	    display: inline-table;
+	    border-bottom: 2px solid blue;
+	    width: 97%;
+	    text-align: ce;
+	    color: blue;
+	    font-weight: bold;
+    }
+	span.col-sm-4 { margin-top: 8px;}
+	.color-blue { color: blue;}
+</style>
 </head>
 <body>
- <div class="container-fluid" >                <!-- /#wrapper -->
+	
+	<div id="aintreeRecordDiv">
+	
+		<div style="text-align: center;">
+			
+			<div class="col-sm-4">
+				<a class="font-size-20px" href="/turfclubPrograms/employees/manageStaff">Back</a>
+				<span id="workingStatus" style="display: none;" th:text="#{pdf.creating}"></span>
+			</div>
+			<div class="col-sm-4">
+				<a href="javascript:void(0);" id="printButton" class="col-sm-12 font-size-20px"><i class="fa fa-print"></i>Print</a>
+				<span id="checkStatus" style="display: none;"><a class="font-size-20px" href="javascript:void(0);" th:onclick="'javascript:checkPDFStatus()'" ><span th:text="#{check.status}"></span></a></span>
+			</div>
+			<div class="col-sm-4">
+				<span id="downloadStatus" style="display: none;"><a class="font-size-20px" href="javascript:void(0);" th:onclick="'javascript:downloadPDF()'"><span th:text="#{download.pdf}"></span></a></span>
+			</div>
+		</div>
+		<h3 class="color-blue" th:text="#{button.all.trainers.report.accounts}" style="margin-top: 30px;">All Trainers Report - Accounts</h3>
+		
+		<div id="aintreeHeader">
+			<div>
+				<span class="col-sm-3">Current Trainer</span>
+				<span class="col-sm-3">Surname</span>
+				<span class="col-sm-3">Card Type</span>
+				<span class="col-sm-3">Card Number</span>
+			</div>
+		</div>
+		<div th:each="rec , itrStat : ${records}">
+			<div  th:if="${rec[isTrainer]}">
+				<span class="col-sm-3 color-blue" data-th-text="${rec[name]}"></span>
+				<span class="col-sm-3">&nbsp;</span>
+				<span class="col-sm-3">&nbsp;</span>
+				<span class="col-sm-3">&nbsp;</span>
+			</div>
+			<div th:if="${rec[isEmployee]}">
+				<span class="col-sm-3">&nbsp;</span>
+				<span class="col-sm-3" data-th-text="${rec[surname]}+' '+${rec[firstname]}"></span>
+				<span class="col-sm-3" th:if="${rec[cardType] != null}" data-th-text="${rec[cardType]}"></span>
+				<span class="col-sm-3" th:if="${rec[cardType] == null}">&nbsp;</span>
+				<span class="col-sm-3" th:if="${rec[cardNumber] != null}" data-th-text="${rec[cardNumber]}"></span>
+				<span class="col-sm-3" th:if="${rec[cardNumber] == null}">&nbsp;</span>
+			</div>
+		</div>
+	</div>
+	
+	<div id="loadMoreDataDiv">
+		<a href="javascript:void(0);" id="loadMoreData">Load More Data</a>
+	</div>
+	
+	<script type="text/javascript"
+		src="../../resources/js/jquery-2.1.1.min.js"
+		data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+		<script type="text/javascript"
+		src="../../resources/js/jquery-2.1.1.min.js"
+		data-th-src="@{/resources/js/jquery.blockui.js}"></script>
+	<script type="text/javascript"
+		src="../../resources/js/bootstrap.min.js"
+		data-th-src="@{/resources/js/bootstrap.min.js}"></script>
 
-	<div data-th-replace="mainmenu :: top-nav"></div>
-    
-    <h3 data-th-text="#{link.print.renewal.list}">Print Renewal List</h3>
-
-    <div align="center">
-    	<div class="alert alert-success" id="successMsg" th:if="${success != null and success != ''}">
-    		<span th:text="${success}"></span>
-    	</div>
-    	<form class="" id="searchDiv">
-	    	<!-- <div class="form-group margin-bottom-10 col-sm-6">
-	    		<label class="col-sm-4" data-th-text="#{trainer.trainer.name}">Trainer Name : </label>
-	    		<div class="col-sm-8">
-	    			<input type="text" class="form-control input-sm " id="searchNameTxt" placeholder="Please enter min 3 characters" />
-	    		</div>
-	    	</div> -->
-	    	<div class="" style="">
-	    		<label><input type="radio" name="selectEmployee" value="All"  /> &nbsp;&nbsp;All Employees</label>&nbsp;&nbsp;&nbsp;&nbsp;
-	    		<label><input type="radio" name="selectEmployee" value="Current" checked="checked" /> &nbsp;&nbsp;Current Employees</label>
-	    		<br/>
-	    	</div>
-	    	
-	    	<!-- <table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
-	        	<thead>
-	        		<tr>
-	        			<th th:text="#{trainer.account.number}" class="width-50">Account Number</th>
-		        		<th th:text="#{employee.name}" class="width-50">Name</th>
-		        	</tr>
-	        	</thead>
-	        	<tbody>
-	        		<tr th:each="record, status : ${records}">
-	        			<td th:text="${record.accNumber}"></td>
-	        			<td><a href="javascript:void(0);" th:onclick="'getTrainersEmployees(\''+${record.id}+'\');'"><span th:text="${record.name}"></span></a></td>
-	        		</tr>
-	        	</tbody>
-	        </table> -->
-	        <br/>
-	        <div style="clear: both; width: 30%;">
-		        <input type="text" class="form-control" id="searchNameTxt" />
-	        </div>
-	        <div style="clear: both;">
-		        <ul id="trainers-list" >
-		        	<li style="white-space: pre;" th:each="record, status : ${records}" th:text="${record.accNumber+'    '+record.name}" th:onclick="'getTrainersEmployees(\''+${record.id}+'\');'">
-		        	</li>
-		        </ul>
-	        </div>
-	        
-	    	<div class="" align="center">
-	    		<!-- <div class="col-sm-4 margin-bottom-10">
-		    		<button type="button" class="btn btn-default col-sm-12" id="allTrainerEmployees" data-th-text="#{button.print.all.trainers.employees}" /> 
-		    	</div>
-	    		<div class="col-sm-4 margin-bottom-10">
-		    		<button type="button" class="btn btn-default col-sm-12" id="lisWithAmountBoxes" data-th-text="#{button.print.list.with.amount.boxes}" /> 
-		    	</div> -->
-	    		<!-- <div class="" style="width: 30%;">
-		    		<button type="button" class="btn btn-default col-sm-12" id="sbsSignatureSheet" data-th-text="#{button.print.sbs.signature.sheet}" /> 
-		    	</div> -->
-	    		<!-- <div class="col-sm-4 margin-bottom-10">
-		    		<button type="button" class="btn btn-default col-sm-12" id="perTrainerReport" data-th-text="#{button.total.per.trainer.report}" /> 
-		    	</div>
-	    		<div class="col-sm-4 margin-bottom-10">
-		    		<button type="button" class="btn btn-default col-sm-12" id="unpaidOrRelinquished" data-th-text="#{button.unpaid.or.relinquished}" /> 
-		    	</div> -->
-	    	</div>
-    	</form>
-    </div> 
-
-</div>              <!-- /#wrapper -->
- <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
-        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
-        
-    <script type="text/javascript" src="../../resources/js/jquery-ui-1.10.3.custom.min.js"
-        data-th-src="@{/resources/js/jquery-ui-1.10.3.custom.min.js}"></script>
-         
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
-        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
- 
-    <!-- Core Scripts - Include with every page -->
-    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
-        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
-         
-    <!-- SB Admin Scripts - Include with every page -->
-    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
-        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
-        
-    <script type="text/javascript" src="../../resources/js/datatable/jquery.datatable.min.js"
-        data-th-src="@{/resources/js/datatable/jquery.dataTables.min.js}"></script>
-        
-    <script type="text/javascript" src="../../resources/js/datatable/datatable.buttons.min.js"
-        data-th-src="@{/resources/js/datatable/dataTables.buttons.min.js}"></script>
-    
-    <script type="text/javascript" th:inline="javascript">
+	<script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/	
-               
-   		var table;
-   		$(function() {
-   			
-   			setTimeout(function() {
-   				$('#successMsg').hide();
-   			}, 5000);
-   			
-   			$('#searchNameTxt').keyup(function() {
-   				
-   				var q = $(this).val();
-   				$.ajax({
-   					url: '/turfclubPrograms/trainers/renewal/findByName',
-   					type: 'GET',
-   					data: {q: q},
-   					success: function(data) {
-   						$('#trainers-list').children().remove();
-   						if(data != null && data.length > 0) {
-   							for(var i=0; i<data.length ; i++) {
-   								var record = data[i];
-   								$('#trainers-list').append('<li onclick="getTrainersEmployees(\''+record.id+'\');" style="white-space: pre;">'+record.accountNumber+'    '+record.name+'</li>');
-   							}
-   						} else {
-   							$('#trainers-list').append('<li>No Record Found!!!</li>');
-   						}
-   					}
-   				});
-   			});
-   			
-			/* $('#searchNameTxt').autocomplete({
-				source: function(request, response) {
-					//Autocomplete
-					$.getJSON('/turfclubPrograms/trainers/findByName',{q:request.term}, function(data) {
-						
-						if(data.length > 0) {
-							response( $.map(data, function( item ) {
-								console.log(item);
-					              return {			            	  
-					                label: item.name,
-					                value: item.name,
-					                id: item.id
-					              }
-							}));
-						} else {
-							response([{ label: 'No results found.', id: -1}]);
-						}
-					});
-				},
-				minLength: 3,
-				select: function( event, ui ) {			
-					
-					$(this).val(ui.item.id);
+        var page = 1;
+        var backUrl = [[${backUrl}]];
+        var records = [[${records}]];
+        var recordsLength = records.length;
+    	$(function() {
+    		
+    		if(recordsLength <= 0)
+    			$('#loadMoreData').hide();
+    		
+    		checkPDFStatus();
+    		
+    		$('#printButton').click(function() {
+    			
+    			$.ajax({
+    				url:'/turfclubPrograms/trainers/print/renewal/print',
+    				type:'GET',
+    				data : {},
+    				success: function(data) {
+    					
+    				}
+    			});
+    			setTimeout(function() {
+    				checkPDFStatus('create');
+    			}, 1000);
+    		});
+    		
+    		$('#loadMoreData').click(function(data) {
+    			$.blockUI();
+    			$.ajax({
+    				url:'/turfclubPrograms/trainers/print/renewal/page',
+    				type:'GET',
+    				data : {page: page},
+    				success: function(data) {
+    					$.unblockUI();
+    					if(data != '') {
+	    					$('#aintreeRecordDiv').append(data);
+	    					++page;
+    					} else {
+    						$('#loadMoreData').hide();
+    					}
+    				}
+    			});
+    		});
+    	});       
+    	
+    	function downloadPDF() {
+    		checkPDFStatus();
+    		window.location.replace('/turfclubPrograms/trainers/print/renewal/print/download');
+    	}
+    	
+    	function checkPDFStatus(status) {
+    		$.blockUI();
+    		$.ajax({
+				url:'/turfclubPrograms/trainers/print/renewal/printStatus',
+				type:'GET',
+				data : {},
+				success: function(data) {
+					$.unblockUI();
+					$('#printButton').hide();
+					$('workingStatus').hide();
+					$('#downloadStatus').hide();
+					$('#checkStatus').hide();
+					if(data == 'null') {
+						$('#printButton').show();
+						$('#workingStatus').hide();
+						$('#downloadStatus').hide();
+						$('#checkStatus').hide();
+					} else if(data == 'done') {
+						$('#printButton').hide();
+						$('#workingStatus').hide();
+						$('#downloadStatus').show();
+						$('#checkStatus').hide();
+					} else if(data == 'working' || status == 'create') {
+						$('#printButton').hide();
+						$('#workingStatus').show();
+						$('#downloadStatus').hide();
+						$('#checkStatus').show();
+					}
 				}
-			}); */
-   		})
-   		
-   		function goToDetailPage(id) {
-   			
-   			window.location.href = '/turfclubPrograms/employees/detail/'+id;
-   		}
-   		
-   		function getTrainersEmployees(id) {
-   			
-   			var empType = $('input[name="selectEmployee"]:checked').val();
-   			window.location.href = '/turfclubPrograms/trainers/'+id+'/employees/'+empType;
-   		}
-   		
-   		
-   		
-   		/*]]>*/
-       </script>    
-          	
-        </body>
+			});
+    	}
+   	/*]]>*/
+    </script>    
+</body>
 </html>

@@ -4,6 +4,7 @@ import ie.turfclub.common.bean.AdvanceSearchRecordBean;
 import ie.turfclub.common.bean.InapproveEmployeeBean;
 import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.common.enums.RoleEnum;
+import ie.turfclub.common.enums.TrainerLicenseEnum;
 import ie.turfclub.common.service.NullAwareBeanUtilsBean;
 import ie.turfclub.person.model.Person;
 import ie.turfclub.person.service.PersonService;
@@ -732,6 +733,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		person.setPostCode(emp.getEmployeesPostCode());
 		person.setCardType(emp.getTeCard() != null ? emp.getTeCard().getCardsCardType() : null);
 		person.setCardNumber(emp.getTeCard() != null ? emp.getTeCard().getCardsCardNumber() : null);
+		person.setLicensed(TrainerLicenseEnum.UNLICENSED.getId());
 		if(emp.getTeEmployentHistories() != null && !emp.getTeEmployentHistories().isEmpty()) {
 			List<TeEmployentHistory> histories = new ArrayList<TeEmployentHistory>();
 			histories.addAll(emp.getTeEmployentHistories());

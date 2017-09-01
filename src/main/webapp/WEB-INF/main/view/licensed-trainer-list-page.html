@@ -1,0 +1,16 @@
+<div th:each="rec , itrStat : ${records}">
+	<div  th:if="${rec[isTrainer]}">
+		<span class="col-sm-3 color-blue" data-th-text="${rec[name]}"></span>
+		<span class="col-sm-3">&nbsp;</span>
+		<span class="col-sm-3">&nbsp;</span>
+		<span class="col-sm-3">&nbsp;</span>
+	</div>
+	<div th:if="${rec[isEmployee]}">
+		<span class="col-sm-3">&nbsp;</span>
+		<span class="col-sm-3" data-th-text="${rec[surname]}+' '+${rec[firstname]}"></span>
+		<span class="col-sm-3" th:if="${rec[cardType] != null}" data-th-text="${rec[cardType]}"></span>
+		<span class="col-sm-3" th:if="${rec[cardType] == null}">&nbsp;</span>
+		<span class="col-sm-3" th:if="${rec[cardNumber] != null}" data-th-text="${rec[cardNumber]}"></span>
+		<span class="col-sm-3" th:if="${rec[cardNumber] == null}">&nbsp;</span>
+	</div>
+</div>

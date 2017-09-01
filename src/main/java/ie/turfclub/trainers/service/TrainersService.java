@@ -77,5 +77,8 @@ public interface TrainersService {
 	public List<SearchByNameTrainerBean> getRenewalTrainerFindByName(
 			String search) throws Exception;
 	public void markEmployeesLeftForTrainer(Integer id);
+	public List<HashMap<String, Object>> getLicensedTrainerWithCurrentEmployees(
+			int start, int end, HttpSession session);
+	public List<HashMap<String, Object>> getPrintRenewalRecords();
 	
 }

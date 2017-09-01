@@ -3,10 +3,12 @@ package ie.turfclub.trainers.service;
 import ie.turfclub.common.bean.SearchByNameTrainerBean;
 import ie.turfclub.common.enums.ConfigEnum;
 import ie.turfclub.common.enums.RoleEnum;
+import ie.turfclub.common.enums.TrainerLicenseEnum;
 import ie.turfclub.person.model.Person;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.trainers.model.Config;
 import ie.turfclub.trainers.model.TeAuthorisedReps;
+import ie.turfclub.trainers.model.TeCards;
 import ie.turfclub.trainers.model.TeEmployeeTrainerVerified;
 import ie.turfclub.trainers.model.TeEmployees;
 import ie.turfclub.trainers.model.TeEmployentHistory;
@@ -1775,6 +1777,69 @@ public class TrainerServiceImpl implements TrainersService {
 	}
 	
 	@Override
+	public List<HashMap<String, Object>> getLicensedTrainerWithCurrentEmployees(
+			int start, int end, HttpSession session) {
+		
+		String hql1 = "select new map(t.trainerId as tId, e.employeesEmployeeId as eId) "
+				+ " from TeEmployentHistory as teh,"
+				+ " TeTrainers as t, TeEmployees as e where "
+				+ " teh.teTrainers.trainerId = t.trainerId and "
+				+ "teh.teEmployees.employeesEmployeeId = e.employeesEmployeeId and teh.ehDateTo is null "
+				+ " and t.licensed="+TrainerLicenseEnum.LICENSED.getId()+" order by t.trainerSurname, t.trainerFirstName,e.employeesSurname, e.employeesFirstname ";
+		
+		
+		//List<HashMap<String, Object>> records = getCurrentSession().createSQLQuery(hql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+		List<HashMap<String, Object>> records = getCurrentSession().createQuery(hql1).list();
+		
+		List<HashMap<String, Object>> results = new ArrayList<HashMap<String,Object>>();
+		
+		if(records == null || (records != null && records.size() == 0))
+			return results;
+		
+		Integer lastTrainerId = null;
+		for (int i=start; i < end; i++) {
+			lastTrainerId = (Integer) session.getAttribute("lastTrainerId");
+			HashMap<String, Object> record = records.get(i);
+			Integer eId = (Integer) record.get("eId");
+			Integer tId = (Integer) record.get("tId");
+			
+			HashMap<String, Object> eMap = personService.getEmployeeById(eId);
+			Criteria cardsCriteria = getCurrentSession().createCriteria(TeCards.class);
+			cardsCriteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", eId));
+			List<TeCards> cards = cardsCriteria.list();
+			TeCards card = (cards != null && cards.size() > 0) ? cards.get(0) : null;
+			if(card != null) {
+				eMap.put("cardType", card.getCardsCardType());
+				eMap.put("cardNumber", card.getCardsCardNumber());
+			} else {
+				eMap.put("cardType", null);
+				eMap.put("cardNumber", null);
+			}
+			if(lastTrainerId == null || (lastTrainerId != null && !lastTrainerId.equals(tId))) {
+				HashMap<String, Object> tMap = personService.getTrainerSurnameFirstnameById(tId);
+				tMap = (tMap != null ) ? tMap : new HashMap<String, Object>();
+				tMap.put("isTrainer", true);
+				tMap.put("isEmployee", false);
+				
+				if(eMap != null)
+					results.add(tMap);
+				else
+					continue;
+			}
+			
+			if(eMap == null)
+				continue;
+			
+			eMap = (eMap != null) ? eMap : new HashMap<String, Object>();
+			eMap.put("isEmployee", true);
+			eMap.put("isTrainer", false);
+			results.add(eMap);
+			session.setAttribute("lastTrainerId", tId);
+		}
+		return results;
+	}
+	
+	@Override
 	public List<HashMap<String, Object>> getAintreeRecord(int start, int end, HttpSession session) {
 		
 		Calendar prevYear = Calendar.getInstance();
@@ -1823,6 +1888,67 @@ public class TrainerServiceImpl implements TrainersService {
 			eMap.put("isTrainer", false);
 			results.add(eMap);
 			session.setAttribute("lastTrainerId", tId);
+		}
+		return results;
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> getPrintRenewalRecords() {
+		
+		String hql1 = "select new map(t.trainerId as tId, e.employeesEmployeeId as eId) "
+				+ " from TeEmployentHistory as teh,"
+				+ " TeTrainers as t, TeEmployees as e where "
+				+ " teh.teTrainers.trainerId = t.trainerId and "
+				+ "teh.teEmployees.employeesEmployeeId = e.employeesEmployeeId and teh.ehDateTo is null "
+				+ " and t.licensed="+TrainerLicenseEnum.LICENSED.getId()+" order by t.trainerSurname, t.trainerFirstName,e.employeesSurname, e.employeesFirstname ";
+		
+		
+		//List<HashMap<String, Object>> records = getCurrentSession().createSQLQuery(hql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+		List<HashMap<String, Object>> records = getCurrentSession().createQuery(hql1).list();
+		
+		List<HashMap<String, Object>> results = new ArrayList<HashMap<String,Object>>();
+		
+		if(records == null || (records != null && records.size() == 0))
+			return results;
+		
+		Integer lastTrainerId = null;
+		for (int i=0; i < records.size(); i++) {
+			HashMap<String, Object> record = records.get(i);
+			Integer eId = (Integer) record.get("eId");
+			Integer tId = (Integer) record.get("tId");
+			
+			HashMap<String, Object> eMap = personService.getEmployeeById(eId);
+			Criteria cardsCriteria = getCurrentSession().createCriteria(TeCards.class);
+			cardsCriteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", eId));
+			List<TeCards> cards = cardsCriteria.list();
+			TeCards card = (cards != null && cards.size() > 0) ? cards.get(0) : null;
+			if(card != null) {
+				eMap.put("cardType", card.getCardsCardType());
+				eMap.put("cardNumber", card.getCardsCardNumber());
+			} else {
+				eMap.put("cardType", null);
+				eMap.put("cardNumber", null);
+			}
+			if(lastTrainerId == null || (lastTrainerId != null && !lastTrainerId.equals(tId))) {
+				HashMap<String, Object> tMap = personService.getTrainerSurnameFirstnameById(tId);
+				tMap = (tMap != null ) ? tMap : new HashMap<String, Object>();
+				tMap.put("isTrainer", true);
+				tMap.put("isEmployee", false);
+				
+				if(eMap != null)
+					results.add(tMap);
+				else
+					continue;
+			}
+			
+			if(eMap == null)
+				continue;
+			
+			eMap = (eMap != null) ? eMap : new HashMap<String, Object>();
+			eMap.put("isEmployee", true);
+			eMap.put("isTrainer", false);
+			results.add(eMap);
+			lastTrainerId = tId;
 		}
 		return results;
 	}
