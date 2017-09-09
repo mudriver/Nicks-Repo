@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org">
+ 
+<head data-th-fragment="header">
+ <meta charset="utf-8" />
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title data-th-text="#{link.view.pps.number}"></title>
+  
+<!-- Core CSS - Include with every page -->
+    <link type="text/css" rel="stylesheet"
+	href="../../resources/css/bootstrap.css"
+	data-th-href="@{/resources/css/bootstrap.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/font-awesome-4.1.0/css/font-awesome.css"
+	data-th-href="@{/resources/font-awesome-4.1.0/css/font-awesome.css}" />
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/select2.css"
+	data-th-href="@{/resources/css/select2.css}" />
+<link type="text/css" rel="stylesheet"
+	data-th-href="@{/resources/js/angularjs/select2/select.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/overrides.css"
+	data-th-href="@{/resources/css/overrides.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/datatables/jquery.datatables.min.css"
+	data-th-href="@{/resources/css/datatables/jquery.dataTables.min.css}" />
+<link type="text/css" rel="stylesheet"
+	href="../../resources/css/datatables/buttons.datatable.min.css"
+	data-th-href="@{/resources/css/datatables/buttons.dataTables.min.css}" />
+
+     
+    <style>
+        .no-border-on-me>thead>tr>th,
+        .no-border-on-me>tbody>tr>th,
+        .no-border-on-me>tfoot>tr>th,
+        .no-border-on-me>thead>tr>td,
+        .no-border-on-me>tbody>tr>td,
+        .no-border-on-me>tfoot>tr>td
+        {
+            border-top-style: none;
+            border-bottom-style: none;
+        }
+        .width-40 { width: 40%;}
+        .width-25 { width: 25%;}
+        .width-50 { width: 50%;}
+        .width-60 { width: 60%;}
+        .width-100 {width: 100%;}
+        h1 { color: black !important;}
+        th {color: white;}
+        #example_info {color: white !important;}
+        #exportCSV { margin-bottom: 10px;}
+        .dataTables_wrapper .dataTables_paginate .paginate_button { color: white !important;}
+    </style>
+     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+ <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+ <!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+</head>
+<body>
+ <div class="container-fluid" >                <!-- /#wrapper -->
+ 
+    <div data-th-replace="mainmenu :: top-nav"></div>
+    
+    <h3 data-th-text="#{link.view.pps.number}"></h3>
+    
+    <div class="alert alert-success" id="successMsg" style="display: none;">
+   		<span th:text="${success}"></span>
+   	</div>
+    
+    <div class="home-parent">
+    	<div class="pull-left">
+    		<a href="/turfclubPrograms/employees/advSearch"><input type="button" class="btn btn-default" value="Back" /></a>
+    	</div>
+    	<div class="pull-right">
+    		<a href="javascript:void(0);" id="encryptPPS"><input type="button" class="btn btn-default" value="Encrypt PPS Number" /></a>
+    	</div>
+    	<table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
+        	<thead>
+        		<tr>
+	        		<th th:text="#{employee.name}" class="width-50">Name</th>
+	        		<th th:text="#{employee.pps.number}" class="width-50">PPS Number</th>
+	        	</tr>
+        	</thead>
+        </table>
+    
+    </div>
+</div>              <!-- /#wrapper -->
+
+	
+ <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="../../resources/js/jquery-2.1.1.min.js"
+        data-th-src="@{/resources/js/jquery-2.1.1.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/jquery.blockui.js"
+        data-th-src="@{/resources/js/jquery.blockui.js}"></script>
+         
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="../../resources/js/bootstrap.min.js"
+        data-th-src="@{/resources/js/bootstrap.min.js}"></script>
+ 
+    <!-- Core Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/plugins/metisMenu/jquery.metisMenu.js"
+        data-th-src="@{/resources/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+         
+    <!-- SB Admin Scripts - Include with every page -->
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/sb-admin-2.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/sb-admin-2.js"
+        data-th-src="@{/resources/js/angularjs/typeahead/typeahead.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/datatable/jquery.datatable.min.js"
+        data-th-src="@{/resources/js/datatable/jquery.dataTables.min.js}"></script>
+        
+    <script type="text/javascript" src="../../resources/js/datatable/datatable.buttons.min.js"
+        data-th-src="@{/resources/js/datatable/dataTables.buttons.min.js}"></script>
+        
+   <script type="text/javascript" th:inline="javascript">
+    	/*<![CDATA[*/
+    	var table;
+    	var type = [[${type}]];
+    	$(function() {
+    		
+    		$('#encryptPPS').click(function() {
+    			
+    			$.ajax({
+    				url: '/turfclubPrograms/employees/encryptPPS',
+    				type: 'GET',
+    				success: function(data) {
+    					$('#successMsg').find('span').html(data);
+    					$('#successMsg').show();
+    					setTimeout(function() { $('#successMsg').hide(); }, 5000);
+    				}
+    			});
+    		});
+    		
+    		table = $('#example').DataTable( {
+    	        dom: 'Bfrtip',
+    	        "searching": true,
+    	        buttons: [],
+    	        "processing": true,
+    	        "serverSide": true,
+    	        "ordering": false,
+    	        "start": 0,
+    	        "length": 10,
+    	        "ajax": "/turfclubPrograms/employees/pps",
+    	        "columns": [
+ 	                    { "data": "name" },
+ 	                    { "data": "pps" }
+ 	                  ]
+    	    } );
+    	});
+    	
+    	/*  */
+    	
+    	
+    	/*]]>*/
+    </script>
+    
+    <script type="text/javascript" src="../../resources/js/employee/advance-search.js"
+        data-th-src="@{/resources/js/employee/advance-search.js}"></script>
+        
+        </body>
+        
+    
+</html>

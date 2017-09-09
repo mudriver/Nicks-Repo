@@ -106,7 +106,7 @@ public class TeEmployees implements java.io.Serializable {
 	private Set<TePension> tePensions = new HashSet(0);
 	private List<TePension> pensions = new ArrayList<TePension>();
 	private List<TeEmployentHistory> histories = new ArrayList<TeEmployentHistory>();
-	
+	private List<TeEmployentHistory> groupHistories = new ArrayList<TeEmployentHistory>();
 	@Expose
 	private boolean canEdit = true;
 	@Expose
@@ -624,8 +624,13 @@ public class TeEmployees implements java.io.Serializable {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	
-	
-	
-	
+
+	@Transient
+	public List<TeEmployentHistory> getGroupHistories() {
+		return groupHistories;
+	}
+
+	public void setGroupHistories(List<TeEmployentHistory> groupHistories) {
+		this.groupHistories = groupHistories;
+	}
 }

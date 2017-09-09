@@ -84,4 +84,8 @@ public interface EmployeeService {
 
 	Object isExistsPPS(Integer id, String pps);
 
+	Object getPPSRecordForEmployee(int start, int length, int draw, String search);
+
+	Object getEmployeesWithPPSNumber();
+
 }

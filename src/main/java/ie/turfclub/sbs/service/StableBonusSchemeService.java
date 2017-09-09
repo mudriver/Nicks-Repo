@@ -77,7 +77,7 @@ public interface StableBonusSchemeService {
 	/**
 	 * Handle Message Reminder
 	 */
-	void handleMsgReminder(String path);
+	void handleMsgReminder(String path, String dirPath, User user);
 
 	/**
 	 * Get SBS Final Reminder
@@ -90,5 +90,7 @@ public interface StableBonusSchemeService {
 			String quarter);
 
 	void sendMailToAdmin(String filePath, User user, String emails);
+
+	void saveEmailIntoConfigTable(String emails);
 
 }

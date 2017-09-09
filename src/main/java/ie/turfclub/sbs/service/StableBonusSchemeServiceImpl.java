@@ -3,7 +3,9 @@ package ie.turfclub.sbs.service;
 import ie.turfclub.main.model.login.User;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.sbs.model.SBSEntity;
+import ie.turfclub.trainers.model.Config;
 import ie.turfclub.trainers.model.TeEmployees;
+import ie.turfclub.utilities.Constants;
 import ie.turfclub.utilities.MailUtility;
 
 import java.io.File;
@@ -632,7 +634,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	}
 	
 	@Override
-	public void handleMsgReminder(String path) {
+	public void handleMsgReminder(String path, String dirPath, User user) {
 		
 		String hql = "select tt.trainerId from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
 				+ " sbs.returned = false and sbs.old = false";
@@ -646,9 +648,28 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		try {
 			file.createNewFile();
 			FileUtils.writeStringToFile(file, mobileNumberTexts);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		Criteria criteria = getCurrentSession().createCriteria(Config.class);
+		criteria.add(Restrictions.eq("name", Constants.SMSREMINDER_TXT));
+		List<Config> configs = criteria.list();
+		
+		if(configs != null && configs.size() > 0) {
+			Config config = configs.get(0);
+			String email = config.getValue();
+			ArrayList<String> emails = null;
+			if(email != null && email.length() > 0) {
+				String[] emailArr = email.split(",");
+				emails = new ArrayList<String>();
+				for(int i=0; i<emailArr.length;i++) {
+					emails.add(emailArr[i].trim());
+				}
+			}
+			mailUtility.sendAIRTableRecordEmail("SMS Reminder Records", "This is sms reminder records", path, emails);
 		}
 	}
 	
@@ -680,5 +701,25 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 			}
 		}
 		mailUtility.sendAIRTableRecordEmail("SMS Reminder Records", "This is sms reminder records", path, emails);
+	}
+	
+	@Override
+	public void saveEmailIntoConfigTable(String emails) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(Config.class);
+		criteria.add(Restrictions.eq("name", Constants.SMSREMINDER_TXT));
+		List<Config> configs = criteria.list();
+		if(configs != null && configs.size() > 0) {
+			Config config = configs.get(0);
+			config.setValue(emails);
+			getCurrentSession().save(config);
+		} else {
+			Config config = new Config();
+			config.setName(Constants.SMSREMINDER_TXT);
+			config.setKey("email");
+			config.setValue(emails);
+			config.setCreatedDate(new Date());
+			getCurrentSession().save(config);
+		}
 	}
 }

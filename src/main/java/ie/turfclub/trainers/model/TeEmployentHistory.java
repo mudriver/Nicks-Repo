@@ -75,6 +75,7 @@ public class TeEmployentHistory implements java.io.Serializable {
 	private String trainerName;
 	private int employeeNumHourWorked;
 	private Date startDate;
+	private Date endDate;
 	private String cardType;
 	private String pensionType;
 	private String hriAccNum;
@@ -296,6 +297,17 @@ public class TeEmployentHistory implements java.io.Serializable {
 	public void setHriAccNum(String hriAccNum) {
 		this.hriAccNum = hriAccNum;
 	}
+	
+	@Transient
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+
 
 	public static class TeEmploymentHistoryComparatorTrainerId implements Comparator<TeEmployentHistory>{
 		

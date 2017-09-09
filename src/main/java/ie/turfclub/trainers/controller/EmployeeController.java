@@ -265,6 +265,13 @@ public class EmployeeController {
 		return "advance-search";
 	}
 	
+	@RequestMapping(value="/viewPPS", method=RequestMethod.GET)
+	public String getViewPPSPage( HttpServletRequest request, ModelMap model) {
+	
+		//model.addAttribute("emps", employeeService.getEmployeesWithPPSNumber());
+		return "view-pps";
+	}
+	
 	@RequestMapping(value="/encryptPPS", method=RequestMethod.GET)
 	@ResponseBody
 	public String handleEncryptPPSNumber( HttpServletRequest request, ModelMap model) {
@@ -289,6 +296,15 @@ public class EmployeeController {
 		
 		length = (length == -1) ? noOfRecords : length;
 		return employeeService.getAdvanceSearchRecordByType(type, start, length, draw);
+	}
+	
+	@RequestMapping(value="/pps", method=RequestMethod.GET)
+	@ResponseBody
+	public Object getPPSRecordForEmployee(@RequestParam(value="start") int start, @RequestParam(value="length") int length,  
+			@RequestParam(value="draw") int draw, @RequestParam("search[value]") String search, HttpServletRequest request, ModelMap model) {
+		
+		length = (length == -1) ? noOfRecords : length;
+		return employeeService.getPPSRecordForEmployee(start, length, draw, search);
 	}
 	
 	@RequestMapping(value = "/person/copyRecord", method = RequestMethod.GET)

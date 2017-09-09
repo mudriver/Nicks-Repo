@@ -1,6 +1,7 @@
 package ie.turfclub.trainers.service;
 
 import ie.turfclub.common.bean.AdvanceSearchRecordBean;
+import ie.turfclub.common.bean.EmployeePPSBean;
 import ie.turfclub.common.bean.InapproveEmployeeBean;
 import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.common.enums.RoleEnum;
@@ -39,6 +40,7 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -326,6 +328,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
 		criteria.add(Restrictions.eq("employeesEmployeeId", id));
 		List<TeEmployees> employees = criteria.list();
+		List<TeEmployentHistory> groupHistories = new ArrayList<TeEmployentHistory>();
 		TeEmployees emp =  (employees != null && employees.size() > 0) ? employees.get(0) : null;
 		
 		criteria = getCurrentSession().createCriteria(TeEmployentHistory.class);
@@ -350,6 +353,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 			
 			emp.setHistories(histories);
 		}
+		
+		String hql = "select new map(teTrainers.trainerId as tid, min(ehDateFrom) as from, max(ehDateTo) as to, "
+				+ "avg(employeeNumHourWorked) as worked) from TeEmployentHistory where "
+				+ "teEmployees.employeesEmployeeId="+id+" group by teTrainers.trainerId";
+		List<HashMap<String, Object>> records = getCurrentSession().createQuery(hql).list();
 		
 		criteria = getCurrentSession().createCriteria(TePension.class);
 		criteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", id));
@@ -643,9 +651,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<AdvanceSearchRecordBean> records = new ArrayList<AdvanceSearchRecordBean>();
 		switch(type) {
 			case "1":
-				String hql = "select c.teEmployees.employeesEmployeeId from TeCards c, "
-						+ " TeEmployentHistory  eh where c.teEmployees.employeesEmployeeId = eh.teEmployees.employeesEmployeeId"
-						+ " and c.cardsCardType = 'A' and eh.ehDateTo is null ";
+				String hql = "select teEmployees.employeesEmployeeId from TeCards where cardsCardType = 'A'";
 				List<Integer> empIds = getCurrentSession().createQuery(hql).list();
 				String ids = StringUtils.join(empIds, "','");
 				ids = "'"+ids+"'";
@@ -663,6 +669,44 @@ public class EmployeeServiceImpl implements EmployeeService {
 				}
 				break;
 			case "2":
+				hql = "select teEmployees.employeesEmployeeId from TeCards where cardsCardType = 'B'";
+				empIds = getCurrentSession().createQuery(hql).list();
+				ids = StringUtils.join(empIds, "','");
+				ids = "'"+ids+"'";
+				count = personService.getAdvanceSearchRecordForAllBCardCount(ids);
+				records = personService.getAdvanceSearchRecordForAllBCardByLimit(start, length, ids);
+				if(records != null) {
+					for(AdvanceSearchRecordBean record: records) {
+						String hql1 = "select new map(cardsCardType as type, cardsCardNumber as number) from TeCards"
+								+ " where teEmployees.employeesEmployeeId = "+record.getId();
+						List<HashMap<String, Object>> maps = getCurrentSession().createQuery(hql1).list();
+						HashMap<String, Object> mapRecord = (maps != null && maps.size() > 0) ? maps.get(0) : null;
+						if(mapRecord != null && mapRecord.get("type") != null) 
+							record.setCardNumber(mapRecord.get("type")+" "+mapRecord.get("number"));
+					}
+				}
+				break;
+			case "3":
+				hql = "select c.teEmployees.employeesEmployeeId from TeCards c, "
+						+ " TeEmployentHistory  eh where c.teEmployees.employeesEmployeeId = eh.teEmployees.employeesEmployeeId"
+						+ " and c.cardsCardType = 'A' and eh.ehDateTo is null ";
+				empIds = getCurrentSession().createQuery(hql).list();
+				ids = StringUtils.join(empIds, "','");
+				ids = "'"+ids+"'";
+				count = personService.getAdvanceSearchRecordForAllACardCount(ids);
+				records = personService.getAdvanceSearchRecordForAllACardByLimit(start, length, ids);
+				if(records != null) {
+					for(AdvanceSearchRecordBean record: records) {
+						String hql1 = "select new map(cardsCardType as type, cardsCardNumber as number) from TeCards"
+								+ " where teEmployees.employeesEmployeeId = "+record.getId();
+						List<HashMap<String, Object>> maps = getCurrentSession().createQuery(hql1).list();
+						HashMap<String, Object> mapRecord = (maps != null && maps.size() > 0) ? maps.get(0) : null;
+						if(mapRecord != null && mapRecord.get("type") != null) 
+							record.setCardNumber(mapRecord.get("type")+" "+mapRecord.get("number"));
+					}
+				}
+				break;
+			case "4":
 				hql = "select c.teEmployees.employeesEmployeeId from TeCards c, "
 						+ " TeEmployentHistory  eh where c.teEmployees.employeesEmployeeId = eh.teEmployees.employeesEmployeeId"
 						+ " and c.cardsCardType = 'B' and eh.ehDateTo is null ";
@@ -681,10 +725,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 							record.setCardNumber(mapRecord.get("type")+" "+mapRecord.get("number"));
 					}
 				}
-				break;
-			case "3":
-				break;
-			case "4":
 				break;
 			case "5":
 				break;
@@ -810,8 +850,42 @@ public class EmployeeServiceImpl implements EmployeeService {
 				}
 				break;
 			case "3":
+				hql = "select c.teEmployees.employeesEmployeeId from TeCards c, "
+						+ " TeEmployentHistory  eh where c.teEmployees.employeesEmployeeId = eh.teEmployees.employeesEmployeeId"
+						+ " and c.cardsCardType = 'A' and eh.ehDateTo is null ";
+				empIds = getCurrentSession().createQuery(hql).list();
+				ids = StringUtils.join(empIds, "','");
+				ids = "'"+ids+"'";
+				records = personService.getAdvanceSearchRecordForAllACard(ids);
+				if(records != null) {
+					for(AdvanceSearchRecordBean record: records) {
+						String hql1 = "select new map(cardsCardType as type, cardsCardNumber as number) from TeCards"
+								+ " where teEmployees.employeesEmployeeId = "+record.getId();
+						List<HashMap<String, Object>> maps = getCurrentSession().createQuery(hql1).list();
+						HashMap<String, Object> mapRecord = (maps != null && maps.size() > 0) ? maps.get(0) : null;
+						if(mapRecord != null && mapRecord.get("type") != null) 
+							record.setCardNumber(mapRecord.get("type")+" "+mapRecord.get("number"));
+					}
+				}
 				break;
 			case "4":
+				hql = "select c.teEmployees.employeesEmployeeId from TeCards c, "
+						+ " TeEmployentHistory  eh where c.teEmployees.employeesEmployeeId = eh.teEmployees.employeesEmployeeId"
+						+ " and c.cardsCardType = 'B' and eh.ehDateTo is null ";
+				empIds = getCurrentSession().createQuery(hql).list();
+				ids = StringUtils.join(empIds, "','");
+				ids = "'"+ids+"'";
+				records = personService.getAdvanceSearchRecordForAllBCard(ids);
+				if(records != null) {
+					for(AdvanceSearchRecordBean record: records) {
+						String hql1 = "select new map(cardsCardType as type, cardsCardNumber as number) from TeCards"
+								+ " where teEmployees.employeesEmployeeId = "+record.getId();
+						List<HashMap<String, Object>> maps = getCurrentSession().createQuery(hql1).list();
+						HashMap<String, Object> mapRecord = (maps != null && maps.size() > 0) ? maps.get(0) : null;
+						if(mapRecord != null && mapRecord.get("type") != null) 
+							record.setCardNumber(mapRecord.get("type")+" "+mapRecord.get("number"));
+					}
+				}
 				break;
 			case "5":
 				break;
@@ -869,7 +943,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
 			criteria.add(Restrictions.eq("teTrainers.trainerId", id));
 			//criteria.add(Restrictions.eq("ehDateTo", null));
-			criteria.add(Restrictions.isNull("ehDateTo"));
+			/*criteria.add(Restrictions.isNull("ehDateTo"));*/
 			records = criteria.list();
 			
 		} else {
@@ -884,14 +958,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		
 		if(records != null && records.size() > 0) {
+			List<Integer> ids = new ArrayList<Integer>();
+			List<TeEmployentHistory> uniqueEmployeeHistories = new ArrayList<TeEmployentHistory>();
 			for (TeEmployentHistory history : records) {
-				Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
-				criteria.add(Restrictions.eq("teTrainers.trainerId", id));
-				criteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", history.getTeEmployees().getEmployeesEmployeeId()));
-				criteria.addOrder(Order.asc("ehDateFrom"));
-				List<TeEmployentHistory> historyRecords = criteria.list();
-				history.setStartDate(historyRecords.get(0).getEhDateFrom());
+				if(ids.indexOf(history.getTeEmployees().getEmployeesEmployeeId()) < 0) {
+					Criteria criteria = sessionFactory.getCurrentSession().createCriteria(TeEmployentHistory.class);
+					criteria.add(Restrictions.eq("teTrainers.trainerId", id));
+					criteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", history.getTeEmployees().getEmployeesEmployeeId()));
+					criteria.addOrder(Order.asc("ehDateFrom"));
+					List<TeEmployentHistory> historyRecords = criteria.list();
+					history.setStartDate(historyRecords.get(0).getEhDateFrom());
+					if(historyRecords.get(historyRecords.size()-1).getEhDateTo() != null)
+						history.setEndDate(historyRecords.get(historyRecords.size()-1).getEhDateTo());
+					
+					ids.add(history.getTeEmployees().getEmployeesEmployeeId());
+					uniqueEmployeeHistories.add(history);
+				}
 			}
+			records = uniqueEmployeeHistories;
 		}
 		
 		Collections.sort(records, new Comparator<TeEmployentHistory>() {
@@ -999,5 +1083,78 @@ public class EmployeeServiceImpl implements EmployeeService {
 		List<TeEmployees> employees = criteria.list();
 		map.put("exists", (employees != null && employees.size() > 0));
 		return map;
+	}
+	
+	@Override
+	public Object getPPSRecordForEmployee(int start, int length, int draw, String search) {
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int count = 0;
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
+		if(search != null && search.length() > 0) {
+			criteria.add(Restrictions.or(
+					Restrictions.like("employeesFirstname", search, MatchMode.ANYWHERE), 
+					Restrictions.like("employeesSurname", search, MatchMode.ANYWHERE)));
+		}
+		criteria.setFirstResult(start);
+		criteria.setMaxResults(length);
+		criteria.addOrder(Order.asc("employeesFirstname"));
+		List<TeEmployees> records = criteria.list();
+		if(search != null && search.length() > 0) {
+			Criteria countCriteria = getCurrentSession().createCriteria(TeEmployees.class);
+			countCriteria.add(Restrictions.or(
+					Restrictions.like("employeesFirstname", search, MatchMode.ANYWHERE), 
+					Restrictions.like("employeesSurname", search, MatchMode.ANYWHERE)));
+			count = ((Long)countCriteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+		} else {
+			count = ((Long)getCurrentSession().createCriteria(TeEmployees.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
+		}
+		List<EmployeePPSBean> results = new ArrayList<EmployeePPSBean>();
+		if(records != null && records.size() > 0) {
+			for (TeEmployees emp : records) {
+				EmployeePPSBean bean = new EmployeePPSBean();
+				bean.setName(emp.getEmployeesFullName());
+				if(emp.getEmployeesPpsNumber() != null) {
+					if(emp.getEmployeesPpsNumber().length() > 9)
+						bean.setPps(EncryptDecryptUtils.decrypt(emp.getEmployeesPpsNumber()));
+					else
+						bean.setPps(emp.getEmployeesPpsNumber());
+				} else bean.setPps("");
+				bean.setId(emp.getEmployeesEmployeeId());
+				results.add(bean);
+			}
+		}
+		EmployeePPSBean[] beanArr = new EmployeePPSBean[results.size()];
+		beanArr = results.toArray(beanArr);
+		
+		map.put("data", beanArr);
+		map.put("draw", draw);
+		map.put("recordsTotal", count);
+		map.put("recordsFiltered", count);
+		
+		return map;
+	}
+	
+	@Override
+	public Object getEmployeesWithPPSNumber() {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
+		List<TeEmployees> records = criteria.list();
+		List<EmployeePPSBean> results = new ArrayList<EmployeePPSBean>();
+		if(records != null && records.size() > 0) {
+			for (TeEmployees emp : records) {
+				EmployeePPSBean bean = new EmployeePPSBean();
+				bean.setName(emp.getEmployeesFullName());
+				if(emp.getEmployeesPpsNumber() != null) {
+					if(emp.getEmployeesPpsNumber().length() > 9)
+						bean.setPps(EncryptDecryptUtils.decrypt(emp.getEmployeesPpsNumber()));
+					else
+						bean.setPps(emp.getEmployeesPpsNumber());
+				} else bean.setPps("");
+				bean.setId(emp.getEmployeesEmployeeId());
+				results.add(bean);
+			}
+		}
+		return results;
 	}
 }

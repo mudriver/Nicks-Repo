@@ -188,10 +188,11 @@ public class TrainersController {
 	
 	@RequestMapping(value="/sbs/msgReminder", method=RequestMethod.GET)
 	@ResponseBody
-	public String handleMsgReminder(HttpServletRequest request, ModelMap model) throws IOException {
+	public String handleMsgReminder(HttpServletRequest request, ModelMap model, Authentication authentication) throws IOException {
 		
-		System.out.println(env.getRequiredProperty("upload.txt.filepath"));
-		sbsService.handleMsgReminder(env.getRequiredProperty("upload.txt.filepath"));
+		Object principal = authentication.getPrincipal();
+		User user = (User) principal;
+		sbsService.handleMsgReminder(env.getRequiredProperty("upload.txt.filepath"),env.getRequiredProperty("upload.dir.path"), user);
 		return "sbs-returned";
 	}
 	
@@ -209,9 +210,10 @@ public class TrainersController {
 		Object principal = authentication.getPrincipal();
 		User user = (User) principal;
 		String emails = request.getParameter("email");
-		sbsService.sendMailToAdmin(env.getRequiredProperty("upload.dir.path"), user, emails);
+		sbsService.saveEmailIntoConfigTable(emails);
+		//sbsService.sendMailToAdmin(env.getRequiredProperty("upload.dir.path"), user, emails);
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("message", messageSource.getMessage("sms.reminder.send.mail", new String[] {}, Locale.US));
+		map.put("message", messageSource.getMessage("success.save.email", new String[] {}, Locale.US));
 		return map;
 	}
 	
