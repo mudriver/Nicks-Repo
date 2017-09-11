@@ -110,7 +110,7 @@ public class PrintCheltenhamThread implements Runnable {
 		if(records != null && records.size() > 0) {
 			for (HashMap<String, Object> map : records) {
 				if((boolean)map.get("isTrainer")) {
-					cell = new PdfPCell(new Phrase(new Chunk((String)map.get("name"), trainerTextFont)));
+					cell = new PdfPCell(new Phrase(new Chunk((String)map.get("surname")+" "+(String)map.get("firstname"), trainerTextFont)));
 					cell.setBorder(0);
 					table.addCell(cell);
 					cell = new PdfPCell(new Phrase(new Chunk("")));

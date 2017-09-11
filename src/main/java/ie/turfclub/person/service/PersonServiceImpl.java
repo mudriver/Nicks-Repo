@@ -760,6 +760,8 @@ public class PersonServiceImpl implements PersonService {
 			while(set.next()) {
 				record = new HashMap<String, Object>();
 				record.put("name", set.getString("firstname")+" "+set.getString("surname"));
+				record.put("firstname", set.getString("firstname"));
+				record.put("surname", set.getString("surname"));
 			}
 			return record;
 		} catch(Exception e) {
