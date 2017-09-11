@@ -1,5 +1,6 @@
 package ie.turfclub.sbs.service;
 
+import ie.turfclub.common.enums.TrainerLicenseEnum;
 import ie.turfclub.main.model.login.User;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.sbs.model.SBSEntity;
@@ -314,6 +315,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 				+ "sbs.address3 as address3, tt.trainerId as trainerId, sbs.amount as amount, sbs.title as title,"
 				+ " sbs.surname as surname, sbs.trainerId as accNo, sbs.address4 as address4) "
 				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId "
+				+ " and tt.licensed="+TrainerLicenseEnum.LICENSED.getId()
 				+ " and sbs.old = false ";
 		results = getCurrentSession().createQuery(hql).list();
 		
@@ -408,6 +410,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 				+ "sbs.address3 as address3, tt.trainerId as trainerId, sbs.amount as amount, sbs.title as title,"
 				+ " sbs.surname as surname, sbs.trainerId as accNo, sbs.address4 as address4) "
 				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
+				+ " tt.licensed="+TrainerLicenseEnum.LICENSED.getId()+" and "
 				+ " sbs.returned = false and sbs.old = false ";
 		results = getCurrentSession().createQuery(hql).list();
 		
@@ -483,8 +486,13 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	@Override
 	public List<SBSEntity> getAll() {
 		
-		Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
-		List<SBSEntity> records = criteria.list();
+		String hql = " select sbs "
+				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId "
+				+ " and tt.licensed="+TrainerLicenseEnum.LICENSED.getId()
+				+ " and sbs.old = false ";
+		/*Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
+		List<SBSEntity> records = criteria.list();*/
+		List<SBSEntity> records = getCurrentSession().createQuery(hql).list();
 		return records;
 	}
 	
@@ -515,6 +523,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 				+ "sbs.address3 as address3, tt.trainerId as trainerId, sbs.amount as amount, sbs.title as title,"
 				+ " sbs.surname as surname, sbs.trainerId as accNo, sbs.address4 as address4) "
 				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId"
+				+ " and tt.licensed="+TrainerLicenseEnum.LICENSED.getId()
 				+ " and sbs.trainerId = '"+tId+"' and sbs.old = false ";
 		results = getCurrentSession().createQuery(hql).list();
 		

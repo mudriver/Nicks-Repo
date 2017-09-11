@@ -540,7 +540,7 @@
 	</div>
 	
 	<div id="duplicateDOBConfirm" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog" style="width: 70%;">
 	
 	    <!-- Modal content-->
 	    <div class="modal-content">
@@ -550,6 +550,19 @@
 	      </div>
 	      <div class="modal-body">
 	        <p>Date of birth is duplicate</p>
+	        <div>
+	        	<table id="duplicateEmployeeTable" style="width: 100%;">
+	        		<thead>
+		        		<tr>
+		        			<th class="text-center">Employee ID</th>
+		        			<th class="text-center">Employee Name</th>
+		        			<th class="text-center">Employee Date Of Birth</th>
+		        			<th class="text-center">Employee Address</th>
+		        		</tr>
+		        	</thead>
+		        	<tbody></tbody>
+	        	</table>
+	        </div>
 	      </div>
 	      <div class="modal-footer">
 	        <a href="javascript:void(0);" class="btn btn-default modal-close" data-dismiss="modal">Back</a>

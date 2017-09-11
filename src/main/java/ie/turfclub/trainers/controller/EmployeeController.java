@@ -410,10 +410,11 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(value="/existsdob/{id}", method=RequestMethod.GET)
-	public @ResponseBody Object isExistsDOB(@RequestParam("dob") Date dob, @PathVariable("id") Integer id, 
+	public @ResponseBody Object isExistsDOB(@RequestParam("dob") Date dob, @PathVariable("id") Integer id,
+			@RequestParam("fname") String fname, @RequestParam("sname") String sname,
 			HttpServletRequest request) throws ParseException {
 		
-		return employeeService.isExistsDOB(id, dob);
+		return employeeService.isExistsDOB(id, dob, fname, sname);
 	}
 	
 	@RequestMapping(value="/existspps/{id}", method=RequestMethod.GET)

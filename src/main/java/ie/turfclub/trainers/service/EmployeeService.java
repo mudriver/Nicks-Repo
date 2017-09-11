@@ -80,7 +80,7 @@ public interface EmployeeService {
 	boolean isExistsPPSNumberAndDOB(String employeesPpsNumber,
 			Date employeesDateOfBirth, Integer empId);
 
-	Object isExistsDOB(Integer id, Date dob) throws ParseException;
+	Object isExistsDOB(Integer id, Date dob, String fname, String sname) throws ParseException;
 
 	Object isExistsPPS(Integer id, String pps);
 

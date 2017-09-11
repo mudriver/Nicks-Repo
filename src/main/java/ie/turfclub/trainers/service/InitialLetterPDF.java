@@ -29,9 +29,9 @@ public class InitialLetterPDF extends AbstractPdfView {
 		
 		HashMap<String, Object> map = (HashMap<String, Object>) model.get("map");
 		List<HashMap<String, Object>> records = (List<HashMap<String, Object>>) map.get("records");
-		List<SBSEntity> sbsRecords = (List<SBSEntity>) map.get("sbsRecords");
+		//List<SBSEntity> sbsRecords = (List<SBSEntity>) map.get("sbsRecords");
 		String date = (String) map.get("date");
-		pdfService.buildInitialLetterPDF(document, records, sbsRecords, date);
+		pdfService.buildInitialLetterPDF(document, records, date);
 	}
 
 }

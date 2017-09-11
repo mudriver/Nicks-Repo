@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
@@ -50,7 +51,7 @@ public class PDFService {
 	}
 
 	public void buildInitialLetterPDF(Document document,
-			List<HashMap<String, Object>> records, List<SBSEntity> sbsRecords, String date) throws Exception {
+			List<HashMap<String, Object>> records, String date) throws Exception {
 
 		String logoPath = env.getRequiredProperty("tclogo.path");
 		//document = new Document(PageSize.A4);
@@ -605,6 +606,89 @@ public class PDFService {
 			}
 		}
 		
+		/*if(sbsRecords != null) {
+			table = getTable(2);
+			for(int i=0; i<sbsRecords.size(); i++) {
+				SBSEntity record = sbsRecords.get(i);
+				i++;
+				if(i < sbsRecords.size()) {
+					SBSEntity newrecord = sbsRecords.get(i);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(record.getSbsName(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(newrecord.getSbsName(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address1 = record.getAddress1() != null ? record.getAddress1() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address1, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress1(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address2 = record.getAddress2() != null ? record.getAddress2() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address2, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress2(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address3 = record.getAddress3() != null ? record.getAddress3() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address3, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress3(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address4 = record.getAddress4() != null ? record.getAddress4() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address4, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress4(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+				}
+			}
+			document.add(table);
+		}*/
+	}
+	
+	public void buildInitialLetterSBSPDF(Document document,
+			List<SBSEntity> sbsRecords) throws DocumentException {
+
+		//document = new Document(PageSize.A4);
+		PdfPTable table = getTable(3);
+		float[] tableWidth = new float[] {25f,25f,25f};
+		Font font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+		
+		table.setWidths(tableWidth);
+		PdfPCell cell = new PdfPCell();
 		if(sbsRecords != null) {
 			table = getTable(2);
 			for(int i=0; i<sbsRecords.size(); i++) {
@@ -677,9 +761,11 @@ public class PDFService {
 			document.add(table);
 		}
 	}
+	
+	
 
 	public void buildReminderLetterPDF(Document document,
-			List<HashMap<String, Object>> records, List<SBSEntity> sbsRecords, String date) throws Exception {
+			List<HashMap<String, Object>> records, String date) throws Exception {
 
 		String logoPath = env.getRequiredProperty("tclogo.path");
 		//document = new Document(PageSize.A4);
@@ -1231,6 +1317,89 @@ public class PDFService {
 				}
 			}
 		}
+		
+		/*if(sbsRecords != null) {
+			table = getTable(2);
+			for(int i=0; i<sbsRecords.size()-1; i++) {
+				SBSEntity record = sbsRecords.get(i);
+				i++;
+				SBSEntity newrecord = sbsRecords.get(i);
+				
+				cell = new PdfPCell(new Phrase(new Chunk(record.getSbsName(), font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				cell = new PdfPCell(new Phrase(new Chunk(newrecord.getSbsName(), font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				String address1 = record.getAddress1() != null ? record.getAddress1() : " ";
+				cell = new PdfPCell(new Phrase(new Chunk(address1, font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress1(), font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				String address2 = record.getAddress2() != null ? record.getAddress2() : " ";
+				cell = new PdfPCell(new Phrase(new Chunk(address2, font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress2(), font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				String address3 = record.getAddress3() != null ? record.getAddress3() : " ";
+				cell = new PdfPCell(new Phrase(new Chunk(address3, font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress3(), font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				String address4 = record.getAddress4() != null ? record.getAddress4() : " ";
+				cell = new PdfPCell(new Phrase(new Chunk(address4, font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress4(), font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				
+				cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+			}
+			document.add(table);
+		}*/
+	}
+	
+	public void buildReminderLetterSBSPDF(Document document,
+			List<SBSEntity> sbsRecords) throws DocumentException {
+		
+
+		//document = new Document(PageSize.A4);
+		PdfPTable table = getTable(3);
+		float[] tableWidth = new float[] {25f,25f,25f};
+		Font font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+		
+		table.setWidths(tableWidth);
+		PdfPCell cell = new PdfPCell();
 		
 		if(sbsRecords != null) {
 			table = getTable(2);
@@ -1856,4 +2025,8 @@ public class PDFService {
 			}
 		}
 	}
+
+	
+
+	
 }

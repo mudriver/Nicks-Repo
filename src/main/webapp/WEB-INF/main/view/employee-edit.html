@@ -369,11 +369,11 @@
 				</div>
 			<div class="section-card col-sm-12">
 				<!-- When pension list contains more than 0 records -->
-				<div class="edit-pension-form col-sm-12" th:if="${not #lists.isEmpty(emp.histories)}" th:each="str,iterStat : ${emp.histories}">
-					<input type="hidden" class="history-id" data-th-field="*{histories[__${iterStat.index}__].ehEmploymentId}" />
+				<div class="edit-pension-form col-sm-12" th:if="${not #lists.isEmpty(emp.groupHistories)}" th:each="str,iterStat : ${emp.groupHistories}">
+					<!-- <input type="hidden" class="history-id" data-th-field="*{histories[__${iterStat.index}__].ehEmploymentId}" /> -->
 					<div class="form-group" style="width: 6%;">
 						<label for="card" data-th-text="#{employee.pension.card}">Card :</label>
-			  			<select data-th-field="*{histories[__${iterStat.index}__].cardType}" class="form-control input-sm" >
+			  			<select data-th-field="*{groupHistories[__${iterStat.index}__].cardType}" class="form-control input-sm" disabled="disabled">
 			  				<option value=""></option>
 			  				<option data-th-value="#{employee.a}" value="A" data-th-text="#{employee.a}">A</option>
 			  				<option data-th-value="#{employee.b}" value="B" data-th-text="#{employee.b}">B</option>
@@ -390,23 +390,23 @@
 					</div>		 -->
 					<div class="form-group " style="width: 17%;">
 						<label for="categoryOfEmployment" data-th-text="#{employee.category.of.employment}">Category of Employment :</label>
-			  			<input class="form-control input-sm" data-th-field="*{histories[__${iterStat.index}__].ehEmploymentCategory}" 
+			  			<input class="form-control input-sm" data-th-field="*{groupHistories[__${iterStat.index}__].ehEmploymentCategory}" disabled="disabled" 
 			  				type='text'></input> 
 					</div>
 					<div class="form-group " style="width: 17%;">
 						<label for="requestDate" data-th-text="#{employee.employees.hour.worked}">Employees hour worked :</label>
-						<input class="form-control input-sm" data-th-field="*{histories[__${iterStat.index}__].employeeNumHourWorked}" 
+						<input class="form-control input-sm" data-th-field="*{groupHistories[__${iterStat.index}__].employeeNumHourWorked}" disabled="disabled"
 			  				type='text'></input> 
 					</div>
 					<div class="form-group" style="width: 16%;">
 						<label for="card" data-th-text="#{employee.pension.trainer}">Trainer</label>
-			  			<input placeholder="You must enter trainer name" data-th-field="*{histories[__${iterStat.index}__].trainerName}" required="required" class="form-control input-sm" />
-			  			<input type="hidden" data-th-field="*{histories[__${iterStat.index}__].teTrainers.trainerId}" />
+			  			<input placeholder="You must enter trainer name" data-th-field="*{groupHistories[__${iterStat.index}__].trainerName}" required="required" class="form-control input-sm" disabled="disabled" />
+			  			<input type="hidden" data-th-field="*{groupHistories[__${iterStat.index}__].teTrainers.trainerId}" />
 					</div>		
 					<div class="form-group" style="width: 18%;">
 						<label for="requestDate" data-th-text="#{employees.trainer.hri.acc.num}">Trainer HRI A/C Num :</label>
-			  			<input placeholder="You must enter Trainer HRI A/c Num" pattern="\w{5}"  readonly="readonly" 
-			  				data-th-field="*{histories[__${iterStat.index}__].hriAccNum}" class="form-control input-sm" />
+			  			<input placeholder="You must enter Trainer HRI A/c Num" pattern="\w{5}"  readonly="readonly" disabled="disabled"
+			  				data-th-field="*{groupHistories[__${iterStat.index}__].hriAccNum}" class="form-control input-sm" />
 					</div>
 					<!-- <div class="form-group col-sm-3">
 						<label for="requestDate" data-th-text="#{employee.pension.date.range}">Date Range :</label>
@@ -414,17 +414,18 @@
 					</div> -->
 					<div class="form-group" style="width: 10%;">
 						<label for="requestDate" data-th-text="#{employee.pension.from.date}">From Date :</label>
-			  			<input placeholder="You must select from date" data-th-field="*{histories[__${iterStat.index}__].ehDateFrom}" class="form-control input-sm" required="required"/>
+			  			<input placeholder="You must select from date" data-th-field="*{groupHistories[__${iterStat.index}__].ehDateFrom}" disabled="disabled"
+			  			 class="form-control input-sm" required="required"/>
 					</div>
 					<div class="form-group" style="width: 10%;">
 						<label for="requestDate" data-th-text="#{employee.pension.to.date}">To Date :</label>
-			  			<input data-th-field="*{histories[__${iterStat.index}__].ehDateTo}" class="form-control input-sm" />
+			  			<input data-th-field="*{groupHistories[__${iterStat.index}__].ehDateTo}" class="form-control input-sm" disabled="disabled" />
 					</div>
 					<div class="form-group add-delete-icon" th:if="${iterStat.index} &lt; 1" style="width: 2%;">
 						<a href="javascript:void(0);" id="addPensionRecord" alt="Add Pension Record" title="Add Pension Record"><i class="fa fa-plus fa-3x"></i></a>
 					</div>
 					<div class="form-group add-delete-icon" th:if="${iterStat.index} &gt;= 1" style="width: 2%;">
-    					<a href="javascript:void(0);" id="deletePensionRecord" alt="Delete Pension Record" title="Delete Pension Record"><i class="fa fa-trash-o fa-3x"></i></a>
+    					<!-- <a href="javascript:void(0);" id="deletePensionRecord" alt="Delete Pension Record" title="Delete Pension Record"><i class="fa fa-trash-o fa-3x"></i></a> -->
     				</div>
 				</div>
 				
@@ -574,6 +575,19 @@
 	      </div>
 	      <div class="modal-body">
 	        <p>Date of birth is duplicate</p>
+	        <div>
+	        	<table id="duplicateEmployeeTable" style="width: 100%;">
+	        		<thead>
+		        		<tr>
+		        			<th class="text-center">Employee ID</th>
+		        			<th class="text-center">Employee Name</th>
+		        			<th class="text-center">Employee Date Of Birth</th>
+		        			<th class="text-center">Employee Address</th>
+		        		</tr>
+		        	</thead>
+		        	<tbody></tbody>
+	        	</table>
+	        </div>
 	      </div>
 	      <div class="modal-footer">
 	        <a href="javascript:void(0);" class="btn btn-default modal-close" data-dismiss="modal">Back</a>
@@ -643,7 +657,7 @@
     <script type="text/javascript" th:inline="javascript">
     /*<![CDATA[*/	
     	var trainers = [[${trainers}]];
-    	var noOfPensionRecord = [[${#lists.size(emp.histories)}]];
+    	var noOfPensionRecord = 0;
     	var card = [[#{employee.pension.card}]];
     	var cardA = [[#{employee.a}]];
     	var cardB = [[#{employee.b}]];
@@ -656,7 +670,7 @@
     	var dateRange = [[#{employee.pension.date.range}]];
     	var fromDate = [[#{employee.pension.from.date}]];
     	var endDate = [[#{employee.pension.to.date}]];
-    	var pensionListSize = [[${#lists.size(emp.histories)}]];
+    	var pensionListSize = 0;
     	var categoryOfEmployment = [[#{employee.category.of.employment}]];
     	var numHourWorked = [[#{employee.employees.hour.worked}]];
     	var historyEle;
@@ -896,7 +910,7 @@
     		
     		$('#addPensionRecord').click(function() {
     			var elem = $('.pension-form');
-    			if(pensionListSize >= 1) 
+    			if(pensionListSize == 0 && $(elem).length == 0) 
     				elem = $('.edit-pension-form:last');
     				
     			$(elem).after('<div class="add-pension-form col-sm-12">'+

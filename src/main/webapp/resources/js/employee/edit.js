@@ -279,20 +279,33 @@ $(function() {
 					
 					var dob = $('#employeesDateOfBirth').val();
 					var pps = $('#employeesPpsNumber').val();
+					var firstname = $('#employeesFirstname').val();
+					var surname = $('#employeesSurname').val();
+					var eId = $('#employeesEmployeeId').val();
 					var isDuplicateValue = false;
 					
 					return $.ajax({
-	   					url: '/turfclubPrograms/employees/existsdob/0',
+	   					url: '/turfclubPrograms/employees/existsdob/'+eId,
 	   					type: 'GET',
-	   					data: {dob: dob},
+	   					data: {dob: dob, fname: firstname, sname: surname},
 	   					success: function(data) {
 	   						if(data.exists) {
+	   							$('#duplicateEmployeeTable').find('tbody').children().remove();
+	   							if(data.emps != null && data.emps.length > 0) {
+	   								var emps = data.emps;
+	   								var tbody = $('#duplicateEmployeeTable').find('tbody');
+	   								for(var i=0; i<emps.length; i++) {
+	   									var emp = emps[i];
+	   									$(tbody).append('<tr><td class="text-center">'+emp.eId+'</td><td class="text-center">'+emp.name+'</td><td class="text-center">'+
+	   											emp.dob+'</td><td class="text-center">'+emp.address+'</td></tr>');
+	   								}
+	   							}
 	   							$('#duplicateDOBConfirm').modal('show');
 	   							return false;
 	   						} else {
 	   							
 	   							$.ajax({
-	   			   					url: '/turfclubPrograms/employees/existspps/0',
+	   			   					url: '/turfclubPrograms/employees/existspps/'+eId,
 	   			   					type: 'GET',
 	   			   					data: {pps: pps},
 	   			   					success: function(data) {

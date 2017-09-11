@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -54,6 +55,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
+import com.fasterxml.jackson.databind.deser.DataFormatReaders.Match;
 import com.google.gson.Gson;
 
 @PropertySource("classpath:ie/turfclub/trainers/resources/config/config.properties")
@@ -351,6 +353,48 @@ public class EmployeeServiceImpl implements EmployeeService {
 				}
 			});
 			
+			Date startDate = null;
+			Date endDate = null;
+			String fullname = null;
+			for (int i=0; i<histories.size();i++) {
+				TeEmployentHistory teEmployentHistory = histories.get(i);
+				String currEmpFullname = teEmployentHistory.getTeTrainers().getTrainerFullName();
+				Date teEmpDateTo = teEmployentHistory.getEhDateTo();
+				Date teEmpDateFrom = teEmployentHistory.getEhDateFrom();
+				if(i == 0) {
+					startDate = teEmployentHistory.getEhDateFrom();
+					endDate = teEmployentHistory.getEhDateTo();
+					fullname = teEmployentHistory.getTeTrainers().getTrainerFullName();
+					continue;
+				}
+				Calendar cal1 = Calendar.getInstance();
+				Calendar cal2 = Calendar.getInstance();
+				if(endDate != null) cal1.setTime(endDate);
+				if(teEmpDateTo != null) {
+					cal2.setTime(teEmpDateFrom);
+					cal2.add(Calendar.DATE, -1);
+				}
+				if(fullname != null && i != (histories.size()-1) &&
+						((!fullname.equalsIgnoreCase(currEmpFullname))
+						|| (teEmpDateTo == null)
+						|| (teEmpDateTo != null && endDate != null && cal1.get(Calendar.YEAR) != cal2.get(Calendar.YEAR) && 
+						cal1.get(Calendar.DAY_OF_YEAR) != cal2.get(Calendar.DAY_OF_YEAR)))) {
+					TeEmployentHistory groupHistory = histories.get(i-1);
+					groupHistory.setEhDateFrom(startDate);
+					groupHistory.setHriAccNum(groupHistory.getTeTrainers().getTrainerAccountNo());
+					groupHistories.add(groupHistory);
+					startDate = teEmployentHistory.getEhDateFrom();
+					fullname = teEmployentHistory.getTeTrainers().getTrainerFullName();
+				}
+				endDate = teEmployentHistory.getEhDateTo();
+				if(i == (histories.size() - 1)) {
+					TeEmployentHistory groupHistory = histories.get(i);
+					groupHistory.setEhDateFrom(startDate);
+					groupHistory.setHriAccNum(groupHistory.getTeTrainers().getTrainerAccountNo());
+					groupHistories.add(groupHistory);
+				}
+			}
+			
 			emp.setHistories(histories);
 		}
 		
@@ -383,6 +427,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		Period p = Period.fieldDifference(ld, LocalDate.now());
 		emp.setAge(p.getYears());
+		emp.setGroupHistories(groupHistories);
 		if(emp.getEmployeesPpsNumber() != null && emp.getEmployeesPpsNumber().length() > 10)
 			emp.setEmployeesPpsNumber(EncryptDecryptUtils.decrypt(emp.getEmployeesPpsNumber()));
  		return emp;
@@ -1060,16 +1105,36 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	@Override
-	public Object isExistsDOB(Integer id, Date dob) throws ParseException {
+	public Object isExistsDOB(Integer id, Date dob, String fname, String sname) throws ParseException {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		/*SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		Date date = formatter.parse(dob);*/
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
 		criteria.add(Restrictions.eq("employeesDateOfBirth", dob));
 		if(id > 0) criteria.add(Restrictions.ne("employeesEmployeeId", id));
 		List<TeEmployees> employees = criteria.list();
+		Criteria sfCriteria = getCurrentSession().createCriteria(TeEmployees.class);
+		sfCriteria.add(Restrictions.eq("employeesDateOfBirth", dob));
+		sfCriteria.add(Restrictions.or(
+				Restrictions.and(Restrictions.like("employeesFirstname", fname, MatchMode.ANYWHERE), Restrictions.like("employeesSurname", sname, MatchMode.ANYWHERE)), 
+				Restrictions.and(Restrictions.like("employeesSurname", fname, MatchMode.ANYWHERE), Restrictions.like("employeesFirstname", sname, MatchMode.ANYWHERE))));
+		if(id > 0) sfCriteria.add(Restrictions.ne("employeesEmployeeId", id));
+		List<TeEmployees> sfEmployees = sfCriteria.list();
 		map.put("exists", (employees != null && employees.size() > 0));
+		map.put("emps", null);
+		if(sfEmployees != null && sfEmployees.size() > 0) {
+			List<HashMap<String, Object>> records = new ArrayList<HashMap<String,Object>>();
+			for (TeEmployees teEmployees : sfEmployees) {
+				HashMap<String, Object> empMap = new HashMap<String, Object>();
+				empMap.put("eId", teEmployees.getEmployeesEmployeeId());
+				empMap.put("name", teEmployees.getEmployeesFullName());
+				empMap.put("dob", formatter.format(teEmployees.getEmployeesDateOfBirth()));
+				empMap.put("address", teEmployees.getEmployeesAddress1()+" "+teEmployees.getEmployeesAddress2()+" "+teEmployees.getEmployeesAddress3()+
+						" "+teEmployees.getEmployeesAddress4()+" "+teEmployees.getEmployeesAddress5()+" "+teEmployees.getEmployeesPostCode());
+				records.add(empMap);
+			}
+			map.put("emps", records);
+		}
 		return map;
 	}
 	

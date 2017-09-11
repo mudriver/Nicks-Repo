@@ -171,6 +171,18 @@ public class TrainersController {
 		/*return "sbs-initial-letter";*/
 	}
 	
+	@RequestMapping(value="/sbs/initialLetter/sbs", method=RequestMethod.GET)
+	public ModelAndView getSBSInitialLetterSBS(HttpServletRequest request, ModelMap model) {
+		List<SBSEntity> sbsRecords = sbsService.getAll();
+		model.addAttribute("sbsRecords", sbsRecords);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("sbsRecords", sbsRecords);
+		ModelAndView modelAndView = new ModelAndView("initialLetterSBSPDF", "map",map);
+		  
+		return modelAndView;
+		/*return "sbs-initial-letter";*/
+	}
+	
 	@RequestMapping(value="/sbs/returned", method=RequestMethod.GET)
 	public String getSBSReturned1(HttpServletRequest request, ModelMap model) {
 		List<SBSEntity> sbsRecords = sbsService.getAllOrderByNameAsc();
@@ -222,14 +234,26 @@ public class TrainersController {
 		String date = request.getParameter("r");
 		String quarter = request.getParameter("q");
 		List<HashMap<String, Object>> records = sbsService.getSBSFinalReminder(date, quarter);
-		List<SBSEntity> sbsRecords = sbsService.getAll();
-		model.addAttribute("sbsRecords", sbsRecords);
+		//List<SBSEntity> sbsRecords = sbsService.getAll();
+		//model.addAttribute("sbsRecords", sbsRecords);
 		model.addAttribute("records", records);
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("sbsRecords", sbsRecords);
+		//map.put("sbsRecords", sbsRecords);
 		map.put("records", records);
 		map.put("date", date);
 		ModelAndView modelAndView = new ModelAndView("reminderLetterPDF", "map",map);
+		  
+		return modelAndView;
+		/*return "sbs-final-reminder";*/
+	}
+	
+	@RequestMapping(value="/sbs/finalReminder/sbs", method=RequestMethod.GET)
+	public ModelAndView getSBSFinalReminderSBS(HttpServletRequest request, ModelMap model) {
+		List<SBSEntity> sbsRecords = sbsService.getAll();
+		model.addAttribute("sbsRecords", sbsRecords);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("sbsRecords", sbsRecords);
+		ModelAndView modelAndView = new ModelAndView("reminderLetterSBSPDF", "map",map);
 		  
 		return modelAndView;
 		/*return "sbs-final-reminder";*/
@@ -399,7 +423,7 @@ public class TrainersController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String getListOfTrainers(Model model, Authentication authentication) {
 
-		List<TrainerUserBean> records = personService.getTrainerUserBean();
+		List<TrainerUserBean> records = personService.getLicensedTrainerUserBean();
 		model.addAttribute("records", records);
 		return "trainer-list";
 	}

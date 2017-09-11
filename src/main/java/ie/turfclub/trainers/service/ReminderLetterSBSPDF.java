@@ -17,7 +17,7 @@ import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfWriter;
 
 @Service
-public class ReminderLetterPDF extends AbstractPdfView {
+public class ReminderLetterSBSPDF extends AbstractPdfView {
 
 	@Autowired
 	private PDFService pdfService;
@@ -28,10 +28,8 @@ public class ReminderLetterPDF extends AbstractPdfView {
 			throws Exception {
 		
 		HashMap<String, Object> map = (HashMap<String, Object>) model.get("map");
-		List<HashMap<String, Object>> records = (List<HashMap<String, Object>>) map.get("records");
-		//List<SBSEntity> sbsRecords = (List<SBSEntity>) map.get("sbsRecords");
-		String date = (String) map.get("date");
+		List<SBSEntity> sbsRecords = (List<SBSEntity>) map.get("sbsRecords");
 		
-		pdfService.buildReminderLetterPDF(document, records, date);
+		pdfService.buildReminderLetterSBSPDF(document, sbsRecords);
 	}
 }

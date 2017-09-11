@@ -1851,6 +1851,7 @@ public class TrainerServiceImpl implements TrainersService {
 				+ " TeTrainers as t, TeEmployees as e where "
 				+ " teh.teTrainers.trainerId = t.trainerId and "
 				+ "teh.teEmployees.employeesEmployeeId = e.employeesEmployeeId and teh.ehDateTo is null "
+				+ " and t.licensed="+TrainerLicenseEnum.LICENSED.getId()
 				+ " and e.employeeLastYearPaid="+previousYear+" order by t.trainerSurname, t.trainerFirstName,e.employeesSurname, e.employeesFirstname ";
 		//List<HashMap<String, Object>> records = getCurrentSession().createSQLQuery(hql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
 		List<HashMap<String, Object>> records = getCurrentSession().createQuery(hql1).list();
@@ -1964,7 +1965,8 @@ public class TrainerServiceImpl implements TrainersService {
 				+ "TeTrainers as t, TeEmployees as e where "
 				+ " teh.teTrainers.trainerId = t.trainerId and "
 				+ "teh.teEmployees.employeesEmployeeId = e.employeesEmployeeId and teh.ehDateTo is null "
-				+ " and e.employeeLastYearPaid="+previousYear+" order by t.trainerId";
+				+ " and t.licensed="+TrainerLicenseEnum.LICENSED.getId()
+				+ " and e.employeeLastYearPaid="+previousYear+" order by t.trainerSurname, t.trainerFirstName,e.employeesSurname, e.employeesFirstname ";
 		//List<HashMap<String, Object>> records = getCurrentSession().createSQLQuery(hql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
 		List<HashMap<String, Object>> records = getCurrentSession().createQuery(hql1).list();
 		
