@@ -93,7 +93,7 @@
 	        			<td><span th:if="${record.teEmployees.teCard != null}" th:text="${record.teEmployees.teCard.cardsCardNumber}"></span></td>
 	        			<td th:text="${record.teEmployees.employeesFullName}"></td>
 	        			<td><span th:text="${#dates.format(record.startDate, 'yyyy-MM-dd')}" class="yellow-background"></span></td>
-	        			<td th:text="${record.ehDateTo}"></td>
+	        			<td><span th:if="${record.endDate != null}" th:text="${#dates.format(record.endDate, 'yyyy-MM-dd')}" ></span></td>
 	        		</tr>
 	        	</tbody>
 	        </table>

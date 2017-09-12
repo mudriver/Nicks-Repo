@@ -1013,7 +1013,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 					criteria.addOrder(Order.asc("ehDateFrom"));
 					List<TeEmployentHistory> historyRecords = criteria.list();
 					history.setStartDate(historyRecords.get(0).getEhDateFrom());
-					if(historyRecords.get(historyRecords.size()-1).getEhDateTo() != null)
+					if(historyRecords.get(historyRecords.size()-1) != null)
 						history.setEndDate(historyRecords.get(historyRecords.size()-1).getEhDateTo());
 					
 					ids.add(history.getTeEmployees().getEmployeesEmployeeId());
@@ -1163,6 +1163,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		criteria.setFirstResult(start);
 		criteria.setMaxResults(length);
+		criteria.addOrder(Order.asc("employeesSurname"));
 		criteria.addOrder(Order.asc("employeesFirstname"));
 		List<TeEmployees> records = criteria.list();
 		if(search != null && search.length() > 0) {

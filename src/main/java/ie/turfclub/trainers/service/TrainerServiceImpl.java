@@ -1562,7 +1562,9 @@ public class TrainerServiceImpl implements TrainersService {
 			cell.setBorder(0);
 			pdfPTable.addCell(cell);
 			
-			for(int i = 0; i < 16; i++) {
+			int moreThan8HourWorkedEmployees = (moreThan8HoursRecords != null && moreThan8HoursRecords.size() > 0) ? moreThan8HoursRecords.size() : 0;
+			int blankRow = (19 - moreThan8HourWorkedEmployees);
+			for(int i = 0; i < blankRow; i++) {
 				cell = new PdfPCell(new Phrase(" ", bold));
 				cell.setColspan(8);
 				cell.setBorder(0);
