@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfPTable;
 
 public interface TrainersService {
@@ -67,7 +68,7 @@ public interface TrainersService {
 	public void handleCopyRecord() throws SQLException;
 	public List<SearchByNameTrainerBean> findByName(String search) throws Exception;
 	public String getCSVStringForTrainerEmployees(Integer id, String type);
-	public PdfPTable createPDFDocumentWithDetails(Integer id, String type);
+	public void createPDFDocumentWithDetails(Document document, Integer id, String type);
 	public List<HashMap<String, Object>> getAintreeRecord(int start, int end, HttpSession session);
 	public List<HashMap<String, Object>> getAintreeRecord();
 	public void handleStableListAdministrationReturYearPage(String year);
@@ -80,5 +81,6 @@ public interface TrainersService {
 	public List<HashMap<String, Object>> getLicensedTrainerWithCurrentEmployees(
 			int start, int end, HttpSession session);
 	public List<HashMap<String, Object>> getPrintRenewalRecords();
+	public void buildDocumentForLicenseTrainerList(Document document);
 	
 }

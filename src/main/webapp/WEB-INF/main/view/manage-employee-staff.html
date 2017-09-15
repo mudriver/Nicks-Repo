@@ -97,6 +97,9 @@
     		<a data-th-href="@{/trainers/print/renewal/print/Renewal}" target="_blank" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.print.renewal.list}">Print Renewal List</span></a>
     		<a data-th-href="@{/employees/viewPPS}" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.view.pps.number}">View PPS Number</span></a>
     	</div>
+    	<div class="home-links-parent">
+    		<a data-th-href="@{/trainers/license/print/Trainer}" target="_blank" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.license.trainer.list}">License Trainer List</span></a>
+    	</div>
     	<div class="home-links-parent">	
     		<a th:if="${role == 'SUPER_USER'}" data-th-href="@{/user/searchPage}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.user}">Search User</span></a>
     	</div>

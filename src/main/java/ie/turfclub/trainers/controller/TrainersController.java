@@ -636,6 +636,18 @@ public class TrainersController {
 		}
 	}
 	
+	@RequestMapping(value="/license/print/Trainer", method = RequestMethod.GET)
+	public ModelAndView getLicenseTrainerListInPDF(HttpServletRequest request, Model model, Authentication authentication) throws Exception {
+		try {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			ModelAndView modelAndView = new ModelAndView("licenseTrainerListPDFView", "map",map);
+			return modelAndView;
+		} catch (Exception ioe) {
+			throw new ServletException(ioe.getMessage());
+		} finally {
+		}
+	}
+	
 	@RequestMapping(value = "/cheltenham/print/Cheltenham", method = RequestMethod.GET)
 	public ModelAndView getCheltenhamPrintDirect(Model model, Authentication authentication,
 			HttpServletRequest request) throws ServletException {

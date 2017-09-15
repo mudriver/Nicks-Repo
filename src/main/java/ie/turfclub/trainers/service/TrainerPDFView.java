@@ -25,9 +25,7 @@ public class TrainerPDFView extends AbstractPdfView {
 		HashMap<String, Object> map = (HashMap<String, Object>) model.get("map");
 		Integer id = (Integer) map.get("id");
 		String type = (String) map.get("type");
-		PdfPTable table = trainersService.createPDFDocumentWithDetails(id, type);//new XWPFDocument();
+		trainersService.createPDFDocumentWithDetails(document, id, type);//new XWPFDocument();
 
-		document.open();
-		document.add(table);
 	}
 }

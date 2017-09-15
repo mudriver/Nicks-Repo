@@ -9,6 +9,7 @@ import ie.turfclub.trainers.service.AintreePDFView;
 import ie.turfclub.trainers.service.CheltenhamPDFView;
 import ie.turfclub.trainers.service.InitialLetterPDF;
 import ie.turfclub.trainers.service.InitialLetterSBSPDF;
+import ie.turfclub.trainers.service.LicenseTrainerListPDFView;
 import ie.turfclub.trainers.service.ReminderLetterPDF;
 import ie.turfclub.trainers.service.ReminderLetterSBSPDF;
 import ie.turfclub.trainers.service.ReprintPDF;
@@ -120,6 +121,10 @@ public class BeanConfig {
 	 @Bean
 	 public AintreePDFView aintreePDFView() {
 		 return new AintreePDFView();
+	 }
+	 
+	 @Bean LicenseTrainerListPDFView licenseTrainerListPDFView() {
+		 return new LicenseTrainerListPDFView();
 	 }
 	 
 	 @Bean
