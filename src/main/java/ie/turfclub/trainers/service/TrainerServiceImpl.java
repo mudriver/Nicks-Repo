@@ -124,7 +124,7 @@ public class TrainerServiceImpl implements TrainersService {
 
 		Criteria criteria = getCurrentSession()
 				.createCriteria(TeTrainers.class)
-				.addOrder(Order.asc("trainerFullName"))
+				.addOrder(Order.desc("licensed"))
 				.setFirstResult(savedSearch.getCurrentRecordStart())
 				.setMaxResults(savedSearch.getMaxToShow());
 
