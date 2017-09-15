@@ -277,7 +277,7 @@ $(function() {
 							$("#employeesPpsNumber").val().toUpperCase());
 
 					
-					var dob = $('#employeesDateOfBirth').val();
+					/*var dob = $('#employeesDateOfBirth').val();
 					var pps = $('#employeesPpsNumber').val();
 					var firstname = $('#employeesFirstname').val();
 					var surname = $('#employeesSurname').val();
@@ -312,14 +312,14 @@ $(function() {
 	   			   						if(data.exists) {
 	   			   							$('#duplicatePPSConfirm').modal('show');
 	   			   						return false;
-	   			   						} else {
+	   			   						} else {*/
 	   			   							$('#editModal').modal('show');
-	   			   						}
+	   			   						/*}
 	   			   					}
 	   			   				});
 	   						}
 	   					}
-	   				});
+	   				});*/
 				}
 			});
 

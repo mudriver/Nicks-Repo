@@ -113,6 +113,20 @@ public class PrintRenewalThread implements Runnable {
 		if(records != null && records.size() > 0) {
 			for (HashMap<String, Object> map : records) {
 				if((boolean)map.get("isTrainer")) {
+					for(int z=0;z<8;z++) {
+						cell = new PdfPCell(new Phrase(new Chunk("")));
+						cell.setBorder(0);
+						table.addCell(cell);
+						cell = new PdfPCell(new Phrase(new Chunk("")));
+						cell.setBorder(0);
+						table.addCell(cell);
+						cell = new PdfPCell(new Phrase(new Chunk("")));
+						cell.setBorder(0);
+						table.addCell(cell);
+						cell = new PdfPCell(new Phrase(new Chunk("")));
+						cell.setBorder(0);
+						table.addCell(cell);
+					}
 					cell = new PdfPCell(new Phrase(new Chunk((String)map.get("name"), trainerTextFont)));
 					cell.setBorder(0);
 					table.addCell(cell);

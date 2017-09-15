@@ -354,8 +354,10 @@ public class EmployeeController {
 				title = messageSource.getMessage("link.all.b.card.holders", new String[] {}, Locale.US);
 				break;
 			case "3":
+				title = messageSource.getMessage("link.current.a.card.holders", new String[] {}, Locale.US);
 				break;
 			case "4":
+				title = messageSource.getMessage("link.current.b.card.holders", new String[] {}, Locale.US);
 				break;
 			case "5":
 				break;
@@ -384,8 +386,10 @@ public class EmployeeController {
 				filename = messageSource.getMessage("filename.all.b.card.holders", new String[] {}, Locale.US);
 				break;
 			case "3":
+				filename = messageSource.getMessage("link.current.a.card", new String[] {}, Locale.US);
 				break;
 			case "4":
+				filename = messageSource.getMessage("link.current.b.card", new String[] {}, Locale.US);
 				break;
 			case "5":
 				break;
