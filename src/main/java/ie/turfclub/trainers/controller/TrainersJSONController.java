@@ -868,7 +868,26 @@ public class TrainersJSONController {
 		contactDetailsDirective.setPhoneKey("trainerHomePhone");
 		column.setDirective(contactDetailsDirective);
 		table.getColumns().add(column);
-
+		
+		//Trainers Licensed/Unlicensed 
+		column = new JsonTableColumn();
+		column.setTitle("Licensed");
+		column.setColumnWidth("1");
+		TrueFalseTickDirective tickDirective = new TrueFalseTickDirective();
+		tickDirective.setKey("isLicensed");
+		/*searchConfig = new JsonColumnSearchConfig();
+		SelectBooleanDirective booleanDirective = new SelectBooleanDirective();
+		booleanDirective = new SelectBooleanDirective();
+		booleanDirective.setKey("isLicensed");
+		booleanDirective.setPlaceHolder("Select");
+		booleanDirective.setTrueText("Complete");
+		booleanDirective.setFalseText("Incomplete");
+		searchConfig.setDirective(booleanDirective);
+		column.setSearchConfig(searchConfig);*/
+		//column.setSortable(true);
+		column.setDirective(tickDirective);
+		table.getColumns().add(column);
+		
 		// list employees button
 		column = new JsonTableColumn();
 		column.setTitle("Employees");

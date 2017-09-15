@@ -17,6 +17,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.Rectangle;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -2026,7 +2027,239 @@ public class PDFService {
 		}
 	}
 
-	
+	public void buildAintreePDF(Document document, List<HashMap<String, Object>> records) throws DocumentException {
+		
+		PdfPTable table = getTable(1);
+		table.setWidthPercentage(100);
+		float[] tableWidth = new float[] {100f};
+		Font headerBoldWithUnderline = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 14, Font.BOLD);
+		headerBoldWithUnderline.setColor(Color.BLUE);
+		Font boldWithUnderline = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.BOLD|Font.UNDERLINE);
+		Font bold = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.BOLD);
+		bold.setColor(Color.BLUE);
+		Font font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+		Font fontWithColor = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+		fontWithColor.setColor(Color.BLUE);
+		
+		table.setWidths(tableWidth);
+		PdfPCell cell = new PdfPCell(new Phrase(new Chunk("Aintree", headerBoldWithUnderline)));
+		cell.setBorder(Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		document.add(table);
+		table = new PdfPTable(3);
+		table.setWidthPercentage(100);
+		tableWidth = new float[] {33f,33f,33f};
+		table.setWidths(tableWidth);
+		
+		cell = new PdfPCell(new Phrase(new Chunk("Current Trainer", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Surname", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Firstname", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		for (int i = 0; i < 3; i++) {
+			cell = new PdfPCell(new Phrase(new Chunk("")));
+			cell.setBorder(Rectangle.TOP);
+			cell.setBorderColor(Color.BLUE);
+			table.addCell(cell);
+		}
+		if(records != null) {
+			for(int i=0; i<records.size(); i++) {
+				HashMap<String, Object> record = records.get(i);
+				boolean isTrainer = (boolean) record.get("isTrainer");
+				if(isTrainer) {
+					cell = new PdfPCell(new Phrase(new Chunk((String)record.get("name"), fontWithColor)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk("")));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk("")));
+					cell.setBorder(0);
+					table.addCell(cell);
+				} else {
+					cell = new PdfPCell(new Phrase(new Chunk("")));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk((String)record.get("surname"), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk((String)record.get("firstname"), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+				}
+			}
+		}
+		document.add(table);
+	}
 
-	
+	public void buildCheltenhamPDF(Document document,
+			List<HashMap<String, Object>> records) throws DocumentException {
+		
+		PdfPTable table = getTable(1);
+		table.setWidthPercentage(100);
+		float[] tableWidth = new float[] {100f};
+		Font headerBoldWithUnderline = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 14, Font.BOLD);
+		headerBoldWithUnderline.setColor(Color.BLUE);
+		Font boldWithUnderline = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.BOLD|Font.UNDERLINE);
+		Font bold = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.BOLD);
+		bold.setColor(Color.BLUE);
+		Font font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+		Font fontWithColor = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+		fontWithColor.setColor(Color.BLUE);
+		
+		table.setWidths(tableWidth);
+		PdfPCell cell = new PdfPCell(new Phrase(new Chunk("Cheltenham", headerBoldWithUnderline)));
+		cell.setBorder(Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		document.add(table);
+		table = new PdfPTable(3);
+		table.setWidthPercentage(100);
+		tableWidth = new float[] {33f,33f,33f};
+		table.setWidths(tableWidth);
+		
+		cell = new PdfPCell(new Phrase(new Chunk("Current Trainer", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Surname", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Firstname", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		for (int i = 0; i < 3; i++) {
+			cell = new PdfPCell(new Phrase(new Chunk("")));
+			cell.setBorder(Rectangle.TOP);
+			cell.setBorderColor(Color.BLUE);
+			table.addCell(cell);
+		}
+		if(records != null) {
+			for(int i=0; i<records.size(); i++) {
+				HashMap<String, Object> record = records.get(i);
+				boolean isTrainer = (boolean) record.get("isTrainer");
+				if(isTrainer) {
+					cell = new PdfPCell(new Phrase(new Chunk((String)record.get("name"), fontWithColor)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk("")));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk("")));
+					cell.setBorder(0);
+					table.addCell(cell);
+				} else {
+					cell = new PdfPCell(new Phrase(new Chunk("")));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk((String)record.get("surname"), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk((String)record.get("firstname"), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+				}
+			}
+		}
+		document.add(table);
+	}
+
+	public void buildTrainerReportList(Document document,
+			List<HashMap<String, Object>> records) throws DocumentException {
+
+		PdfPTable table = getTable(1);
+		table.setWidthPercentage(100);
+		float[] tableWidth = new float[] {100f};
+		Font headerBoldWithUnderline = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 14, Font.BOLD);
+		headerBoldWithUnderline.setColor(Color.BLUE);
+		Font boldWithUnderline = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.BOLD|Font.UNDERLINE);
+		Font bold = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.BOLD);
+		bold.setColor(Color.BLUE);
+		Font font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+		Font fontWithColor = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+		fontWithColor.setColor(Color.BLUE);
+		
+		table.setWidths(tableWidth);
+		PdfPCell cell = new PdfPCell(new Phrase(new Chunk("All Trainers Report - Accounts", headerBoldWithUnderline)));
+		cell.setBorder(Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		document.add(table);
+		table = new PdfPTable(4);
+		tableWidth = new float[] {25f,25f,25f,25f};
+		table.setWidthPercentage(100);
+		table.setWidths(tableWidth);
+		
+		cell = new PdfPCell(new Phrase(new Chunk("Current Trainer", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Surname", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Card Type", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Card Number", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		for (int i = 0; i < 4; i++) {
+			cell = new PdfPCell(new Phrase(new Chunk("")));
+			cell.setBorder(Rectangle.TOP);
+			cell.setBorderColor(Color.BLUE);
+			table.addCell(cell);
+		}
+		if(records != null) {
+			for(int i=0; i<records.size(); i++) {
+				HashMap<String, Object> record = records.get(i);
+				boolean isTrainer = (boolean) record.get("isTrainer");
+				if(isTrainer) {
+					for (int j = 0; j < 40; j++) {
+						cell = new PdfPCell(new Phrase(new Chunk("")));
+						cell.setBorder(0);
+						table.addCell(cell);
+					}
+					cell = new PdfPCell(new Phrase(new Chunk((String)record.get("name"), fontWithColor)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk("")));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk("")));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk("")));
+					cell.setBorder(0);
+					table.addCell(cell);
+				} else {
+					cell = new PdfPCell(new Phrase(new Chunk("")));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk(String.valueOf(record.get("surname"))+" "+String.valueOf(record.get("firstname")), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk(record.get("cardType") != null ? String.valueOf(record.get("cardType")) : "", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					cell = new PdfPCell(new Phrase(new Chunk(record.get("cardNumber") != null ? String.valueOf(record.get("cardNumber")) : "", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+				}
+			}
+		}
+		document.add(table);
+	}
 }

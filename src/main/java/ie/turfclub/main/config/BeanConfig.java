@@ -5,6 +5,8 @@ package ie.turfclub.main.config;
 
 import java.util.Properties;
 
+import ie.turfclub.trainers.service.AintreePDFView;
+import ie.turfclub.trainers.service.CheltenhamPDFView;
 import ie.turfclub.trainers.service.InitialLetterPDF;
 import ie.turfclub.trainers.service.InitialLetterSBSPDF;
 import ie.turfclub.trainers.service.ReminderLetterPDF;
@@ -113,6 +115,16 @@ public class BeanConfig {
 	 @Bean
 	 public InitialLetterPDF initialLetterPDF() {
 		 return new InitialLetterPDF();
+	 }
+	 
+	 @Bean
+	 public AintreePDFView aintreePDFView() {
+		 return new AintreePDFView();
+	 }
+	 
+	 @Bean
+	 public CheltenhamPDFView cheltenhamPDFView() {
+		 return new CheltenhamPDFView();
 	 }
 	 
 	 @Bean

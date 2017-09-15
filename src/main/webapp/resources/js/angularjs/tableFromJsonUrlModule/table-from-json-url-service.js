@@ -43,7 +43,8 @@ angular.module('tableFromJson')
 	  	if(id !== undefined){
 	  		dataUrl += "/" + id;
 	  	}
-
+	  	if(params['isLicensed'] != undefined)
+	  	delete params['isLicensed'];
 	  	//console.log("Get Data: " + dataUrl + " - " + JSON.stringify(params));
 	  	$http.post(dataUrl, params)
 	  	.success(function(res){

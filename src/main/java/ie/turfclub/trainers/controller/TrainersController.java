@@ -601,13 +601,53 @@ public class TrainersController {
 	@RequestMapping(value = "/aintree/print", method = RequestMethod.GET)
 	@ResponseBody
 	public String getAintreePrint(Model model, Authentication authentication,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws ServletException {
 		
 		request.getSession().setAttribute("aintreeStatus", "working");
 		PrintAintreeThread printAintreeThread = new PrintAintreeThread(trainersService, env.getRequiredProperty("upload.pdf.aintree"), request.getSession());
 		Thread thread = new Thread(printAintreeThread);
 		thread.start();
 		return "Success";
+	}
+	@RequestMapping(value = "/aintree/print/Aintree", method = RequestMethod.GET)
+	public ModelAndView getAintreePrintDirect(Model model, Authentication authentication,
+			HttpServletRequest request) throws ServletException {
+		Document document = new Document();
+		try {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			ModelAndView modelAndView = new ModelAndView("aintreePDFView", "map",map);
+			return modelAndView;
+		} catch (Exception ioe) {
+			throw new ServletException(ioe.getMessage());
+		} finally {
+		}
+	}
+	
+	@RequestMapping(value = "/print/renewal/print/Renewal", method = RequestMethod.GET)
+	public ModelAndView getListOfLicenseTrainersPrint(HttpServletRequest request, Model model, Authentication authentication) throws ServletException {
+		Document document = new Document();
+		try {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			ModelAndView modelAndView = new ModelAndView("trainerReportPDFView", "map",map);
+			return modelAndView;
+		} catch (Exception ioe) {
+			throw new ServletException(ioe.getMessage());
+		} finally {
+		}
+	}
+	
+	@RequestMapping(value = "/cheltenham/print/Cheltenham", method = RequestMethod.GET)
+	public ModelAndView getCheltenhamPrintDirect(Model model, Authentication authentication,
+			HttpServletRequest request) throws ServletException {
+		Document document = new Document();
+		try {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			ModelAndView modelAndView = new ModelAndView("cheltenhamPDFView", "map",map);
+			return modelAndView;
+		} catch (Exception ioe) {
+			throw new ServletException(ioe.getMessage());
+		} finally {
+		}
 	}
 	
 	@RequestMapping(value = "/aintree/print/download", method = RequestMethod.GET)

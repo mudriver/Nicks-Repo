@@ -94,7 +94,7 @@
     		<a data-th-href="@{/employees/inapprove/list}" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.approve.employees}">Approve Employees</span></a>
     	</div>
     	<div class="home-links-parent">
-    		<a data-th-href="@{/trainers/print/renewal}" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.print.renewal.list}">Print Renewal List</span></a>
+    		<a data-th-href="@{/trainers/print/renewal/print/Renewal}" target="_blank" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.print.renewal.list}">Print Renewal List</span></a>
     		<a data-th-href="@{/employees/viewPPS}" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.view.pps.number}">View PPS Number</span></a>
     	</div>
     	<div class="home-links-parent">	
@@ -254,11 +254,11 @@
     		});
     		
     		$('#aintreeBtn').click(function() {
-    			window.location.href = '/turfclubPrograms/trainers/aintree';
+    			window.open('/turfclubPrograms/trainers/aintree/print/Aintree', '_blank');
     		});
     		
     		$('#cheltenhamBtn').click(function() {
-    			window.location.href = '/turfclubPrograms/trainers/cheltenham';
+    			window.open('/turfclubPrograms/trainers/cheltenham/print/Cheltenham', '_blank');
     		});
     		
     		$('#confirmEncryptPPS').click(function() {
