@@ -11,11 +11,13 @@ import ie.turfclub.main.service.downloads.TokenService;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.sbs.model.SBSEntity;
 import ie.turfclub.sbs.service.StableBonusSchemeService;
+import ie.turfclub.trainers.model.SentEmail;
 import ie.turfclub.trainers.model.TeEmployentHistory;
 import ie.turfclub.trainers.model.TeTrainers;
 import ie.turfclub.trainers.service.EmployeeService;
 import ie.turfclub.trainers.service.StableStaffService;
 import ie.turfclub.trainers.service.TrainersService;
+import ie.turfclub.utilities.Constants;
 
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -211,6 +213,8 @@ public class TrainersController {
 	@RequestMapping(value="/sbs/send/smsReminder", method=RequestMethod.GET)
 	public String sendSMSReminder(HttpServletRequest request, ModelMap model) throws IOException {
 		
+		List<SentEmail> records = trainersService.getListOfSentEmail(Constants.SMS_TXT);
+		model.addAttribute("emails", records);
 		return "send-sms-reminder";
 	}
 	
@@ -223,9 +227,9 @@ public class TrainersController {
 		User user = (User) principal;
 		String emails = request.getParameter("email");
 		sbsService.saveEmailIntoConfigTable(emails);
-		//sbsService.sendMailToAdmin(env.getRequiredProperty("upload.dir.path"), user, emails);
+		sbsService.sendMailToAdmin(env.getRequiredProperty("upload.dir.path"), user, emails);
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("message", messageSource.getMessage("success.save.email", new String[] {}, Locale.US));
+		map.put("message", messageSource.getMessage("sms.reminder.send.mail", new String[] {}, Locale.US));
 		return map;
 	}
 	

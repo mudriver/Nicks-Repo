@@ -4,6 +4,7 @@ package ie.turfclub.utilities;
 
 import ie.turfclub.accountsReports.model.HuntercertsSales;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -356,7 +357,7 @@ public class MailUtility {
 
 	// function to send messages with attachments
 	public void send(String subject, String messageText,
-			ArrayList<String> recipients, String attachmentFileName) {
+			ArrayList<String> recipients, String attachmentFileName, String filename) {
 		try {
 
 			emailSession = Session.getInstance(smtpProperties,
@@ -411,7 +412,7 @@ public class MailUtility {
 
 			DataSource source = new FileDataSource(attachmentFileName);
 			messageBodyPart.setDataHandler(new DataHandler(source));
-			messageBodyPart.setFileName(attachmentFileName);
+			messageBodyPart.setFileName(filename);
 			multipart.addBodyPart(messageBodyPart);
 
 			message.setContent(multipart);
@@ -528,7 +529,13 @@ public class MailUtility {
 	public void sendAIRTableRecordEmail(String subject, String body,
 			String filePath, ArrayList<String> emails) {
 		
-		this.send(subject, body, emails, filePath);
+		this.send(subject, body, emails, filePath, "AIR_FILE.csv");
+	}
+
+	public void sendSMSReminderRecordEmail(String subject, String body,
+			String filePath, ArrayList<String> emails) {
+		
+		this.send(subject, body, emails, filePath, "SMSReminder.csv");
 	}
 
 }

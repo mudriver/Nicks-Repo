@@ -7,6 +7,7 @@ import ie.turfclub.common.enums.TrainerLicenseEnum;
 import ie.turfclub.person.model.Person;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.trainers.model.Config;
+import ie.turfclub.trainers.model.SentEmail;
 import ie.turfclub.trainers.model.TeAuthorisedReps;
 import ie.turfclub.trainers.model.TeCards;
 import ie.turfclub.trainers.model.TeEmployeeTrainerVerified;
@@ -122,13 +123,30 @@ public class TrainerServiceImpl implements TrainersService {
 	@Override
 	public HashMap<String, Object> getTrainers(TeTrainersSavedSearch savedSearch) {
 		// TODO Auto-generated method stub
-
+		
 		Criteria criteria = getCurrentSession()
-				.createCriteria(TeTrainers.class)
-				.addOrder(Order.desc("licensed"))
+				.createCriteria(TeTrainers.class);
+
+		// if the search contains trainers add each to the search
+		if (savedSearch.getTrainersSearch().size() > 0) {
+
+			Disjunction disjunction = Restrictions.disjunction();
+			for (TeTrainers trainer : savedSearch.getTrainersSearch()) {
+				System.out.println("Trainer" + trainer.getTrainerId());
+				disjunction.add(Restrictions.and(Restrictions.eq("trainerId",
+						trainer.getTrainerId())));
+
+			}
+			criteria.add(disjunction);
+		}
+
+		
+				criteria.addOrder(Order.asc("trainerFullName"))
 				.setFirstResult(savedSearch.getCurrentRecordStart())
 				.setMaxResults(savedSearch.getMaxToShow());
 
+		Disjunction disjunction = Restrictions.disjunction();
+		criteria.add(disjunction);
 		Criteria criteriaCount = getCurrentSession().createCriteria(
 				TeTrainers.class);
 		criteriaCount.setProjection(Projections.rowCount());
@@ -210,7 +228,7 @@ public class TrainerServiceImpl implements TrainersService {
 		}
 
 		// Batch No's for currently licenced trainers
-		criteria.add(Restrictions.between("trainerBatchNo", 500, 599));
+		//criteria.add(Restrictions.between("trainerBatchNo", 500, 599));
 		criteria.setProjection(Projections.distinct(Projections
 				.property("trainerId")));
 
@@ -2575,5 +2593,13 @@ public class TrainerServiceImpl implements TrainersService {
 				getCurrentSession().saveOrUpdate(history);
 			}
 		}
+	}
+	
+	@Override
+	public List<SentEmail> getListOfSentEmail(String type) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(SentEmail.class);
+		criteria.add(Restrictions.eq("type", type));
+		return criteria.list();
 	}
 }

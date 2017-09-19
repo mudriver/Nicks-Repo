@@ -3,6 +3,7 @@ package ie.turfclub.trainers.service;
 
 
 import ie.turfclub.common.bean.SearchByNameTrainerBean;
+import ie.turfclub.trainers.model.SentEmail;
 import ie.turfclub.trainers.model.TeAuthorisedReps;
 import ie.turfclub.trainers.model.TeEmployeeTrainerVerified;
 import ie.turfclub.trainers.model.TeEmployees;
@@ -82,5 +83,6 @@ public interface TrainersService {
 			int start, int end, HttpSession session);
 	public List<HashMap<String, Object>> getPrintRenewalRecords();
 	public void buildDocumentForLicenseTrainerList(Document document);
+	public List<SentEmail> getListOfSentEmail(String smsTxt);
 	
 }

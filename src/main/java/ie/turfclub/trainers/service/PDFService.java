@@ -17,12 +17,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Rectangle;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
@@ -2189,14 +2189,14 @@ public class PDFService {
 		Font fontWithColor = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
 		fontWithColor.setColor(Color.BLUE);
 		
-		table.setWidths(tableWidth);
+		//table.setWidths(tableWidth);
 		PdfPCell cell = new PdfPCell(new Phrase(new Chunk("All Trainers Report - Accounts", headerBoldWithUnderline)));
 		cell.setBorder(Rectangle.BOTTOM);
 		cell.setBorderColor(Color.BLUE);
 		table.addCell(cell);
 		document.add(table);
 		table = new PdfPTable(4);
-		tableWidth = new float[] {25f,25f,25f,25f};
+		tableWidth = new float[] {25f,35f,15f,25f};
 		table.setWidthPercentage(100);
 		table.setWidths(tableWidth);
 		

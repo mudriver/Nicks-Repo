@@ -1,18 +1,20 @@
 package ie.turfclub.trainers.controller;
 
 import ie.turfclub.main.model.login.User;
+import ie.turfclub.trainers.model.SentEmail;
 import ie.turfclub.trainers.service.AIRTableService;
+import ie.turfclub.trainers.service.TrainersService;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,9 @@ public class AIRTableController {
 	
 	@Autowired
 	private MessageSource messageSource;
+	
+	@Autowired
+	private TrainersService trainersService;
 	
 	@RequestMapping(value="/all",method=RequestMethod.GET)
 	public String getAllAirTable(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
@@ -90,6 +95,8 @@ public class AIRTableController {
 	public Object sendMailToAdminPage(HttpServletRequest request, HttpServletResponse response, ModelMap model,
 			Authentication authentication) throws IllegalStateException, IOException {
 	
+		List<SentEmail> records = trainersService.getListOfSentEmail(ie.turfclub.utilities.Constants.AIR_TXT);
+		model.addAttribute("emails", records);
 		return "air-mail-send";
 	}
 	
@@ -101,6 +108,7 @@ public class AIRTableController {
 		Object principal = authentication.getPrincipal();
 		User user = (User) principal;
 		String emails = request.getParameter("email");
+		airTableService.saveEmailIntoSentEmail(emails);
 		airTableService.sendMailToAdmin(env.getRequiredProperty("upload.dir.path"), user, emails);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("message", messageSource.getMessage("air.table.send.mail", new String[] {}, Locale.US));

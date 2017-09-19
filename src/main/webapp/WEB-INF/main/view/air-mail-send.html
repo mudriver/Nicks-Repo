@@ -89,6 +89,12 @@
 				<a href="/turfclubPrograms/employees/admin"><button type="button" class="btn btn-danger" th:value="#{employee.exit}" >Exit</button></a>
 			</div>
 		</form>
+		<div class="text-center" id="sentEmails">
+			<b><span class="col-sm-12">Sent Emails</span></b>
+			<div th:if="${!emails.empty}" th:each = "rec : ${emails}" th:text="${rec.email}">
+			</div>
+			<div th:if="${emails.empty}" class="no-emails">No any sent emails</div>
+		</div>
 	</div>
 	<!-- /#wrapper -->
     
@@ -162,6 +168,8 @@
 	    					$.unblockUI();
 	    					$('#successMsg').find('span').html(data.message);
 	    					$('#successMsg').show();
+	    					$('#sentEmails').append('<div>'+email+'</div>');
+	    					$('.no-emails').hide();
 	    					setTimeout(function() {
 	    						$('#successMsg').hide();	
 	    					}, 5000);

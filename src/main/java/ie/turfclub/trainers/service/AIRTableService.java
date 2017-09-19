@@ -19,4 +19,6 @@ public interface AIRTableService {
 
 	void sendMailToAdmin(String requiredProperty, User user, String emails) throws Exception;
 
+	void saveEmailIntoSentEmail(String emails);
+
 }

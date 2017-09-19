@@ -5,6 +5,7 @@ import ie.turfclub.main.model.login.User;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.sbs.model.SBSEntity;
 import ie.turfclub.trainers.model.Config;
+import ie.turfclub.trainers.model.SentEmail;
 import ie.turfclub.trainers.model.TeEmployees;
 import ie.turfclub.utilities.Constants;
 import ie.turfclub.utilities.MailUtility;
@@ -702,14 +703,14 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		}
 		
 		ArrayList<String> emails = null;
-		if(email != null && email.indexOf(",") >= 0) {
+		if(email != null) {
 			String[] emailArr = email.split(",");
 			emails = new ArrayList<String>();
 			for(int i=0; i<emailArr.length;i++) {
 				emails.add(emailArr[i].trim());
 			}
 		}
-		mailUtility.sendAIRTableRecordEmail("SMS Reminder Records", "This is sms reminder records", path, emails);
+		mailUtility.sendSMSReminderRecordEmail("SMS Reminder Records", "Please find attached list of Stable Bonus Scheme text reminders.", path, emails);
 	}
 	
 	@Override
@@ -730,5 +731,11 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 			config.setCreatedDate(new Date());
 			getCurrentSession().save(config);
 		}
+		
+		SentEmail sentEmail = new SentEmail();
+		sentEmail.setType(Constants.SMS_TXT);
+		sentEmail.setEmail(emails);
+		sentEmail.setCreatedDate(new Date());
+		getCurrentSession().save(sentEmail);
 	}
 }

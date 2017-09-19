@@ -2,15 +2,17 @@ package ie.turfclub.trainers.service;
 
 import ie.turfclub.main.model.login.User;
 import ie.turfclub.trainers.model.AIRTable;
+import ie.turfclub.trainers.model.SentEmail;
+import ie.turfclub.utilities.Constants;
 import ie.turfclub.utilities.MailUtility;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
@@ -191,14 +193,24 @@ public class AIRTableServiceImpl implements AIRTableService {
 		}
 		writer.close();
 		ArrayList<String> emails = null;
-		if(email != null && email.indexOf(",") >= 0) {
+		if(email != null) {
 			String[] emailArr = email.split(",");
 			emails = new ArrayList<String>();
 			for(int i=0; i<emailArr.length;i++) {
 				emails.add(emailArr[i].trim());
 			}
 		}
-		mailUtility.sendAIRTableRecordEmail("AIR Table Records", "This is air table records", filePath, emails);
+		mailUtility.sendAIRTableRecordEmail("AIR Table Records", "Please find attached list of AIR records", filePath, emails);
 		
+	}
+	
+	@Override
+	public void saveEmailIntoSentEmail(String emails) {
+		
+		SentEmail sentEmail = new SentEmail();
+		sentEmail.setType(Constants.AIR_TXT);
+		sentEmail.setEmail(emails);
+		sentEmail.setCreatedDate(new Date());
+		sessionFactory.getCurrentSession().save(sentEmail);
 	}
 }
