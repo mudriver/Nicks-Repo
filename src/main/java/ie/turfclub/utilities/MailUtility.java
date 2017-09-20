@@ -535,7 +535,7 @@ public class MailUtility {
 	public void sendSMSReminderRecordEmail(String subject, String body,
 			String filePath, ArrayList<String> emails) {
 		
-		this.send(subject, body, emails, filePath, "SMSReminder.csv");
+		this.send(subject, body, emails, filePath, "SMSReminder.txt");
 	}
 
 }

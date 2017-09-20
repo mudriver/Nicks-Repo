@@ -95,8 +95,8 @@ public class AIRTableController {
 	public Object sendMailToAdminPage(HttpServletRequest request, HttpServletResponse response, ModelMap model,
 			Authentication authentication) throws IllegalStateException, IOException {
 	
-		List<SentEmail> records = trainersService.getListOfSentEmail(ie.turfclub.utilities.Constants.AIR_TXT);
-		model.addAttribute("emails", records);
+		String email = trainersService.getListOfSentEmail(ie.turfclub.utilities.Constants.AIR_TXT);
+		model.addAttribute("email", email);
 		return "air-mail-send";
 	}
 	

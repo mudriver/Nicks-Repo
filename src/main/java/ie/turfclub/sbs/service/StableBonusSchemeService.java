@@ -93,4 +93,6 @@ public interface StableBonusSchemeService {
 
 	void saveEmailIntoConfigTable(String emails);
 
+	List<SBSEntity> getAllUnreturnedSBS();
+
 }

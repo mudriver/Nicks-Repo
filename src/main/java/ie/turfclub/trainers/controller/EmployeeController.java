@@ -6,6 +6,7 @@ import ie.turfclub.common.enums.AdvanceSearchEnum;
 import ie.turfclub.person.service.PersonService;
 import ie.turfclub.trainers.model.TeCards;
 import ie.turfclub.trainers.model.TeEmployees;
+import ie.turfclub.trainers.model.TeTrainers;
 import ie.turfclub.trainers.service.EmployeeService;
 import ie.turfclub.trainers.service.StableStaffService;
 import ie.turfclub.trainers.service.TrainersService;
@@ -179,7 +180,9 @@ public class EmployeeController {
 			HttpServletRequest request, ModelMap model) throws IllegalAccessException, InvocationTargetException {
 		
 		TeEmployees employee = employeeService.getEmployeeById(id);
+		List<TeTrainers> trainers = employeeService.getTrainersByEmpId(employee.getEmployeesEmployeeId());
 		model.addAttribute("emp", employee);
+		model.addAttribute("historyTrainers", trainers);
 		model.addAttribute("backUrl", "/turfclubPrograms/employees/searchByName");
 		
 		model.addAttribute("trainers", trainersService.getAllTrainers());

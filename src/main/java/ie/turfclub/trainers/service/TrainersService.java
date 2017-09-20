@@ -83,6 +83,6 @@ public interface TrainersService {
 			int start, int end, HttpSession session);
 	public List<HashMap<String, Object>> getPrintRenewalRecords();
 	public void buildDocumentForLicenseTrainerList(Document document);
-	public List<SentEmail> getListOfSentEmail(String smsTxt);
+	public String getListOfSentEmail(String smsTxt);
 	
 }

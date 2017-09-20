@@ -2596,10 +2596,12 @@ public class TrainerServiceImpl implements TrainersService {
 	}
 	
 	@Override
-	public List<SentEmail> getListOfSentEmail(String type) {
+	public String getListOfSentEmail(String type) {
 		
 		Criteria criteria = getCurrentSession().createCriteria(SentEmail.class);
 		criteria.add(Restrictions.eq("type", type));
-		return criteria.list();
+		criteria.addOrder(Order.desc("createdDate"));
+		List<SentEmail> records = criteria.list();
+		return (records != null && records.size() > 0) ? records.get(0).getEmail() : "";
 	}
 }

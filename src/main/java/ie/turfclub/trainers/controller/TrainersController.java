@@ -213,8 +213,8 @@ public class TrainersController {
 	@RequestMapping(value="/sbs/send/smsReminder", method=RequestMethod.GET)
 	public String sendSMSReminder(HttpServletRequest request, ModelMap model) throws IOException {
 		
-		List<SentEmail> records = trainersService.getListOfSentEmail(Constants.SMS_TXT);
-		model.addAttribute("emails", records);
+		String email = trainersService.getListOfSentEmail(Constants.SMS_TXT);
+		model.addAttribute("email", email);
 		return "send-sms-reminder";
 	}
 	
@@ -227,9 +227,9 @@ public class TrainersController {
 		User user = (User) principal;
 		String emails = request.getParameter("email");
 		sbsService.saveEmailIntoConfigTable(emails);
-		sbsService.sendMailToAdmin(env.getRequiredProperty("upload.dir.path"), user, emails);
+		//sbsService.sendMailToAdmin(env.getRequiredProperty("upload.dir.path"), user, emails);
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("message", messageSource.getMessage("sms.reminder.send.mail", new String[] {}, Locale.US));
+		map.put("message", messageSource.getMessage("sms.reminder.record.save", new String[] {}, Locale.US));
 		return map;
 	}
 	
@@ -253,7 +253,7 @@ public class TrainersController {
 	
 	@RequestMapping(value="/sbs/finalReminder/sbs", method=RequestMethod.GET)
 	public ModelAndView getSBSFinalReminderSBS(HttpServletRequest request, ModelMap model) {
-		List<SBSEntity> sbsRecords = sbsService.getAll();
+		List<SBSEntity> sbsRecords = sbsService.getAllUnreturnedSBS();
 		model.addAttribute("sbsRecords", sbsRecords);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("sbsRecords", sbsRecords);

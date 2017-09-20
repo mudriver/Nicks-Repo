@@ -65,6 +65,7 @@
         .datepicker-orient-top { z-index: 9999 !important;}
         .has-error .form-control { border: 1px solid red !important;}
         .section-card { background-color: #666E94; padding: 12px; border-radius: 15px; border: 5px solid rgb(14, 23, 60);}
+        .isEmployeeLeft { margin-top: 5px;}
     </style>
      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -364,6 +365,22 @@
 						<div class="col-sm-7">
 							<input type="checkbox" data-th-field="*{employeesIsNew}" value="true" 
 								class="form-control input-sm" />
+						</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label class="col-sm-5" data-th-text="#{employee.tick.if.employee.left}">Tick If Employee Left</label>
+						<div class="col-sm-7">
+							<input type="checkbox" name="isEmployeeLeft" id="isEmployeeLeft" class="form-control input-sm" />
+						</div>
+						<label class="col-sm-5 isEmployeeLeft" style="display: none;">Select Trainer</label>
+						<div class="col-sm-7 isEmployeeLeft" style="display: none;">
+							<select id="employeeTrainer" class="col-sm-12 form-control input-sm" name="employeeTrainer">
+								<option th:if="${!trainers.empty}" th:each="t : ${historyTrainers}" th:text="${t.trainerFullName}" th:value="${t.trainerId}"></option>
+							</select>
+						</div>
+						<label class="col-sm-5 isEmployeeLeft" style="display: none;">End Date</label>
+						<div class="col-sm-7 isEmployeeLeft" style="display: none;">
+							<input id="employeeEndDate" name="employeeEndDate" class="form-control input-sm" />
 						</div>
 					</div>
 				</div>
@@ -677,11 +694,21 @@
     	var eid = $('#employeesEmployeeId').val();
     	$(function() {
     		
+    		$('.isEmployeeLeft').hide();
     		$('.modal-close').click(function(e) {
     			e.preventDefault();
     			$('#duplicatePPSConfirm').modal('hide');
     			$('#duplicateDOBConfirm').modal('hide');
     			return false;
+    		});
+    		
+    		$('#isEmployeeLeft').change(function() {
+    			if($(this).is(':checked')) {
+    				$('.isEmployeeLeft').show();
+    			} else {
+    				$('.isEmployeeLeft').hide();
+    				$('#employeeEndDate').val('');
+    			}
     		});
     		
     		$('#duplicateDOBContinue').click(function(e) {
@@ -741,6 +768,15 @@
     		
     		// setup date pickers
     		$("#employeesDateOfBirth").datepicker({
+    			changeMonth : true,
+    			changeYear : true,
+    			endDate : '+0d',
+    			format: 'dd/mm/yyyy'
+    		}).on('changeDate', function(ev){
+    		    $(this).datepicker('hide');
+    		});
+    		
+    		$('#employeeEndDate').datepicker({
     			changeMonth : true,
     			changeYear : true,
     			endDate : '+0d',

@@ -76,7 +76,7 @@
 					<label for="title" class="col-sm-1" data-th-text="#{user.email}">Email :</label>
 					<div class="col-sm-11">
 			  			<input class="form-control input-sm" placeholder='You must enter email'
-			  				name="email" id="email" type='text' required="required"></input> 
+			  				name="email" id="email" type='text' required="required" th:value="${email}"></input> 
 					</div>		
 				</div>
 				<div class="form-group col-sm-12">
@@ -85,16 +85,16 @@
 				</div>
 			</div>
 			<div class="form-group col-sm-12 text-center" style="margin-top: 10px">
-				<button type="button" id="sendAirTable" class="btn btn-success" th:value="#{air.send.mail}" >Send Mail</button>
+				<button type="button" id="sendAirTable" class="btn btn-success" th:value="#{employee.save.record}" >Save</button>
 				<a href="/turfclubPrograms/employees/admin"><button type="button" class="btn btn-danger" th:value="#{employee.exit}" >Exit</button></a>
 			</div>
 		</form>
-		<div class="text-center" id="sentEmails">
+		<!-- <div class="text-center" id="sentEmails">
 			<b><span class="col-sm-12">Sent Emails</span></b>
 			<div th:if="${!emails.empty}" th:each = "rec : ${emails}" th:text="${rec.email}">
 			</div>
 			<div th:if="${emails.empty}" class="no-emails">No any sent emails</div>
-		</div>
+		</div> -->
 	</div>
 	<!-- /#wrapper -->
     
@@ -168,8 +168,6 @@
 	    					$.unblockUI();
 	    					$('#successMsg').find('span').html(data.message);
 	    					$('#successMsg').show();
-	    					$('#sentEmails').append('<div>'+email+'</div>');
-	    					$('.no-emails').hide();
 	    					setTimeout(function() {
 	    						$('#successMsg').hide();
 	    					}, 5000);

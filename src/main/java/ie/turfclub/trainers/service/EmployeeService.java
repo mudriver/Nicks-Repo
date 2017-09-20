@@ -5,6 +5,7 @@ import ie.turfclub.common.bean.SearchByNameEmployeeBean;
 import ie.turfclub.trainers.model.TeEmployees;
 import ie.turfclub.trainers.model.TeEmployeesApproved;
 import ie.turfclub.trainers.model.TeEmployentHistory;
+import ie.turfclub.trainers.model.TeTrainers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -87,5 +88,7 @@ public interface EmployeeService {
 	Object getPPSRecordForEmployee(int start, int length, int draw, String search);
 
 	Object getEmployeesWithPPSNumber();
+
+	List<TeTrainers> getTrainersByEmpId(Integer employeesEmployeeId);
 
 }

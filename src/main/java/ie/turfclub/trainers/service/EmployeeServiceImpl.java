@@ -563,6 +563,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		saveOrUpdate(emp);
 		
+		if(emp.getEmployeeEndDate() != null && emp.getEmployeeTrainer() != null && emp.getEmployeeTrainer() > 0) {
+			Criteria criteria = getCurrentSession().createCriteria(TeEmployentHistory.class);
+			criteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", emp.getEmployeesEmployeeId()));
+			criteria.add(Restrictions.eq("teTrainers.trainerId", emp.getEmployeeTrainer()));
+			criteria.add(Restrictions.isNull("ehDateTo"));
+			List<TeEmployentHistory> records = criteria.list();
+			List<TeTrainers> trainers = new ArrayList<TeTrainers>();
+			if(records != null && records.size() > 0) {
+				for(TeEmployentHistory history : records) {
+					history.setEhDateTo(emp.getEmployeeEndDate());
+					getCurrentSession().save(history);
+				}
+			}
+		}
+		
 		Person person = createPerson(emp);
 		personService.addPerson(person);
 	}
@@ -1222,5 +1237,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 			}
 		}
 		return results;
+	}
+	
+	@Override
+	public List<TeTrainers> getTrainersByEmpId(Integer employeesEmployeeId) {
+		
+		Criteria criteria = getCurrentSession().createCriteria(TeEmployentHistory.class);
+		criteria.add(Restrictions.eq("teEmployees.employeesEmployeeId", employeesEmployeeId));
+		criteria.add(Restrictions.isNull("ehDateTo"));
+		List<TeEmployentHistory> records = criteria.list();
+		List<TeTrainers> trainers = new ArrayList<TeTrainers>();
+		if(records != null && records.size() > 0) {
+			for(TeEmployentHistory history : records) {
+				trainers.add(history.getTeTrainers());
+			}
+		}
+		return trainers;
 	}
 }

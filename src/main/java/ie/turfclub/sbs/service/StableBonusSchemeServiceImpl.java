@@ -498,6 +498,19 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	}
 	
 	@Override
+	public List<SBSEntity> getAllUnreturnedSBS() {
+		
+		String hql = " select sbs "
+				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId "
+				+ " and tt.licensed="+TrainerLicenseEnum.LICENSED.getId()
+				+ "  and sbs.returned = false and sbs.old = false ";
+		/*Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
+		List<SBSEntity> records = criteria.list();*/
+		List<SBSEntity> records = getCurrentSession().createQuery(hql).list();
+		return records;
+	}
+	
+	@Override
 	public HashMap<String, Object> isExistsTrainerId(String tId) {
 		
 		Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
@@ -679,7 +692,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 					emails.add(emailArr[i].trim());
 				}
 			}
-			mailUtility.sendAIRTableRecordEmail("SMS Reminder Records", "This is sms reminder records", path, emails);
+			mailUtility.sendSMSReminderRecordEmail("SMS Reminder Records", "Please find attached list of Stable Bonus Scheme text reminders.", path, emails);
 		}
 	}
 	
@@ -687,7 +700,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	public void sendMailToAdmin(String filePath, User user, String email) {
 		
 		String hql = "select tt.trainerId from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
-				+ " sbs.returned = false";
+				+ " sbs.returned = false and sbs.old = false";
 		List<Long> ids = getCurrentSession().createQuery(hql).list();
 		String cmsIds = StringUtils.join(ids, "','");
 		cmsIds = "'"+cmsIds+"'";

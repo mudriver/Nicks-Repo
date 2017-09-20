@@ -133,6 +133,10 @@ public class TeEmployees implements java.io.Serializable {
 	private Date employeeRequestDate;
 	@Expose
 	private int age;
+	@Expose
+	private Date employeeEndDate;
+	@Expose
+	private Integer employeeTrainer;
 	
 
 	public TeEmployees() {
@@ -632,5 +636,21 @@ public class TeEmployees implements java.io.Serializable {
 
 	public void setGroupHistories(List<TeEmployentHistory> groupHistories) {
 		this.groupHistories = groupHistories;
+	}
+	@Transient
+	public Date getEmployeeEndDate() {
+		return employeeEndDate;
+	}
+
+	public void setEmployeeEndDate(Date employeeEndDate) {
+		this.employeeEndDate = employeeEndDate;
+	}
+	@Transient
+	public Integer getEmployeeTrainer() {
+		return employeeTrainer;
+	}
+
+	public void setEmployeeTrainer(Integer employeeTrainer) {
+		this.employeeTrainer = employeeTrainer;
 	}
 }
