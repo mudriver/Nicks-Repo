@@ -427,7 +427,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 		Period p = Period.fieldDifference(ld, LocalDate.now());
 		emp.setAge(p.getYears());
-		emp.setGroupHistories(groupHistories);
+		if(emp.getHistories().size() == 1)
+			emp.setGroupHistories(emp.getHistories());
+		else
+			emp.setGroupHistories(groupHistories);
 		if(emp.getEmployeesPpsNumber() != null && emp.getEmployeesPpsNumber().length() > 10)
 			emp.setEmployeesPpsNumber(EncryptDecryptUtils.decrypt(emp.getEmployeesPpsNumber()));
  		return emp;
@@ -526,6 +529,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			if(emp.getHistories() != null && emp.getHistories().size() > 0) {
 				for (TeEmployentHistory history : emp.getHistories()) {
 					history.setTeEmployees(emp);
+					history.setCardType(emp.getTeCard().getCardsCardType());
 					if(history.getTeTrainers().getTrainerId() != null) {
 						TeTrainers trainer = trainersService.getTrainer(history.getTeTrainers().getTrainerId());
 						history.setTeTrainers(trainer);
@@ -1131,8 +1135,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Criteria sfCriteria = getCurrentSession().createCriteria(TeEmployees.class);
 		sfCriteria.add(Restrictions.eq("employeesDateOfBirth", dob));
 		sfCriteria.add(Restrictions.or(
-				Restrictions.and(Restrictions.like("employeesFirstname", fname, MatchMode.ANYWHERE), Restrictions.like("employeesSurname", sname, MatchMode.ANYWHERE)), 
-				Restrictions.and(Restrictions.like("employeesSurname", fname, MatchMode.ANYWHERE), Restrictions.like("employeesFirstname", sname, MatchMode.ANYWHERE))));
+				Restrictions.or(Restrictions.like("employeesFirstname", fname, MatchMode.ANYWHERE), Restrictions.like("employeesSurname", sname, MatchMode.ANYWHERE)), 
+				Restrictions.or(Restrictions.like("employeesSurname", fname, MatchMode.ANYWHERE), Restrictions.like("employeesFirstname", sname, MatchMode.ANYWHERE))));
 		if(id > 0) sfCriteria.add(Restrictions.ne("employeesEmployeeId", id));
 		List<TeEmployees> sfEmployees = sfCriteria.list();
 		map.put("exists", (employees != null && employees.size() > 0));

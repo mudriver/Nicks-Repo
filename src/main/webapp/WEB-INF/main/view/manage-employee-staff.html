@@ -106,6 +106,8 @@
     	<div class="home-links-parent">
     		<div class="col-sm-6">&nbsp;</div>
     		<div class="col-sm-6">
+    			<button class="btn btn-default" id="mercerABtn"><span data-th-text="#{button.mercer.a}"></span></button>
+    			<button class="btn btn-default" id="mercerBBtn"><span data-th-text="#{button.mercer.b}"></span></button>
     			<button class="btn btn-default" id="aintreeBtn"><span data-th-text="#{button.aintree}"></span></button>
     			<button class="btn btn-default" id="cheltenhamBtn"><span data-th-text="#{button.cheltenham}"></span></button>
     		</div>
@@ -258,6 +260,14 @@
     		
     		$('#aintreeBtn').click(function() {
     			window.open('/turfclubPrograms/trainers/aintree/print/Aintree', '_blank');
+    		});
+    		
+    		$('#mercerABtn').click(function() {
+    			window.open('/turfclubPrograms/trainers/mercer/a/print/Mercer', '_blank');
+    		});
+    		
+    		$('#mercerBBtn').click(function() {
+    			window.open('/turfclubPrograms/trainers/mercer/b/print/Mercer', '_blank');
     		});
     		
     		$('#cheltenhamBtn').click(function() {

@@ -716,6 +716,41 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	@Override
+	public HashMap<String, Object> getEmployeeByIdForMercer(Integer eId) {
+		
+		try {
+			/*,  p.card_number as cardNumber*/
+			PreparedStatement pstmt = conn.getConnection().prepareStatement("select p.surname as surname, "
+					+ "p.firstname as firstname, p.sex as sex, p.date_of_birth as dateOfBirth,"
+					+ "p.address1 as address1, p.address2 as address2, p.address3 as address3, "
+					+ "p.country as country from person as p join person_role as pr "
+					+ "on p.id = pr.person_id where pr.role_id = ? and p.ref_id  = ? "
+					+ " order by p.surname, p.firstname");
+			pstmt.setObject(1, RoleEnum.EMPLOYEE.getId());
+			pstmt.setObject(2, eId);
+			ResultSet set = pstmt.executeQuery();
+			HashMap<String, Object> record = null;
+			while(set.next()) {
+				record = new HashMap<String, Object>();
+				/*record.put("name", set.getString("firstname")+" "+set.getString("surname"));*/
+				/*record.put("cardNumber", set.getString("cardNumber"));*/
+				record.put("surname", set.getString("surname"));
+				record.put("firstname", set.getString("firstname"));
+				record.put("sex", set.getObject("sex"));
+				record.put("dateOfBirth", set.getDate("dateOfBirth"));
+				record.put("address1", set.getObject("address1"));
+				record.put("address2", set.getObject("address2"));
+				record.put("address3", set.getObject("address3"));
+				record.put("country", set.getObject("country"));
+			}
+			return record;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
 	public HashMap<String, Object> getEmployeeById(Integer empId) {
 		
 		try {

@@ -2604,4 +2604,81 @@ public class TrainerServiceImpl implements TrainersService {
 		List<SentEmail> records = criteria.list();
 		return (records != null && records.size() > 0) ? records.get(0).getEmail() : "";
 	}
+	
+	@Override
+	public List<HashMap<String, Object>> getMercerBRecord() {
+		
+		String hql1 = "select new map(t.trainerId as tId, e.employeesEmployeeId as eId, c.cardsCardNumber as cardNumber,"
+				+ " c.cardsCardType as cardType, teh.employeeNumHourWorked as hours ) from TeEmployentHistory as teh,"
+				+ "TeTrainers as t, TeEmployees as e, TeCards as c where "
+				+ " teh.teTrainers.trainerId = t.trainerId and "
+				+ " c.teEmployees.employeesEmployeeId = e.employeesEmployeeId and "
+				+ " c.cardsCardType = 'B' and "
+				+ "teh.teEmployees.employeesEmployeeId = e.employeesEmployeeId and teh.ehDateTo is null "
+				+ " and t.licensed="+TrainerLicenseEnum.LICENSED.getId()
+				+ " order by e.employeesSurname, e.employeesFirstname ";
+		//List<HashMap<String, Object>> records = getCurrentSession().createSQLQuery(hql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+		List<HashMap<String, Object>> records = getCurrentSession().createQuery(hql1).list();
+		
+		List<HashMap<String, Object>> results = new ArrayList<HashMap<String,Object>>();
+		
+		//records.size()
+		for (int i=0; i < records.size() ; i++) {
+			
+			HashMap<String, Object> record = records.get(i);
+			Integer eId = (Integer) record.get("eId");
+			Integer tId = (Integer) record.get("tId");
+			
+			HashMap<String, Object> tMap = personService.getTrainerById(tId);
+			HashMap<String, Object> eMap = personService.getEmployeeByIdForMercer(eId);
+			if(eMap != null) {
+				eMap.put("trainerName", tMap.get("name"));
+				eMap.put("hours", record.get("hours"));
+				eMap.put("eCardNumber", record.get("cardNumber"));
+				eMap.put("eCardType", record.get("cardType"));
+				
+				results.add(eMap);
+			}
+		}
+		return results;
+
+	}
+	
+	@Override
+	public List<HashMap<String, Object>> getMercerARecord() {
+		
+		String hql1 = "select new map(t.trainerId as tId, e.employeesEmployeeId as eId, c.cardsCardNumber as cardNumber,"
+				+ " c.cardsCardType as cardType, teh.employeeNumHourWorked as hours ) from TeEmployentHistory as teh,"
+				+ "TeTrainers as t, TeEmployees as e, TeCards as c where "
+				+ " teh.teTrainers.trainerId = t.trainerId and "
+				+ " c.teEmployees.employeesEmployeeId = e.employeesEmployeeId and "
+				+ " c.cardsCardType = 'A' and "
+				+ "teh.teEmployees.employeesEmployeeId = e.employeesEmployeeId and teh.ehDateTo is null "
+				+ " and t.licensed="+TrainerLicenseEnum.LICENSED.getId()
+				+ " order by e.employeesSurname, e.employeesFirstname ";
+		//List<HashMap<String, Object>> records = getCurrentSession().createSQLQuery(hql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+		List<HashMap<String, Object>> records = getCurrentSession().createQuery(hql1).list();
+		
+		List<HashMap<String, Object>> results = new ArrayList<HashMap<String,Object>>();
+		
+		//records.size()
+		for (int i=0; i < records.size() ; i++) {
+			
+			HashMap<String, Object> record = records.get(i);
+			Integer eId = (Integer) record.get("eId");
+			Integer tId = (Integer) record.get("tId");
+			
+			HashMap<String, Object> tMap = personService.getTrainerById(tId);
+			HashMap<String, Object> eMap = personService.getEmployeeByIdForMercer(eId);
+			if(eMap != null) {
+				eMap.put("trainerName", tMap.get("name"));
+				eMap.put("hours", record.get("hours"));
+				eMap.put("eCardNumber", record.get("cardNumber"));
+				eMap.put("eCardType", record.get("cardType"));
+				
+				results.add(eMap);
+			}
+		}
+		return results;
+	}
 }

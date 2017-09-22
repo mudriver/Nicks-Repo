@@ -53,4 +53,6 @@ public interface PersonService {
 
 	public List<SearchByNameTrainerBean> getRenewalTrainerFindByName(
 			String search) throws Exception;
+
+	public HashMap<String, Object> getEmployeeByIdForMercer(Integer eId);
 }

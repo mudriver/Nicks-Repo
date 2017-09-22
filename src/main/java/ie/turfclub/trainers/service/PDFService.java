@@ -3,6 +3,8 @@ package ie.turfclub.trainers.service;
 import ie.turfclub.sbs.model.SBSEntity;
 
 import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,7 +19,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Rectangle;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -65,7 +66,7 @@ public class PDFService {
 		
 		table.setWidths(tableWidth);
 		PdfPCell cell = new PdfPCell();
-		if(records != null) {
+		if(records != null && records.size() > 0) {
 			for(int i=0; i<records.size(); i++) {
 				HashMap<String, Object> record = records.get(i);
 				table = getTable(3);
@@ -605,6 +606,17 @@ public class PDFService {
 					}
 				}
 			}
+		} else {
+			table = getTable(1);
+			tableWidth = new float[] {100f};
+			font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+			
+			table.setWidths(tableWidth);
+			cell = new PdfPCell(new Phrase(new Chunk("No Records Exists.", font)));
+			cell.setBorder(0);
+			table.addCell(cell);
+			
+			document.add(table);
 		}
 		
 		/*if(sbsRecords != null) {
@@ -690,7 +702,7 @@ public class PDFService {
 		
 		table.setWidths(tableWidth);
 		PdfPCell cell = new PdfPCell();
-		if(sbsRecords != null) {
+		if(sbsRecords != null && sbsRecords.size() > 0) {
 			table = getTable(2);
 			for(int i=0; i<sbsRecords.size(); i++) {
 				SBSEntity record = sbsRecords.get(i);
@@ -760,6 +772,17 @@ public class PDFService {
 				}
 			}
 			document.add(table);
+		} else {
+			table = getTable(1);
+			tableWidth = new float[] {100f};
+			font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+			
+			table.setWidths(tableWidth);
+			cell = new PdfPCell(new Phrase(new Chunk("No Records Exists.", font)));
+			cell.setBorder(0);
+			table.addCell(cell);
+			
+			document.add(table);
 		}
 	}
 	
@@ -780,7 +803,7 @@ public class PDFService {
 		
 		table.setWidths(tableWidth);
 		PdfPCell cell = new PdfPCell();
-		if(records != null) {
+		if(records != null && records.size() > 0) {
 			for(int i=0; i<records.size(); i++) {
 				HashMap<String, Object> record = records.get(i);
 				table = getTable(3);
@@ -1317,6 +1340,17 @@ public class PDFService {
 					}
 				}
 			}
+		} else {
+			table = getTable(1);
+			tableWidth = new float[] {100f};
+			font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+			
+			table.setWidths(tableWidth);
+			cell = new PdfPCell(new Phrase(new Chunk("No Records Exists.", font)));
+			cell.setBorder(0);
+			table.addCell(cell);
+			
+			document.add(table);
 		}
 		
 		/*if(sbsRecords != null) {
@@ -1402,73 +1436,147 @@ public class PDFService {
 		table.setWidths(tableWidth);
 		PdfPCell cell = new PdfPCell();
 		
-		if(sbsRecords != null) {
+		if(sbsRecords != null && sbsRecords.size() > 0) {
 			table = getTable(2);
-			for(int i=0; i<sbsRecords.size()-1; i++) {
+			for(int i=0; i<sbsRecords.size(); i++) {
 				SBSEntity record = sbsRecords.get(i);
 				i++;
-				SBSEntity newrecord = sbsRecords.get(i);
-				
-				cell = new PdfPCell(new Phrase(new Chunk(record.getSbsName(), font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				cell = new PdfPCell(new Phrase(new Chunk(newrecord.getSbsName(), font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				String address1 = record.getAddress1() != null ? record.getAddress1() : " ";
-				cell = new PdfPCell(new Phrase(new Chunk(address1, font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress1(), font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				String address2 = record.getAddress2() != null ? record.getAddress2() : " ";
-				cell = new PdfPCell(new Phrase(new Chunk(address2, font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress2(), font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				String address3 = record.getAddress3() != null ? record.getAddress3() : " ";
-				cell = new PdfPCell(new Phrase(new Chunk(address3, font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress3(), font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				String address4 = record.getAddress4() != null ? record.getAddress4() : " ";
-				cell = new PdfPCell(new Phrase(new Chunk(address4, font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress4(), font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
-				cell.setBorder(0);
-				table.addCell(cell);
-				
-				cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
-				cell.setBorder(0);
-				table.addCell(cell);
+				if(i >= sbsRecords.size()) {
+					
+					cell = new PdfPCell(new Phrase(new Chunk(record.getSbsName(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk("", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address1 = record.getAddress1() != null ? record.getAddress1() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address1, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk("", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address2 = record.getAddress2() != null ? record.getAddress2() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address2, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk("", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address3 = record.getAddress3() != null ? record.getAddress3() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address3, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk("", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address4 = record.getAddress4() != null ? record.getAddress4() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address4, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk("", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+				} else {
+					SBSEntity newrecord = sbsRecords.get(i);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(record.getSbsName(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(newrecord.getSbsName(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address1 = record.getAddress1() != null ? record.getAddress1() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address1, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress1(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address2 = record.getAddress2() != null ? record.getAddress2() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address2, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress2(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address3 = record.getAddress3() != null ? record.getAddress3() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address3, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress3(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address4 = record.getAddress4() != null ? record.getAddress4() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address4, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(newrecord.getAddress4(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+				}
 			}
+			document.add(table);
+		} else {
+			table = getTable(1);
+			tableWidth = new float[] {100f};
+			font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+			
+			table.setWidths(tableWidth);
+			cell = new PdfPCell(new Phrase(new Chunk("No Records Exists.", font)));
+			cell.setBorder(0);
+			table.addCell(cell);
+			
 			document.add(table);
 		}
 	}
@@ -2024,6 +2132,17 @@ public class PDFService {
 					document.add(table);
 				}
 			}
+		} else {
+			table = getTable(1);
+			tableWidth = new float[] {100f};
+			font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+			
+			table.setWidths(tableWidth);
+			cell = new PdfPCell(new Phrase(new Chunk("No Records Exists.", font)));
+			cell.setBorder(0);
+			table.addCell(cell);
+			
+			document.add(cell);
 		}
 	}
 
@@ -2070,11 +2189,18 @@ public class PDFService {
 			cell.setBorderColor(Color.BLUE);
 			table.addCell(cell);
 		}
-		if(records != null) {
+		if(records != null && records.size() > 0) {
 			for(int i=0; i<records.size(); i++) {
 				HashMap<String, Object> record = records.get(i);
 				boolean isTrainer = (boolean) record.get("isTrainer");
 				if(isTrainer) {
+					if(i!=0) {
+						for (int j = 0; j < 12; j++) {
+							cell = new PdfPCell(new Phrase(new Chunk("    ")));
+							cell.setBorder(0);
+							table.addCell(cell);
+						}
+					}
 					cell = new PdfPCell(new Phrase(new Chunk((String)record.get("name"), fontWithColor)));
 					cell.setBorder(0);
 					table.addCell(cell);
@@ -2096,6 +2222,17 @@ public class PDFService {
 					table.addCell(cell);
 				}
 			}
+		} else {
+			table = getTable(1);
+			tableWidth = new float[] {100f};
+			font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+			
+			table.setWidths(tableWidth);
+			cell = new PdfPCell(new Phrase(new Chunk("No Records Exists.", font)));
+			cell.setBorder(0);
+			table.addCell(cell);
+			
+			document.add(table);
 		}
 		document.add(table);
 	}
@@ -2144,11 +2281,18 @@ public class PDFService {
 			cell.setBorderColor(Color.BLUE);
 			table.addCell(cell);
 		}
-		if(records != null) {
+		if(records != null && records.size() > 0) {
 			for(int i=0; i<records.size(); i++) {
 				HashMap<String, Object> record = records.get(i);
 				boolean isTrainer = (boolean) record.get("isTrainer");
 				if(isTrainer) {
+					if(i!=0) {
+						for (int j = 0; j < 12; j++) {
+							cell = new PdfPCell(new Phrase(new Chunk("    ")));
+							cell.setBorder(0);
+							table.addCell(cell);
+						}
+					}
 					cell = new PdfPCell(new Phrase(new Chunk((String)record.get("name"), fontWithColor)));
 					cell.setBorder(0);
 					table.addCell(cell);
@@ -2170,6 +2314,17 @@ public class PDFService {
 					table.addCell(cell);
 				}
 			}
+		} else {
+			table = getTable(1);
+			tableWidth = new float[] {100f};
+			font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+			
+			table.setWidths(tableWidth);
+			cell = new PdfPCell(new Phrase(new Chunk("No Records Exists.", font)));
+			cell.setBorder(0);
+			table.addCell(cell);
+			
+			document.add(table);
 		}
 		document.add(table);
 	}
@@ -2222,15 +2377,17 @@ public class PDFService {
 			cell.setBorderColor(Color.BLUE);
 			table.addCell(cell);
 		}
-		if(records != null) {
+		if(records != null && records.size() > 0) {
 			for(int i=0; i<records.size(); i++) {
 				HashMap<String, Object> record = records.get(i);
 				boolean isTrainer = (boolean) record.get("isTrainer");
 				if(isTrainer) {
-					for (int j = 0; j < 40; j++) {
-						cell = new PdfPCell(new Phrase(new Chunk("")));
-						cell.setBorder(0);
-						table.addCell(cell);
+					if(i!=0) {
+						for (int j = 0; j < 16; j++) {
+							cell = new PdfPCell(new Phrase(new Chunk("    ")));
+							cell.setBorder(0);
+							table.addCell(cell);
+						}
 					}
 					cell = new PdfPCell(new Phrase(new Chunk((String)record.get("name"), fontWithColor)));
 					cell.setBorder(0);
@@ -2259,6 +2416,153 @@ public class PDFService {
 					table.addCell(cell);
 				}
 			}
+		} else {
+			table = getTable(1);
+			tableWidth = new float[] {100f};
+			font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+			
+			table.setWidths(tableWidth);
+			cell = new PdfPCell(new Phrase(new Chunk("No Records Exists.", font)));
+			cell.setBorder(0);
+			table.addCell(cell);
+			
+		}
+		document.add(table);
+	}
+
+	public void buildMercerPDF(Document document,
+			List<HashMap<String, Object>> records) throws DocumentException {
+		
+		PdfPTable table = getTable(1);
+		table.setWidthPercentage(100);
+		Font headerBoldWithUnderline = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 10, Font.BOLD);
+		headerBoldWithUnderline.setColor(Color.BLUE);
+		Font boldWithUnderline = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 8, Font.BOLD|Font.UNDERLINE);
+		Font bold = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 8, Font.BOLD);
+		bold.setColor(Color.BLUE);
+		Font font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 7, Font.NORMAL);
+		Font fontWithColor = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 7, Font.NORMAL);
+		fontWithColor.setColor(Color.BLUE);
+		
+		//table.setWidths(tableWidth);
+		PdfPCell cell = new PdfPCell(new Phrase(new Chunk("Mercer", headerBoldWithUnderline)));
+		cell.setBorder(Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		document.add(table);
+		table = new PdfPTable(12);
+		float[] tableWidth = new float[] {6f,4f,7f,7f,5f,7f,8f,8f,8f,7f,9f,6f};
+		table.setWidths(tableWidth);
+		table.setWidthPercentage(100);
+		
+		cell = new PdfPCell(new Phrase(new Chunk("Card Number", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Card Type", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Surname", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Firstname", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Sex", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("DOB", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Address1", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Address2", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Address3", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Country", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Current Trainer", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		cell = new PdfPCell(new Phrase(new Chunk("Hours Worked", bold)));
+		cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
+		cell.setBorderColor(Color.BLUE);
+		table.addCell(cell);
+		for (int i = 0; i < 12; i++) {
+			cell = new PdfPCell(new Phrase(new Chunk("")));
+			cell.setBorder(Rectangle.TOP);
+			cell.setBorderColor(Color.BLUE);
+			table.addCell(cell);
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		if(records != null && records.size() > 0) {
+			for(int i=0; i<records.size(); i++) {
+				HashMap<String, Object> record = records.get(i);
+				Date dob = (Date) record.get("dateOfBirth");
+				String formattedDate = "";
+				if(dob != null) formattedDate = formatter.format(dob);
+				cell = new PdfPCell(new Phrase(new Chunk(record.get("eCardNumber") != null ? String.valueOf(record.get("eCardNumber")) : "", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(new Chunk(record.get("eCardType") != null ? String.valueOf(record.get("eCardType")) : "", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(new Chunk(record.get("surname") != null ? String.valueOf(record.get("surname")) : "", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(new Chunk(record.get("firstname") != null ? String.valueOf(record.get("firstname")) : "", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(new Chunk(record.get("sex") != null ? String.valueOf(record.get("sex")) : "", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(new Chunk(formattedDate, font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(new Chunk(record.get("address1") != null ? String.valueOf(record.get("address1")) : "", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(new Chunk(record.get("address2") != null ? String.valueOf(record.get("address2")) : "", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(new Chunk(record.get("address3") != null ? String.valueOf(record.get("address3")) : "", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(new Chunk(record.get("country") != null ? String.valueOf(record.get("country")) : "", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(new Chunk(record.get("trainerName") != null ? String.valueOf(record.get("trainerName")) : "", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(new Chunk(record.get("hours") != null ? String.valueOf(record.get("hours")) : "", font)));
+				cell.setBorder(0);
+				table.addCell(cell);
+			}
+		} else {
+			table = getTable(1);
+			tableWidth = new float[] {100f};
+			font = new Font(Font.getFamilyIndex("TIMES_ROMAN"), 12, Font.NORMAL);
+			
+			table.setWidths(tableWidth);
+			cell = new PdfPCell(new Phrase(new Chunk("No Records Exists.", font)));
+			cell.setBorder(0);
+			table.addCell(cell);
+			
 		}
 		document.add(table);
 	}

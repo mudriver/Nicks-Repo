@@ -298,12 +298,15 @@ $(function() {
 	   							$('#duplicateEmployeeTable').find('tbody').children().remove();
 	   							if(data.emps != null && data.emps.length > 0) {
 	   								var emps = data.emps;
+	   								$('#duplicateEmployeeTable').show();
 	   								var tbody = $('#duplicateEmployeeTable').find('tbody');
 	   								for(var i=0; i<emps.length; i++) {
 	   									var emp = emps[i];
 	   									$(tbody).append('<tr><td class="text-center">'+emp.eId+'</td><td class="text-center">'+emp.name+'</td><td class="text-center">'+
 	   											emp.dob+'</td><td class="text-center">'+emp.address+'</td></tr>');
 	   								}
+	   							} else {
+	   								$('#duplicateEmployeeTable').hide();
 	   							}
 	   							$('#duplicateDOBConfirm').modal('show');
 	   							return false;

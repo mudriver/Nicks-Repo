@@ -627,10 +627,10 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	@Override
 	public List<SBSEntity> getAllOrderByNameAsc() {
 		
-		Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
-		criteria.add(Restrictions.eq("old", false));
-		criteria.addOrder(Order.asc("sbsName"));
-		return criteria.list();
+		String hql = "select sbs from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
+				+ " sbs.old = false and tt.licensed ="+TrainerLicenseEnum.LICENSED.getId()
+				+ " order by sbs.sbsName asc";
+		return getCurrentSession().createQuery(hql).list();
 	}
 	
 	@Override
@@ -660,7 +660,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	public void handleMsgReminder(String path, String dirPath, User user) {
 		
 		String hql = "select tt.trainerId from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
-				+ " sbs.returned = false and sbs.old = false";
+				+ " sbs.returned = false and sbs.old = false and tt.licensed ="+TrainerLicenseEnum.LICENSED.getId();
 		List<Long> ids = getCurrentSession().createQuery(hql).list();
 		String cmsIds = StringUtils.join(ids, "','");
 		cmsIds = "'"+cmsIds+"'";
@@ -700,7 +700,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	public void sendMailToAdmin(String filePath, User user, String email) {
 		
 		String hql = "select tt.trainerId from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
-				+ " sbs.returned = false and sbs.old = false";
+				+ " sbs.returned = false and sbs.old = false and tt.licensed ="+TrainerLicenseEnum.LICENSED.getId();
 		List<Long> ids = getCurrentSession().createQuery(hql).list();
 		String cmsIds = StringUtils.join(ids, "','");
 		cmsIds = "'"+cmsIds+"'";

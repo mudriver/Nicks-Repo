@@ -84,5 +84,7 @@ public interface TrainersService {
 	public List<HashMap<String, Object>> getPrintRenewalRecords();
 	public void buildDocumentForLicenseTrainerList(Document document);
 	public String getListOfSentEmail(String smsTxt);
+	public List<HashMap<String, Object>> getMercerARecord();
+	public List<HashMap<String, Object>> getMercerBRecord();
 	
 }

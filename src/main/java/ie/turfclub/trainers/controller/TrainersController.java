@@ -627,6 +627,34 @@ public class TrainersController {
 		}
 	}
 	
+	@RequestMapping(value = "/mercer/a/print/Mercer", method = RequestMethod.GET)
+	public ModelAndView getMercerAPrintDirect(Model model, Authentication authentication,
+			HttpServletRequest request) throws ServletException {
+		Document document = new Document();
+		try {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			ModelAndView modelAndView = new ModelAndView("mercerAPDFView", "map",map);
+			return modelAndView;
+		} catch (Exception ioe) {
+			throw new ServletException(ioe.getMessage());
+		} finally {
+		}
+	}
+	
+	@RequestMapping(value = "/mercer/b/print/Mercer", method = RequestMethod.GET)
+	public ModelAndView getMercerBPrintDirect(Model model, Authentication authentication,
+			HttpServletRequest request) throws ServletException {
+		Document document = new Document();
+		try {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			ModelAndView modelAndView = new ModelAndView("mercerBPDFView", "map",map);
+			return modelAndView;
+		} catch (Exception ioe) {
+			throw new ServletException(ioe.getMessage());
+		} finally {
+		}
+	}
+	
 	@RequestMapping(value = "/print/renewal/print/Renewal", method = RequestMethod.GET)
 	public ModelAndView getListOfLicenseTrainersPrint(HttpServletRequest request, Model model, Authentication authentication) throws ServletException {
 		Document document = new Document();
