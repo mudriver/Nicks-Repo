@@ -1132,18 +1132,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 		criteria.add(Restrictions.eq("employeesDateOfBirth", dob));
 		if(id > 0) criteria.add(Restrictions.ne("employeesEmployeeId", id));
 		List<TeEmployees> employees = criteria.list();
-		Criteria sfCriteria = getCurrentSession().createCriteria(TeEmployees.class);
+		/*Criteria sfCriteria = getCurrentSession().createCriteria(TeEmployees.class);
 		sfCriteria.add(Restrictions.eq("employeesDateOfBirth", dob));
 		sfCriteria.add(Restrictions.or(
 				Restrictions.or(Restrictions.like("employeesFirstname", fname, MatchMode.ANYWHERE), Restrictions.like("employeesSurname", sname, MatchMode.ANYWHERE)), 
 				Restrictions.or(Restrictions.like("employeesSurname", fname, MatchMode.ANYWHERE), Restrictions.like("employeesFirstname", sname, MatchMode.ANYWHERE))));
 		if(id > 0) sfCriteria.add(Restrictions.ne("employeesEmployeeId", id));
-		List<TeEmployees> sfEmployees = sfCriteria.list();
+		List<TeEmployees> sfEmployees = sfCriteria.list();*/
 		map.put("exists", (employees != null && employees.size() > 0));
 		map.put("emps", null);
-		if(sfEmployees != null && sfEmployees.size() > 0) {
+		if(employees != null && employees.size() > 0) {
 			List<HashMap<String, Object>> records = new ArrayList<HashMap<String,Object>>();
-			for (TeEmployees teEmployees : sfEmployees) {
+			for (TeEmployees teEmployees : employees) {
 				HashMap<String, Object> empMap = new HashMap<String, Object>();
 				empMap.put("eId", teEmployees.getEmployeesEmployeeId());
 				empMap.put("name", teEmployees.getEmployeesFullName());

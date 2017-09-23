@@ -19,6 +19,7 @@ import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -57,8 +58,10 @@ public class AIRTableServiceImpl implements AIRTableService {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(AIRTable.class);
+		criteria.addOrder(Order.asc("surname"));
+		criteria.addOrder(Order.asc("firstname"));
 		criteria.setFirstResult(start*length);
-		criteria.setMaxResults(length-1);
+		criteria.setMaxResults(length);
 		List<AIRTable> data = criteria.list();
 		
 		criteria = sessionFactory.getCurrentSession().createCriteria(AIRTable.class);
