@@ -318,8 +318,21 @@ $(function() {
 	   			   					data: {pps: pps},
 	   			   					success: function(data) {
 	   			   						if(data.exists) {
+		   			   						$('#duplicatePPSEmployeeTable').find('tbody').children().remove();
+		   		   							if(data.emps != null && data.emps.length > 0) {
+		   		   								var emps = data.emps;
+		   		   								$('#duplicatePPSEmployeeTable').show();
+		   		   								var tbody = $('#duplicatePPSEmployeeTable').find('tbody');
+		   		   								for(var i=0; i<emps.length; i++) {
+		   		   									var emp = emps[i];
+		   		   									$(tbody).append('<tr><td class="text-center">'+emp.eId+'</td><td class="text-center">'+emp.name+'</td><td class="text-center">'+
+		   		   											emp.dob+'</td><td class="text-center">'+emp.address+'</td></tr>');
+		   		   								}
+		   		   							} else {
+		   		   								$('#duplicatePPSEmployeeTable').hide();
+		   		   							}
 	   			   							$('#duplicatePPSConfirm').modal('show');
-	   			   						return false;
+	   			   							return false;
 	   			   						} else {
 	   			   							$('#employeeEditForm').submit();
 	   			   						}

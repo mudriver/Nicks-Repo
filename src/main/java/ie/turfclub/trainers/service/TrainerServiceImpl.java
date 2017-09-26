@@ -24,6 +24,7 @@ import ie.turfclub.trainers.model.savedSearches.TeEnumSavedSearch;
 import ie.turfclub.trainers.model.savedSearches.TeOrderByFields;
 import ie.turfclub.trainers.model.savedSearches.TeTrainersPensionSavedSearch;
 import ie.turfclub.trainers.model.savedSearches.TeTrainersSavedSearch;
+import ie.turfclub.utilities.Constants;
 
 import java.awt.Color;
 import java.sql.SQLException;
@@ -2598,11 +2599,15 @@ public class TrainerServiceImpl implements TrainersService {
 	@Override
 	public String getListOfSentEmail(String type) {
 		
-		Criteria criteria = getCurrentSession().createCriteria(SentEmail.class);
+		/*Criteria criteria = getCurrentSession().createCriteria(SentEmail.class);
 		criteria.add(Restrictions.eq("type", type));
 		criteria.addOrder(Order.desc("createdDate"));
 		List<SentEmail> records = criteria.list();
-		return (records != null && records.size() > 0) ? records.get(0).getEmail() : "";
+		return (records != null && records.size() > 0) ? records.get(0).getEmail() : "";*/
+		Criteria  criteria = sessionFactory.getCurrentSession().createCriteria(Config.class);
+		criteria.add(Restrictions.eq("name", type));
+		List<Config> configs = criteria.list();
+		return (configs != null && configs.size() > 0) ? configs.get(0).getValue() : "";
 	}
 	
 	@Override

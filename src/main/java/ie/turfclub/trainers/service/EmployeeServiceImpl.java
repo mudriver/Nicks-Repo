@@ -1160,12 +1160,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public Object isExistsPPS(Integer id, String pps) {
 		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		Criteria criteria = getCurrentSession().createCriteria(TeEmployees.class);
 		criteria.add(Restrictions.eq("employeesPpsNumber", EncryptDecryptUtils.encrypt(pps)));
 		if(id > 0) criteria.add(Restrictions.ne("employeesEmployeeId", id));
 		List<TeEmployees> employees = criteria.list();
 		map.put("exists", (employees != null && employees.size() > 0));
+		map.put("emps", null);
+		if(employees != null && employees.size() > 0) {
+			List<HashMap<String, Object>> records = new ArrayList<HashMap<String,Object>>();
+			for (TeEmployees teEmployees : employees) {
+				HashMap<String, Object> empMap = new HashMap<String, Object>();
+				empMap.put("eId", teEmployees.getEmployeesEmployeeId());
+				empMap.put("name", teEmployees.getEmployeesFullName());
+				empMap.put("dob", formatter.format(teEmployees.getEmployeesDateOfBirth()));
+				empMap.put("address", teEmployees.getEmployeesAddress1()+" "+teEmployees.getEmployeesAddress2()+" "+teEmployees.getEmployeesAddress3()+
+						" "+teEmployees.getEmployeesAddress4()+" "+teEmployees.getEmployeesAddress5()+" "+teEmployees.getEmployeesPostCode());
+				records.add(empMap);
+			}
+			map.put("emps", records);
+		}
 		return map;
 	}
 	

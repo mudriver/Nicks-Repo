@@ -213,7 +213,7 @@ public class TrainersController {
 	@RequestMapping(value="/sbs/send/smsReminder", method=RequestMethod.GET)
 	public String sendSMSReminder(HttpServletRequest request, ModelMap model) throws IOException {
 		
-		String email = trainersService.getListOfSentEmail(Constants.SMS_TXT);
+		String email = trainersService.getListOfSentEmail(Constants.SMSREMINDER_TXT);
 		model.addAttribute("email", email);
 		return "send-sms-reminder";
 	}
@@ -627,7 +627,7 @@ public class TrainersController {
 		}
 	}
 	
-	@RequestMapping(value = "/mercer/a/print/Mercer", method = RequestMethod.GET)
+	@RequestMapping(value = "/mercer/a/print/MercerA", method = RequestMethod.GET)
 	public ModelAndView getMercerAPrintDirect(Model model, Authentication authentication,
 			HttpServletRequest request) throws ServletException {
 		Document document = new Document();
@@ -641,13 +641,41 @@ public class TrainersController {
 		}
 	}
 	
-	@RequestMapping(value = "/mercer/b/print/Mercer", method = RequestMethod.GET)
+	@RequestMapping(value = "/mercer/b/print/MercerB", method = RequestMethod.GET)
 	public ModelAndView getMercerBPrintDirect(Model model, Authentication authentication,
 			HttpServletRequest request) throws ServletException {
 		Document document = new Document();
 		try {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			ModelAndView modelAndView = new ModelAndView("mercerBPDFView", "map",map);
+			return modelAndView;
+		} catch (Exception ioe) {
+			throw new ServletException(ioe.getMessage());
+		} finally {
+		}
+	}
+	
+	@RequestMapping(value = "/mercer/a/excel/MercerA", method = RequestMethod.GET)
+	public ModelAndView getMercerAPrintDirectInExcel(Model model, Authentication authentication,
+			HttpServletRequest request) throws ServletException {
+		Document document = new Document();
+		try {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			ModelAndView modelAndView = new ModelAndView("mercerAExcelView", "map",map);
+			return modelAndView;
+		} catch (Exception ioe) {
+			throw new ServletException(ioe.getMessage());
+		} finally {
+		}
+	}
+	
+	@RequestMapping(value = "/mercer/b/excel/MercerB", method = RequestMethod.GET)
+	public ModelAndView getMercerBPrintDirectInExcel(Model model, Authentication authentication,
+			HttpServletRequest request) throws ServletException {
+		Document document = new Document();
+		try {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			ModelAndView modelAndView = new ModelAndView("mercerBExcelView", "map",map);
 			return modelAndView;
 		} catch (Exception ioe) {
 			throw new ServletException(ioe.getMessage());

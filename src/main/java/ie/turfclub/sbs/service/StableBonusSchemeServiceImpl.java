@@ -316,8 +316,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 				+ "sbs.address3 as address3, tt.trainerId as trainerId, sbs.amount as amount, sbs.title as title,"
 				+ " sbs.surname as surname, sbs.trainerId as accNo, sbs.address4 as address4) "
 				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId "
-				+ " and tt.licensed="+TrainerLicenseEnum.LICENSED.getId()
-				+ " and sbs.old = false ";
+				+ " and sbs.old = false";
 		results = getCurrentSession().createQuery(hql).list();
 		
 		Date today = new Date();
@@ -411,7 +410,6 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 				+ "sbs.address3 as address3, tt.trainerId as trainerId, sbs.amount as amount, sbs.title as title,"
 				+ " sbs.surname as surname, sbs.trainerId as accNo, sbs.address4 as address4) "
 				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
-				+ " tt.licensed="+TrainerLicenseEnum.LICENSED.getId()+" and "
 				+ " sbs.returned = false and sbs.old = false ";
 		results = getCurrentSession().createQuery(hql).list();
 		
@@ -489,7 +487,6 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		
 		String hql = " select sbs "
 				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId "
-				+ " and tt.licensed="+TrainerLicenseEnum.LICENSED.getId()
 				+ " and sbs.old = false ";
 		/*Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
 		List<SBSEntity> records = criteria.list();*/
@@ -502,7 +499,6 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 		
 		String hql = " select sbs "
 				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId "
-				+ " and tt.licensed="+TrainerLicenseEnum.LICENSED.getId()
 				+ "  and sbs.returned = false and sbs.old = false ";
 		/*Criteria criteria = getCurrentSession().createCriteria(SBSEntity.class);
 		List<SBSEntity> records = criteria.list();*/
@@ -537,8 +533,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 				+ "sbs.address3 as address3, tt.trainerId as trainerId, sbs.amount as amount, sbs.title as title,"
 				+ " sbs.surname as surname, sbs.trainerId as accNo, sbs.address4 as address4) "
 				+ " from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId"
-				+ " and tt.licensed="+TrainerLicenseEnum.LICENSED.getId()
-				+ " and sbs.trainerId = '"+tId+"' and sbs.old = false ";
+				+ " and sbs.trainerId = '"+tId+"' and sbs.old = false";
 		results = getCurrentSession().createQuery(hql).list();
 		
 		Date today = new Date();
@@ -628,7 +623,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	public List<SBSEntity> getAllOrderByNameAsc() {
 		
 		String hql = "select sbs from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
-				+ " sbs.old = false and tt.licensed ="+TrainerLicenseEnum.LICENSED.getId()
+				+ " sbs.old = false "
 				+ " order by sbs.sbsName asc";
 		return getCurrentSession().createQuery(hql).list();
 	}
@@ -660,7 +655,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	public void handleMsgReminder(String path, String dirPath, User user) {
 		
 		String hql = "select tt.trainerId from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
-				+ " sbs.returned = false and sbs.old = false and tt.licensed ="+TrainerLicenseEnum.LICENSED.getId();
+				+ " sbs.returned = false and sbs.old = false ";
 		List<Long> ids = getCurrentSession().createQuery(hql).list();
 		String cmsIds = StringUtils.join(ids, "','");
 		cmsIds = "'"+cmsIds+"'";
@@ -700,7 +695,7 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 	public void sendMailToAdmin(String filePath, User user, String email) {
 		
 		String hql = "select tt.trainerId from SBSEntity sbs, TeTrainers tt where tt.trainerAccountNo = sbs.trainerId and"
-				+ " sbs.returned = false and sbs.old = false and tt.licensed ="+TrainerLicenseEnum.LICENSED.getId();
+				+ " sbs.returned = false and sbs.old = false ";
 		List<Long> ids = getCurrentSession().createQuery(hql).list();
 		String cmsIds = StringUtils.join(ids, "','");
 		cmsIds = "'"+cmsIds+"'";
@@ -745,10 +740,10 @@ public class StableBonusSchemeServiceImpl implements StableBonusSchemeService {
 			getCurrentSession().save(config);
 		}
 		
-		SentEmail sentEmail = new SentEmail();
+		/*SentEmail sentEmail = new SentEmail();
 		sentEmail.setType(Constants.SMS_TXT);
 		sentEmail.setEmail(emails);
 		sentEmail.setCreatedDate(new Date());
-		getCurrentSession().save(sentEmail);
+		getCurrentSession().save(sentEmail);*/
 	}
 }

@@ -2,6 +2,7 @@ package ie.turfclub.trainers.service;
 
 import ie.turfclub.main.model.login.User;
 import ie.turfclub.trainers.model.AIRTable;
+import ie.turfclub.trainers.model.Config;
 import ie.turfclub.trainers.model.SentEmail;
 import ie.turfclub.utilities.Constants;
 import ie.turfclub.utilities.MailUtility;
@@ -21,6 +22,7 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
@@ -88,7 +90,10 @@ public class AIRTableServiceImpl implements AIRTableService {
 				buffer.append(header[i]+"\n");
 		}
 		
-		List<AIRTable> records = sessionFactory.getCurrentSession().createCriteria(AIRTable.class).list();
+		 Criteria criteria = sessionFactory.getCurrentSession().createCriteria(AIRTable.class);
+				criteria.addOrder(Order.asc("surname"));
+				criteria.addOrder(Order.asc("firstname"));
+		List<AIRTable> records = criteria.list();
 		if(records != null && records.size() > 0) {
 			for (AIRTable rec : records) {
 				buffer.append("\""+rec.getAccount()+"\","+
@@ -175,7 +180,10 @@ public class AIRTableServiceImpl implements AIRTableService {
 		String[] arr = new String[header.length];
 		writer.writeNext(header);
 		
-		List<AIRTable> records = sessionFactory.getCurrentSession().createCriteria(AIRTable.class).list();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(AIRTable.class);
+		criteria.addOrder(Order.asc("surname"));
+		criteria.addOrder(Order.asc("firstname"));
+		List<AIRTable> records = criteria.list();
 		if(records != null && records.size() > 0) {
 			for (AIRTable rec : records) {
 				arr = new String[header.length];
@@ -210,10 +218,21 @@ public class AIRTableServiceImpl implements AIRTableService {
 	@Override
 	public void saveEmailIntoSentEmail(String emails) {
 		
-		SentEmail sentEmail = new SentEmail();
+		/*SentEmail sentEmail = new SentEmail();
 		sentEmail.setType(Constants.AIR_TXT);
 		sentEmail.setEmail(emails);
 		sentEmail.setCreatedDate(new Date());
-		sessionFactory.getCurrentSession().save(sentEmail);
+		sessionFactory.getCurrentSession().save(sentEmail);*/
+		Criteria  criteria = sessionFactory.getCurrentSession().createCriteria(Config.class);
+		criteria.add(Restrictions.eq("name", Constants.AIRTABLE_TXT));
+		List<Config> configs = criteria.list();
+		Config config = (configs != null && configs.size() > 0) ? configs.get(0) : null;
+		if(config == null) config = new Config();
+		config.setName(Constants.AIRTABLE_TXT);
+		config.setKey("email");
+		config.setValue(emails);
+		config.setCreatedDate(new Date());
+		sessionFactory.getCurrentSession().save(config);
+		
 	}
 }

@@ -61,6 +61,9 @@
     <div class="alert alert-success" id="successMsg" style="display: none;">
    		<span th:text="${success}"></span>
    	</div>
+   	<div class="alert alert-danger" id="errorMsg" style="display: none;">
+   		<span th:text="${success}"></span>
+   	</div>
    	<div class="alert alert-success" id="successMsg" th:if="${success != null and success != ''}">
     		<span th:text="${success}"></span>
     	</div>
@@ -99,6 +102,7 @@
     	</div>
     	<div class="home-links-parent">
     		<a data-th-href="@{/trainers/license/print/Trainer}" target="_blank" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.license.trainer.list}">License Trainer List</span></a>
+    		<a href="javascript:void(0);" id="createAndSendAIR" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.create.and.send.air.file}">Create and Send AIR file</span></a>
     	</div>
     	<div class="home-links-parent">	
     		<a th:if="${role == 'SUPER_USER'}" data-th-href="@{/user/searchPage}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.user}">Search User</span></a>
@@ -262,12 +266,20 @@
     			window.open('/turfclubPrograms/trainers/aintree/print/Aintree', '_blank');
     		});
     		
-    		$('#mercerABtn').click(function() {
-    			window.open('/turfclubPrograms/trainers/mercer/a/print/Mercer', '_blank');
+    		/*$('#mercerABtn').click(function() {
+    			window.open('/turfclubPrograms/trainers/mercer/a/print/MercerA', '_blank');
     		});
     		
     		$('#mercerBBtn').click(function() {
-    			window.open('/turfclubPrograms/trainers/mercer/b/print/Mercer', '_blank');
+    			window.open('/turfclubPrograms/trainers/mercer/b/print/MercerB', '_blank');
+    		});*/
+    		
+    		$('#mercerABtn').click(function() {
+    			window.open('/turfclubPrograms/trainers/mercer/a/excel/MercerA', '_blank');
+    		});
+    		
+    		$('#mercerBBtn').click(function() {
+    			window.open('/turfclubPrograms/trainers/mercer/b/excel/MercerB', '_blank');
     		});
     		
     		$('#cheltenhamBtn').click(function() {
@@ -288,6 +300,31 @@
     					$('#successMsg').show();
     					setTimeout(function() {
     						$('#successMsg').hide();	
+    					}, 5000);
+    				}
+    			});
+    		});
+    		
+			$('#createAndSendAIR').click(function() {
+    			
+    			$('#encryptPPSNumberModal').modal('hide');
+    			$.blockUI({css: {color: 'black'}});
+    			$.ajax({
+    				url: '/turfclubPrograms/air/create/send/mail',
+    				type: 'GET',
+    				data: {},
+    				success: function(data) {
+    					$.unblockUI();
+    					if(data.success) {
+	    					$('#successMsg').find('span').html(data.message);
+	    					$('#successMsg').show();
+    					} else {
+    						$('#errorMsg').find('span').html(data.message);
+	    					$('#errorMsg').show();
+    					}
+    					setTimeout(function() {
+    						$('#successMsg').hide();	
+    						$('#errorMsg').hide();
     					}, 5000);
     				}
     			});

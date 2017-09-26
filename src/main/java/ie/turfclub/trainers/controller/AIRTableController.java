@@ -95,7 +95,7 @@ public class AIRTableController {
 	public Object sendMailToAdminPage(HttpServletRequest request, HttpServletResponse response, ModelMap model,
 			Authentication authentication) throws IllegalStateException, IOException {
 	
-		String email = trainersService.getListOfSentEmail(ie.turfclub.utilities.Constants.AIR_TXT);
+		String email = trainersService.getListOfSentEmail(ie.turfclub.utilities.Constants.AIRTABLE_TXT);
 		model.addAttribute("email", email);
 		return "air-mail-send";
 	}
@@ -109,9 +109,29 @@ public class AIRTableController {
 		User user = (User) principal;
 		String emails = request.getParameter("email");
 		airTableService.saveEmailIntoSentEmail(emails);
-		airTableService.sendMailToAdmin(env.getRequiredProperty("upload.dir.path"), user, emails);
+		//airTableService.sendMailToAdmin(env.getRequiredProperty("upload.dir.path"), user, emails);
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("message", messageSource.getMessage("air.table.send.mail", new String[] {}, Locale.US));
+		map.put("message", messageSource.getMessage("success.save.email", new String[] {}, Locale.US));
+		return map;
+	}
+	
+	@RequestMapping(value="/create/send/mail",method=RequestMethod.GET)
+	@ResponseBody
+	public Object sendMailToAdminEmail(HttpServletRequest request, HttpServletResponse response, ModelMap model,
+			Authentication authentication) throws Exception {
+	
+		Object principal = authentication.getPrincipal();
+		User user = (User) principal;
+		String email = trainersService.getListOfSentEmail(ie.turfclub.utilities.Constants.AIRTABLE_TXT);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		if(email != null && email.length() > 0) {
+			airTableService.sendMailToAdmin(env.getRequiredProperty("upload.dir.path"), user, email);
+			map.put("message", messageSource.getMessage("air.table.send.mail", new String[] {}, Locale.US));
+			map.put("success", true);
+		} else {
+			map.put("message", messageSource.getMessage("error.air.table.write.mail", new String[] {}, Locale.US));
+			map.put("success", false);
+		}
 		return map;
 	}
 }

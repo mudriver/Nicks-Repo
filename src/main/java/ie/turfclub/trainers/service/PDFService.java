@@ -2194,13 +2194,13 @@ public class PDFService {
 				HashMap<String, Object> record = records.get(i);
 				boolean isTrainer = (boolean) record.get("isTrainer");
 				if(isTrainer) {
-					if(i!=0) {
+					/*if(i!=0) {
 						for (int j = 0; j < 12; j++) {
 							cell = new PdfPCell(new Phrase(new Chunk("    ")));
 							cell.setBorder(0);
 							table.addCell(cell);
 						}
-					}
+					}*/
 					cell = new PdfPCell(new Phrase(new Chunk((String)record.get("name"), fontWithColor)));
 					cell.setBorder(0);
 					table.addCell(cell);
@@ -2286,13 +2286,13 @@ public class PDFService {
 				HashMap<String, Object> record = records.get(i);
 				boolean isTrainer = (boolean) record.get("isTrainer");
 				if(isTrainer) {
-					if(i!=0) {
+					/*if(i!=0) {
 						for (int j = 0; j < 12; j++) {
 							cell = new PdfPCell(new Phrase(new Chunk("    ")));
 							cell.setBorder(0);
 							table.addCell(cell);
 						}
-					}
+					}*/
 					cell = new PdfPCell(new Phrase(new Chunk((String)record.get("name"), fontWithColor)));
 					cell.setBorder(0);
 					table.addCell(cell);
