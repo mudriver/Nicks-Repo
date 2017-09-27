@@ -102,7 +102,6 @@
     	</div>
     	<div class="home-links-parent">
     		<a data-th-href="@{/trainers/license/print/Trainer}" target="_blank" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.license.trainer.list}">License Trainer List</span></a>
-    		<a href="javascript:void(0);" id="createAndSendAIR" class="home-links col-sm-6"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.create.and.send.air.file}">Create and Send AIR file</span></a>
     	</div>
     	<div class="home-links-parent">	
     		<a th:if="${role == 'SUPER_USER'}" data-th-href="@{/user/searchPage}" class="home-links col-sm-6"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span data-th-text="#{link.search.user}">Search User</span></a>
@@ -305,31 +304,7 @@
     			});
     		});
     		
-			$('#createAndSendAIR').click(function() {
-    			
-    			$('#encryptPPSNumberModal').modal('hide');
-    			$.blockUI({css: {color: 'black'}});
-    			$.ajax({
-    				url: '/turfclubPrograms/air/create/send/mail',
-    				type: 'GET',
-    				data: {},
-    				success: function(data) {
-    					$.unblockUI();
-    					if(data.success) {
-	    					$('#successMsg').find('span').html(data.message);
-	    					$('#successMsg').show();
-    					} else {
-    						$('#errorMsg').find('span').html(data.message);
-	    					$('#errorMsg').show();
-    					}
-    					setTimeout(function() {
-    						$('#successMsg').hide();	
-    						$('#errorMsg').hide();
-    					}, 5000);
-    				}
-    			});
-    		});
-    		
+			
     		$('#searchNumber').typeahead({
     		    source: cards
     		}).on('blur', function (event, data) {

@@ -52,6 +52,7 @@
         #example_info {color: white !important;}
         .back-button-div {margin-bottom: 10px;}
         .dataTables_wrapper .dataTables_paginate .paginate_button { color: white !important;}
+        .blockUI h1 { color: black !important;}
     </style>
 	<body>
 		 <div class="container-fluid" >                <!-- /#wrapper -->
@@ -64,8 +65,15 @@
 	    		<a href="/turfclubPrograms/employees/manageStaff"><input type="button" class="btn btn-default" value="Back" /></a>
 	    	</div>
 	    	<div class="pull-right back-button-div">
+	    		<a href="javascript:void(0);" id="createAndSendAIR" class="home-links col-sm-6"><input type="button" class="btn btn-default" value="Send Mail" /></a>
 	    		<a href="/turfclubPrograms/air/export/csv"><input type="button" class="btn btn-default" value="Export CSV" /></a>
 	    	</div>
+	    	<div class="alert alert-success" id="successMsg" style="display: none; clear: both;">
+		   		<span th:text="${success}"></span>
+		   	</div>
+		   	<div class="alert alert-danger" id="errorMsg" style="display: none; clear: both;">
+		   		<span th:text="${success}"></span>
+		   	</div>
     		<table id="example" class="section-card table table-striped table-bordered" cellspacing="0" width="100%">
 		       	<thead>
 		       		<tr>
@@ -120,6 +128,9 @@
     	<script type="text/javascript" src="../../resources/js/datatable/jquery.datatable.min.js"
 	        data-th-src="@{/resources/js/datatable/jquery.dataTables.min.js}"></script>
 	        
+	    <script type="text/javascript" src="../../resources/js/jquery.blockui.js"
+        	data-th-src="@{/resources/js/jquery.blockui.js}"></script>
+	        
 	    <!-- <script type="text/javascript" src="../../resources/js/datatable/datatable.buttons.min.js"
 	        data-th-src="@{/resources/js/datatable/dataTables.buttons.min.js}"></script> -->
 	        
@@ -129,6 +140,31 @@
 	    <script type="text/javascript" th:inline="javascript">
 	    
 	    	$(function() {
+	    		
+	    		$('#createAndSendAIR').click(function() {
+	    			
+	    			$.blockUI();
+	    			$.ajax({
+	    				url: '/turfclubPrograms/air/create/send/mail',
+	    				type: 'GET',
+	    				data: {},
+	    				success: function(data) {
+	    					$.unblockUI();
+	    					if(data.success) {
+		    					$('#successMsg').find('span').html(data.message);
+		    					$('#successMsg').show();
+	    					} else {
+	    						$('#errorMsg').find('span').html(data.message);
+		    					$('#errorMsg').show();
+	    					}
+	    					setTimeout(function() {
+	    						$('#successMsg').hide();	
+	    						$('#errorMsg').hide();
+	    					}, 5000);
+	    				}
+	    			});
+	    		});
+	    		
 	    		var table = $('#example').DataTable( {
 	    	        dom: 'Bfrtip',
 	    	        "scrollX": true,

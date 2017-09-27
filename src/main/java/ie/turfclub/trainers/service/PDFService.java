@@ -707,7 +707,67 @@ public class PDFService {
 			for(int i=0; i<sbsRecords.size(); i++) {
 				SBSEntity record = sbsRecords.get(i);
 				i++;
-				if(i < sbsRecords.size()) {
+				if(i >= sbsRecords.size()) {
+					cell = new PdfPCell(new Phrase(new Chunk(record.getSbsName(), font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk("", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address1 = record.getAddress1() != null ? record.getAddress1() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address1, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk("", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address2 = record.getAddress2() != null ? record.getAddress2() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address2, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk("", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address3 = record.getAddress3() != null ? record.getAddress3() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address3, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk("", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					String address4 = record.getAddress4() != null ? record.getAddress4() : " ";
+					cell = new PdfPCell(new Phrase(new Chunk(address4, font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk("", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+					
+					cell = new PdfPCell(new Phrase(new Chunk(" ", font)));
+					cell.setBorder(0);
+					table.addCell(cell);
+				} else {
 					SBSEntity newrecord = sbsRecords.get(i);
 					
 					cell = new PdfPCell(new Phrase(new Chunk(record.getSbsName(), font)));
